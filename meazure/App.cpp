@@ -17,26 +17,41 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include <QPushButton>
+#include "App.h"
+#include "AppVersion.h"
+#include "ui/MainWindow.h"
 #include <QtPlugin>
-#include <QWindow>
-#include <QScreen>
+#include <QCommandLineParser>
+#include <QStyleFactory>
 
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
+Q_IMPORT_PLUGIN(QSvgIconPlugin)
+
+
+App::App(int &argc, char **argv): QApplication(argc, argv) {
+    setApplicationName("meazure");
+    setApplicationDisplayName("Meazure");
+    setApplicationVersion(APP_VERSION);
+
+    setOrganizationName("cthing");
+    setOrganizationDomain("cthing.com");
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.process(*this);
+
+    m_mainWindow = new MainWindow();
+    m_mainWindow->show();
+}
+
+App::~App() {
+    delete m_mainWindow;
+}
+
 
 int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
-
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
-
-    QWindow w(static_cast<QScreen*>(nullptr));
-    Qt::WindowFlags flags = w.flags();
-    w.setFlags(flags | Qt::FramelessWindowHint);
-    w.setGeometry(300, 300, 100, 100);
-    w.show();
-
-    return QApplication::exec();
+    App a(argc, argv);
+    return App::exec();
 }

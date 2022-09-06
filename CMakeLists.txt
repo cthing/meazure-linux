@@ -13,23 +13,28 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
-set(MAIN_DIR "${SRC_DIR}/main")
-set(TEST_DIR "${SRC_DIR}/test")
+set(APP_DIR "${PROJECT_SOURCE_DIR}/meazure")
+set(TEST_DIR "${PROJECT_SOURCE_DIR}/test")
 set(DEV_DIR "${PROJECT_SOURCE_DIR}/dev")
+set(DOCS_DIR "${PROJECT_SOURCE_DIR}/docs")
 
 include(${DEV_DIR}/conan/cthing-conan.cmake)
 
 conan_cmake_configure(REQUIRES
                       qt/6.3.1
+                      OPTIONS qt:qtsvg=True
                       GENERATORS ${CTHING_CONAN_GENERATOR})
 
 CTHING_CONAN_INSTALL()
 
-find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets Svg REQUIRED)
+find_package(Doxygen REQUIRED)
 find_program(CMAKE_LINT_PROGRAM "cmake-lint" REQUIRED)
 
 qt_standard_project_setup()
+
+set(CMAKE_COMPILE_WARNING_AS_ERROR TRUE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Output directory: ${CMAKE_BINARY_DIR}")
@@ -38,6 +43,11 @@ file(GLOB_RECURSE BUILD_FILES CMakeLists.txt)
 add_custom_target(cmakelint
                   COMMAND ${CMAKE_LINT_PROGRAM} ${BUILD_FILES} --config ${DEV_DIR}/cmake-lint/config.py
                   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+add_custom_target(apidocs
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${DOCS_DIR}/api/html"
+                  COMMAND ${DOXYGEN_EXECUTABLE} "${DEV_DIR}/doxygen/meazure.cfg"
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(meazure)
 add_subdirectory(test)

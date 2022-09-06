@@ -1,0 +1,10 @@
+/**
+
+@mainpage Meazure - Source Code Documentation
+
+@section overview Overview
+These pages document the source code for the Meazure program. Instructions for
+building the program from source code are provided in the file Building.md at
+the root of the source tree.
+
+*/
