@@ -17,22 +17,27 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "MagnifierZoom.h"
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QSlider>
 
-#include <QWidget>
 
+MagnifierZoom::MagnifierZoom() {
+    createControls();
+}
 
-/// Displays a magnified image of an area of the screen.
-///
-class Magnifier : public QWidget {
+void MagnifierZoom::createControls() {
+    auto* layout = new QHBoxLayout();
 
-    Q_OBJECT
+    auto* zoomLabel = new QLabel(tr("Zoom:"));
+    layout->addWidget(zoomLabel);
 
-public:
-    Magnifier();
+    auto* zoom = new QSlider(Qt::Horizontal);
+    layout->addWidget(zoom);
 
-private:
-    /// Creates the magnifier display.
-    ///
-    void create();
-};
+    auto* magnification = new QLabel(tr("2X"));
+    layout->addWidget(magnification);
+
+    setLayout(layout);
+}

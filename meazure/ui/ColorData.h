@@ -22,17 +22,17 @@
 #include <QWidget>
 
 
-/// Displays a magnified image of an area of the screen.
+/// Display a color swatch and the corresponding color value.
 ///
-class Magnifier : public QWidget {
+class ColorData : public QWidget {
 
     Q_OBJECT
 
 public:
-    Magnifier();
+    ColorData();
 
 private:
-    /// Creates the magnifier display.
+    /// Creates the color value field and color swatch.
     ///
-    void create();
+    void createControls();
 };

@@ -22,17 +22,17 @@
 #include <QWidget>
 
 
-/// Displays a magnified image of an area of the screen.
+/// Provides the zoom control for the magnifier.
 ///
-class Magnifier : public QWidget {
+class MagnifierZoom : public QWidget {
 
     Q_OBJECT
 
 public:
-    Magnifier();
+    MagnifierZoom();
 
 private:
-    /// Creates the magnifier display.
+    /// Creates the zoom slider and magnification indicator.
     ///
-    void create();
+    void createControls();
 };

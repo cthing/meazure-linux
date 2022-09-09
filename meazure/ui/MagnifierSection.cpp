@@ -17,24 +17,40 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainView.h"
-#include "ToolDataSection.h"
-#include "ScreenDataSection.h"
 #include "MagnifierSection.h"
-#include <QVBoxLayout>
+#include "Magnifier.h"
+#include "MagnifierZoom.h"
+#include "ColorData.h"
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QIcon>
 
 
-MainView::MainView() {
+MagnifierSection::MagnifierSection() {
+    createComponents();
+}
+
+void MagnifierSection::createComponents() {
     auto* layout = new QVBoxLayout();
 
-    auto* toolDataSection = new ToolDataSection();
-    layout->addWidget(toolDataSection);
+    auto* magnifier = new Magnifier();
+    layout->addWidget(magnifier);
 
-    auto* screenDataSection = new ScreenDataSection();
-    layout->addWidget(screenDataSection);
+    auto* colorLayout = new QHBoxLayout();
 
-    auto* magnifierSection = new MagnifierSection();
-    layout->addWidget(magnifierSection);
+    auto* colorData = new ColorData();
+    colorLayout->addWidget(colorData);
+
+    auto* copyButton = new QPushButton(QIcon(":/images/Clipboard.svg"), "");
+    colorLayout->addWidget(copyButton);
+
+    auto* pauseButton = new QPushButton(QIcon(":/images/Pause.svg"), "");
+    colorLayout->addWidget(pauseButton);
+    layout->addLayout(colorLayout);
+
+    auto* zoom = new MagnifierZoom();
+
+    layout->addWidget(zoom);
 
     setLayout(layout);
 }

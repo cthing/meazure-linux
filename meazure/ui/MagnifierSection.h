@@ -22,17 +22,17 @@
 #include <QWidget>
 
 
-/// Displays a magnified image of an area of the screen.
+/// Provides the screen magnifier, pixel color display and zoom control.
 ///
-class Magnifier : public QWidget {
+class MagnifierSection : public QWidget {
 
     Q_OBJECT
 
 public:
-    Magnifier();
+    MagnifierSection();
 
 private:
-    /// Creates the magnifier display.
+    /// Creates the magnifier, magnifier zoom and color data components.
     ///
-    void create();
+    void createComponents();
 };

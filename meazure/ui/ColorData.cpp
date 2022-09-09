@@ -17,22 +17,32 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "ColorData.h"
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
 
-#include <QWidget>
 
+ColorData::ColorData() {
+    createControls();
+}
 
-/// Displays a magnified image of an area of the screen.
-///
-class Magnifier : public QWidget {
+void ColorData::createControls() {
+    auto* layout = new QHBoxLayout();
 
-    Q_OBJECT
+    auto* colorSpace = new QLabel(tr("RGB:"));
+    layout->addWidget(colorSpace);
 
-public:
-    Magnifier();
+    auto* colorField = new QLineEdit();
+    layout->addWidget(colorField);
 
-private:
-    /// Creates the magnifier display.
-    ///
-    void create();
-};
+    auto* swatch = new QWidget();
+    swatch->setFixedSize(70, 20);
+    QPalette pal = QPalette();
+    pal.setColor(QPalette::Window, Qt::red);
+    swatch->setAutoFillBackground(true);
+    swatch->setPalette(pal);
+    layout->addWidget(swatch);
+
+    setLayout(layout);
+}

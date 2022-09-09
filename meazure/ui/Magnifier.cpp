@@ -18,3 +18,14 @@
  */
 
 #include "Magnifier.h"
+
+
+Magnifier::Magnifier() {
+    create();
+}
+
+void Magnifier::create() {
+    setFixedSize(100, 100);
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet("background-color: blue");
+}
