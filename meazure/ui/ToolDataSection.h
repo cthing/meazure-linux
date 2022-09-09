@@ -27,4 +27,15 @@
 class ToolDataSection : public QGroupBox {
 
     Q_OBJECT
+
+public:
+    ToolDataSection();
+
+private:
+    static constexpr int k_fieldShortWidth { 7 };
+    static constexpr int k_fieldLongWidth { 20 };
+
+    /// Creates the text fields that provide the tool measurement display.
+    ///
+    void createFields();
 };

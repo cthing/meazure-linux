@@ -27,4 +27,14 @@
 class ScreenDataSection : public QGroupBox {
 
     Q_OBJECT
+
+public:
+    ScreenDataSection();
+
+private:
+    static constexpr int k_fieldWidth { 7 };
+
+    /// Creates the text fields that provide the screen information display.
+    ///
+    void createFields();
 };

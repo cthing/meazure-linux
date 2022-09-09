@@ -5,6 +5,8 @@ set(TOP_SOURCES
 source_group(App FILES ${TOP_SOURCES})
 
 set(UI_SOURCES
+    ui/DataField.cpp
+    ui/DataField.h
     ui/Magnifier.cpp
     ui/Magnifier.h
     ui/MainWindow.cpp
@@ -33,6 +35,7 @@ set(MEAZURE_RESOURCES
     resources/images/WindowTool.svg
     resources/images/RulerTool.svg
     resources/images/GridTool.svg
+    resources/images/CalWarning.svg
     )
 
 qt6_add_executable(meazure ${MEAZURE_SOURCES})

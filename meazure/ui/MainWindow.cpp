@@ -26,7 +26,7 @@
 #include <QActionGroup>
 
 
-MainWindow::MainWindow() {
+MainWindow::MainWindow() {          // NOLINT(cppcoreguidelines-pro-type-member-init)
     createCentralWidget();
     createActions();
     createMenus();
@@ -41,35 +41,35 @@ void MainWindow::createActions() {
 
     m_cursorToolAction = new QAction(QIcon(":/images/CursorTool.svg"), tr("&Cursor"), radioToolGroup);
     m_cursorToolAction->setCheckable(true);
-    m_cursorToolAction->setStatusTip("Tracks cursor position");
+    m_cursorToolAction->setToolTip("Tracks cursor position");
 
     m_pointToolAction = new QAction(QIcon(":/images/PointTool.svg"), tr("&Point"), radioToolGroup);
     m_pointToolAction->setCheckable(true);
-    m_pointToolAction->setStatusTip("Measures a point");
+    m_pointToolAction->setToolTip("Measures a point");
 
     m_lineToolAction = new QAction(QIcon(":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
     m_lineToolAction->setCheckable(true);
-    m_lineToolAction->setStatusTip("Measures using line");
+    m_lineToolAction->setToolTip("Measures using line");
 
     m_rectangleToolAction = new QAction(QIcon(":/images/RectangleTool.svg"), tr("&Rectangle"), radioToolGroup);
     m_rectangleToolAction->setCheckable(true);
-    m_rectangleToolAction->setStatusTip("Measures using rectangle");
+    m_rectangleToolAction->setToolTip("Measures using rectangle");
 
     m_circleToolAction = new QAction(QIcon(":/images/CircleTool.svg"), tr("C&ircle"), radioToolGroup);
     m_circleToolAction->setCheckable(true);
-    m_circleToolAction->setStatusTip("Measures using circle");
+    m_circleToolAction->setToolTip("Measures using circle");
 
     m_windowToolAction = new QAction(QIcon(":/images/WindowTool.svg"), tr("&Window"), radioToolGroup);
     m_windowToolAction->setCheckable(true);
-    m_windowToolAction->setStatusTip("Meazures a window");
+    m_windowToolAction->setToolTip("Meazures a window");
 
     m_rulerToolAction = new QAction(QIcon(":/images/RulerTool.svg"), tr("R&uler"), this);
     m_rulerToolAction->setCheckable(true);
-    m_rulerToolAction->setStatusTip("Adds screen rulers");
+    m_rulerToolAction->setToolTip("Adds screen rulers");
 
     m_gridToolAction = new QAction(QIcon(":/images/GridTool.svg"), tr("&Screen Grid"), this);
     m_gridToolAction->setCheckable(true);
-    m_gridToolAction->setStatusTip("Adds screen grid");
+    m_gridToolAction->setToolTip("Adds screen grid");
 }
 
 void MainWindow::createMenus() {
