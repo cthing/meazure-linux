@@ -19,26 +19,27 @@
 
 #pragma once
 
-#include "ui/MainWindow.h"
-#include <QApplication>
+#include <QString>
 
 
-/// Represents the application.
+/// String manipulation utility functions.
 ///
-class App : public QApplication {
+namespace StringUtils {
 
-    Q_OBJECT
-
-public:
-    /// Constructs the application.
+    /// Converts the specified integer to a string.
     ///
-    /// @param[in] argc Number of command line arguments
-    /// @param[in] argv Command line arguments
+    /// @param[in] value Integer value to convert to a string.
+    /// @return String corresponding to the integer value.
     ///
-    App(int& argc, char** argv);
+    inline QString intToStr(int value) {
+        return QString::number(value);
+    }
 
-    ~App() override;
-
-private:
-    MainWindow* m_mainWindow;
+    /// Converts the specified double to a string with the minimum number of decimal places.
+    ///
+    /// @param[in] value Numerical value to convert to a string.
+    ///
+    /// @return String corresponding to the double value.
+    ///
+    QString dblToStr(double value);
 };

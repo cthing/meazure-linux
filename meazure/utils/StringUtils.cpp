@@ -17,28 +17,19 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "ui/MainWindow.h"
-#include <QApplication>
+#include "StringUtils.h"
+#include <cfloat>
 
 
-/// Represents the application.
-///
-class App : public QApplication {
+QString StringUtils::dblToStr(double value) {
+    QString numStr = QString::number(value, 'f', DBL_DIG - 1);
 
-    Q_OBJECT
+    qsizetype idx = numStr.size();
+    while (idx-- > 1) {
+        if ((numStr[idx] != '0') || (numStr[idx - 1] == '.')) {
+            break;
+        }
+    }
 
-public:
-    /// Constructs the application.
-    ///
-    /// @param[in] argc Number of command line arguments
-    /// @param[in] argv Command line arguments
-    ///
-    App(int& argc, char** argv);
-
-    ~App() override;
-
-private:
-    MainWindow* m_mainWindow;
-};
+    return (idx == numStr.size()) ? numStr : numStr.left(idx + 1);
+}

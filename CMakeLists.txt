@@ -22,16 +22,20 @@ include(${DEV_DIR}/conan/cthing-conan.cmake)
 
 conan_cmake_configure(REQUIRES
                       qt/6.3.1
-                      OPTIONS qt:qtsvg=True
+                      xerces-c/3.2.3
+                      OPTIONS qt:qtsvg=True xerces-c:char_type=char16_t
                       GENERATORS ${CTHING_CONAN_GENERATOR})
 
 CTHING_CONAN_INSTALL()
 
-find_package(Qt6 COMPONENTS Core Gui Widgets Svg REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets Svg Test REQUIRED)
+find_package(XercesC REQUIRED)
 find_package(Doxygen REQUIRED)
 find_program(CMAKE_LINT_PROGRAM "cmake-lint" REQUIRED)
 
 qt_standard_project_setup()
+
+enable_testing()
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR TRUE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")

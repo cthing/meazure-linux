@@ -19,26 +19,17 @@
 
 #pragma once
 
-#include "ui/MainWindow.h"
-#include <QApplication>
-
-
-/// Represents the application.
+/// Performs the same function as QVERIFY without the test and return.
 ///
-class App : public QApplication {
+/// @param statement Expression to test for truth
+///
+#define MEA_VERIFY(statement) \
+    QTest::qVerify(static_cast<bool>(statement), #statement, "", __FILE__, __LINE__)
 
-    Q_OBJECT
-
-public:
-    /// Constructs the application.
-    ///
-    /// @param[in] argc Number of command line arguments
-    /// @param[in] argv Command line arguments
-    ///
-    App(int& argc, char** argv);
-
-    ~App() override;
-
-private:
-    MainWindow* m_mainWindow;
-};
+/// Performs the same function as QCOMPARE without the test and return.
+///
+/// @param actual Actual value
+/// @param expected Expected value
+///
+#define MEA_COMPARE(actual, expected) \
+    QTest::qCompare(actual, expected, #actual, #expected, __FILE__, __LINE__)

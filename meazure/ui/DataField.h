@@ -29,9 +29,9 @@ class DataField : public QDoubleSpinBox {
 public:
     /// Constructs a data field.
     ///
-    /// @param charWidth Width of the field in number of visible characters
-    /// @param showButtons Specify true to show the up/down arrow buttons
-    /// @param parent Parent for the widget
+    /// @param[in] charWidth Width of the field in number of visible characters
+    /// @param[in] showButtons Specify true to show the up/down arrow buttons
+    /// @param[in] parent Parent for the widget
     ///
     DataField(int charWidth, bool showButtons, QWidget *parent = nullptr);
 

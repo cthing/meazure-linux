@@ -43,15 +43,10 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {
     parser.process(*this);
 
     m_mainWindow = new MainWindow();
+    m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
     m_mainWindow->show();
 }
 
 App::~App() {
     delete m_mainWindow;
-}
-
-
-int main(int argc, char *argv[]) {
-    App a(argc, argv);
-    return App::exec();
 }

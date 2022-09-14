@@ -27,34 +27,80 @@ set(UI_SOURCES
     )
 source_group(UI FILES ${UI_SOURCES})
 
+set(PROFILE_SOURCES
+    profile/Profile.h
+    )
+source_group(Profiles FILES ${PROFILE_SOURCES})
+
+set(XML_SOURCES
+    xml/XMLParser.cpp
+    xml/XMLParser.h
+    xml/XMLWriter.cpp
+    xml/XMLWriter.h
+    )
+source_group(XML FILES ${XML_SOURCES})
+
+set(UTILS_SOURCES
+    utils/StringUtils.cpp
+    utils/StringUtils.h
+    )
+source_group(UTILS FILES ${UTILS_SOURCES})
+
 set(MEAZURE_SOURCES
     ${TOP_SOURCES}
     ${UI_SOURCES}
+    ${PROFILE_SOURCES}
+    ${XML_SOURCES}
+    ${UTILS_SOURCES}
     )
 
 set(MEAZURE_RESOURCES
-    resources/images/CursorTool.svg
-    resources/images/PointTool.svg
-    resources/images/LineTool.svg
-    resources/images/RectangleTool.svg
-    resources/images/CircleTool.svg
-    resources/images/WindowTool.svg
-    resources/images/RulerTool.svg
-    resources/images/GridTool.svg
     resources/images/CalWarning.svg
+    resources/images/CircleTool.svg
     resources/images/Clipboard.svg
+    resources/images/CursorTool.svg
+    resources/images/GridTool.svg
+    resources/images/LineTool.svg
     resources/images/Pause.svg
+    resources/images/PointTool.svg
+    resources/images/RectangleTool.svg
+    resources/images/RulerTool.svg
+    resources/images/WindowTool.svg
     )
 
-qt6_add_executable(meazure ${MEAZURE_SOURCES})
-qt6_add_resources(meazure "resources" PREFIX "/" BASE "resources" FILES ${MEAZURE_RESOURCES})
-target_include_directories(meazure PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+qt6_add_library(libmeazure STATIC ${MEAZURE_SOURCES})
+target_compile_options(libmeazure PRIVATE -fPIC)
+target_include_directories(libmeazure PRIVATE
+                           ${Qt6_INCLUDE_DIRS}
+                           ${XercesC_INCLUDE_DIRS}
+                           "${CMAKE_SOURCE_DIR}"
+                           "${CMAKE_CURRENT_BINARY_DIR}"
+                           )
+qt6_add_resources(libmeazure "resources" PREFIX "/" BASE "resources" FILES ${MEAZURE_RESOURCES})
+
+qt6_add_executable(meazure main.cpp)
+target_include_directories(meazure PRIVATE
+                           ${Qt6_INCLUDE_DIRS}
+                           ${XercesC_INCLUDE_DIRS}
+                           "${CMAKE_SOURCE_DIR}"
+                           "${CMAKE_CURRENT_BINARY_DIR}"
+                           )
 target_link_directories(meazure PRIVATE
                         "${Qt6_RES_DIRS}/archdatadir/plugins/platforms"
                         "${Qt6_RES_DIRS}/archdatadir/plugins/iconengines"
                         ${Qt6_Core_LIB_DIRS}
                         )
-target_link_libraries(meazure PRIVATE Qt6::Widgets Qt6::Gui Qt6::Svg qxcb qsvgicon Qt6XcbQpa Qt6::Core)
+target_link_libraries(meazure PRIVATE
+                      libmeazure
+                      Qt6::Widgets
+                      Qt6::Gui
+                      Qt6::Svg
+                      qxcb
+                      qsvgicon
+                      Qt6XcbQpa
+                      Qt6::Core
+                      XercesC::XercesC
+                      )
 
 # Replace the version variables with the actual values from the project version.
 configure_file(AppVersion.h.in AppVersion.h @ONLY)

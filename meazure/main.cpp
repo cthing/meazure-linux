@@ -17,28 +17,10 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "ui/MainWindow.h"
-#include <QApplication>
+#include "App.h"
 
 
-/// Represents the application.
-///
-class App : public QApplication {
-
-    Q_OBJECT
-
-public:
-    /// Constructs the application.
-    ///
-    /// @param[in] argc Number of command line arguments
-    /// @param[in] argv Command line arguments
-    ///
-    App(int& argc, char** argv);
-
-    ~App() override;
-
-private:
-    MainWindow* m_mainWindow;
-};
+int main(int argc, char *argv[]) {
+    App app(argc, argv);
+    return App::exec();
+}
