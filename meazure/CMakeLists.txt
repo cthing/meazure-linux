@@ -28,7 +28,11 @@ set(UI_SOURCES
 source_group(UI FILES ${UI_SOURCES})
 
 set(PROFILE_SOURCES
+    profile/FileProfile.cpp
+    profile/FileProfile.h
     profile/Profile.h
+    profile/SettingsProfile.cpp
+    profile/SettingsProfile.h
     )
 source_group(Profiles FILES ${PROFILE_SOURCES})
 
@@ -95,6 +99,7 @@ target_link_libraries(meazure PRIVATE
                       Qt6::Widgets
                       Qt6::Gui
                       Qt6::Svg
+                      Qt6::Network
                       qxcb
                       qsvgicon
                       Qt6XcbQpa

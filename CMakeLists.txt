@@ -28,7 +28,7 @@ conan_cmake_configure(REQUIRES
 
 CTHING_CONAN_INSTALL()
 
-find_package(Qt6 COMPONENTS Core Gui Widgets Svg Test REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets Svg Network Test REQUIRED)
 find_package(XercesC REQUIRED)
 find_package(Doxygen REQUIRED)
 find_program(CMAKE_LINT_PROGRAM "cmake-lint" REQUIRED)

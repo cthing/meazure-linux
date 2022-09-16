@@ -20,6 +20,8 @@ macro(ADD_MEAZURE_TEST runner srcdir)
     add_test(NAME ${runner} COMMAND ${runner})
 endmacro()
 
+ADD_MEAZURE_TEST(FileProfileTest profile)
+ADD_MEAZURE_TEST(SettingsProfileTest profile)
 ADD_MEAZURE_TEST(StringUtilsTest utils)
 ADD_MEAZURE_TEST(XMLParserTest xml)
 ADD_MEAZURE_TEST(XMLWriterTest xml)

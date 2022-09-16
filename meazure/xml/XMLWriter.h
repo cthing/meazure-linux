@@ -65,6 +65,8 @@ public:
     explicit XMLWriter(std::ostream& out) : m_out(out), m_currentState(State::BeforeDoc) {
     }
 
+    virtual ~XMLWriter() = default;
+
     /// Starts an XML document by writing the XML header. This method writes a header with UTF-8 encoding.
     /// This method must be called before any other XMLWriter output method is called.
     ///
@@ -117,6 +119,14 @@ public:
     /// @return This writer instance
     ///
     XMLWriter& addAttribute(const QString& name, int value);
+
+    /// Adds an attribute to the current start tag.
+    ///
+    /// @param[in] name Attribute name
+    /// @param[in] value Attribute value
+    /// @return This writer instance
+    ///
+    XMLWriter& addAttribute(const QString& name, unsigned int value);
 
     /// Adds an attribute to the current start tag.
     ///

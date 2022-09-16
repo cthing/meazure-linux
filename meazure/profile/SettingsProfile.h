@@ -19,98 +19,114 @@
 
 #pragma once
 
+#include "Profile.h"
 #include <QString>
+#include <QSettings>
 
 
-/// Base class for the persisting the application state to either QSettings or a file.
+/// Persists the application state to platform-specific settings storage. On application startup this profile is
+/// read to restore the application state from the last time it was run. On exit, this profile is written so that
+/// the application can be restored to the same state when it is next run.
 ///
-class Profile {
+class SettingsProfile : public Profile {
 
 public:
+    /// Creates an instance of the settings profile using the default settings storage location.
+    ///
+    SettingsProfile();
+
+    /// @internal
+    /// Creates an instance of the settings profile using the specified pathname. If the pathname does not exist,
+    /// it will be created. This method is used for testing purposes.
+    ///
+    /// @param[in] pathname Pathname of the settings file
+    ///
+    SettingsProfile(const QString& pathname);
+
+    virtual ~SettingsProfile();
+
     /// Writes a boolean value to the specified key.
     ///
     /// @param[in] key Profile key to write
     /// @param[in] value Boolean value for the key
     ///
-    virtual void writeBool(const QString& key, bool value) = 0;
+    void writeBool(const QString& key, bool value) override;
 
     /// Writes an integer value to the specified key.
     ///
     /// @param[in] key Profile key to write
     /// @param[in] value Integer value for the key
     ///
-    virtual void writeInt(const QString& key, int value) = 0;
+    void writeInt(const QString& key, int value) override;
 
     /// Writes an unsigned integer value to the specified key.
     ///
     /// @param[in] key Profile key to write
-    /// @param[in] value Integer value for the key
+    /// @param[in] value Unsigned integer value for the key
     ///
-    virtual void writeUInt(const QString& key, unsigned int value) = 0;
+    void writeUInt(const QString& key, unsigned int value) override;
 
     /// Writes a double value to the specified key.
     ///
     /// @param[in] key Profile key to write
     /// @param[in] value Double value for the key
     ///
-    virtual void writeDbl(const QString& key, double value) = 0;
+    void writeDbl(const QString& key, double value) override;
 
     /// Writes a string value to the specified key.
     ///
     /// @param[in] key Profile key to write
     /// @param[in] value String value for the key
     ///
-    virtual void writeStr(const QString& key, const QString& value) = 0;
+    void writeStr(const QString& key, const QString& value) override;
 
     /// Reads a boolean value from the specified key.
     ///
     /// @param[in] key Profile key to read
     /// @param[in] defaultValue Default value to use if the key is not found in the profile.
-    /// @return Boolean value for the key or the default value if the key is not found.
     ///
-    virtual bool readBool(const QString& key, bool defaultValue) = 0;
+    bool readBool(const QString& key, bool defaultValue) override;
 
     /// Reads an integer value from the specified key.
     ///
     /// @param[in] key Profile key to read
     /// @param[in] defaultValue Default value to use if the key is not found in the profile.
-    /// @return Integer value for the key or the default value if the key is not found.
     ///
-    virtual int readInt(const QString& key, int defaultValue) = 0;
+    int readInt(const QString& key, int defaultValue) override;
 
     /// Reads an unsigned integer value from the specified key.
     ///
     /// @param[in] key Profile key to read
     /// @param[in] defaultValue Default value to use if the key is not found in the profile.
-    /// @return Integer value for the key or the default value if the key is not found.
     ///
-    virtual unsigned int readUInt(const QString& key, unsigned int defaultValue) = 0;
+    unsigned int readUInt(const QString& key, unsigned int defaultValue) override;
 
     /// Reads a double value from the specified key.
     ///
     /// @param[in] key Profile key to read
     /// @param[in] defaultValue Default value to use if the key is not found in the profile.
-    /// @return Double value for the key or the default value if the key is not found.
-    ///
-    virtual double readDbl(const QString& key, double defaultValue) = 0;
+    double readDbl(const QString& key, double defaultValue) override;
 
     /// Reads a string value from the specified key.
     ///
     /// @param[in] key Profile key to read
     /// @param[in] defaultValue Default value to use if the key is not found in the profile.
-    /// @return String value for the key or the default value if the key is not found.
-    ///
-    virtual QString readStr(const QString& key, const QString& defaultValue) = 0;
+    QString readStr(const QString& key, const QString& defaultValue) override;
 
     /// Indicates whether the profile is being written at the user's request (i.e. a file profile).
     ///
-    /// @return true if the user initiated the profile writing.
+    /// @return Always false because a registry profile is not written at the user's request.
     ///
-    virtual bool userInitiated() = 0;
+    bool userInitiated() override;
 
     /// Returns the profile format version number.
     ///
     /// @return Profile format version number.
     ///
-    virtual int getVersion() = 0;
+    int getVersion() override;
+
+private:
+    static constexpr int k_version = 1;
+
+    QSettings* m_settings;
 };

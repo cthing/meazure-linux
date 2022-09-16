@@ -26,15 +26,6 @@
 ///
 namespace StringUtils {
 
-    /// Converts the specified integer to a string.
-    ///
-    /// @param[in] value Integer value to convert to a string.
-    /// @return String corresponding to the integer value.
-    ///
-    inline QString intToStr(int value) {
-        return QString::number(value);
-    }
-
     /// Converts the specified double to a string with the minimum number of decimal places.
     ///
     /// @param[in] value Numerical value to convert to a string.

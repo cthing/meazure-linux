@@ -81,7 +81,13 @@ XMLWriter& XMLWriter::addAttribute(const QString& name, const QString& value) {
 }
 
 XMLWriter& XMLWriter::addAttribute(const QString& name, int value) {
-    addAttribute(name, StringUtils::intToStr(value));
+    addAttribute(name, QString::number(value));
+
+    return *this;
+}
+
+XMLWriter& XMLWriter::addAttribute(const QString& name, unsigned int value) {
+    addAttribute(name, QString::number(value));
 
     return *this;
 }

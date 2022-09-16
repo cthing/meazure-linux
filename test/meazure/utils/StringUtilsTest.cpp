@@ -30,17 +30,9 @@ class StringUtilsTest : public QObject {
 Q_OBJECT
 
 private slots:
-    [[maybe_unused]] void testIntToStr();
     [[maybe_unused]] void testDblToStr();
 };
 
-
-void StringUtilsTest::testIntToStr() {
-        QCOMPARE(StringUtils::intToStr(0), "0");
-        QCOMPARE(StringUtils::intToStr(10), "10");
-        QCOMPARE(StringUtils::intToStr(+10), "10");
-        QCOMPARE(StringUtils::intToStr(-10), "-10");
-}
 
 void StringUtilsTest::testDblToStr() {
         QCOMPARE(StringUtils::dblToStr(123.456), "123.456");
