@@ -1,0 +1,7 @@
+---
+InheritParentConfig: true
+
+Checks: >
+  -misc-non-private-member-variables-in-classes,
+  -modernize-make-unique,
+  -readability-convert-member-functions-to-static

@@ -53,18 +53,13 @@ public:
     ///
     XMLAttributes() = default;
 
-    /// Copy constructor. A deep copy of the specified attribute object is performed.
-    ///
-    /// @param[in] attrs XML attribute object instance to copy.
-    ///
-    XMLAttributes(const XMLAttributes& attrs) { assign(attrs); }
+    XMLAttributes(const XMLAttributes& attrs) = default;
+    XMLAttributes(XMLAttributes&& attrs) = default;
 
-    /// Performs a deep assignment of the specified XML attribute object.
-    ///
-    /// @param[in] attrs XML attribute object to assign to this.
-    /// @return this
-    ///
-    XMLAttributes& operator=(const XMLAttributes& attrs) { return assign(attrs); } // NOLINT(misc-unconventional-assign-operator)
+    ~XMLAttributes() = default;
+
+    XMLAttributes& operator=(const XMLAttributes& attrs) = default;
+    XMLAttributes& operator=(XMLAttributes&&) = default;
 
     /// Indicates whether there are any attributes present.
     ///
@@ -113,15 +108,8 @@ public:
     ///
     bool getValueBool(const QString& name, bool& value) const;
 
-    /// Performs a deep copy assignment of the specified attribute object to this.
-    ///
-    /// @param[in] attrs Attribute object to assign to this.
-    /// @return this
-    ///
-    XMLAttributes& assign(const XMLAttributes& attrs);
-
 private:
-    typedef std::map<QString, QString> AttributeMap;
+    using AttributeMap = std::map<QString, QString>;
 
     /// Constructs an instance of the class based on the specified attributes provided by the Xerces parser.
     ///
@@ -139,9 +127,9 @@ private:
 class XMLNode {
 
 public:
-    typedef std::list<XMLNode*> NodeList;                ///< Represents a list of DOM nodes.
-    typedef std::list<const XMLNode*> NodeList_c;        ///< Represents a list of DOM nodes.
-    typedef NodeList::const_iterator NodeIter_c;         ///< Constant iterator over the DOM nodes.
+    using NodeList = std::list<XMLNode*>;                ///< Represents a list of DOM nodes.
+    using NodeList_c = std::list<const XMLNode*>;        ///< Represents a list of DOM nodes.
+    using NodeIter_c = NodeList::const_iterator;         ///< Constant iterator over the DOM nodes.
 
     /// Indicates the type of the DOM node.
     ///
@@ -161,7 +149,7 @@ public:
     /// @param[in] elementName The node represents this element.
     /// @param[in] attrs Attributes associated with the element.
     ///
-    XMLNode(QString elementName, const XMLAttributes& attrs);
+    XMLNode(QString elementName, XMLAttributes  attrs);
 
     /// Constructs a DOM node representing the specified data.
     ///
@@ -169,15 +157,13 @@ public:
     ///
     explicit XMLNode(QString data);
 
-    /// Copy constructor.
-    ///
-    /// @param[in] node Node to copy.
-    ///
-    XMLNode(const XMLNode& node) : m_type(Type::Unknown), m_parent(nullptr) { assign(node); }
+    XMLNode(const XMLNode& node) = default;
+    XMLNode(XMLNode&&) = default;
 
-    /// Destroys a node.
-    ///
     virtual ~XMLNode();
+
+    XMLNode& operator=(const XMLNode& node) = default;
+    XMLNode& operator=(XMLNode&&) = default;
 
     /// Returns the type of the node.
     ///
@@ -215,13 +201,6 @@ public:
     ///
     [[nodiscard]] bool hasAttributes() const { return !m_attributes.isEmpty(); }
 
-    /// Performs a deep copy assignment of the specified node to this.
-    ///
-    /// @param[in] node DOM node to assign to this.
-    /// @return this
-    ///
-    XMLNode& operator=(const XMLNode& node) { return assign(node); } // NOLINT(misc-unconventional-assign-operator,bugprone-unhandled-self-assignment)
-
     /// Adds the specified DOM node as a child of this node.
     ///
     /// @param[in] child Node to add as a child.
@@ -231,13 +210,6 @@ public:
         child->setParent(this);
         m_children.push_back(child);
     }
-
-    /// Performs a deep copy assignment of the specified node to this.
-    ///
-    /// @param[in] node DOM node to assign to this.
-    /// @return this
-    ///
-    XMLNode& assign(const XMLNode& node);
 
     /// Returns a constant iterator over the children of this node.
     ///
@@ -307,6 +279,15 @@ std::ostream& operator<<(std::ostream& os, const XMLNode::Type& type);
 /// XML parsing events. This is classic SAX parsing behavior. The class has noop implementations for all methods.
 ///
 struct XMLParserHandler {
+
+    XMLParserHandler() = default;
+    virtual ~XMLParserHandler() = default;
+
+    XMLParserHandler(const XMLParserHandler&) = default;
+    XMLParserHandler(XMLParserHandler&&) = default;
+
+    XMLParserHandler& operator=(const XMLParserHandler&) = default;
+    XMLParserHandler& operator=(XMLParserHandler&&) = default;
 
     /// Called when a new element is opened (e.g. &lt;foo&gt; or &lt;foo/&gt;).
     ///
@@ -386,7 +367,13 @@ public:
     ///
     explicit XMLParser(XMLParserHandler* handler, bool buildDOM = false);
 
+    XMLParser(const XMLParser& other) = delete;
+    XMLParser(XMLParser&&) = delete;
+
     ~XMLParser() override;
+
+    XMLParser& operator=(const XMLParser&) = delete;
+
 
     /// Parses the specified XML file.
     ///
@@ -407,9 +394,9 @@ public:
     [[nodiscard]] const XMLNode* getDOM() const { return m_dom; }
 
 private:
-    typedef std::stack<QString> ElementStack;       ///< A stack type for elements.
-    typedef std::stack<XMLNode*> NodeStack;         ///< A stack type for DOM nodes.
-    typedef std::stack<QString> PathnameStack;      ///< A stack type for entity pathnames.
+    using ElementStack = std::stack<QString>;       ///< A stack type for elements.
+    using NodeStack = std::stack<XMLNode*>;         ///< A stack type for DOM nodes.
+    using PathnameStack = std::stack<QString>;      ///< A stack type for entity pathnames.
 
     // DocumentHandler
 

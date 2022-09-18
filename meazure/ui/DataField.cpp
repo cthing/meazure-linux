@@ -38,9 +38,9 @@ QSize DataField::minimumSizeHint() const {
 QSize DataField::sizeHint() const {
     ensurePolished();
 
-    QString s(m_charWidth, u'0');
-    int h = QDoubleSpinBox::sizeHint().height();
-    int w = fontMetrics().horizontalAdvance(s) + k_cursorBlinkingSpace;
+    const QString s(m_charWidth, u'0');
+    const int h = QDoubleSpinBox::sizeHint().height();
+    const int w = fontMetrics().horizontalAdvance(s) + cursorBlinkingSpace;
 
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);

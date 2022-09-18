@@ -64,7 +64,7 @@ class XMLWriterTest : public QObject {
 Q_OBJECT
 
 private slots:
-    void init();
+    [[maybe_unused]] void init();
     [[maybe_unused]] void testWriteLiteralChar();
     [[maybe_unused]] void testWriteLiteralString();
     [[maybe_unused]] void testWriteLiteralQString();
@@ -83,13 +83,13 @@ private:
 };
 
 
-void XMLWriterTest::init()
+[[maybe_unused]] void XMLWriterTest::init()
 {
-    fixture.reset(new TestFixture());     // NOLINT(modernize-make-unique)
+    fixture.reset(new TestFixture());
 }
 
 
-void XMLWriterTest::testWriteLiteralChar() {
+[[maybe_unused]] void XMLWriterTest::testWriteLiteralChar() {
     fixture->clear();
     fixture->writer.writeLiteral('a');
     QCOMPARE(fixture->stream.str().data(), "a");
@@ -111,7 +111,7 @@ void XMLWriterTest::testWriteLiteralChar() {
     QCOMPARE(fixture->stream.str().data(), "\x99");
 }
 
-void XMLWriterTest::testWriteLiteralString() {
+[[maybe_unused]] void XMLWriterTest::testWriteLiteralString() {
     fixture->clear();
     fixture->writer.writeLiteral("a");
     QCOMPARE(fixture->stream.str().data(), "a");
@@ -137,7 +137,7 @@ void XMLWriterTest::testWriteLiteralString() {
     QCOMPARE(fixture->stream.str().data(), "\u2122\u2026");
 }
 
-void XMLWriterTest::testWriteLiteralQString() {
+[[maybe_unused]] void XMLWriterTest::testWriteLiteralQString() {
     fixture->clear();
     fixture->writer.writeLiteral(QString("a"));
     QCOMPARE(fixture->stream.str().data(), "a");
@@ -163,12 +163,12 @@ void XMLWriterTest::testWriteLiteralQString() {
     QCOMPARE(fixture->stream.str().data(), "\u2122\u2026");
 }
 
-void XMLWriterTest::testWriteNewline() {
+[[maybe_unused]] void XMLWriterTest::testWriteNewline() {
     fixture->writer.writeNewline();
     QCOMPARE(fixture->stream.str().data(), "\n");
 }
 
-void XMLWriterTest::testWriteEscapedChar() {
+[[maybe_unused]] void XMLWriterTest::testWriteEscapedChar() {
     fixture->writer.writeEscaped('a');
     QCOMPARE(fixture->stream.str().data(), "a");
 
@@ -217,7 +217,7 @@ void XMLWriterTest::testWriteEscapedChar() {
     QCOMPARE(fixture->stream.str().data(), "&#57360;");
 }
 
-void XMLWriterTest::testWriteEscapedString() {
+[[maybe_unused]] void XMLWriterTest::testWriteEscapedString() {
     fixture->writer.writeEscaped("a\n\t\r&<>\"'");
     QCOMPARE(fixture->stream.str().data(), "a\n\t\r&amp;&lt;&gt;&quot;&apos;");
 
@@ -226,17 +226,17 @@ void XMLWriterTest::testWriteEscapedString() {
     QCOMPARE(fixture->stream.str().data(), "&#8482;&#8230;");
 }
 
-void XMLWriterTest::testWriteQuoted() {
+[[maybe_unused]] void XMLWriterTest::testWriteQuoted() {
     fixture->writer.writeQuoted("abcd &efg");
     QCOMPARE(fixture->stream.str().data(), "\"abcd &amp;efg\"");
 }
 
-void XMLWriterTest::testStartEndDocument() {
+[[maybe_unused]] void XMLWriterTest::testStartEndDocument() {
     fixture->writer.startDocument().endDocument();
     QCOMPARE(fixture->stream.str().data(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n");
 }
 
-void XMLWriterTest::testElements() {
+[[maybe_unused]] void XMLWriterTest::testElements() {
     fixture->writer.startDocument()
                    .startElement("elem1")
                    .startElement("elem2")
@@ -250,7 +250,7 @@ void XMLWriterTest::testElements() {
 )|");
 }
 
-void XMLWriterTest::testAttributes() {
+[[maybe_unused]] void XMLWriterTest::testAttributes() {
     fixture->writer.startDocument()
                    .startElement("elem")
                    .addAttribute("attr1", "abc")
@@ -263,7 +263,7 @@ void XMLWriterTest::testAttributes() {
 )|");
 }
 
-void XMLWriterTest::testDoctype() {
+[[maybe_unused]] void XMLWriterTest::testDoctype() {
     fixture->writer.startDocument()
                    .doctype("elem", "http://www.cthing.com/dtd/PositionLog1.dtd")
                    .startElement("elem")
@@ -275,7 +275,7 @@ void XMLWriterTest::testDoctype() {
 )|");
 }
 
-void XMLWriterTest::testCharacters() {
+[[maybe_unused]] void XMLWriterTest::testCharacters() {
     fixture->writer.startDocument()
                    .startElement("elem")
                    .characters("Hello\n\nWorld")

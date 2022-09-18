@@ -86,7 +86,7 @@ bool FileProfile::readBool(const QString& key, bool defaultValue) {
         return defaultValue;
     }
 
-    QString val = (*iter).second.toLower();
+    const QString val = (*iter).second.toLower();
     return ((val == "true") || (val == "1") || (val == "yes"));
 }
 
@@ -96,8 +96,8 @@ int FileProfile::readInt(const QString& key, int defaultValue) {
         return defaultValue;
     }
 
-    bool success;
-    int value = (*iter).second.toInt(&success);
+    bool success = false;
+    const int value = (*iter).second.toInt(&success);
     return success ? value : defaultValue;
 }
 
@@ -107,8 +107,8 @@ unsigned int FileProfile::readUInt(const QString& key, unsigned int defaultValue
         return defaultValue;
     }
 
-    bool success;
-    unsigned int value = (*iter).second.toUInt(&success);
+    bool success = false;
+    const unsigned int value = (*iter).second.toUInt(&success);
     return success ? value : defaultValue;
 }
 
@@ -118,8 +118,8 @@ double FileProfile::readDbl(const QString& key, double defaultValue) {
         return defaultValue;
     }
 
-    bool success;
-    double value = (*iter).second.toDouble(&success);
+    bool success = false;
+    const double value = (*iter).second.toDouble(&success);
     return success ? value : defaultValue;
 }
 
@@ -140,7 +140,7 @@ void FileProfile::writeFileStart() {
     m_writer->startDocument();
 
     m_writer->startElement("profile")
-            .addAttribute("version", k_version);
+            .addAttribute("version", version);
 
     m_writer->startElement("info");
 
@@ -154,8 +154,8 @@ void FileProfile::writeFileStart() {
 
     m_writer->startElement("generator")
             .addAttribute("name", "Meazure")
-            .addAttribute("version", APP_VERSION)
-            .addAttribute("build", APP_BUILD)
+            .addAttribute("version", appVersion)
+            .addAttribute("build", appBuild)
             .endElement();
 
     m_writer->startElement("machine")
@@ -180,7 +180,7 @@ void FileProfile::parseFile(const QString& pathname) {
 
 void FileProfile::startElement(const QString& container, const QString& elementName, const XMLAttributes& attrs) {
     if (elementName == "profile") {
-        int value;
+        int value = 0;
         attrs.getValueInt("version", value);
         m_readVersion = value;
     } else if ((container == "data") || (m_readVersion == 1)) {

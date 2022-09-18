@@ -31,10 +31,10 @@ ScreenDataSection::ScreenDataSection() {
 
 void ScreenDataSection::createFields() {
     auto* wLabel = new QLabel(tr("W:"));
-    auto* wEdit = new DataField(k_fieldWidth, false);
+    auto* wEdit = new DataField(fieldWidth, false);
 
     auto* hLabel = new QLabel(tr("H:"));
-    auto* hEdit = new DataField(k_fieldWidth, false);
+    auto* hEdit = new DataField(fieldWidth, false);
     auto* hUnits = new QLabel(tr("in"));
     auto* hLayout = new QHBoxLayout();
     hLayout->addWidget(hEdit);
@@ -46,10 +46,10 @@ void ScreenDataSection::createFields() {
     hLayout->addWidget(calButton);
 
     auto* rxLabel = new QLabel(tr("Rx:"));
-    auto* rxEdit = new DataField(k_fieldWidth, false);
+    auto* rxEdit = new DataField(fieldWidth, false);
 
     auto* ryLabel = new QLabel(tr("Ry:"));
-    auto* ryEdit = new DataField(k_fieldWidth, false);
+    auto* ryEdit = new DataField(fieldWidth, false);
     auto* ryUnits = new QLabel(tr("px / in"));
     auto* ryLayout = new QHBoxLayout();
     ryLayout->addWidget(ryEdit);

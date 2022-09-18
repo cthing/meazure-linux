@@ -33,12 +33,12 @@ class XMLParserTest : public QObject {
 Q_OBJECT
 
 private slots:
-    [[maybe_unused]] void testParserHandlerNoValidation();
-    [[maybe_unused]] void testDOMNoValidation();
-    [[maybe_unused]] void testValidationInternalDTD();
-    [[maybe_unused]] void testValidationExternalDTD();
-    [[maybe_unused]] void testParsingError();
-    [[maybe_unused]] void testValidationError();
+    void testParserHandlerNoValidation();
+    void testDOMNoValidation();
+    void testValidationInternalDTD();
+    void testValidationExternalDTD();
+    void testParsingError();
+    void testValidationError();
 };
 
 
@@ -122,11 +122,11 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
                 QVERIFY(attrs.getValueStr("attr1", value1));
                 QCOMPARE(value1, "abc");
 
-                int value2;
+                int value2 = 0;
                 QVERIFY(attrs.getValueInt("attr2", value2));
                 QCOMPARE(value2, 1);
 
-                double value3;
+                double value3 = 0.0;
                 QVERIFY(attrs.getValueDbl("attr3", value3));
                 QCOMPARE(value3, 2.5);
             } else {
@@ -156,7 +156,7 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
             QVERIFY(!container.isEmpty());
             QVERIFY(!data.isEmpty());
 
-            QString cleanStr(data.trimmed());
+            const QString cleanStr(data.trimmed());
             if (!cleanStr.isEmpty()) {
                 charData += cleanStr;
             }
@@ -168,12 +168,12 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
         }
 
         void parsingError(const QString& error, const QString&, int line, int column) override {
-            QString msg = QString("%1 (%2, %3)").arg(error).arg(line).arg(column);
+            const QString msg = QString("%1 (%2, %3)").arg(error).arg(line).arg(column);
             QFAIL(msg.toUtf8().constData());
         }
 
         void validationError(const QString& error, const QString&, int line, int column) override {
-            QString msg = QString("%1 (%2, %3)").arg(error).arg(line).arg(column);
+            const QString msg = QString("%1 (%2, %3)").arg(error).arg(line).arg(column);
             QFAIL(msg.toUtf8().constData());
         }
     } testHandler;
@@ -248,11 +248,11 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
     QVERIFY(attrs.getValueStr("attr1", value1));
     QCOMPARE(value1, "abc");
 
-    int value2;
+    int value2 = 0;
     QVERIFY(attrs.getValueInt("attr2", value2));
     QCOMPARE(value2, 1);
 
-    double value3;
+    double value3 = 0.0;
     QVERIFY(attrs.getValueDbl("attr3", value3));
     QCOMPARE(value3, 2.5);
 }
@@ -314,11 +314,11 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
         xercesc::InputSource* resolveEntity(const QString& pathname) override {
             hadEntity = true;
 
-            QFileInfo fileInfo(pathname);
+            const QFileInfo fileInfo(pathname);
             MEA_COMPARE(fileInfo.baseName(), "test");
             MEA_COMPARE(fileInfo.suffix(), "dtd");
 
-            QString dtd("<!ELEMENT elem1 (#PCDATA)>");
+            const QString dtd("<!ELEMENT elem1 (#PCDATA)>");
             auto* source = new xercesc::MemBufInputSource(reinterpret_cast<const XMLByte*>(dtd.toUtf8().constData()),
                                                           dtd.size(), "DTD");
 

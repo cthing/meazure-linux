@@ -27,6 +27,13 @@
 class Profile {
 
 public:
+    Profile() = default;
+    virtual ~Profile() = default;
+
+    Profile(const Profile&) = delete;
+    Profile(Profile&&) = delete;
+    Profile& operator=(const Profile&) = delete;
+
     /// Writes a boolean value to the specified key.
     ///
     /// @param[in] key Profile key to write

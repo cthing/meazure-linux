@@ -32,7 +32,7 @@ public:
     ScreenDataSection();
 
 private:
-    static constexpr int k_fieldWidth { 7 };
+    static constexpr int fieldWidth { 7 };
 
     /// Creates the text fields that provide the screen information display.
     ///

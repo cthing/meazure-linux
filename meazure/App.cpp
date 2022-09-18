@@ -19,7 +19,6 @@
 
 #include "App.h"
 #include "AppVersion.h"
-#include "ui/MainWindow.h"
 #include <QtPlugin>
 #include <QCommandLineParser>
 #include <QStyleFactory>
@@ -31,7 +30,7 @@ Q_IMPORT_PLUGIN(QSvgIconPlugin)
 App::App(int &argc, char **argv): QApplication(argc, argv) {
     setApplicationName("meazure");
     setApplicationDisplayName("Meazure");
-    setApplicationVersion(APP_VERSION);
+    setApplicationVersion(appVersion);
 
     setOrganizationName("cthing");
     setOrganizationDomain("cthing.com");
@@ -42,7 +41,6 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {
     parser.addVersionOption();
     parser.process(*this);
 
-    m_mainWindow = new MainWindow();
     m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
     m_mainWindow->show();
 }

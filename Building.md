@@ -19,13 +19,14 @@ for Ubuntu 20.04 using CMake.
    ```shell
    pip install cmakelang
    ```
-7. Install [Doxygen](https://doxygen.nl/index.html)
+7. Install [clang-tidy-15](https://apt.llvm.org/)
+8. Install [Doxygen](https://doxygen.nl/index.html)
    ```shell
    sudo apt-get install doxygen
    sudo apt-get install doxygen-latex
    sudo apt-get install graphviz
    ```
-8. Meazure uses the [Qt Framework](https://www.qt.io/). This dependency is obtained and built locally by
+9. Meazure uses the [Qt Framework](https://www.qt.io/). This dependency is obtained and built locally by
    the Conan package manager. Becausse it is built locally from source, Qt requires a number of development
    packages to be installed on the system. Conan lists the missing dependencies during the build. Besides the
    compiler and its toolchain, you are given the option to either install the development packages manually
@@ -73,3 +74,8 @@ Note that the tool installation location may vary from those shown.
    11. For **Build directory** specify **out/release**
    12. Press **OK**
    13. Delete any build directories other than **out**
+5. Configure clang-tidy
+   1. Select **Settings > Languages and Frameworks > C/C++ > Clang-Tidy**
+   2. Check the box **Use external Clang-Tidy instead of the built-in one**
+   3. Specify **/usr/bin/clang-tidy-15**
+   4. Press **OK**

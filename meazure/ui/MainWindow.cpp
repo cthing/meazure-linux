@@ -26,7 +26,7 @@
 #include <QActionGroup>
 
 
-MainWindow::MainWindow() {          // NOLINT(cppcoreguidelines-pro-type-member-init)
+MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init)
     createCentralWidget();
     createActions();
     createMenus();
@@ -61,7 +61,7 @@ void MainWindow::createActions() {
 
     m_windowToolAction = new QAction(QIcon(":/images/WindowTool.svg"), tr("&Window"), radioToolGroup);
     m_windowToolAction->setCheckable(true);
-    m_windowToolAction->setToolTip("Meazures a window");
+    m_windowToolAction->setToolTip("Measures a window");
 
     m_rulerToolAction = new QAction(QIcon(":/images/RulerTool.svg"), tr("R&uler"), this);
     m_rulerToolAction->setCheckable(true);

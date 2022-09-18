@@ -21,7 +21,7 @@
 #include <meazure/utils/StringUtils.h>
 
 
-const char* XMLWriter::kIndent = "    ";
+const char* XMLWriter::indent = "    ";
 
 
 void XMLWriter::flush() {
@@ -57,9 +57,9 @@ XMLWriter& XMLWriter::doctype(const QString& name, const QString& systemId) {
 }
 
 XMLWriter& XMLWriter::startElement(const QString& name) {
-    State previousState = handleEvent(Event::StartElement);
+    const State previousState = handleEvent(Event::StartElement);
 
-    ElementPtr element = std::make_shared<Element>(name, previousState);
+    const ElementPtr element = std::make_shared<Element>(name, previousState);
     m_elementStack.push(element);
 
     return *this;
@@ -74,7 +74,7 @@ XMLWriter& XMLWriter::endElement() {
 XMLWriter& XMLWriter::addAttribute(const QString& name, const QString& value) {
     handleEvent(Event::Attribute);
 
-    AttributePtr attribute = std::make_shared<Attribute>(name, value);
+    const AttributePtr attribute = std::make_shared<Attribute>(name, value);
     m_elementStack.top()->m_attributes.push_back(attribute);
 
     return *this;
@@ -107,7 +107,7 @@ XMLWriter& XMLWriter::characters(const QString& str) {
 }
 
 XMLWriter::State XMLWriter::handleEvent(Event event) {
-    State previousState = m_currentState;
+    const State previousState = m_currentState;
     bool invalidEvent = false;
 
     switch (m_currentState) {
@@ -147,7 +147,7 @@ XMLWriter::State XMLWriter::handleEvent(Event event) {
                     break;
                 case Event::EndElement:
                     writeStartElement(true);
-                    m_currentState = (m_elementStack.size() == 0) ? State::AfterRoot : State::AfterTag;
+                    m_currentState = m_elementStack.empty() ? State::AfterRoot : State::AfterTag;
                     break;
                 case Event::EndDocument:
                     writeStartElement(true);
@@ -168,7 +168,7 @@ XMLWriter::State XMLWriter::handleEvent(Event event) {
                     break;
                 case Event::EndElement:
                     writeEndElement();
-                    m_currentState = (m_elementStack.size() == 0) ? State::AfterRoot : State::AfterTag;
+                    m_currentState = m_elementStack.empty() ? State::AfterRoot : State::AfterTag;
                     break;
                 default:
                     invalidEvent = true;
@@ -184,7 +184,7 @@ XMLWriter::State XMLWriter::handleEvent(Event event) {
                     break;
                 case Event::EndElement:
                     writeEndElement();
-                    m_currentState = (m_elementStack.size() == 0) ? State::AfterRoot : State::AfterTag;
+                    m_currentState = m_elementStack.empty() ? State::AfterRoot : State::AfterTag;
                     break;
                 default:
                     invalidEvent = true;
@@ -207,12 +207,12 @@ XMLWriter::State XMLWriter::handleEvent(Event event) {
             invalidEvent = true;
             break;
         default:
-            QString msg("Unrecognized state " + getStateName(m_currentState));
+            const QString msg("Unrecognized state " + getStateName(m_currentState));
             throw std::ios::failure(msg.toStdString());
     }
 
     if (invalidEvent) {
-        QString msg = QString("Event %1 not allowed in state %2")
+        const QString msg = QString("Event %1 not allowed in state %2")
                 .arg(getEventName(event))
                 .arg(getStateName(m_currentState));
         throw std::ios::failure(msg.toStdString());
@@ -264,7 +264,7 @@ QString XMLWriter::getEventName(Event event) {
 }
 
 void XMLWriter::writeStartElement(bool isEmpty) {
-    ElementPtr element = m_elementStack.top();
+    const ElementPtr element = m_elementStack.top();
 
     if ((element->m_state != State::AfterData) && (m_elementStack.size() > 1)) {
         writeNewline();
@@ -288,7 +288,7 @@ void XMLWriter::writeEndElement() {
         writeIndent();
     }
 
-    ElementPtr element = m_elementStack.top();
+    const ElementPtr element = m_elementStack.top();
 
     writeLiteral(u8"</");
     writeLiteral(element->m_name);
@@ -297,8 +297,8 @@ void XMLWriter::writeEndElement() {
     m_elementStack.pop();
 }
 
-void XMLWriter::writeAttributes(Attributes attributes) {   // NOLINT(performance-unnecessary-value-param)
-    for (AttributePtr attribute : attributes) {            // NOLINT(performance-for-range-copy)
+void XMLWriter::writeAttributes(const Attributes& attributes) {
+    for (AttributePtr attribute : attributes) {     // NOLINT(performance-for-range-copy,misc-const-correctness)
         writeLiteral(' ');
         writeLiteral(attribute->m_name);
         writeLiteral('=');
@@ -309,7 +309,7 @@ void XMLWriter::writeAttributes(Attributes attributes) {   // NOLINT(performance
 void XMLWriter::writeIndent() {
     std::size_t level = m_elementStack.size() - 1;
     while (level-- > 0) {
-        writeLiteral(kIndent);
+        writeLiteral(indent);
     }
 }
 
@@ -321,7 +321,7 @@ void XMLWriter::writeQuoted(const QString& str) {
 
 void XMLWriter::writeEscaped(const QString& str) {
     if (str != nullptr) {
-        qsizetype len = str.size();
+        const qsizetype len = str.size();
         for (qsizetype i = 0; i < len; i++) {
             writeEscaped(str[i]);
         }

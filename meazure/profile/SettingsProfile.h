@@ -41,9 +41,13 @@ public:
     ///
     /// @param[in] pathname Pathname of the settings file
     ///
-    SettingsProfile(const QString& pathname);
+    explicit SettingsProfile(const QString& pathname);
 
-    virtual ~SettingsProfile();
+    ~SettingsProfile() override;
+
+    SettingsProfile(const SettingsProfile&) = delete;
+    SettingsProfile(SettingsProfile&&) = delete;
+    SettingsProfile& operator=(const SettingsProfile&) = delete;
 
     /// Writes a boolean value to the specified key.
     ///
@@ -126,7 +130,7 @@ public:
     int getVersion() override;
 
 private:
-    static constexpr int k_version = 1;
+    static constexpr int version { 1 };
 
     QSettings* m_settings;
 };

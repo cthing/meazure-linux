@@ -21,6 +21,6 @@
 
 
 int main(int argc, char *argv[]) {
-    App app(argc, argv);
+    const App app(argc, argv);
     return App::exec();
 }

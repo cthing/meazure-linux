@@ -33,4 +33,4 @@ namespace StringUtils {
     /// @return String corresponding to the double value.
     ///
     QString dblToStr(double value);
-};
+}

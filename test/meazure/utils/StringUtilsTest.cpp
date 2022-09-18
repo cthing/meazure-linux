@@ -34,7 +34,7 @@ private slots:
 };
 
 
-void StringUtilsTest::testDblToStr() {
+[[maybe_unused]] void StringUtilsTest::testDblToStr() {
         QCOMPARE(StringUtils::dblToStr(123.456), "123.456");
         QCOMPARE(StringUtils::dblToStr(123.4560000), "123.456");
         QCOMPARE(StringUtils::dblToStr(-123.456), "-123.456");

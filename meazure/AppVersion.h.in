@@ -17,5 +17,5 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define APP_VERSION  "@meazure_linux_VERSION_MAJOR@.@meazure_linux_VERSION_MINOR@.@meazure_linux_VERSION_PATCH@"
-#define APP_BUILD  "@meazure_linux_VERSION_TWEAK@"
+inline constexpr const char* appVersion = "@meazure_linux_VERSION_MAJOR@.@meazure_linux_VERSION_MINOR@.@meazure_linux_VERSION_PATCH@";
+inline constexpr const char* appBuild = "@meazure_linux_VERSION_TWEAK@";

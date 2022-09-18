@@ -39,7 +39,7 @@ private slots:
 };
 
 
-void SettingsProfileTest::testReadWrite() { // NOLINT(readability-convert-member-functions-to-static)
+[[maybe_unused]] void SettingsProfileTest::testReadWrite() {
     QTemporaryFile tempFile;
     tempFile.open();
 
@@ -70,14 +70,14 @@ void SettingsProfileTest::testReadWrite() { // NOLINT(readability-convert-member
     }
 }
 
-void SettingsProfileTest::testUserInitiated() { // NOLINT(readability-convert-member-functions-to-static)
+[[maybe_unused]] void SettingsProfileTest::testUserInitiated() {
     QTemporaryFile tempFile;
     tempFile.open();
     SettingsProfile profile(tempFile.fileName());
     QVERIFY(!profile.userInitiated());
 }
 
-void SettingsProfileTest::testGetVersion() { // NOLINT(readability-convert-member-functions-to-static)
+[[maybe_unused]] void SettingsProfileTest::testGetVersion() {
     QTemporaryFile tempFile;
     tempFile.open();
     SettingsProfile profile(tempFile.fileName());

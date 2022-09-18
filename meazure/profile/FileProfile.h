@@ -51,7 +51,11 @@ public:
 
     /// Closes the profile file and destroys the object instance.
     ///
-    virtual ~FileProfile();
+    ~FileProfile() override;
+
+    FileProfile(const FileProfile&) = delete;
+    FileProfile(FileProfile&&) = delete;
+    FileProfile& operator=(const FileProfile&) = delete;
 
     /// Writes a boolean value to the specified key.
     ///
@@ -177,10 +181,10 @@ private:
     void parseFile(const QString& pathname);
 
 
-    typedef std::unique_ptr<XMLWriter> XMLWriterPtr;
+    using XMLWriterPtr = std::unique_ptr<XMLWriter>;
 
 
-    static constexpr int k_version = 2;
+    static constexpr int version { 2 };
 
     QString m_pathname;                         ///< Pathname of the file.
     std::ofstream m_writeStream;                ///< Output stream for the profile.

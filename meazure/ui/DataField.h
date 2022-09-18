@@ -44,7 +44,7 @@ public:
     [[nodiscard]] QSize minimumSizeHint() const override;
 
 private:
-    static constexpr int k_cursorBlinkingSpace { 2 };
+    static constexpr int cursorBlinkingSpace { 2 };
 
     int m_charWidth;
 };

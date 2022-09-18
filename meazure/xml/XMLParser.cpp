@@ -32,8 +32,8 @@
 
 XMLAttributes::XMLAttributes(const xercesc::AttributeList& atts) {
     for (XMLSize_t i = 0; i < atts.getLength(); i++) {
-        QString name = QString::fromUtf16(atts.getName(i));
-        QString value = QString::fromUtf16(atts.getValue(i));
+        const QString name = QString::fromUtf16(atts.getName(i));
+        const QString value = QString::fromUtf16(atts.getValue(i));
         m_attributeMap[name] = value;
     }
 }
@@ -50,7 +50,7 @@ bool XMLAttributes::getValueStr(const QString& name, QString& value) const {
 bool XMLAttributes::getValueInt(const QString& name, int& value) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
-        bool success;
+        bool success = false;
         value = ((*iter).second).toInt(&success);
         return success;
     }
@@ -60,7 +60,7 @@ bool XMLAttributes::getValueInt(const QString& name, int& value) const {
 bool XMLAttributes::getValueUInt(const QString& name, unsigned int& value) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
-        bool success;
+        bool success = false;
         value = ((*iter).second).toUInt(&success);
         return success;
     }
@@ -70,7 +70,7 @@ bool XMLAttributes::getValueUInt(const QString& name, unsigned int& value) const
 bool XMLAttributes::getValueDbl(const QString& name, double& value) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
-        bool success;
+        bool success = false;
         value = (*iter).second.toDouble(&success);
         return success;
     }
@@ -87,14 +87,6 @@ bool XMLAttributes::getValueBool(const QString& name, bool& value) const {
     return false;
 }
 
-XMLAttributes& XMLAttributes::assign(const XMLAttributes& attrs) {
-    if (this != &attrs) {
-        m_attributeMap = attrs.m_attributeMap;
-    }
-
-    return *this;
-}
-
 
 //*************************************************************************
 // XMLNode
@@ -105,10 +97,10 @@ XMLNode::XMLNode() :
         m_type(Type::Unknown),
         m_parent(nullptr) {}
 
-XMLNode::XMLNode(QString elementName, const XMLAttributes& attrs) :
+XMLNode::XMLNode(QString elementName, XMLAttributes attrs) :
         m_type(Type::Element),
         m_data(std::move(elementName)),
-        m_attributes(attrs),
+        m_attributes(std::move(attrs)),
         m_parent(nullptr) {}
 
 XMLNode::XMLNode(QString data) :
@@ -118,25 +110,13 @@ XMLNode::XMLNode(QString data) :
 
 XMLNode::~XMLNode() {
     try {
-        for (auto child : m_children) {
+        for (auto* child : m_children) {
             delete child;
         }
         m_children.clear();
     } catch (...) {
         assert(false);
     }
-}
-
-XMLNode& XMLNode::assign(const XMLNode& node) {
-    if (this != &node) {
-        m_type = node.m_type;
-        m_data = node.m_data;
-        m_attributes = node.m_attributes;
-        m_children = node.m_children;
-        m_parent = node.m_parent;
-    }
-
-    return *this;
 }
 
 QString XMLNode::getChildData() const {
@@ -173,7 +153,7 @@ std::ostream& operator<<(std::ostream& os, const XMLNode& node){
     static int indent = 0;
 
     const char* indentStr = QString(indent, ' ').toUtf8().constData();
-    XMLNode::Type type = node.getType();
+    const XMLNode::Type type = node.getType();
 
     os << indentStr << "Node Type: " << type << '\n';
     if (type == XMLNode::Type::Element) {
@@ -182,7 +162,7 @@ std::ostream& operator<<(std::ostream& os, const XMLNode& node){
         os << indentStr << "Data: " << node.getData().toUtf8().constData() << '\n';
     }
 
-    for (auto child : node.m_children) {
+    for (auto* child : node.m_children) {
         indent += 4;
         os << child;
         indent -= 4;
@@ -209,10 +189,10 @@ xercesc::InputSource* XMLParserHandler::resolveEntity(const QString&) {
 
 void XMLParserHandler::parsingError(const QString& error, const QString& pathname, int line, int column) {
     if (dynamic_cast<QApplication*>(QCoreApplication::instance()) == nullptr) {
-        QString msg = QString("XML format error in %1 (%2, %3): %4").arg(pathname).arg(line).arg(column).arg(error);
+        const QString msg = QString("XML format error in %1 (%2, %3): %4").arg(pathname).arg(line).arg(column).arg(error);
         std::cerr << msg.toUtf8().constData() << '\n';
     } else {
-        QString msg = QObject::tr("There was an error while parsing the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
+        const QString msg = QObject::tr("There was an error while parsing the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
                 .arg(pathname).arg(line).arg(column).arg(error);
         QMessageBox dialog;
         dialog.setText(QObject::tr("File Parsing Error"));
@@ -224,10 +204,10 @@ void XMLParserHandler::parsingError(const QString& error, const QString& pathnam
 
 void XMLParserHandler::validationError(const QString& error, const QString& pathname, int line, int column) {
     if (dynamic_cast<QApplication*>(QCoreApplication::instance()) == nullptr) {
-        QString msg = QString("XML validation error in %1 (%2, %3): %4").arg(pathname).arg(line).arg(column).arg(error);
+        const QString msg = QString("XML validation error in %1 (%2, %3): %4").arg(pathname).arg(line).arg(column).arg(error);
         std::cerr << msg.toUtf8().constData() << '\n';
     } else {
-        QString msg = QObject::tr("There is a format error in the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
+        const QString msg = QObject::tr("There is a format error in the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
                 .arg(pathname).arg(line).arg(column).arg(error);
         QMessageBox dialog;
         dialog.setText(QObject::tr("File Validation Error"));
@@ -263,7 +243,7 @@ XMLParser::XMLParser(XMLParserHandler* handler, bool buildDOM) :
 
     xercesc::XMLPlatformUtils::Initialize();
 
-    m_parser = new xercesc::SAXParser();
+    m_parser = new xercesc::SAXParser();    // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_parser->setValidationScheme(xercesc::SAXParser::ValSchemes::Val_Auto);
     m_parser->setDocumentHandler(this);
     m_parser->setEntityResolver(this);
@@ -286,8 +266,8 @@ void XMLParser::parseFile(const QString& pathname) {
 }
 
 void XMLParser::parseString(const QString& content) {
-    xercesc::MemBufInputSource source(reinterpret_cast<const XMLByte*>(content.toUtf8().constData()),
-                                      content.toUtf8().size(), "XMLBuf");
+    const xercesc::MemBufInputSource source(reinterpret_cast<const XMLByte*>(content.toUtf8().constData()),
+                                            content.toUtf8().size(), "XMLBuf");
     m_parser->parse(source);
 }
 
@@ -301,8 +281,8 @@ void XMLParser::processingInstruction(const XMLCh* const /*target*/, const XMLCh
 }
 
 void XMLParser::startElement(const XMLCh* const elementName, xercesc::AttributeList& attrs) {
-    XMLAttributes attributes(attrs);
-    QString name = QString::fromUtf16(elementName);
+    const XMLAttributes attributes(attrs);
+    const QString name = QString::fromUtf16(elementName);
     QString container;
 
     if (!m_elementStack.empty()) {
@@ -324,7 +304,7 @@ void XMLParser::startElement(const XMLCh* const elementName, xercesc::AttributeL
 }
 
 void XMLParser::endElement(const XMLCh* const elementName) {
-    QString name = QString::fromUtf16(elementName);
+    const QString name = QString::fromUtf16(elementName);
 
     assert(!m_elementStack.empty());
     m_elementStack.pop();
@@ -346,7 +326,7 @@ void XMLParser::characters(const XMLCh* const chars, const XMLSize_t length) {
         container = m_elementStack.top();
     }
     if (!container.isEmpty()) {
-        QString data = QString::fromUtf16(chars, static_cast<qsizetype>(length));
+        const QString data = QString::fromUtf16(chars, static_cast<qsizetype>(length));
         m_handler->characterData(container, data);
 
         if (m_buildDOM && !m_nodeStack.empty()) {
@@ -391,7 +371,7 @@ xercesc::InputSource* XMLParser::resolveEntity(const XMLCh* const /*publicId*/, 
         }
 
         if (homeURLPos == 0) {
-            QString appPath = QCoreApplication::applicationDirPath();
+            const QString appPath = QCoreApplication::applicationDirPath();
             sysId = appPath + '/' + sysId.mid(homeURLLen);
 
             m_pathnameStack.push(sysId);
@@ -410,10 +390,10 @@ void XMLParser::warning(const xercesc::SAXParseException& /*exc*/) {
 }
 
 void XMLParser::error(const xercesc::SAXParseException& exc) {
-    QString msg = QString::fromUtf16(exc.getMessage());
-    QString pathname(m_pathnameStack.empty() ? m_handler->getFilePathname() : m_pathnameStack.top());
-    int line = static_cast<int>(exc.getLineNumber());
-    int column = static_cast<int>(exc.getColumnNumber());
+    const QString msg = QString::fromUtf16(exc.getMessage());
+    const QString pathname(m_pathnameStack.empty() ? m_handler->getFilePathname() : m_pathnameStack.top());
+    const int line = static_cast<int>(exc.getLineNumber());
+    const int column = static_cast<int>(exc.getColumnNumber());
 
     m_handler->validationError(msg, pathname, line, column);
 
@@ -421,10 +401,10 @@ void XMLParser::error(const xercesc::SAXParseException& exc) {
 }
 
 void XMLParser::fatalError(const xercesc::SAXParseException& exc) {
-    QString msg = QString::fromUtf16(exc.getMessage());
-    QString pathname(m_pathnameStack.empty() ? m_handler->getFilePathname() : m_pathnameStack.top());
-    int line = static_cast<int>(exc.getLineNumber());
-    int column = static_cast<int>(exc.getColumnNumber());
+    const QString msg = QString::fromUtf16(exc.getMessage());
+    const QString pathname(m_pathnameStack.empty() ? m_handler->getFilePathname() : m_pathnameStack.top());
+    const int line = static_cast<int>(exc.getLineNumber());
+    const int column = static_cast<int>(exc.getColumnNumber());
 
     m_handler->parsingError(msg, pathname, line, column);
 

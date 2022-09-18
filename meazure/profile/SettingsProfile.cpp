@@ -21,12 +21,12 @@
 
 
 SettingsProfile::SettingsProfile() : m_settings(new QSettings()) {
-    m_settings->beginGroup(QString::number(k_version));
+    m_settings->beginGroup(QString::number(version));
 }
 
-SettingsProfile::SettingsProfile(const QString& filename) :
-        m_settings(new QSettings(filename, QSettings::Format::IniFormat)) {
-    m_settings->beginGroup(QString::number(k_version));
+SettingsProfile::SettingsProfile(const QString& pathname) :
+        m_settings(new QSettings(pathname, QSettings::Format::IniFormat)) {
+    m_settings->beginGroup(QString::number(version));
 }
 
 SettingsProfile::~SettingsProfile() {
@@ -59,20 +59,20 @@ bool SettingsProfile::readBool(const QString& key, bool defaultValue) {
 }
 
 int SettingsProfile::readInt(const QString& key, int defaultValue) {
-    bool success;
-    int value = m_settings->value(key, defaultValue).toInt(&success);
+    bool success = false;
+    const int value = m_settings->value(key, defaultValue).toInt(&success);
     return success ? value : defaultValue;
 }
 
 unsigned int SettingsProfile::readUInt(const QString& key, unsigned int defaultValue) {
-    bool success;
-    unsigned int value = m_settings->value(key, defaultValue).toUInt(&success);
+    bool success = false;
+    const unsigned int value = m_settings->value(key, defaultValue).toUInt(&success);
     return success ? value : defaultValue;
 }
 
 double SettingsProfile::readDbl(const QString& key, double defaultValue) {
-    bool success;
-    double value = m_settings->value(key, defaultValue).toDouble(&success);
+    bool success = false;
+    const double value = m_settings->value(key, defaultValue).toDouble(&success);
     return success ? value : defaultValue;
 }
 
@@ -85,5 +85,5 @@ bool SettingsProfile::userInitiated() {
 }
 
 int SettingsProfile::getVersion() {
-    return k_version;
+    return version;
 }

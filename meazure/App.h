@@ -27,8 +27,6 @@
 ///
 class App : public QApplication {
 
-    Q_OBJECT
-
 public:
     /// Constructs the application.
     ///
@@ -39,6 +37,10 @@ public:
 
     ~App() override;
 
+    App(const App&) = delete;
+    App(App&&) = delete;
+    App& operator=(const App&) = delete;
+
 private:
-    MainWindow* m_mainWindow;
+    MainWindow* m_mainWindow { new MainWindow() };
 };

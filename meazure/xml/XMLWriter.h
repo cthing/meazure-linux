@@ -62,10 +62,14 @@ public:
     ///
     /// @param[in] out Output destination.
     ///
-    explicit XMLWriter(std::ostream& out) : m_out(out), m_currentState(State::BeforeDoc) {
+    explicit XMLWriter(std::ostream& out) : m_out(out) {
     }
 
     virtual ~XMLWriter() = default;
+
+    XMLWriter(const XMLWriter&) = delete;
+    XMLWriter(XMLWriter&&) = delete;
+    XMLWriter& operator=(const XMLWriter&) = delete;
 
     /// Starts an XML document by writing the XML header. This method writes a header with UTF-8 encoding.
     /// This method must be called before any other XMLWriter output method is called.
@@ -155,13 +159,15 @@ protected:
     struct Attribute {
         Attribute(QString  name, QString  value) : m_name(std::move(name)), m_value(std::move(value)) {}
 
+        // NOLINTBEGIN(misc-non-private-member-variables-in-classes)
         QString m_name;
         QString m_value;
+        // NOLINTEND(misc-non-private-member-variables-in-classes)
     };
 
 
-    typedef std::shared_ptr<Attribute> AttributePtr;
-    typedef std::list<AttributePtr> Attributes;
+    using AttributePtr = std::shared_ptr<Attribute>;
+    using Attributes = std::list<AttributePtr>;
 
 
     /// Writes a start tag and handles the case where the element is empty.
@@ -178,7 +184,7 @@ protected:
     ///
     /// @param[in] attributes The attribute list to write.
     ///
-    virtual void writeAttributes(Attributes attributes);
+    virtual void writeAttributes(const Attributes& attributes);
 
     /// Indents the output based on the element nesting level.
     ///
@@ -260,14 +266,16 @@ private:
     struct Element {
         Element(QString  name, State state): m_name(std::move(name)), m_state(state) {}
 
+        // NOLINTBEGIN(misc-non-private-member-variables-in-classes)
         QString m_name;             ///< Name of the element
         Attributes m_attributes;    ///< Attributes for the element
         State m_state;              ///< Writer state in which this element is being written
+        // NOLINTEND(misc-non-private-member-variables-in-classes)
     };
 
 
-    typedef std::shared_ptr<Element> ElementPtr;
-    typedef std::stack<ElementPtr> ElementStack;
+    using ElementPtr = std::shared_ptr<Element>;
+    using ElementStack = std::stack<ElementPtr>;
 
 
     /// Heart of the XMLWriter state machine. Based on the current state and the specified event, an action is fired,
@@ -295,10 +303,10 @@ private:
     static QString getEventName(Event event);
 
 
-    static const char* kIndent;    ///< String for each level of indentation
+    static const char* indent;    ///< String for each level of indentation
 
 
-    std::ostream& m_out;            ///< Output stream to write the XML
-    ElementStack m_elementStack;    ///< Stack of open elements
-    State m_currentState;           ///< Current state of the writer state machine.
+    std::ostream& m_out;                        ///< Output stream to write the XML
+    ElementStack m_elementStack;                ///< Stack of open elements
+    State m_currentState { State::BeforeDoc };  ///< Current state of the writer state machine.
 };
