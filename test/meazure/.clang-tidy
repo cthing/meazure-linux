@@ -2,6 +2,7 @@
 InheritParentConfig: true
 
 Checks: >
+  -cppcoreguidelines-macro-usage,
   -misc-non-private-member-variables-in-classes,
   -modernize-make-unique,
   -readability-convert-member-functions-to-static

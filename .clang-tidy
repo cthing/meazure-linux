@@ -1,6 +1,7 @@
 ---
 InheritParentConfig: true
 WarningsAsErrors: '*'
+HeaderFilterRegex: '.*/meazure/.*\.h'
 
 Checks: >
   -*,

@@ -26,7 +26,6 @@
 FileProfile::FileProfile(const QString& pathname, Mode mode) :
         m_pathname(pathname),
         m_mode(mode),
-        m_readVersion(1),
         m_title("Meazure Profile File") {
 
     if (m_mode == ProfWrite) {
