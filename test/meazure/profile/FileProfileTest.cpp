@@ -81,7 +81,7 @@ private slots:
     QTemporaryFile tempFile;
     tempFile.open();
     FileProfile profile(tempFile.fileName(), FileProfile::ProfWrite);
-    QCOMPARE(profile.getVersion(), 1);
+    QCOMPARE(profile.getVersion(), 2);
 }
 
 

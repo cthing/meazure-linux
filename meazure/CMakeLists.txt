@@ -27,6 +27,12 @@ set(UI_SOURCES
     )
 source_group(UI FILES ${UI_SOURCES})
 
+set(GRAPHICS_SOURCES
+    graphics/Colors.cpp
+    graphics/Colors.h
+    )
+source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
+
 set(PROFILE_SOURCES
     profile/FileProfile.cpp
     profile/FileProfile.h
@@ -45,6 +51,7 @@ set(XML_SOURCES
 source_group(XML FILES ${XML_SOURCES})
 
 set(UTILS_SOURCES
+    utils/MathUtils.h
     utils/StringUtils.cpp
     utils/StringUtils.h
     )
@@ -53,6 +60,7 @@ source_group(UTILS FILES ${UTILS_SOURCES})
 set(MEAZURE_SOURCES
     ${TOP_SOURCES}
     ${UI_SOURCES}
+    ${GRAPHICS_SOURCES}
     ${PROFILE_SOURCES}
     ${XML_SOURCES}
     ${UTILS_SOURCES}
