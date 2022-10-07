@@ -238,7 +238,7 @@ namespace Colors {
     /// @param[in] rgb Color to match
     /// @return Closest basic web color to the specified color. Never returns nullptr.
     ///
-    const ColorTableEntry* matchBasicColor(QRgb rgb);
+    const Colors::ColorTableEntry* matchBasicColor(QRgb rgb);
 
     /// Attempts to match the specified color against the Web extended colors (https://en.wikipedia.org/wiki/Web_colors).
     /// The CIEDE2000 color difference algorithm is used to find the best match.
@@ -246,7 +246,7 @@ namespace Colors {
     /// @param[in] rgb Color to match
     /// @return Closest extended web color to the specified color. Never returns nullptr.
     ///
-    const ColorTableEntry* matchExtendedColor(QRgb rgb);
+    const Colors::ColorTableEntry* matchExtendedColor(QRgb rgb);
 
     /// Attempts to match the specified color against the specified table of colors. The CIEDE2000 color difference
     /// algorithm is used to find the best match.
@@ -257,7 +257,7 @@ namespace Colors {
     /// @return Closest color in the table to the specified color. Return nullptr if the specified table is empty.
     ///
     template<std::size_t SIZE>
-    const ColorTableEntry* matchColor(const ColorTable<SIZE>& table, QRgb rgb);
+    const Colors::ColorTableEntry* matchColor(const ColorTable<SIZE>& table, QRgb rgb);
 
     /// Converts from the RGB color space to the Cyan (C), Magenta (M) and Yellow (Y) color space. The conversion is
     /// done using the algorithm for RGB to CMY conversion presented at http://www.easyrgb.com/en/math.php. The input

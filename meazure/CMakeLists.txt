@@ -57,6 +57,12 @@ set(UTILS_SOURCES
     )
 source_group(UTILS FILES ${UTILS_SOURCES})
 
+set(ENVIRONMENT_SOURCES
+    environment/PointerTracker.cpp
+    environment/PointerTracker.h
+    )
+source_group(ENVIRONMENT FILES ${ENVIRONMENT_SOURCES})
+
 set(MEAZURE_SOURCES
     ${TOP_SOURCES}
     ${UI_SOURCES}
@@ -64,6 +70,7 @@ set(MEAZURE_SOURCES
     ${PROFILE_SOURCES}
     ${XML_SOURCES}
     ${UTILS_SOURCES}
+    ${ENVIRONMENT_SOURCES}
     )
 
 set(MEAZURE_RESOURCES
