@@ -51,6 +51,7 @@ set(XML_SOURCES
 source_group(XML FILES ${XML_SOURCES})
 
 set(UTILS_SOURCES
+    utils/Geometry.h
     utils/MathUtils.h
     utils/StringUtils.cpp
     utils/StringUtils.h

@@ -22,6 +22,7 @@ endmacro()
 
 ADD_MEAZURE_TEST(ColorsTest graphics)
 ADD_MEAZURE_TEST(FileProfileTest profile)
+ADD_MEAZURE_TEST(GeometryTest utils)
 ADD_MEAZURE_TEST(MathUtilsTest utils)
 ADD_MEAZURE_TEST(SettingsProfileTest profile)
 ADD_MEAZURE_TEST(StringUtilsTest utils)
