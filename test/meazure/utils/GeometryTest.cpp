@@ -35,7 +35,9 @@ private slots:
     [[maybe_unused]] void testDistance();
     [[maybe_unused]] void testContainsPoint();
     [[maybe_unused]] void testContainsRect();
-    [[maybe_unused]] void testClosest();
+    [[maybe_unused]] void testClosestRect();
+    [[maybe_unused]] void testConstrainPointToRect();
+    [[maybe_unused]] void testConstrainPointToRects();
 };
 
 
@@ -124,7 +126,7 @@ private slots:
     QCOMPARE(Geometry::contains(rects, QRect()), -1);
 }
 
-[[maybe_unused]] void GeometryTest::testClosest() {
+[[maybe_unused]] void GeometryTest::testClosestRect() {
     std::vector<QRect*> rects;
     QCOMPARE(Geometry::closest(rects, QPoint()), -1);
     QCOMPARE(Geometry::closest(rects, QPoint(10, 20)), -1);
@@ -152,6 +154,50 @@ private slots:
     QCOMPARE(Geometry::closest(rects, QPoint(200, 275)), 1);
     QCOMPARE(Geometry::closest(rects, QPoint(110, 3)), 1);
     QCOMPARE(Geometry::closest(rects, QPoint(100, 3)), 0);
+}
+
+[[maybe_unused]] void GeometryTest::testConstrainPointToRect() {
+    const QRect rect1;
+    QCOMPARE(Geometry::constrain(&rect1, QPoint()), QPoint());
+    QCOMPARE(Geometry::constrain(&rect1, QPoint(10, 20)), QPoint(10, 20));
+
+    const QRect rect2(10, 20, 100, 200);
+    QCOMPARE(Geometry::constrain(&rect2, QPoint(50, 100)), QPoint(50, 100));
+    QCOMPARE(Geometry::constrain(&rect2, QPoint(5, 100)), QPoint(10, 100));
+    QCOMPARE(Geometry::constrain(&rect2, QPoint(300, 100)), QPoint(109, 100));
+    QCOMPARE(Geometry::constrain(&rect2, QPoint(30, 10)), QPoint(30, 20));
+    QCOMPARE(Geometry::constrain(&rect2, QPoint(30, 700)), QPoint(30, 219));
+
+}
+
+[[maybe_unused]] void GeometryTest::testConstrainPointToRects() {
+    std::vector<QRect*> rects;
+    QCOMPARE(Geometry::constrain(rects, QPoint()), QPoint());
+    QCOMPARE(Geometry::constrain(rects, QPoint(10, 20)), QPoint(10, 20));
+
+    QRect rect1;
+    QRect rect2;
+    rects = { &rect1, &rect2 };
+    QCOMPARE(Geometry::constrain(rects, QPoint()), QPoint());
+    QCOMPARE(Geometry::constrain(rects, QPoint(10, 20)), QPoint(10, 20));
+
+    QRect rect3(5, 10, 100, 200);
+    rects = { &rect3 };
+    QCOMPARE(Geometry::constrain(rects, QPoint(30, 40)), QPoint(30, 40));
+    QCOMPARE(Geometry::constrain(rects, QPoint(0, 0)), QPoint(5, 10));
+    QCOMPARE(Geometry::constrain(rects, QPoint(2, 400)), QPoint(5, 209));
+    QCOMPARE(Geometry::constrain(rects, QPoint(300, 400)), QPoint(104, 209));
+
+    QRect rect4(5, 5, 100, 200);
+    QRect rect5(105, 5, 200, 300);
+    rects = { &rect4, & rect5 };
+    QCOMPARE(Geometry::constrain(rects, QPoint(50, 50)), QPoint(50, 50));
+    QCOMPARE(Geometry::constrain(rects, QPoint(200, 200)), QPoint(200, 200));
+    QCOMPARE(Geometry::constrain(rects, QPoint(2, 50)), QPoint(5, 50));
+    QCOMPARE(Geometry::constrain(rects, QPoint(400, 50)), QPoint(304, 50));
+    QCOMPARE(Geometry::constrain(rects, QPoint(200, 275)), QPoint(200, 275));
+    QCOMPARE(Geometry::constrain(rects, QPoint(110, 3)), QPoint(110, 5));
+    QCOMPARE(Geometry::constrain(rects, QPoint(100, 3)), QPoint(100, 5));
 }
 
 

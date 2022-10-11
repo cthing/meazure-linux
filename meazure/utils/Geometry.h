@@ -160,4 +160,53 @@ namespace Geometry {
 
         return bestIndex;
     }
+
+    /// Constrains the specified point such that it is contained within the specified rectangle.
+    ///
+    /// @tparam RECT Type derived from QRect
+    /// @param[in] rect Rectangle to constrain the specified point
+    /// @param[in] point Point to be constrained into the rectangle
+    /// @return Point constrained such that it is contained within the rectangle
+    ///
+    template<class RECT>
+    inline QPoint constrain(RECT* rect, const QPoint& point) {
+        const QRect* r = rect;
+        if (r->isNull() || !r->isValid() || r->contains(point, false)) {
+            return point;
+        }
+
+        QPoint constrainedPoint(point);
+
+        if (constrainedPoint.x() < r->left()) {
+            constrainedPoint.setX(r->left());
+        } else if (constrainedPoint.x() > r->right()) {
+            constrainedPoint.setX(r->right());
+        }
+
+        if (constrainedPoint.y() < r->top()) {
+            constrainedPoint.setY(r->top());
+        } else if (constrainedPoint.y() > r->bottom()) {
+            constrainedPoint.setY(r->bottom());
+        }
+
+        return constrainedPoint;
+    }
+
+    /// Constrains the specified point such that it is contained within the closest rectangle.
+    ///
+    /// @tparam RECT Type derived from QRect
+    /// @param[in] rects Rectangles to constrain the specified point
+    /// @param[in] point Point to be constrained into the closest rectangle
+    /// @return Point constrained such that it is contained within the closest rectangle
+    ///
+    template<class RECT>
+    inline QPoint constrain(const std::vector<RECT*>& rects, const QPoint& point) {
+        const int closestRectIndex = closest(rects, point);
+        if (closestRectIndex == -1) {
+            return point;
+        }
+
+        const QRect* closestRect = rects[closestRectIndex];
+        return constrain(closestRect, point);
+    }
 }
