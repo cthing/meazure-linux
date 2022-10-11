@@ -43,15 +43,19 @@ namespace Geometry {
 
     /// Determines whether one of the specified rectangles contains the specified point.
     ///
+    /// @tparam Type derived from QRect
     /// @param[in] rects Rectangles to search for containment
     /// @param point Point to test
     /// @return The index in the list of the rectangle containing the specified point. If the rectangles in the list
     ///     overlap, the first containing rectangle is returned. Returns -1 if the point is not contained in any
     ///     rectangle.
     ///
-    inline int contains(const std::vector<QRect>& rects, const QPoint& point) {
-        for (std::size_t i = 0; i < rects.size(); i++) {
-            if (rects[i].contains(point, false)) {
+    template<class RECT>
+    inline int contains(const std::vector<RECT*>& rects, const QPoint& point) {
+        const std::size_t size = rects.size();
+        for (std::size_t i = 0; i < size; i++) {
+            const QRect* r = rects[i];
+            if (r->contains(point, false)) {
                 return static_cast<int>(i);
             }
         }
@@ -63,17 +67,21 @@ namespace Geometry {
     /// based on intersection area. The rectangle in the list with the highest containment area of the rectangle to
     /// test is considered the best match.
     ///
+    /// @tparam Type derived from QRect
     /// @param[in] rects Rectangles to search for containment
     /// @param[in] rect Rectangle to test for containment
     /// @return The index in the list of the rectangle containing the specified rectangle. Returns -1 if the
     ///     rectangle is not contained in any rectangle.
     ///
-    inline int contains(const std::vector<QRect>& rects, const QRect& rect) {
+    template<class RECT>
+    inline int contains(const std::vector<RECT*>& rects, const QRect& rect) {
         int maxArea = 0;
         int bestIndex = -1;
 
-        for (std::size_t i = 0; i < rects.size(); i++) {
-            const QRect intersection = rects[i].intersected(rect);
+        const std::size_t size = rects.size();
+        for (std::size_t i = 0; i < size; i++) {
+            const QRect* r = rects[i];
+            const QRect intersection = r->intersected(rect);
             const int intersectionArea = area(intersection);
             if (intersectionArea > maxArea) {
                 maxArea = intersectionArea;

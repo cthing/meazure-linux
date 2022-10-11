@@ -47,45 +47,57 @@ private slots:
 }
 
 [[maybe_unused]] void GeometryTest::testContainsPoint() {
-    std::vector<QRect> rects;
+    std::vector<QRect*> rects;
     QCOMPARE(Geometry::contains(rects, QPoint()), -1);
     QCOMPARE(Geometry::contains(rects, QPoint(10, 20)), -1);
 
-    rects = { QRect(), QRect() };
+    QRect rect1;
+    QRect rect2;
+    rects = { &rect1, &rect2 };
     QCOMPARE(Geometry::contains(rects, QPoint()), -1);
     QCOMPARE(Geometry::contains(rects, QPoint(10, 20)), -1);
 
-    rects = { QRect(0, 0, 100, 200) };
+    QRect rect3(0, 0, 100, 200);
+    rects = { &rect3 };
     QCOMPARE(Geometry::contains(rects, QPoint(30, 40)), 0);
     QCOMPARE(Geometry::contains(rects, QPoint(0, 0)), 0);
     QCOMPARE(Geometry::contains(rects, QPoint(99, 199)), 0);
     QCOMPARE(Geometry::contains(rects, QPoint(100, 200)), -1);
 
-    rects = { QRect(0, 0, 100, 200), QRect(300, 400, 200, 300) };
+    QRect rect4(0, 0, 100, 200);
+    QRect rect5(300, 400, 200, 300);
+    rects = { &rect4, & rect5 };
     QCOMPARE(Geometry::contains(rects, QPoint(350, 500)), 1);
     QCOMPARE(Geometry::contains(rects, QPoint(700, 500)), -1);
 
-    rects = { QRect(), QRect(300, 400, 200, 300) };
+    QRect rect6;
+    QRect rect7(300, 400, 200, 300);
+    rects = { &rect6, &rect7 };
     QCOMPARE(Geometry::contains(rects, QPoint(350, 500)), 1);
     QCOMPARE(Geometry::contains(rects, QPoint(700, 500)), -1);
 }
 
 [[maybe_unused]] void GeometryTest::testContainsRect() {
-    std::vector<QRect> rects;
+    std::vector<QRect*> rects;
     QCOMPARE(Geometry::contains(rects, QRect()), -1);
     QCOMPARE(Geometry::contains(rects, QRect(10, 20, 100, 200)), -1);
 
-    rects = { QRect(), QRect() };
+    QRect rect1;
+    QRect rect2;
+    rects = { &rect1, &rect2 };
     QCOMPARE(Geometry::contains(rects, QRect()), -1);
     QCOMPARE(Geometry::contains(rects, QRect(10, 20, 100, 200)), -1);
 
-    rects = { QRect(0, 0, 100, 200) };
+    QRect rect3(0, 0, 100, 200);
+    rects = { &rect3 };
     QCOMPARE(Geometry::contains(rects, QRect(10, 40, 10, 20)), 0);
     QCOMPARE(Geometry::contains(rects, QRect(0, 0, 100, 200)), 0);
     QCOMPARE(Geometry::contains(rects, QRect(75, 150, 100, 200)), 0);
     QCOMPARE(Geometry::contains(rects, QRect(400, 150, 100, 200)), -1);
 
-    rects = { QRect(0, 0, 100, 200), QRect(100, 0, 200, 300) };
+    QRect rect4(0, 0, 100, 200);
+    QRect rect5(100, 0, 200, 300);
+    rects = { &rect4, &rect5 };
     QCOMPARE(Geometry::contains(rects, QRect(50, 100, 10, 20)), 0);
     QCOMPARE(Geometry::contains(rects, QRect(150, 100, 10, 20)), 1);
     QCOMPARE(Geometry::contains(rects, QRect(50, 100, 75, 20)), 0);
