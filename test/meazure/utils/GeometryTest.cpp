@@ -32,8 +32,10 @@ Q_OBJECT
 
 private slots:
     [[maybe_unused]] void testArea();
+    [[maybe_unused]] void testDistance();
     [[maybe_unused]] void testContainsPoint();
     [[maybe_unused]] void testContainsRect();
+    [[maybe_unused]] void testClosest();
 };
 
 
@@ -44,6 +46,23 @@ private slots:
     QCOMPARE(Geometry::area(QRect(0, 0, 0, 1)), 0);
     QCOMPARE(Geometry::area(QRect(0, 0, 10, 20)), 200);
     QCOMPARE(Geometry::area(QRect(1, 2, 10, 20)), 200);
+    QCOMPARE(Geometry::area(QRect(-1, 2, 10, 20)), 200);
+    QCOMPARE(Geometry::area(QRect(1, -2, 10, 20)), 200);
+    QCOMPARE(Geometry::area(QRect(-1, -2, 10, 20)), 200);
+}
+
+[[maybe_unused]] void GeometryTest::testDistance() {
+    QCOMPARE(Geometry::distance(QRect(), QPoint()), std::numeric_limits<double>::max());
+    QCOMPARE(Geometry::distance(QRect(), QPoint(1, 2)), std::numeric_limits<double>::max());
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(20, 25)), 0.0);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(5, 10)), 7.07106781187);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(5, 20)), 5.0);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(5, 40)), 7.81024967591);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(40, 40)), 6.0);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(55, 40)), 8.48528137424);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(55, 20)), 6.0);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(55, 10)), 7.81024967591);
+    QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(40, 10)), 5.0);
 }
 
 [[maybe_unused]] void GeometryTest::testContainsPoint() {
@@ -103,6 +122,36 @@ private slots:
     QCOMPARE(Geometry::contains(rects, QRect(50, 100, 75, 20)), 0);
     QCOMPARE(Geometry::contains(rects, QRect(80, 100, 75, 20)), 1);
     QCOMPARE(Geometry::contains(rects, QRect()), -1);
+}
+
+[[maybe_unused]] void GeometryTest::testClosest() {
+    std::vector<QRect*> rects;
+    QCOMPARE(Geometry::closest(rects, QPoint()), -1);
+    QCOMPARE(Geometry::closest(rects, QPoint(10, 20)), -1);
+
+    QRect rect1;
+    QRect rect2;
+    rects = { &rect1, &rect2 };
+    QCOMPARE(Geometry::closest(rects, QPoint()), -1);
+    QCOMPARE(Geometry::closest(rects, QPoint(10, 20)), -1);
+
+    QRect rect3(5, 10, 100, 200);
+    rects = { &rect3 };
+    QCOMPARE(Geometry::closest(rects, QPoint(30, 40)), 0);
+    QCOMPARE(Geometry::closest(rects, QPoint(0, 0)), 0);
+    QCOMPARE(Geometry::closest(rects, QPoint(2, 400)), 0);
+    QCOMPARE(Geometry::closest(rects, QPoint(300, 400)), 0);
+
+    QRect rect4(5, 5, 100, 200);
+    QRect rect5(105, 5, 200, 300);
+    rects = { &rect4, & rect5 };
+    QCOMPARE(Geometry::closest(rects, QPoint(50, 50)), 0);
+    QCOMPARE(Geometry::closest(rects, QPoint(200, 200)), 1);
+    QCOMPARE(Geometry::closest(rects, QPoint(2, 50)), 0);
+    QCOMPARE(Geometry::closest(rects, QPoint(400, 50)), 1);
+    QCOMPARE(Geometry::closest(rects, QPoint(200, 275)), 1);
+    QCOMPARE(Geometry::closest(rects, QPoint(110, 3)), 1);
+    QCOMPARE(Geometry::closest(rects, QPoint(100, 3)), 0);
 }
 
 
