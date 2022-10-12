@@ -20,6 +20,7 @@
 #pragma once
 
 #include "ui/MainWindow.h"
+#include "environment/ScreenInfo.h"
 #include <QApplication>
 
 
@@ -41,6 +42,9 @@ public:
     App(App&&) = delete;
     App& operator=(const App&) = delete;
 
+    [[nodiscard]] const ScreenInfo* getScreenInfo() const { return m_screenInfo; }
+
 private:
     MainWindow* m_mainWindow { new MainWindow() };
+    ScreenInfo* m_screenInfo { new ScreenInfo(screens()) };
 };

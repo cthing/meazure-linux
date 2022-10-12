@@ -33,3 +33,11 @@
 ///
 #define MEA_COMPARE(actual, expected) \
     QTest::qCompare(actual, expected, #actual, #expected, __FILE__, __LINE__)
+
+#define MEA_CHECK(statement) \
+do { \
+    statement; \
+    if (QTest::currentTestFailed()) { \
+        return; \
+    } \
+} while(false)

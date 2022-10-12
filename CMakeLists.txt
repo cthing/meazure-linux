@@ -38,7 +38,7 @@ qt_standard_project_setup()
 enable_testing()
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR TRUE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-comment")
 set(CMAKE_CXX_CLANG_TIDY clang-tidy-15)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")

@@ -61,8 +61,19 @@ source_group(UTILS FILES ${UTILS_SOURCES})
 set(ENVIRONMENT_SOURCES
     environment/PointerTracker.cpp
     environment/PointerTracker.h
+    environment/ScreenInfo.cpp
+    environment/ScreenInfo.h
+    environment/ScreenInfoProvider.h
     )
 source_group(ENVIRONMENT FILES ${ENVIRONMENT_SOURCES})
+
+set(UNITS_SOURCES
+    units/CustomUnits.cpp
+    units/CustomUnits.h
+    units/Units.cpp
+    units/Units.h
+    )
+source_group(UNITS FILES ${UNITS_SOURCES})
 
 set(MEAZURE_SOURCES
     ${TOP_SOURCES}
@@ -72,6 +83,7 @@ set(MEAZURE_SOURCES
     ${XML_SOURCES}
     ${UTILS_SOURCES}
     ${ENVIRONMENT_SOURCES}
+    ${UNITS_SOURCES}
     )
 
 set(MEAZURE_RESOURCES

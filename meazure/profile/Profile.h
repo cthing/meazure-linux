@@ -24,9 +24,8 @@
 
 /// Base class for the persisting the application state to either QSettings or a file.
 ///
-class Profile {
+struct Profile {
 
-public:
     Profile() = default;
     virtual ~Profile() = default;
 

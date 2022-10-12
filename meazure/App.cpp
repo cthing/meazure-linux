@@ -47,4 +47,5 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {
 
 App::~App() {
     delete m_mainWindow;
+    delete m_screenInfo;
 }
