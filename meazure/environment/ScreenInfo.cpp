@@ -242,8 +242,8 @@ QPoint ScreenInfo::getCenter() const {
 
 QPoint ScreenInfo::getOffScreen() const {
     QPoint offScreenPoint = getVirtualRect().bottomRight();
-    offScreenPoint.rx() += 100;
-    offScreenPoint.ry() += 100;
+    offScreenPoint.rx() += 1000;
+    offScreenPoint.ry() += 1000;
     return offScreenPoint;
 }
 
