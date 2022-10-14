@@ -116,6 +116,8 @@ public:
     ///
     void setAbbrev(const QString& abbrev);
 
+    [[nodiscard]] QString getLengthLabel() const override;
+
     /// Returns the conversion basis.
     ///
     /// @return Custom units conversion basis.

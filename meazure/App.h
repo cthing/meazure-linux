@@ -21,6 +21,7 @@
 
 #include "ui/MainWindow.h"
 #include "environment/ScreenInfo.h"
+#include "units/UnitsMgr.h"
 #include <QApplication>
 
 
@@ -36,15 +37,17 @@ public:
     ///
     App(int& argc, char** argv);
 
-    ~App() override;
+    ~App() override = default;
 
     App(const App&) = delete;
     App(App&&) = delete;
     App& operator=(const App&) = delete;
 
-    [[nodiscard]] const ScreenInfo* getScreenInfo() const { return m_screenInfo; }
+    [[nodiscard]] const ScreenInfo& getScreenInfo() const { return m_screenInfo; }
+    [[nodiscard]] const UnitsMgr& getUnitsMgr() const { return m_unitsMgr; }
 
 private:
-    MainWindow* m_mainWindow { new MainWindow() };
-    ScreenInfo* m_screenInfo { new ScreenInfo(screens()) };
+    MainWindow m_mainWindow;
+    ScreenInfo m_screenInfo;
+    UnitsMgr m_unitsMgr;
 };

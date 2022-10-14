@@ -19,6 +19,7 @@
 
 #include "ScreenInfo.h"
 #include <meazure/utils/Geometry.h>
+#include <meazure/utils/StringUtils.h>
 #include <QScreen>
 #include <QRect>
 #include <QSizeF>
@@ -36,8 +37,8 @@ public:
         m_name(screen->name()),
         m_primary(primary),
         m_platformRes(QSizeF(screen->physicalDotsPerInchX(), screen->physicalDotsPerInchY())),
-        m_useManualRes(ScreenInfo::kDefUseManualRes),
-        m_calInInches(ScreenInfo::kDefCalInInches) {
+        m_useManualRes(ScreenInfo::defUseManualRes),
+        m_calInInches(ScreenInfo::defCalInInches) {
     }
 
     /// Returns the descriptive name for the screen.
@@ -136,6 +137,76 @@ ScreenInfo::~ScreenInfo() {
     }
 }
 
+void ScreenInfo::saveProfile(Profile& profile) const {
+    if (!profile.userInitiated()) {
+        profile.writeInt("ScreenW", m_virtualGeometry.width());
+        profile.writeInt("ScreenH", m_virtualGeometry.height());
+
+        profile.writeInt("NumScreens", m_numScreens);
+        for (int i = 0; i < m_numScreens; i++) {
+            Screen* screen = m_screens[i];
+            bool useManualRes = false;
+            QSizeF manualRes;
+            screen->getScreenRes(useManualRes, manualRes);
+
+            const QString tag = QString("Screen%1-").arg(i);
+            profile.writeInt(tag + "CenterX", screen->center().x());
+            profile.writeInt(tag + "CenterY", screen->center().y());
+            profile.writeBool(tag + "UseManualRes", useManualRes);
+            profile.writeStr(tag + "ManualResX", StringUtils::dblToStr(manualRes.width()));
+            profile.writeStr(tag + "ManualResY", StringUtils::dblToStr(manualRes.height()));
+            profile.writeBool(tag + "CalInInches", screen->isCalInInches());
+        }
+    }
+}
+
+void ScreenInfo::loadProfile(Profile& profile) {
+    if (!profile.userInitiated()) {
+        const int w = profile.readInt("ScreenW", m_virtualGeometry.width());
+        const int h = profile.readInt("ScreenH", m_virtualGeometry.height());
+        const int numScreens = profile.readInt("NumScreens", 0);
+        m_sizeChanged = ((w != m_virtualGeometry.width()) || (h != m_virtualGeometry.height()));
+
+        if ((profile.getVersion() == 1) || (numScreens == 0)) {
+            QSizeF manualRes;
+            const bool useManualRes = profile.readBool("UseManualRes", defUseManualRes);
+            manualRes.rwidth() = profile.readDbl("ManualResX", 0.0);
+            manualRes.rheight() = profile.readDbl("ManualResY", 0.0);
+
+            for (int i = 0; i < m_numScreens; i++) {
+                m_screens[i]->setScreenRes(useManualRes, &manualRes);
+            }
+        } else {
+            for (int i = 0; i < numScreens; i++) {
+                const QString tag = QString("Screen%1-").arg(i);
+                const QPoint center(profile.readInt(tag + "CenterX", 0), profile.readInt(tag + "CenterY", 0));
+
+                const int screenIndex = screenForPoint(center);
+                if (screenIndex != -1) {
+                    Screen* screen = m_screens[screenIndex];
+                    QSizeF manualRes;
+
+                    const bool useManualRes = profile.readBool(tag + "UseManualRes", defUseManualRes);
+                    manualRes.rwidth() = profile.readDbl(tag + "ManualResX", 0.0);
+                    manualRes.rheight() = profile.readDbl(tag + "ManualResY", 0.0);
+                    screen->setScreenRes(useManualRes, &manualRes);
+
+                    const bool calInInches = profile.readBool(tag + "CalInInches", defCalInInches);
+                    screen->setCalInInches(calInInches);
+                }
+            }
+        }
+    }
+}
+
+void ScreenInfo::masterReset() const {
+    for (auto* screen : m_screens) {
+        const QSizeF manualRes(0.0, 0.0);
+        screen->setScreenRes(defUseManualRes, &manualRes);
+        screen->setCalInInches(defCalInInches);
+    }
+}
+
 int ScreenInfo::getNumScreens() const {
     return m_numScreens;
 }
@@ -194,6 +265,12 @@ QSizeF ScreenInfo::getScreenRes(int screenIndex) const {
     return isValidScreen(screenIndex) ? m_screens[screenIndex]->getRes() : QSizeF(0.0, 0.0);
 }
 
+void ScreenInfo::setScreenRes(int screenIndex, bool useManualRes, const QSizeF* manualRes) const {
+    if (isValidScreen(screenIndex)) {
+        m_screens[screenIndex]->setScreenRes(useManualRes, manualRes);
+    }
+}
+
 bool ScreenInfo::isManualRes(int screenIndex) const {
     return isValidScreen(screenIndex) ? m_screens[screenIndex]->isManualRes() : false;
 }
@@ -208,6 +285,20 @@ bool ScreenInfo::isPrimary(int screenIndex) const {
 
 QString ScreenInfo::getScreenName(int screenIndex) const {
     return isValidScreen(screenIndex) ? m_screens[screenIndex]->getName() : QString();
+}
+
+bool ScreenInfo::isCalInInches(int screenIndex) const {
+    return isValidScreen(screenIndex) ? m_screens[screenIndex]->isCalInInches() : false;
+}
+
+void ScreenInfo::setCalInInches(int screenIndex, bool calInInches) {
+    if (isValidScreen(screenIndex)) {
+        m_screens[screenIndex]->setCalInInches(calInInches);
+    }
+}
+
+bool ScreenInfo::sizeChanged() const {
+    return m_sizeChanged;
 }
 
 QPoint ScreenInfo::constrainPosition(const QPoint& point) const {

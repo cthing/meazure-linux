@@ -141,6 +141,13 @@ struct ScreenInfoProvider {
     ///
     [[nodiscard]] virtual QString getScreenName(int screenIndex) const = 0;
 
+    /// Indicates whether the virtual screen rectangle has changed since the last time the application was run. If
+    /// the virtual screen size has changed, re-calibration is recommended.
+    ///
+    /// @return true if the virtual screen rectangle has changed.
+    ///
+    [[nodiscard]] virtual bool sizeChanged() const = 0;
+
     /// Ensures that the specified point is on a screen.
     ///
     /// @param[in] point Point to check.

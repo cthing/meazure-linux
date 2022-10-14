@@ -21,7 +21,6 @@
 #include <utility>
 #include <QtMath>
 #include <QRect>
-#include <QRectF>
 #include <cmath>
 
 
@@ -85,6 +84,10 @@ DegreeUnits::DegreeUnits() : AngularUnits(DegreesId, "deg") {
     addPrecision(1);
 }
 
+QString DegreeUnits::getLabel() const {
+    return "deg";
+}
+
 double DegreeUnits::convertAngle(double angle) const {
     const double theta = isSupplementalAngle() ? std::copysign(M_PI, angle) - angle : angle;
     return qRadiansToDegrees(theta);
@@ -97,6 +100,10 @@ double DegreeUnits::convertAngle(double angle) const {
 
 RadianUnits::RadianUnits() : AngularUnits(RadiansId, "rad") {
     addPrecision(3);
+}
+
+QString RadianUnits::getLabel() const {
+    return "rad";
 }
 
 double RadianUnits::convertAngle(double angle) const {
@@ -132,21 +139,29 @@ QString LinearUnits::format(LinearMeasurementId id, double value) const {
     return QString::number(value, 'f', getDisplayPrecisions()[id]);
 }
 
+QString LinearUnits::getAreaLabel() const {
+    return QString("sq. %1").arg(getLengthLabel());
+}
+
+QString LinearUnits::getResLabel() const {
+    return QString("px / %1").arg(getLengthLabel());
+}
+
 QPointF LinearUnits::convertCoord(const QPoint& pos) const {
     const int screenIndex = m_screenInfoProvider.screenForPoint(pos);
     const QSizeF from = fromPixels(m_screenInfoProvider.getScreenRes(screenIndex));
     QPointF fpos;
 
-    fpos.setX(from.width() * (pos.x() - m_originOffset.x()));
+    fpos.rx() = from.width() * (pos.x() - m_originOffset.x());
 
     if (m_invertY) {
         if ((m_originOffset.x() == 0) && (m_originOffset.y() == 0)) {
-            fpos.setY(from.height() * (m_screenInfoProvider.getVirtualRect().height() - 1 - pos.y()));
+            fpos.ry() = from.height() * (m_screenInfoProvider.getVirtualRect().height() - 1 - pos.y());
         } else {
-            fpos.setY(from.height() * (m_originOffset.y() - pos.y()));
+            fpos.ry() = from.height() * (m_originOffset.y() - pos.y());
         }
     } else {
-        fpos.setY(from.height() * (pos.y() - m_originOffset.y()));
+        fpos.ry() = from.height() * (pos.y() - m_originOffset.y());
     }
 
     return fpos;
@@ -224,16 +239,16 @@ QPoint LinearUnits::unconvertCoord(const QPointF& pos) const {
     const QSizeF from = fromPixels(findResFromCoord(pos));
 
     QPoint point;
-    point.setX(static_cast<int>(pos.x() / from.width() + m_originOffset.x()));
+    point.rx() = static_cast<int>(pos.x() / from.width() + m_originOffset.x());
 
     if (m_invertY) {
         if ((m_originOffset.x() == 0) && (m_originOffset.y() == 0)) {
-            point.setY(static_cast<int>((m_screenInfoProvider.getVirtualRect().height() - 1) - pos.y() / from.height()));
+            point.ry() = static_cast<int>((m_screenInfoProvider.getVirtualRect().height() - 1) - pos.y() / from.height());
         } else {
-            point.setY(static_cast<int>(m_originOffset.y() - pos.y() / from.height()));
+            point.ry() = static_cast<int>(m_originOffset.y() - pos.y() / from.height());
         }
     } else {
-        point.setY(static_cast<int>(pos.y() / from.height() + m_originOffset.y()));
+        point.ry() = static_cast<int>(pos.y() / from.height() + m_originOffset.y());
     }
 
     return point;
@@ -329,6 +344,14 @@ PixelUnits::PixelUnits(const ScreenInfoProvider& screenInfoProvider) : LinearUni
     addPrecision(1);        // ResY
 }
 
+QString PixelUnits::getLengthLabel() const {
+    return "px";
+}
+
+QString PixelUnits::getResLabel() const {
+    return "px / in";
+}
+
 bool PixelUnits::isResRequired() const {
     return false;
 }
@@ -358,6 +381,10 @@ PointUnits::PointUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(2);        // ResY
 }
 
+QString PointUnits::getLengthLabel() const {
+    return "pt";
+}
+
 QSizeF PointUnits::fromPixels(const QSizeF& res) const {
     return { 72.0 / res.width(), 72.0 / res.height() };
 }
@@ -377,6 +404,10 @@ PicaUnits::PicaUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(2);        // Area
     addPrecision(1);        // ResX
     addPrecision(1);        // ResY
+}
+
+QString PicaUnits::getLengthLabel() const {
+    return "pc";
 }
 
 QSizeF PicaUnits::fromPixels(const QSizeF& res) const {
@@ -400,6 +431,10 @@ TwipUnits::TwipUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(4);        // ResY
 }
 
+QString TwipUnits::getLengthLabel() const {
+    return "tp";
+}
+
 QSizeF TwipUnits::fromPixels(const QSizeF& res) const {
     return { 1440.0 / res.width(), 1440.0 / res.height() };
 }
@@ -419,6 +454,10 @@ InchUnits::InchUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(3);        // Area
     addPrecision(1);        // ResX
     addPrecision(1);        // ResY
+}
+
+QString InchUnits::getLengthLabel() const {
+    return "in";
 }
 
 QSizeF InchUnits::fromPixels(const QSizeF& res) const {
@@ -442,6 +481,10 @@ CentimeterUnits::CentimeterUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(1);        // ResY
 }
 
+QString CentimeterUnits::getLengthLabel() const {
+    return "cm";
+}
+
 QSizeF CentimeterUnits::fromPixels(const QSizeF& res) const {
     return { 2.54 / res.width(), 2.54 / res.height() };
 }
@@ -461,6 +504,10 @@ MillimeterUnits::MillimeterUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(1);        // Area
     addPrecision(2);        // ResX
     addPrecision(2);        // ResY
+}
+
+QString MillimeterUnits::getLengthLabel() const {
+    return "mm";
 }
 
 QSizeF MillimeterUnits::fromPixels(const QSizeF& res) const {

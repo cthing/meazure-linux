@@ -62,14 +62,19 @@ private slots:
 
 const Units::DisplayPrecisionNames linearPrecisionNames { "x", "y", "w", "h", "d", "area", "rx", "ry" };
 
-void verifyUnitsId(AngularUnits& units, AngularUnitsId unitsId, const QString& unitsStr) {
+void verifyUnitsId(AngularUnits& units, AngularUnitsId unitsId, const QString& unitsStr, const QString& label) {
     QCOMPARE(units.getUnitsStr(), unitsStr);
     QCOMPARE(units.getUnitsId(), unitsId);
+    QCOMPARE(units.getLabel(), label);
 }
 
-void verifyUnitsId(LinearUnits& units, LinearUnitsId unitsId, const QString& unitsStr) {
+void verifyUnitsId(LinearUnits& units, LinearUnitsId unitsId, const QString& unitsStr, const QString& lengthLabel,
+                   const QString& areaLabel, const QString& resLabel) {
     QCOMPARE(units.getUnitsStr(), unitsStr);
     QCOMPARE(units.getUnitsId(), unitsId);
+    QCOMPARE(units.getLengthLabel(), lengthLabel);
+    QCOMPARE(units.getAreaLabel(), areaLabel);
+    QCOMPARE(units.getResLabel(), resLabel);
 }
 
 void verifyPrecisions(Units& units, const Units::DisplayPrecisions& defaultPrecisions,
@@ -178,7 +183,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 [[maybe_unused]] void UnitsTest::testDegreeUnits() {
     DegreeUnits units;
 
-    MEA_CHECK(verifyUnitsId(units, DegreesId, "deg"));
+    MEA_CHECK(verifyUnitsId(units, DegreesId, "deg", "deg"));
 
     const Units::DisplayPrecisions defaultPrecisions { 1 };
     const Units::DisplayPrecisionNames names { "angle" };
@@ -203,7 +208,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 [[maybe_unused]] void UnitsTest::testRadianUnits() {
     RadianUnits units;
 
-    MEA_CHECK(verifyUnitsId(units, RadiansId, "rad"));
+    MEA_CHECK(verifyUnitsId(units, RadiansId, "rad", "rad"));
 
     const Units::DisplayPrecisions defaultPrecisions { 3 };
     const Units::DisplayPrecisionNames names { "angle" };
@@ -229,7 +234,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     PixelUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, PixelsId, "px"));
+    MEA_CHECK(verifyUnitsId(units, PixelsId, "px", "px", "sq. px", "px / in"));
 
     const Units::DisplayPrecisions defaultPrecisions { 0, 0, 0, 0, 1, 0, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -256,7 +261,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     PointUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, PointsId, "pt"));
+    MEA_CHECK(verifyUnitsId(units, PointsId, "pt", "pt", "sq. pt", "px / pt"));
 
     const Units::DisplayPrecisions defaultPrecisions { 1, 1, 1, 1, 1, 1, 2, 2 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -283,7 +288,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     PicaUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, PicasId, "pc"));
+    MEA_CHECK(verifyUnitsId(units, PicasId, "pc", "pc", "sq. pc", "px / pc"));
 
     const Units::DisplayPrecisions defaultPrecisions { 2, 2, 2, 2, 2, 2, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -310,7 +315,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     TwipUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, TwipsId, "tp"));
+    MEA_CHECK(verifyUnitsId(units, TwipsId, "tp", "tp", "sq. tp", "px / tp"));
 
     const Units::DisplayPrecisions defaultPrecisions { 0, 0, 0, 0, 0, 0, 4, 4 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -337,7 +342,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     InchUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, InchesId, "in"));
+    MEA_CHECK(verifyUnitsId(units, InchesId, "in", "in", "sq. in", "px / in"));
 
     const Units::DisplayPrecisions defaultPrecisions { 3, 3, 3, 3, 3, 3, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -364,7 +369,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     CentimeterUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, CentimetersId, "cm"));
+    MEA_CHECK(verifyUnitsId(units, CentimetersId, "cm", "cm", "sq. cm", "px / cm"));
 
     const Units::DisplayPrecisions defaultPrecisions { 2, 2, 2, 2, 2, 2, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -391,7 +396,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     MillimeterUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, MillimetersId, "mm"));
+    MEA_CHECK(verifyUnitsId(units, MillimetersId, "mm", "mm", "sq. mm", "px / mm"));
 
     const Units::DisplayPrecisions defaultPrecisions { 1, 1, 1, 1, 1, 1, 2, 2 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -472,7 +477,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     units.setScaleFactor(2.0);
     QCOMPARE(units.getScaleFactor(), 2.0);
 
-    MEA_CHECK(verifyUnitsId(units, CustomId, "custom"));
+    MEA_CHECK(verifyUnitsId(units, CustomId, "custom", "ab", "sq. ab", "px / ab"));
 
     const Units::DisplayPrecisions defaultPrecisions { 0, 0, 0, 0, 1, 0, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));

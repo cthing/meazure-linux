@@ -90,6 +90,10 @@ public:
         return "MockScreen";
     }
 
+    [[nodiscard]] bool sizeChanged() const override {
+        return false;
+    }
+
     [[nodiscard]] QPoint constrainPosition(const QPoint& pt) const override {
         return Geometry::constrain(&m_rect, pt);
     }

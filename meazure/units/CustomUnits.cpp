@@ -101,6 +101,10 @@ void CustomUnits::setAbbrev(const QString& abbrev) {
     emit labelChanged(CustomId, m_name, m_abbrev);
 }
 
+QString CustomUnits::getLengthLabel() const {
+    return m_abbrev;
+}
+
 QString CustomUnits::getScaleBasisStr() const {
     switch (m_scaleBasis) {
         case PixelBasis:

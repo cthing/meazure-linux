@@ -252,6 +252,12 @@ public:
     ///
     [[nodiscard]] QString format(AngularMeasurementId id, double value) const;
 
+    /// Obtains the user visible label for the units.
+    ///
+    /// @return User visible label for the units.
+    ///
+    [[nodiscard]] virtual QString getLabel() const = 0;
+
     /// Converts the specified angle value from its native radians to the desired units.
     ///
     /// @param[in] angle Value to be converted.
@@ -298,6 +304,8 @@ public:
     DegreeUnits& operator=(const DegreeUnits&) = default;
     DegreeUnits& operator=(DegreeUnits&&) = default;
 
+    [[nodiscard]] QString getLabel() const override;
+
     /// Converts the specified angle value from its native radians to degrees.
     ///
     /// @param[in] angle Value to be converted from radians to degrees.
@@ -325,6 +333,8 @@ public:
     RadianUnits(RadianUnits&&) = default;
     RadianUnits& operator=(const RadianUnits&) = default;
     RadianUnits& operator=(RadianUnits&&) = default;
+
+    [[nodiscard]] QString getLabel() const override;
 
     /// Passthru method returning the specified angle in radians.
     ///
@@ -406,6 +416,24 @@ public:
     /// @return Measurement value formatted with the appropriate precision and returned as a string.
     ///
     [[nodiscard]] QString format(LinearMeasurementId id, double value) const;
+
+    /// Obtains the user visible length measurement label.
+    ///
+    /// @return User visible length measurement label.
+    ///
+    [[nodiscard]] virtual QString getLengthLabel() const = 0;
+
+    /// Obtains the user visible area measurement label.
+    ///
+    /// @return User visible area measurement label.
+    ///
+    [[nodiscard]] virtual QString getAreaLabel() const;
+
+    /// Obtains the user visible resolution measurement label.
+    ///
+    /// @return User visible resolution measurement label.
+    ///
+    [[nodiscard]] virtual QString getResLabel() const;
 
     /// Converts the specified coordinate from pixels to the desired units. This conversion takes into account the
     /// location of the origin and the orientation of the y-axis.
@@ -588,6 +616,10 @@ public:
     PixelUnits& operator=(const PixelUnits&) = delete;
     PixelUnits& operator=(PixelUnits&&) = delete;
 
+    [[nodiscard]] QString getLengthLabel() const override;
+
+    [[nodiscard]] QString getResLabel() const override;
+
     /// Internally all measurements are in pixels. Measurement units based solely on pixels do not require the use
     /// of the screen resolution for conversion. Measurement units such as inches, require the screen resolution for
     /// conversion from pixels. This method indicates whether the screen resolution is required for conversion from
@@ -636,6 +668,8 @@ public:
     PointUnits& operator=(const PointUnits&) = delete;
     PointUnits& operator=(PointUnits&&) = delete;
 
+    [[nodiscard]] QString getLengthLabel() const override;
+
     /// Returns the X and Y factors to convert from pixels to points. In other words, multiplying the values returned
     /// from this method by pixels results in a value expressed in points.
     ///
@@ -664,6 +698,8 @@ public:
     PicaUnits(PicaUnits&&) = default;
     PicaUnits& operator=(const PicaUnits&) = delete;
     PicaUnits& operator=(PicaUnits&&) = delete;
+
+    [[nodiscard]] QString getLengthLabel() const override;
 
     /// Returns the X and Y factors to convert from pixels to picas. In other words, multiplying the values returned
     /// from this method by pixels results in a value expressed in picas.
@@ -694,6 +730,8 @@ public:
     TwipUnits& operator=(const TwipUnits&) = delete;
     TwipUnits& operator=(TwipUnits&&) = delete;
 
+    [[nodiscard]] QString getLengthLabel() const override;
+
     /// Returns the X and Y factors to convert from pixels to twips. In other words, multiplying the values returned
     /// from this method by pixels results in a value expressed in twips.
     ///
@@ -722,6 +760,8 @@ public:
     InchUnits(InchUnits&&) = default;
     InchUnits& operator=(const InchUnits&) = delete;
     InchUnits& operator=(InchUnits&&) = delete;
+
+    [[nodiscard]] QString getLengthLabel() const override;
 
     /// Returns the X and Y factors to convert from pixels to inches. In other words, multiplying the values returned
     /// from this method by pixels results in a value expressed in inches.
@@ -752,6 +792,8 @@ public:
     CentimeterUnits& operator=(const CentimeterUnits&) = delete;
     CentimeterUnits& operator=(CentimeterUnits&&) = delete;
 
+    [[nodiscard]] QString getLengthLabel() const override;
+
     /// Returns the X and Y factors to convert from pixels to centimeters. In other words, multiplying the values
     /// returned from this method by pixels results in a value expressed in centimeters.
     ///
@@ -780,6 +822,8 @@ public:
     MillimeterUnits(MillimeterUnits&&) = default;
     MillimeterUnits& operator=(const MillimeterUnits&) = delete;
     MillimeterUnits& operator=(MillimeterUnits&&) = delete;
+
+    [[nodiscard]] QString getLengthLabel() const override;
 
     /// Returns the X and Y factors to convert from pixels to millimeters. In other words, multiplying the values
     /// returned from this method by pixels results in a value expressed in millimeters.

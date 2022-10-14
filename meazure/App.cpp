@@ -27,7 +27,7 @@ Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
 
 
-App::App(int &argc, char **argv): QApplication(argc, argv) {
+App::App(int &argc, char **argv): QApplication(argc, argv), m_screenInfo(screens()), m_unitsMgr(m_screenInfo) {
     setApplicationName("meazure");
     setApplicationDisplayName("Meazure");
     setApplicationVersion(appVersion);
@@ -41,11 +41,6 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {
     parser.addVersionOption();
     parser.process(*this);
 
-    m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
-    m_mainWindow->show();
-}
-
-App::~App() {
-    delete m_mainWindow;
-    delete m_screenInfo;
+    m_mainWindow.setAttribute(Qt::WA_QuitOnClose, true);
+    m_mainWindow.show();
 }

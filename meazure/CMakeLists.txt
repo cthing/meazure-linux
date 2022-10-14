@@ -72,6 +72,9 @@ set(UNITS_SOURCES
     units/CustomUnits.h
     units/Units.cpp
     units/Units.h
+    units/UnitsMgr.cpp
+    units/UnitsMgr.h
+    units/UnitsProvider.h
     )
 source_group(UNITS FILES ${UNITS_SOURCES})
 

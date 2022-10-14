@@ -178,15 +178,15 @@ namespace Geometry {
         QPoint constrainedPoint(point);
 
         if (constrainedPoint.x() < r->left()) {
-            constrainedPoint.setX(r->left());
+            constrainedPoint.rx() = r->left();
         } else if (constrainedPoint.x() > r->right()) {
-            constrainedPoint.setX(r->right());
+            constrainedPoint.rx() = r->right();
         }
 
         if (constrainedPoint.y() < r->top()) {
-            constrainedPoint.setY(r->top());
+            constrainedPoint.ry() = r->top();
         } else if (constrainedPoint.y() > r->bottom()) {
-            constrainedPoint.setY(r->bottom());
+            constrainedPoint.ry() = r->bottom();
         }
 
         return constrainedPoint;
