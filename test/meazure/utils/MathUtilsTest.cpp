@@ -32,6 +32,10 @@ Q_OBJECT
 private slots:
     [[maybe_unused]] void testFuzzyEqual();
     [[maybe_unused]] void testFuzzyZero();
+    [[maybe_unused]] void testMakeOddUp();
+    [[maybe_unused]] void testMakeOddDown();
+    [[maybe_unused]] void testMakeEvenUp();
+    [[maybe_unused]] void testMakeEvenDown();
 };
 
 
@@ -59,6 +63,50 @@ private slots:
     QVERIFY(!MathUtils::fuzzyZero(-1.0));
     QVERIFY(!MathUtils::fuzzyZero(2.0 * std::numeric_limits<double>::epsilon()));
     QVERIFY(!MathUtils::fuzzyZero(-2.0 * std::numeric_limits<double>::epsilon()));
+}
+
+[[maybe_unused]] void MathUtilsTest::testMakeOddUp() {
+    QCOMPARE(MathUtils::makeOddUp(1), 1);
+    QCOMPARE(MathUtils::makeOddUp(13), 13);
+    QCOMPARE(MathUtils::makeOddUp(2), 3);
+    QCOMPARE(MathUtils::makeOddUp(12), 13);
+    QCOMPARE(MathUtils::makeOddUp(0), 1);
+    QCOMPARE(MathUtils::makeOddUp(-1), -1);
+    QCOMPARE(MathUtils::makeOddUp(-2), -1);
+    QCOMPARE(MathUtils::makeOddUp(-10), -9);
+}
+
+[[maybe_unused]] void MathUtilsTest::testMakeOddDown() {
+    QCOMPARE(MathUtils::makeOddDown(1), 1);
+    QCOMPARE(MathUtils::makeOddDown(13), 13);
+    QCOMPARE(MathUtils::makeOddDown(2), 1);
+    QCOMPARE(MathUtils::makeOddDown(12), 11);
+    QCOMPARE(MathUtils::makeOddDown(0), -1);
+    QCOMPARE(MathUtils::makeOddDown(-1), -1);
+    QCOMPARE(MathUtils::makeOddDown(-2), -3);
+    QCOMPARE(MathUtils::makeOddDown(-10), -11);
+}
+
+[[maybe_unused]] void MathUtilsTest::testMakeEvenUp() {
+    QCOMPARE(MathUtils::makeEvenUp(1), 2);
+    QCOMPARE(MathUtils::makeEvenUp(13), 14);
+    QCOMPARE(MathUtils::makeEvenUp(2), 2);
+    QCOMPARE(MathUtils::makeEvenUp(12), 12);
+    QCOMPARE(MathUtils::makeEvenUp(0), 0);
+    QCOMPARE(MathUtils::makeEvenUp(-1), 0);
+    QCOMPARE(MathUtils::makeEvenUp(-2), -2);
+    QCOMPARE(MathUtils::makeEvenUp(-10), -10);
+}
+
+[[maybe_unused]] void MathUtilsTest::testMakeEvenDown() {
+    QCOMPARE(MathUtils::makeEvenDown(1), 0);
+    QCOMPARE(MathUtils::makeEvenDown(13), 12);
+    QCOMPARE(MathUtils::makeEvenDown(2), 2);
+    QCOMPARE(MathUtils::makeEvenDown(12), 12);
+    QCOMPARE(MathUtils::makeEvenDown(0), 0);
+    QCOMPARE(MathUtils::makeEvenDown(-1), -2);
+    QCOMPARE(MathUtils::makeEvenDown(-2), -2);
+    QCOMPARE(MathUtils::makeEvenDown(-10), -10);
 }
 
 

@@ -22,6 +22,8 @@
 #include "ScreenDataSection.h"
 #include "MagnifierSection.h"
 #include <QVBoxLayout>
+#include <QApplication>
+#include <meazure/App.h>
 
 
 MainView::MainView() {
@@ -37,4 +39,15 @@ MainView::MainView() {
     layout->addWidget(magnifierSection);
 
     setLayout(layout);
+
+    App* app = reinterpret_cast<App*>(QApplication::instance());
+
+    m_crossHair = new CrossHair(app->getScreenInfo(), app->getUnitsMgr(), nullptr, 100, "Hello World");
+    m_crossHair->show();
+    m_crossHair->setPosition(QPoint(500, 700));
+    m_crossHair->flash();
+}
+
+MainView::~MainView() {
+    delete m_crossHair;
 }

@@ -58,4 +58,44 @@ namespace MathUtils {
     inline bool fuzzyZero(T f) {
         return std::fabs(f) <= std::numeric_limits<T>::epsilon();
     }
+
+    /// Returns the closest odd number greater than or equal to the specified value.
+    ///
+    /// @param value Number to make odd
+    ///
+    /// @return Closest odd number greater than or equal to the specified value
+    ///
+    constexpr int makeOddUp(int value) {
+        return (value % 2 == 0) ? (value + 1) : value;
+    }
+
+    /// Returns the closest odd number less than or equal to the specified value.
+    ///
+    /// @param value Number to make odd
+    ///
+    /// @return Closest odd number less than or equal to the specified value
+    ///
+    constexpr int makeOddDown(int value) {
+        return (value % 2 == 0) ? (value - 1) : value;
+    }
+
+    /// Returns the closest even number greater than or equal to the specified value.
+    ///
+    /// @param value Number to make even
+    ///
+    /// @return Closest even number greater than or equal to the specified value
+    ///
+    constexpr int makeEvenUp(int value) {
+        return (value % 2 == 0) ? value : (value + 1);
+    }
+
+    /// Returns the closest even number less than or equal to the specified value.
+    ///
+    /// @param value Number to make even
+    ///
+    /// @return Closest even number less than or equal to the specified value
+    ///
+    constexpr int makeEvenDown(int value) {
+        return (value % 2 == 0) ? value : (value - 1);
+    }
 }

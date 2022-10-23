@@ -501,39 +501,41 @@ private:
 }
 
 [[maybe_unused]] void ColorsTest::testMatchBasicColor() {
-        QCOMPARE(Colors::matchBasicColor(qRgb(0, 0, 0))->name, "black");
-        QCOMPARE(Colors::matchBasicColor(qRgb(255, 0, 0))->name, "red");
-        QCOMPARE(Colors::matchBasicColor(qRgb(200, 0, 0))->name, "red");
-        QCOMPARE(Colors::matchBasicColor(qRgb(90, 90, 10))->name, "olive");
-        QCOMPARE(Colors::matchBasicColor(qRgb(5, 90, 10))->name, "green");
-        QCOMPARE(Colors::matchBasicColor(qRgb(195, 17, 210))->name, "fuchsia");
-        QCOMPARE(Colors::matchBasicColor(qRgb(195, 200, 230))->name, "silver");
-        QCOMPARE(Colors::matchBasicColor(qRgb(240, 215, 230))->name, "white");
+    QCOMPARE(Colors::matchBasicColor(qRgb(0, 0, 0))->name, "black");
+    QCOMPARE(Colors::matchBasicColor(qRgb(255, 0, 0))->name, "red");
+    QCOMPARE(Colors::matchBasicColor(qRgb(200, 0, 0))->name, "red");
+    QCOMPARE(Colors::matchBasicColor(qRgb(90, 90, 10))->name, "olive");
+    QCOMPARE(Colors::matchBasicColor(qRgb(5, 90, 10))->name, "green");
+    QCOMPARE(Colors::matchBasicColor(qRgb(195, 17, 210))->name, "fuchsia");
+    QCOMPARE(Colors::matchBasicColor(qRgb(195, 200, 230))->name, "silver");
+    QCOMPARE(Colors::matchBasicColor(qRgb(240, 215, 230))->name, "white");
 }
 
 [[maybe_unused]] void ColorsTest::testMatchExtendedColor() {
-        QCOMPARE(Colors::matchExtendedColor(qRgb(0, 0, 0))->name, "black");
-        QCOMPARE(Colors::matchExtendedColor(qRgb(255, 0, 0))->name, "red");
-        QCOMPARE(Colors::matchExtendedColor(qRgb(135, 40, 230))->name, "blueviolet");
-        QCOMPARE(Colors::matchExtendedColor(qRgb(253, 155, 5))->name, "orange");
-        QCOMPARE(Colors::matchExtendedColor(qRgb(253, 240, 5))->name, "yellow");
-        QCOMPARE(Colors::matchExtendedColor(qRgb(221, 224, 215))->name, "gainsboro");
-        QCOMPARE(Colors::matchExtendedColor(qRgb(32, 178, 170))->name, "lightseagreen");
-        QCOMPARE(Colors::matchExtendedColor(qRgb(70, 210, 200))->name, "mediumturquoise");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(0, 0, 0))->name, "black");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(255, 0, 0))->name, "red");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(135, 40, 230))->name, "blueviolet");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(253, 155, 5))->name, "orange");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(253, 240, 5))->name, "yellow");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(221, 224, 215))->name, "gainsboro");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(32, 178, 170))->name, "lightseagreen");
+    QCOMPARE(Colors::matchExtendedColor(qRgb(70, 210, 200))->name, "mediumturquoise");
 }
 
 [[maybe_unused]] void ColorsTest::testColorItem() {
-        Colors::set(Colors::LineFore, qRgb(10, 20, 30));
-        QCOMPARE(Colors::get(Colors::LineFore), qRgb(10, 20, 30));
-        QCOMPARE(Colors::getDefault(Colors::LineFore), qRgb(255, 0, 0));
-        QCOMPARE(Colors::getRed(Colors::LineFore), 10);
-        QCOMPARE(Colors::getGreen(Colors::LineFore), 20);
-        QCOMPARE(Colors::getBlue(Colors::LineFore), 30);
+    Colors::set(Colors::LineFore, qRgb(10, 20, 30));
+    QCOMPARE(Colors::get(Colors::LineFore), qRgb(10, 20, 30));
+    QCOMPARE(Colors::getDefault(Colors::LineFore), qRgb(255, 0, 0));
+    QCOMPARE(Colors::getRed(Colors::LineFore), 10);
+    QCOMPARE(Colors::getGreen(Colors::LineFore), 20);
+    QCOMPARE(Colors::getBlue(Colors::LineFore), 30);
 }
 
 [[maybe_unused]] void ColorsTest::testOpacity() {
-        Colors::setAlpha(Colors::LineFore, 25);
-        QCOMPARE(Colors::getAlpha(Colors::LineFore), 25);
+    QCOMPARE(Colors::getAlpha(Colors::CrossHairOpacity), 0xE5);
+
+    Colors::setAlpha(Colors::LineFore, 25);
+    QCOMPARE(Colors::getAlpha(Colors::LineFore), 25);
 }
 
 

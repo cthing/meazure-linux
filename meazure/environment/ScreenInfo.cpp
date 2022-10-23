@@ -33,12 +33,13 @@ class ScreenInfo::Screen : public QRect {
 
 public:
     Screen(const QScreen* screen, bool primary) :
-        QRect(screen->geometry()),
-        m_name(screen->name()),
-        m_primary(primary),
-        m_platformRes(QSizeF(screen->physicalDotsPerInchX(), screen->physicalDotsPerInchY())),
-        m_useManualRes(ScreenInfo::defUseManualRes),
-        m_calInInches(ScreenInfo::defCalInInches) {
+            QRect(screen->geometry()),
+            m_name(screen->name()),
+            m_primary(primary),
+            m_platformRes(QSizeF(screen->physicalDotsPerInchX(), screen->physicalDotsPerInchY())),
+            m_useManualRes(ScreenInfo::defUseManualRes),
+            m_calInInches(ScreenInfo::defCalInInches),
+            m_currentRes(m_platformRes) {
     }
 
     /// Returns the descriptive name for the screen.
@@ -113,11 +114,11 @@ public:
 private:
     QString m_name;         ///< Displayable name for the screen
     bool m_primary;         ///< Indicates if the screen is the primary display
-    QSizeF m_currentRes;    ///< Current screen resolution, pixels per inch.
     QSizeF m_platformRes;   ///< Resolution reported by the window system.
     QSizeF m_manualRes;     ///< Manually calibrated resolution, pixels per inch.
     bool m_useManualRes;    ///< Indicates if manually calibrated resolution is used.
     bool m_calInInches;     ///< Indicates if calibration in inches or centimeters.
+    QSizeF m_currentRes;    ///< Current screen resolution, pixels per inch.
 };
 
 

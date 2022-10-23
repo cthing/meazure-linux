@@ -47,7 +47,7 @@ public:
     [[nodiscard]] const UnitsMgr& getUnitsMgr() const { return m_unitsMgr; }
 
 private:
-    MainWindow m_mainWindow;
     ScreenInfo m_screenInfo;
     UnitsMgr m_unitsMgr;
+    MainWindow m_mainWindow;
 };

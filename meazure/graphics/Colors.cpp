@@ -32,7 +32,7 @@ static ColorMap const defaultColors = {
         { Colors::CrossHairBack,    qRgb(0xFF, 0, 0) },
         { Colors::CrossHairBorder,  qRgb(0x50, 0x50, 0x50) },
         { Colors::CrossHairHilite,  qRgb(0xFF, 0xFF, 0) },
-        { Colors::CrossHairOpacity, qRgb(0xE5, 0, 0) },
+        { Colors::CrossHairOpacity, qRgba(0, 0, 0, 0xE5) },
         { Colors::RulerBack,        qRgb(0xFF, 0xFF, 0xFF) },
         { Colors::RulerBorder,      qRgb(0, 0, 0) },
         { Colors::RulerOpacity,     qRgb(0xE5, 0, 0) }

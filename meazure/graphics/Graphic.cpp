@@ -17,26 +17,13 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include <QWidget>
-#include <meazure/graphics/CrossHair.h>
+#include "Graphic.h"
 
 
-/// Contains the tool data, screen data and magnifier sections of the application.
-///
-class MainView : public QWidget {
-
-    Q_OBJECT
-
-public:
-    MainView();
-    ~MainView() override;
-
-    MainView(const MainView&) = delete;
-    MainView(MainView&&) = delete;
-    MainView& operator=(const MainView&) = delete;
-
-private:
-    CrossHair* m_crossHair;
-};
+Graphic::Graphic(QWidget *parent) : QWidget(parent) {
+    if (parent == nullptr) {
+        setWindowFlags(Qt::FramelessWindowHint);
+        setAttribute(Qt::WA_QuitOnClose, false);
+        setAttribute(Qt::WA_AlwaysShowToolTips, true);
+    }
+}

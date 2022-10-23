@@ -30,6 +30,11 @@ source_group(UI FILES ${UI_SOURCES})
 set(GRAPHICS_SOURCES
     graphics/Colors.cpp
     graphics/Colors.h
+    graphics/CrossHair.cpp
+    graphics/CrossHair.h
+    graphics/Graphic.cpp
+    graphics/Graphic.h
+    graphics/Plotter.h
     )
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 

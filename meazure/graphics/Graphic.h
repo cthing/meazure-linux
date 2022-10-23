@@ -20,23 +20,15 @@
 #pragma once
 
 #include <QWidget>
-#include <meazure/graphics/CrossHair.h>
 
 
-/// Contains the tool data, screen data and magnifier sections of the application.
+/// Base class for all graphic elements. Classes derived from this base class are used by the measurement tools
+/// to perform their function.
 ///
-class MainView : public QWidget {
+class Graphic : public QWidget {
 
     Q_OBJECT
 
 public:
-    MainView();
-    ~MainView() override;
-
-    MainView(const MainView&) = delete;
-    MainView(MainView&&) = delete;
-    MainView& operator=(const MainView&) = delete;
-
-private:
-    CrossHair* m_crossHair;
+    explicit Graphic(QWidget* parent);
 };
