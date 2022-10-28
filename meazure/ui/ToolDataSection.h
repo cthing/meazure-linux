@@ -19,7 +19,12 @@
 
 #pragma once
 
+#include "DataField.h"
+#include <meazure/tools/RadioTool.h>
+#include <meazure/units/Units.h>
 #include <QGroupBox>
+#include <QLabel>
+#include <limits>
 
 
 /// Presents the tool measurement information.
@@ -31,11 +36,59 @@ class ToolDataSection : public QGroupBox {
 public:
     ToolDataSection();
 
+private slots:
+    void radioToolSelected(RadioTool& tool);
+
+    void linearUnitsChanged(LinearUnitsId unitsId);
+    void angularUnitsChanged(AngularUnitsId unitsId);
+
+    void xy1PositionChanged(QPointF coord);
+    void xy2PositionChanged(QPointF coord);
+    void xyvPositionChanged(QPointF coord);
+    void widthHeightChanged(QSizeF widthHeight);
+    void distanceChanged(double distance);
+    void angleChanged(double angle);
+    void aspectChanged(double aspect);
+    void areaChanged(double area);
+
 private:
     static constexpr int fieldShortWidth { 7 };
     static constexpr int fieldLongWidth { 20 };
+    static constexpr int aspectPrecision { std::numeric_limits<float>::digits10 - 1 };
 
     /// Creates the text fields that provide the tool measurement display.
     ///
     void createFields();
+
+    QLabel* m_x1Label;
+    QLabel* m_y1Label;
+    QLabel* m_x2Label;
+    QLabel* m_y2Label;
+    QLabel* m_xvLabel;
+    QLabel* m_yvLabel;
+    QLabel* m_wLabel;
+    QLabel* m_hLabel;
+    QLabel* m_dLabel;
+    QLabel* m_aLabel;
+    QLabel* m_asLabel;
+    QLabel* m_arLabel;
+    DataField* m_x1Field;
+    DataField* m_y1Field;
+    DataField* m_x2Field;
+    DataField* m_y2Field;
+    DataField* m_xvField;
+    DataField* m_yvField;
+    DataField* m_wField;
+    DataField* m_hField;
+    DataField* m_dField;
+    DataField* m_aField;
+    DataField* m_asField;
+    DataField* m_arField;
+    QLabel* m_y1Units;
+    QLabel* m_y2Units;
+    QLabel* m_yvUnits;
+    QLabel* m_hUnits;
+    QLabel* m_dUnits;
+    QLabel* m_aUnits;
+    QLabel* m_arUnits;
 };

@@ -18,27 +18,30 @@
  */
 
 #include "ScreenDataSection.h"
-#include "DataField.h"
-#include <QLabel>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/App.h>
 #include <QGridLayout>
 #include <QPushButton>
 #include <QIcon>
 
 
-ScreenDataSection::ScreenDataSection() {
+ScreenDataSection::ScreenDataSection() {    // NOLINT(cppcoreguidelines-pro-type-member-init)
     createFields();
+
+    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ScreenDataSection::linearUnitsChanged);
 }
 
 void ScreenDataSection::createFields() {
     auto* wLabel = new QLabel(tr("W:"));
-    auto* wEdit = new DataField(fieldWidth, false);
+    m_wField = new DataField(fieldWidth, false, true);
 
     auto* hLabel = new QLabel(tr("H:"));
-    auto* hEdit = new DataField(fieldWidth, false);
-    auto* hUnits = new QLabel(tr("in"));
+    m_hField = new DataField(fieldWidth, false, true);
+    m_hUnits = new QLabel();
     auto* hLayout = new QHBoxLayout();
-    hLayout->addWidget(hEdit);
-    hLayout->addWidget(hUnits);
+    hLayout->addWidget(m_hField);
+    hLayout->addWidget(m_hUnits);
 
     auto* calButton = new QPushButton(QIcon(":/images/CalWarning.svg"), "");
     calButton->setToolTip(tr("Calibrate screen resolution"));
@@ -46,25 +49,38 @@ void ScreenDataSection::createFields() {
     hLayout->addWidget(calButton);
 
     auto* rxLabel = new QLabel(tr("Rx:"));
-    auto* rxEdit = new DataField(fieldWidth, false);
+    m_rxField = new DataField(fieldWidth, false, true);
 
     auto* ryLabel = new QLabel(tr("Ry:"));
-    auto* ryEdit = new DataField(fieldWidth, false);
-    auto* ryUnits = new QLabel(tr("px / in"));
+    m_ryField = new DataField(fieldWidth, false, true);
+    m_ryUnits = new QLabel();
     auto* ryLayout = new QHBoxLayout();
-    ryLayout->addWidget(ryEdit);
-    ryLayout->addWidget(ryUnits);
+    ryLayout->addWidget(m_ryField);
+    ryLayout->addWidget(m_ryUnits);
 
     auto* layout = new QGridLayout();
     layout->addWidget(wLabel, 0, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(wEdit, 0, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_wField, 0, 1, Qt::AlignLeft | Qt::AlignVCenter);
     layout->addWidget(hLabel, 0, 3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(hLayout, 0, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
     layout->addWidget(rxLabel, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(rxEdit, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_rxField, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
     layout->addWidget(ryLabel, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(ryLayout, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
     setLayout(layout);
+}
+
+void ScreenDataSection::linearUnitsChanged(LinearUnitsId) {
+    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+    const LinearUnits* linearUnits = unitsMgr.getLinearUnits();
+
+    m_hUnits->setText(linearUnits->getLengthLabel());
+    m_ryUnits->setText(linearUnits->getResLabel());
+
+    m_wField->setDecimals(linearUnits->getDisplayPrecision(Width));
+    m_hField->setDecimals(linearUnits->getDisplayPrecision(Height));
+    m_rxField->setDecimals(linearUnits->getDisplayPrecision(ResX));
+    m_ryField->setDecimals(linearUnits->getDisplayPrecision(ResY));
 }

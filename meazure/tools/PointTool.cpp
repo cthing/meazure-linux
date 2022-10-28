@@ -17,37 +17,28 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include <meazure/units/Units.h>
-#include "DataField.h"
-#include <QGroupBox>
-#include <QLabel>
+#include "PointTool.h"
 
 
-/// Presents the display screen information.
-///
-class ScreenDataSection : public QGroupBox {
+PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                     QObject *parent) : RadioTool(parent) {
+    m_crosshair = new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"));
+}
 
-    Q_OBJECT
+PointTool::~PointTool() {
+    delete m_crosshair;
+}
 
-public:
-    ScreenDataSection();
+void PointTool::setEnabled(bool enable) {
+    RadioTool::setEnabled(enable);
 
-private slots:
-    void linearUnitsChanged(LinearUnitsId unitsId);
+    if (enable) {
+        m_crosshair->show();
+    } else {
+        m_crosshair->hide();
+    }
+}
 
-private:
-    static constexpr int fieldWidth { 7 };
-
-    /// Creates the text fields that provide the screen information display.
-    ///
-    void createFields();
-
-    DataField* m_wField;
-    DataField* m_hField;
-    DataField* m_rxField;
-    DataField* m_ryField;
-    QLabel* m_hUnits;
-    QLabel* m_ryUnits;
-};
+void PointTool::flash() {
+    m_crosshair->flash();
+}

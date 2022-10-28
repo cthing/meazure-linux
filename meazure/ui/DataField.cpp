@@ -22,13 +22,17 @@
 #include <QStyleOptionSpinBox>
 #include <QFontMetrics>
 #include <QString>
+#include <QEvent>
 #include <limits>
 
 
-DataField::DataField(int charWidth, bool showButtons, QWidget *parent) :
-        QDoubleSpinBox(parent), m_charWidth(charWidth) {
+DataField::DataField(int charWidth, bool showButtons, bool readOnly, QWidget *parent) :
+        QDoubleSpinBox(parent),
+        m_charWidth(charWidth),
+        m_defaultBackground(palette().color(QPalette::Base)) {
     setButtonSymbols(showButtons ? UpDownArrows : NoButtons);
     setRange(-std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+    setReadOnly(readOnly);
 }
 
 QSize DataField::minimumSizeHint() const {
@@ -46,4 +50,14 @@ QSize DataField::sizeHint() const {
     initStyleOption(&opt);
 
     return style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(w, h), this);
+}
+
+bool DataField::event(QEvent* ev)  {
+    if (ev->type() == QEvent::ReadOnlyChange) {
+        QPalette palette;
+        palette.setColor(QPalette::Base, isReadOnly() ? m_readOnlyBackground : m_defaultBackground);
+        setPalette(palette);
+    }
+
+    return QDoubleSpinBox::event(ev);
 }

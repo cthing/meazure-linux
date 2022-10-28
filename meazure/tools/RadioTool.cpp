@@ -17,37 +17,11 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include <meazure/units/Units.h>
-#include "DataField.h"
-#include <QGroupBox>
-#include <QLabel>
+#include "RadioTool.h"
 
 
-/// Presents the display screen information.
-///
-class ScreenDataSection : public QGroupBox {
+RadioTool::RadioTool(QObject *parent) : Tool(parent) {
+}
 
-    Q_OBJECT
-
-public:
-    ScreenDataSection();
-
-private slots:
-    void linearUnitsChanged(LinearUnitsId unitsId);
-
-private:
-    static constexpr int fieldWidth { 7 };
-
-    /// Creates the text fields that provide the screen information display.
-    ///
-    void createFields();
-
-    DataField* m_wField;
-    DataField* m_hField;
-    DataField* m_rxField;
-    DataField* m_ryField;
-    QLabel* m_hUnits;
-    QLabel* m_ryUnits;
-};
+void RadioTool::flash() {
+}

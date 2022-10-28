@@ -177,7 +177,7 @@ public:
     ///
     /// @return Array of decimal places for each linear measurement type.
     ///
-    const Units::DisplayPrecisions& getLinearDisplayPrecisions(LinearUnitsId unitsId) {
+    [[nodiscard]] const Units::DisplayPrecisions& getLinearDisplayPrecisions(LinearUnitsId unitsId) const {
         return m_linearUnitsMap.at(unitsId)->getDisplayPrecisions();
     }
 
@@ -187,7 +187,7 @@ public:
     ///
     /// @return Array of decimal places for each linear measurement type.
     ///
-    const Units::DisplayPrecisions& getLinearDefaultPrecisions(LinearUnitsId unitsId) {
+    [[nodiscard]] const Units::DisplayPrecisions& getLinearDefaultPrecisions(LinearUnitsId unitsId) const {
         return m_linearUnitsMap.at(unitsId)->getDefaultPrecisions();
     }
 
@@ -206,7 +206,7 @@ public:
     ///
     /// @return Array of decimal places.
     ///
-    const Units::DisplayPrecisions& getAngularDisplayPrecisions(AngularUnitsId unitsId) {
+    [[nodiscard]] const Units::DisplayPrecisions& getAngularDisplayPrecisions(AngularUnitsId unitsId) const {
         return m_angularUnitsMap.at(unitsId)->getDisplayPrecisions();
     }
 
@@ -216,7 +216,7 @@ public:
     ///
     /// @return Array of decimal places.
     ///
-    const Units::DisplayPrecisions& getAngularDefaultPrecisions(AngularUnitsId unitsId) {
+    [[nodiscard]] const Units::DisplayPrecisions& getAngularDefaultPrecisions(AngularUnitsId unitsId) const {
         return m_angularUnitsMap.at(unitsId)->getDefaultPrecisions();
     }
 

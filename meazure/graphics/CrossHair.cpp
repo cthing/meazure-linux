@@ -28,7 +28,7 @@
 
 
 CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QWidget *parent, int id, const QString& tooltip, QRgb backgroundColor, QRgb hiliteColor,
+                     QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb hiliteColor,
                      QRgb borderColor, QRgb opacity) :
         Graphic(parent),
         m_screenProvider(screenInfoProvider),

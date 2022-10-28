@@ -40,15 +40,15 @@ public:
     /// @param[in] screenInfoProvider Information about the display screens
     /// @param[in] unitsProvider Measurement units
     /// @param[in] parent Parent widget for the crosshair or nullptr for a top level crosshair
-    /// @param[in] id Caller defined identifier for the crosshair
     /// @param[in] tooltip Tooltip shown when hovering over the crosshair
+    /// @param[in] id Caller defined identifier for the crosshair
     /// @param[in] backgroundColor Crosshair background color
     /// @param[in] hiliteColor Crosshair hilite color shown when the pointer is over the crosshair and during flashing
     /// @param[in] borderColor Crosshair border color
     /// @param[in] opacity Crosshair opacity
     ///
     explicit CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                       QWidget* parent = nullptr, int id = -1, const QString& tooltip = "",
+                       QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
                        QRgb backgroundColor = Colors::get(Colors::CrossHairBack),
                        QRgb hiliteColor = Colors::get(Colors::CrossHairHilite),
                        QRgb borderColor = Colors::get(Colors::CrossHairBorder),

@@ -22,6 +22,7 @@
 #include "ui/MainWindow.h"
 #include "environment/ScreenInfo.h"
 #include "units/UnitsMgr.h"
+#include "tools/ToolMgr.h"
 #include <QApplication>
 
 
@@ -43,11 +44,17 @@ public:
     App(App&&) = delete;
     App& operator=(const App&) = delete;
 
+    static inline App* instance() {
+        return dynamic_cast<App*>(QApplication::instance());
+    }
+
     [[nodiscard]] const ScreenInfo& getScreenInfo() const { return m_screenInfo; }
-    [[nodiscard]] const UnitsMgr& getUnitsMgr() const { return m_unitsMgr; }
+    [[nodiscard]] UnitsMgr& getUnitsMgr() { return m_unitsMgr; }
+    [[nodiscard]] ToolMgr& getToolMgr() { return m_toolMgr; }
 
 private:
     ScreenInfo m_screenInfo;
     UnitsMgr m_unitsMgr;
+    ToolMgr m_toolMgr;
     MainWindow m_mainWindow;
 };

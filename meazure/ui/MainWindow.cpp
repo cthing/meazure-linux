@@ -19,6 +19,12 @@
 
 #include "MainWindow.h"
 #include "MainView.h"
+#include <meazure/App.h>
+#include <meazure/tools/ToolMgr.h>
+#include <meazure/tools/CursorTool.h>
+#include <meazure/tools/PointTool.h>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/units/Units.h>
 #include <QMenu>
 #include <QMenuBar>
 #include <QStatusBar>
@@ -32,20 +38,34 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     createMenus();
     createToolbar();
 
-    statusBar()->showMessage(tr("Hello"));
+    const ToolMgr& toolMgr = App::instance()->getToolMgr();
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
+
+    m_cursorToolAction->trigger();
+    m_pixelUnitsAction->trigger();
+    m_degreeUnitsAction->trigger();
 }
 
 void MainWindow::createActions() {
+    ToolMgr& toolMgr = App::instance()->getToolMgr();
+    UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+
+    // Tool actions
+
     auto* radioToolGroup = new QActionGroup(this);
     radioToolGroup->setExclusive(true);
 
     m_cursorToolAction = new QAction(QIcon(":/images/CursorTool.svg"), tr("&Cursor"), radioToolGroup);
     m_cursorToolAction->setCheckable(true);
     m_cursorToolAction->setToolTip("Tracks cursor position");
+    connect(m_cursorToolAction, &QAction::triggered, this,
+            [&toolMgr] { toolMgr.selectRadioTool(CursorTool::toolName); });
 
     m_pointToolAction = new QAction(QIcon(":/images/PointTool.svg"), tr("&Point"), radioToolGroup);
     m_pointToolAction->setCheckable(true);
     m_pointToolAction->setToolTip("Measures a point");
+    connect(m_pointToolAction, &QAction::triggered, this,
+            [&toolMgr] { toolMgr.selectRadioTool(PointTool::toolName); });
 
     m_lineToolAction = new QAction(QIcon(":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
     m_lineToolAction->setCheckable(true);
@@ -70,10 +90,61 @@ void MainWindow::createActions() {
     m_gridToolAction = new QAction(QIcon(":/images/GridTool.svg"), tr("&Screen Grid"), this);
     m_gridToolAction->setCheckable(true);
     m_gridToolAction->setToolTip("Adds screen grid");
+
+    // Units actions
+
+    auto* linearUnitsGroup = new QActionGroup(this);
+    linearUnitsGroup->setExclusive(true);
+
+    m_pixelUnitsAction = new QAction(tr("&Pixels"), linearUnitsGroup);
+    m_pixelUnitsAction->setCheckable(true);
+    connect(m_pixelUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(PixelsId); });
+
+    m_twipUnitsAction = new QAction(tr("&Twips"), linearUnitsGroup);
+    m_twipUnitsAction->setCheckable(true);
+    connect(m_twipUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(TwipsId); });
+
+    m_pointUnitsAction = new QAction(tr("P&oints"), linearUnitsGroup);
+    m_pointUnitsAction->setCheckable(true);
+    connect(m_pointUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(PointsId); });
+
+    m_picaUnitsAction = new QAction(tr("Pic&as"), linearUnitsGroup);
+    m_picaUnitsAction->setCheckable(true);
+    connect(m_picaUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(PicasId); });
+
+    m_inchUnitsAction = new QAction(tr("&Inches"), linearUnitsGroup);
+    m_inchUnitsAction->setCheckable(true);
+    connect(m_inchUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(InchesId); });
+
+    m_centimeterUnitsAction = new QAction(tr("&Centimeters"), linearUnitsGroup);
+    m_centimeterUnitsAction->setCheckable(true);
+    connect(m_centimeterUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(CentimetersId); });
+
+    m_millimeterUnitsAction = new QAction(tr("&Millimeters"), linearUnitsGroup);
+    m_millimeterUnitsAction->setCheckable(true);
+    connect(m_millimeterUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(MillimetersId); });
+
+    m_customUnitsAction = new QAction(tr("[custom]"), linearUnitsGroup);
+    m_customUnitsAction->setCheckable(true);
+
+    m_defineCustomUnitsAction = new QAction(tr("Define custom..."), linearUnitsGroup);
+    m_defineCustomUnitsAction->setCheckable(true);
+
+    auto* angularUnitsGroup = new QActionGroup(this);
+    angularUnitsGroup->setExclusive(true);
+
+    m_degreeUnitsAction = new QAction(tr("&Degrees"), angularUnitsGroup);
+    m_degreeUnitsAction->setCheckable(true);
+    connect(m_degreeUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setAngularUnits(DegreesId); });
+
+    m_radianUnitsAction = new QAction(tr("&Radians"), angularUnitsGroup);
+    m_radianUnitsAction->setCheckable(true);
+    connect(m_radianUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setAngularUnits(RadiansId); });
 }
 
 void MainWindow::createMenus() {
     // File menu
+
     QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
 
     fileMenu->addSeparator();
@@ -85,6 +156,7 @@ void MainWindow::createMenus() {
     fileMenu->addAction(exitAct);
 
     // Tools menu
+
     QMenu* toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(m_cursorToolAction);
     toolsMenu->addAction(m_pointToolAction);
@@ -95,6 +167,22 @@ void MainWindow::createMenus() {
     toolsMenu->addSeparator();
     toolsMenu->addAction(m_rulerToolAction);
     toolsMenu->addAction(m_gridToolAction);
+
+    // Units menu
+
+    QMenu* unitsMenu = menuBar()->addMenu(tr("&Units"));
+    unitsMenu->addAction(m_pixelUnitsAction);
+    unitsMenu->addAction(m_twipUnitsAction);
+    unitsMenu->addAction(m_pointUnitsAction);
+    unitsMenu->addAction(m_picaUnitsAction);
+    unitsMenu->addAction(m_inchUnitsAction);
+    unitsMenu->addAction(m_centimeterUnitsAction);
+    unitsMenu->addAction(m_millimeterUnitsAction);
+    unitsMenu->addAction(m_customUnitsAction);
+    unitsMenu->addAction(m_defineCustomUnitsAction);
+    toolsMenu->addSeparator();
+    unitsMenu->addAction(m_degreeUnitsAction);
+    unitsMenu->addAction(m_radianUnitsAction);
 }
 
 void MainWindow::createToolbar() {
@@ -113,4 +201,8 @@ void MainWindow::createToolbar() {
 void MainWindow::createCentralWidget() {
     QWidget* mainView = new MainView();
     setCentralWidget(mainView);
+}
+
+void MainWindow::radioToolSelected(RadioTool& tool) {
+    statusBar()->showMessage(tool.getInstructions());
 }

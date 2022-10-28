@@ -18,111 +18,233 @@
  */
 
 #include "ToolDataSection.h"
-#include "DataField.h"
-#include <QLabel>
+#include <meazure/tools/ToolMgr.h>
+#include <meazure/tools/RadioToolTraits.h>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/App.h>
 #include <QGridLayout>
 
 
-ToolDataSection::ToolDataSection() {
+ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type-member-init)
     createFields();
+
+    const ToolMgr& toolMgr = App::instance()->getToolMgr();
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, &ToolDataSection::radioToolSelected);
+    connect(&toolMgr, &ToolMgr::xy1PositionChanged, this, &ToolDataSection::xy1PositionChanged);
+    connect(&toolMgr, &ToolMgr::xy2PositionChanged, this, &ToolDataSection::xy2PositionChanged);
+    connect(&toolMgr, &ToolMgr::xyvPositionChanged, this, &ToolDataSection::xyvPositionChanged);
+    connect(&toolMgr, &ToolMgr::widthHeightChanged, this, &ToolDataSection::widthHeightChanged);
+    connect(&toolMgr, &ToolMgr::distanceChanged, this, &ToolDataSection::distanceChanged);
+    connect(&toolMgr, &ToolMgr::angleChanged, this, &ToolDataSection::angleChanged);
+    connect(&toolMgr, &ToolMgr::aspectChanged, this, &ToolDataSection::aspectChanged);
+    connect(&toolMgr, &ToolMgr::areaChanged, this, &ToolDataSection::areaChanged);
+
+
+    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
+    connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, &ToolDataSection::angularUnitsChanged);
 }
 
 void ToolDataSection::createFields() {
-    auto* x1Label = new QLabel(tr("X1:"));
-    auto* x1Edit = new DataField(fieldShortWidth, true);
+    m_x1Label = new QLabel(tr("X1:"));
+    m_x1Field = new DataField(fieldShortWidth, true);
 
-    auto* y1Label = new QLabel(tr("Y1:"));
-    auto* y1Edit = new DataField(fieldShortWidth, true);
-    auto* y1Units = new QLabel(tr("in"));
+    m_y1Label = new QLabel(tr("Y1:"));
+    m_y1Field = new DataField(fieldShortWidth, true);
+    m_y1Units = new QLabel();
     auto* y1Layout = new QHBoxLayout();
-    y1Layout->addWidget(y1Edit);
-    y1Layout->addWidget(y1Units);
+    y1Layout->addWidget(m_y1Field);
+    y1Layout->addWidget(m_y1Units);
 
-    auto* x2Label = new QLabel(tr("X2:"));
-    auto* x2Edit = new DataField(fieldShortWidth, true);
+    m_x2Label = new QLabel(tr("X2:"));
+    m_x2Field = new DataField(fieldShortWidth, true);
 
-    auto* y2Label = new QLabel(tr("Y2:"));
-    auto* y2Edit = new DataField(fieldShortWidth, true);
-    auto* y2Units = new QLabel(tr("in"));
+    m_y2Label = new QLabel(tr("Y2:"));
+    m_y2Field = new DataField(fieldShortWidth, true);
+    m_y2Units = new QLabel();
     auto* y2Layout = new QHBoxLayout();
-    y2Layout->addWidget(y2Edit);
-    y2Layout->addWidget(y2Units);
+    y2Layout->addWidget(m_y2Field);
+    y2Layout->addWidget(m_y2Units);
 
-    auto* xvLabel = new QLabel(tr("XV:"));
-    auto* xvEdit = new DataField(fieldShortWidth, true);
+    m_xvLabel = new QLabel(tr("XV:"));
+    m_xvField = new DataField(fieldShortWidth, true);
 
-    auto* yvLabel = new QLabel(tr("YV:"));
-    auto* yvEdit = new DataField(fieldShortWidth, true);
-    auto* yvUnits = new QLabel(tr("in"));
+    m_yvLabel = new QLabel(tr("YV:"));
+    m_yvField = new DataField(fieldShortWidth, true);
+    m_yvUnits = new QLabel();
     auto* yvLayout = new QHBoxLayout();
-    yvLayout->addWidget(yvEdit);
-    yvLayout->addWidget(yvUnits);
+    yvLayout->addWidget(m_yvField);
+    yvLayout->addWidget(m_yvUnits);
 
-    auto* wLabel = new QLabel(tr("W:"));
-    auto* wEdit = new DataField(fieldShortWidth, false);
+    m_wLabel = new QLabel(tr("W:"));
+    m_wField = new DataField(fieldShortWidth, false);
 
-    auto* hLabel = new QLabel(tr("H:"));
-    auto* hEdit = new DataField(fieldShortWidth, false);
-    auto* hUnits = new QLabel(tr("in"));
+    m_hLabel = new QLabel(tr("H:"));
+    m_hField = new DataField(fieldShortWidth, false);
+    m_hUnits = new QLabel();
     auto* hLayout = new QHBoxLayout();
-    hLayout->addWidget(hEdit);
-    hLayout->addWidget(hUnits);
+    hLayout->addWidget(m_hField);
+    hLayout->addWidget(m_hUnits);
 
-    auto* dLabel = new QLabel(tr("D:"));
-    auto* dEdit = new DataField(fieldShortWidth, false);
-    auto* dUnits = new QLabel(tr("in"));
+    m_dLabel = new QLabel(tr("D:"));
+    m_dField = new DataField(fieldShortWidth, false);
+    m_dUnits = new QLabel();
     auto* dLayout = new QHBoxLayout();
-    dLayout->addWidget(dEdit);
-    dLayout->addWidget(dUnits);
+    dLayout->addWidget(m_dField);
+    dLayout->addWidget(m_dUnits);
 
-    auto* aLabel = new QLabel(tr("A:"));
-    auto* aEdit = new DataField(fieldShortWidth, false);
-    auto* aUnits = new QLabel(tr("deg"));
+    m_aLabel = new QLabel(tr("A:"));
+    m_aField = new DataField(fieldShortWidth, false);
+    m_aUnits = new QLabel();
     auto* aLayout = new QHBoxLayout();
-    aLayout->addWidget(aEdit);
-    aLayout->addWidget(aUnits);
+    aLayout->addWidget(m_aField);
+    aLayout->addWidget(m_aUnits);
 
-    auto* asLabel = new QLabel(tr("As:"));
-    auto* asEdit = new DataField(fieldLongWidth, false);
+    m_asLabel = new QLabel(tr("As:"));
+    m_asField = new DataField(fieldLongWidth, false);
 
-    auto* arLabel = new QLabel(tr("Ar:"));
-    auto* arEdit = new DataField(fieldLongWidth, false);
-    auto* arUnits = new QLabel(tr("sq. in"));
+    m_arLabel = new QLabel(tr("Ar:"));
+    m_arField = new DataField(fieldLongWidth, false);
+    m_arUnits = new QLabel();
     auto* arLayout = new QHBoxLayout();
-    arLayout->addWidget(arEdit);
-    arLayout->addWidget(arUnits);
+    arLayout->addWidget(m_arField);
+    arLayout->addWidget(m_arUnits);
 
     auto* layout = new QGridLayout();
-    layout->addWidget(x1Label, 0, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(x1Edit, 0, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(y1Label, 0, 3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_x1Label, 0, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_x1Field, 0, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_y1Label, 0, 3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(y1Layout, 0, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(x2Label, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(x2Edit, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(y2Label, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_x2Label, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_x2Field, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_y2Label, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(y2Layout, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(xvLabel, 2, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(xvEdit, 2, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(yvLabel, 2, 3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_xvLabel, 2, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_xvField, 2, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_yvLabel, 2, 3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(yvLayout, 2, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(wLabel, 3, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(wEdit, 3, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(hLabel, 3, 3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_wLabel, 3, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_wField, 3, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_hLabel, 3, 3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(hLayout, 3, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(dLabel, 4, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_dLabel, 4, 0, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(dLayout, 4, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(aLabel, 4, 3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_aLabel, 4, 3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(aLayout, 4, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(asLabel, 5, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(asEdit, 5, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_asLabel, 5, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_asField, 5, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(arLabel, 6, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_arLabel, 6, 0, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(arLayout, 6, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
     setLayout(layout);
+}
+
+void ToolDataSection::radioToolSelected(RadioTool& tool) {
+    const RadioToolTraits traits = tool.getTraits();
+
+    auto configure = [&traits](RadioToolTrait availableTrait, RadioToolTrait readOnlyTrait, QLabel* label,
+            DataField* field, QLabel* units = nullptr) {
+        const bool enabled = ((traits & availableTrait) != 0);
+        const bool readOnly = ((traits & readOnlyTrait) != 0);
+
+        label->setEnabled(enabled);
+        field->setEnabled(enabled);
+        field->setReadOnly(readOnly);
+        if (units != nullptr) {
+            units->setEnabled(enabled);
+        }
+    };
+
+    configure(XY1Available, XY1ReadOnly, m_x1Label, m_x1Field);
+    configure(XY1Available, XY1ReadOnly, m_y1Label, m_y1Field, m_y1Units);
+
+    configure(XY2Available, XY2ReadOnly, m_x2Label, m_x2Field);
+    configure(XY2Available, XY2ReadOnly, m_y2Label, m_y2Field, m_y2Units);
+
+    configure(XYVAvailable, XYVReadOnly, m_xvLabel, m_xvField);
+    configure(XYVAvailable, XYVReadOnly, m_yvLabel, m_yvField, m_yvUnits);
+
+    configure(WHAvailable, WHReadOnly, m_wLabel, m_wField);
+    configure(WHAvailable, WHReadOnly, m_hLabel, m_hField, m_hUnits);
+
+    configure(DistAvailable, DistReadOnly, m_dLabel, m_dField, m_dUnits);
+    configure(AngleAvailable, AngleReadOnly, m_aLabel, m_aField, m_aUnits);
+    configure(AreaAvailable, AreaReadOnly, m_arLabel, m_arField, m_arUnits);
+    configure(AspectAvailable, AspectReadOnly, m_asLabel, m_asField);
+}
+
+void ToolDataSection::linearUnitsChanged(LinearUnitsId) {
+    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+    const LinearUnits* linearUnits = unitsMgr.getLinearUnits();
+
+    const QString lengthLabel = linearUnits->getLengthLabel();
+    m_y1Units->setText(lengthLabel);
+    m_y2Units->setText(lengthLabel);
+    m_yvUnits->setText(lengthLabel);
+    m_hUnits->setText(lengthLabel);
+    m_dUnits->setText(lengthLabel);
+    m_arUnits->setText(linearUnits->getAreaLabel());
+
+    m_x1Field->setDecimals(linearUnits->getDisplayPrecision(XCoord));
+    m_y1Field->setDecimals(linearUnits->getDisplayPrecision(YCoord));
+    m_x2Field->setDecimals(linearUnits->getDisplayPrecision(XCoord));
+    m_y2Field->setDecimals(linearUnits->getDisplayPrecision(YCoord));
+    m_xvField->setDecimals(linearUnits->getDisplayPrecision(XCoord));
+    m_yvField->setDecimals(linearUnits->getDisplayPrecision(YCoord));
+    m_wField->setDecimals(linearUnits->getDisplayPrecision(Width));
+    m_hField->setDecimals(linearUnits->getDisplayPrecision(Height));
+    m_dField->setDecimals(linearUnits->getDisplayPrecision(Distance));
+    m_asField->setDecimals(aspectPrecision);
+    m_arField->setDecimals(linearUnits->getDisplayPrecision(Area));
+}
+
+void ToolDataSection::angularUnitsChanged(AngularUnitsId) {
+    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+    const AngularUnits* angularUnits = unitsMgr.getAngularUnits();
+
+    m_aUnits->setText(angularUnits->getLabel());
+
+    m_aField->setDecimals(angularUnits->getDisplayPrecision(Angle));
+}
+
+void ToolDataSection::xy1PositionChanged(QPointF coord) {
+    m_x1Field->setValue(coord.x());
+    m_y1Field->setValue(coord.y());
+}
+
+void ToolDataSection::xy2PositionChanged(QPointF coord) {
+    m_x2Field->setValue(coord.x());
+    m_y2Field->setValue(coord.y());
+}
+
+void ToolDataSection::xyvPositionChanged(QPointF coord) {
+    m_xvField->setValue(coord.x());
+    m_yvField->setValue(coord.y());
+}
+
+void ToolDataSection::widthHeightChanged(QSizeF widthHeight) {
+    m_wField->setValue(widthHeight.width());
+    m_hField->setValue(widthHeight.height());
+}
+
+void ToolDataSection::distanceChanged(double distance) {
+    m_dField->setValue(distance);
+}
+
+void ToolDataSection::angleChanged(double angle) {
+    m_aField->setValue(angle);
+}
+
+void ToolDataSection::aspectChanged(double aspect) {
+    m_asField->setValue(aspect);
+}
+
+void ToolDataSection::areaChanged(double area) {
+    m_arField->setValue(area);
 }

@@ -38,6 +38,21 @@ set(GRAPHICS_SOURCES
     )
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 
+set(TOOLS_SOURCES
+    tools/CursorTool.cpp
+    tools/CursorTool.h
+    tools/PointTool.cpp
+    tools/PointTool.h
+    tools/RadioTool.cpp
+    tools/RadioTool.h
+    tools/RadioToolTraits.h
+    tools/Tool.cpp
+    tools/Tool.h
+    tools/ToolMgr.cpp
+    tools/ToolMgr.h
+    )
+source_group(TOOLS FILES ${TOOLS_SOURCES})
+
 set(PROFILE_SOURCES
     profile/FileProfile.cpp
     profile/FileProfile.h
@@ -87,6 +102,7 @@ set(MEAZURE_SOURCES
     ${TOP_SOURCES}
     ${UI_SOURCES}
     ${GRAPHICS_SOURCES}
+    ${TOOLS_SOURCES}
     ${PROFILE_SOURCES}
     ${XML_SOURCES}
     ${UTILS_SOURCES}

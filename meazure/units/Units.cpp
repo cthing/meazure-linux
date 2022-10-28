@@ -72,7 +72,7 @@ AngularUnits::AngularUnits(AngularUnitsId unitsId, const QString& unitsStr) : Un
 }
 
 QString AngularUnits::format(AngularMeasurementId id, double value) const {
-    return QString::number(value, 'f', getDisplayPrecisions()[id]);
+    return QString::number(value, 'f', getDisplayPrecisions().at(id));
 }
 
 
@@ -136,7 +136,7 @@ bool LinearUnits::isResRequired() const {
 }
 
 QString LinearUnits::format(LinearMeasurementId id, double value) const {
-    return QString::number(value, 'f', getDisplayPrecisions()[id]);
+    return QString::number(value, 'f', getDisplayPrecisions().at(id));
 }
 
 QString LinearUnits::getAreaLabel() const {

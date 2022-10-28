@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <meazure/tools/RadioTool.h>
 #include <QMainWindow>
 #include <QAction>
 
@@ -31,6 +32,9 @@ class MainWindow : public QMainWindow {
 
 public:
     MainWindow();
+
+private slots:
+    void radioToolSelected(RadioTool& tool);
 
 private:
     /// Creates actions that are referenced in multiple places in the application.
@@ -57,4 +61,16 @@ private:
     QAction* m_windowToolAction;
     QAction* m_rulerToolAction;
     QAction* m_gridToolAction;
+
+    QAction* m_pixelUnitsAction;
+    QAction* m_twipUnitsAction;
+    QAction* m_pointUnitsAction;
+    QAction* m_picaUnitsAction;
+    QAction* m_inchUnitsAction;
+    QAction* m_centimeterUnitsAction;
+    QAction* m_millimeterUnitsAction;
+    QAction* m_customUnitsAction;
+    QAction* m_defineCustomUnitsAction;
+    QAction* m_degreeUnitsAction;
+    QAction* m_radianUnitsAction;
 };

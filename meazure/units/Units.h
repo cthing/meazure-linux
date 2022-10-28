@@ -243,6 +243,15 @@ public:
     ///
     static bool isSupplementalAngle() { return m_supplementalAngle; }
 
+    /// Obtains the number of decimal places to display the specified measurement.
+    ///
+    /// @param[in] id Identifier of measurement
+    /// @return Number of decimal places to display the specified measurement.
+    ///
+    [[nodiscard]] int getDisplayPrecision(AngularMeasurementId id) const {
+        return getDisplayPrecisions().at(id);
+    }
+
     /// Formats the specified angular measurement value using the precision for the specified measurement ID.
     ///
     /// @param[in] id Identifier for the angular units whose precision is to be used to format the specified value.
@@ -407,6 +416,15 @@ public:
     ///         implementation always returns true.
     ///
     [[nodiscard]] virtual bool isResRequired() const;
+
+    /// Obtains the number of decimal places to display the specified measurement.
+    ///
+    /// @param[in] id Identifier of measurement
+    /// @return Number of decimal places to display the specified measurement.
+    ///
+    [[nodiscard]] int getDisplayPrecision(LinearMeasurementId id) const {
+        return getDisplayPrecisions().at(id);
+    }
 
     /// Formats the specified linear measurement value using the precision for the specified measurement ID.
     ///

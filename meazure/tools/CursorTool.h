@@ -19,35 +19,37 @@
 
 #pragma once
 
-#include <meazure/units/Units.h>
-#include "DataField.h"
-#include <QGroupBox>
-#include <QLabel>
+#include "RadioTool.h"
+#include "RadioToolTraits.h"
+#include <QObject>
+#include <QString>
 
 
-/// Presents the display screen information.
+/// Cursor position measurement tool. This tool measures the position of the mouse pointer.
 ///
-class ScreenDataSection : public QGroupBox {
+class CursorTool : public RadioTool {
 
     Q_OBJECT
 
 public:
-    ScreenDataSection();
+    static constexpr const char* toolName { "CursorTool" };
 
-private slots:
-    void linearUnitsChanged(LinearUnitsId unitsId);
+    explicit CursorTool(QObject* parent = nullptr);
+
+    [[nodiscard]] const char* getName() const override {
+        return toolName;
+    }
+
+    [[nodiscard]] RadioToolTraits getTraits() const override {
+        return traits;
+    }
+
+    [[nodiscard]] QString getInstructions() const override {
+        return tr("Cursor hotspot is measurement point");
+    }
+
+    void setEnabled(bool enable) override;
 
 private:
-    static constexpr int fieldWidth { 7 };
-
-    /// Creates the text fields that provide the screen information display.
-    ///
-    void createFields();
-
-    DataField* m_wField;
-    DataField* m_hField;
-    DataField* m_rxField;
-    DataField* m_ryField;
-    QLabel* m_hUnits;
-    QLabel* m_ryUnits;
+    static constexpr RadioToolTraits traits { XY1ReadOnly };
 };
