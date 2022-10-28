@@ -37,8 +37,8 @@ public:
             m_name(screen->name()),
             m_primary(primary),
             m_platformRes(QSizeF(screen->physicalDotsPerInchX(), screen->physicalDotsPerInchY())),
-            m_useManualRes(ScreenInfo::defUseManualRes),
-            m_calInInches(ScreenInfo::defCalInInches),
+            m_useManualRes(ScreenInfo::k_defUseManualRes),
+            m_calInInches(ScreenInfo::k_defCalInInches),
             m_currentRes(m_platformRes) {
     }
 
@@ -170,7 +170,7 @@ void ScreenInfo::loadProfile(Profile& profile) {
 
         if ((profile.getVersion() == 1) || (numScreens == 0)) {
             QSizeF manualRes;
-            const bool useManualRes = profile.readBool("UseManualRes", defUseManualRes);
+            const bool useManualRes = profile.readBool("UseManualRes", k_defUseManualRes);
             manualRes.rwidth() = profile.readDbl("ManualResX", 0.0);
             manualRes.rheight() = profile.readDbl("ManualResY", 0.0);
 
@@ -187,12 +187,12 @@ void ScreenInfo::loadProfile(Profile& profile) {
                     Screen* screen = m_screens[screenIndex];
                     QSizeF manualRes;
 
-                    const bool useManualRes = profile.readBool(tag + "UseManualRes", defUseManualRes);
+                    const bool useManualRes = profile.readBool(tag + "UseManualRes", k_defUseManualRes);
                     manualRes.rwidth() = profile.readDbl(tag + "ManualResX", 0.0);
                     manualRes.rheight() = profile.readDbl(tag + "ManualResY", 0.0);
                     screen->setScreenRes(useManualRes, &manualRes);
 
-                    const bool calInInches = profile.readBool(tag + "CalInInches", defCalInInches);
+                    const bool calInInches = profile.readBool(tag + "CalInInches", k_defCalInInches);
                     screen->setCalInInches(calInInches);
                 }
             }
@@ -203,8 +203,8 @@ void ScreenInfo::loadProfile(Profile& profile) {
 void ScreenInfo::masterReset() const {
     for (auto* screen : m_screens) {
         const QSizeF manualRes(0.0, 0.0);
-        screen->setScreenRes(defUseManualRes, &manualRes);
-        screen->setCalInInches(defCalInInches);
+        screen->setScreenRes(k_defUseManualRes, &manualRes);
+        screen->setCalInInches(k_defCalInInches);
     }
 }
 

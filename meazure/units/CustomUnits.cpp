@@ -22,8 +22,8 @@
 
 CustomUnits::CustomUnits(const ScreenInfoProvider& screenInfoProvider) :
         LinearUnits(CustomId, "custom", screenInfoProvider),
-        m_scaleBasis(defScaleBasis),
-        m_scaleFactor(defScaleFactor) {
+        m_scaleBasis(k_defScaleBasis),
+        m_scaleFactor(k_defScaleFactor) {
     addPrecision(0);        // XCoord
     addPrecision(0);        // YCoord
     addPrecision(0);        // Width
@@ -59,8 +59,8 @@ void CustomUnits::masterReset() {
 
     setName("");
     setAbbrev("");
-    setScaleFactor(defScaleFactor);
-    setScaleBasis(defScaleBasis);
+    setScaleFactor(k_defScaleFactor);
+    setScaleBasis(k_defScaleBasis);
 }
 
 bool CustomUnits::isResRequired() const {

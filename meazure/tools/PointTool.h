@@ -35,7 +35,7 @@ class PointTool : public RadioTool {
     Q_OBJECT
 
 public:
-    static constexpr const char* toolName { "PointTool" };
+    static constexpr const char* k_toolName {"PointTool" };
 
     explicit PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                        QObject* parent = nullptr);
@@ -47,11 +47,11 @@ public:
     PointTool& operator=(const PointTool&) = delete;
 
     [[nodiscard]] const char* getName() const override {
-        return toolName;
+        return k_toolName;
     }
 
     [[nodiscard]] RadioToolTraits getTraits() const override {
-        return traits;
+        return k_traits;
     }
 
     [[nodiscard]] QString getInstructions() const override {
@@ -63,7 +63,7 @@ public:
     void flash() override;
 
 private:
-    static constexpr RadioToolTraits traits { XY1ReadWrite };
+    static constexpr RadioToolTraits k_traits {XY1ReadWrite };
 
     CrossHair* m_crosshair;
 };

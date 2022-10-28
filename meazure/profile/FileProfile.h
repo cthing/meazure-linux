@@ -184,13 +184,13 @@ private:
     using XMLWriterPtr = std::unique_ptr<XMLWriter>;
 
 
-    static constexpr int version { 2 };
+    static constexpr int k_version { 2 };
 
     QString m_pathname;                         ///< Pathname of the file.
     std::ofstream m_writeStream;                ///< Output stream for the profile.
     XMLWriterPtr m_writer;                      ///< Writer for the profile.
     Mode m_mode;                                ///< Opening mode for the profile file.
-    int m_readVersion { version };              ///< Profile format version number read from the profile file.
+    int m_readVersion { k_version };            ///< Profile format version number read from the profile file.
     QString m_title;                            ///< Title for the profile file.
     std::map<QString, QString> m_valueMap;      ///< Maps profile keys to values.
 };

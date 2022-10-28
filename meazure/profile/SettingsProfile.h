@@ -130,7 +130,7 @@ public:
     int getVersion() override;
 
 private:
-    static constexpr int version { 1 };
+    static constexpr int k_version { 1 };
 
     QSettings* m_settings;
 };

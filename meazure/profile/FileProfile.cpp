@@ -139,7 +139,7 @@ void FileProfile::writeFileStart() {
     m_writer->startDocument();
 
     m_writer->startElement("profile")
-            .addAttribute("version", version);
+            .addAttribute("version", k_version);
 
     m_writer->startElement("info");
 

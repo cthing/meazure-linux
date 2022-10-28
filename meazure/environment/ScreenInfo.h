@@ -32,8 +32,8 @@ class App;
 class ScreenInfo : public ScreenInfoProvider {
 
 public:
-    static constexpr bool defUseManualRes { false };   ///< Use manual resolution by default.
-    static constexpr bool defCalInInches { true };     ///< Calibrate in inches by default.
+    static constexpr bool k_defUseManualRes {false };  ///< Use manual resolution by default.
+    static constexpr bool k_defCalInInches {true };    ///< Calibrate in inches by default.
 
     ~ScreenInfo() override;
 

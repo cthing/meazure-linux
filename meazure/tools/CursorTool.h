@@ -32,16 +32,16 @@ class CursorTool : public RadioTool {
     Q_OBJECT
 
 public:
-    static constexpr const char* toolName { "CursorTool" };
+    static constexpr const char* k_toolName {"CursorTool" };
 
     explicit CursorTool(QObject* parent = nullptr);
 
     [[nodiscard]] const char* getName() const override {
-        return toolName;
+        return k_toolName;
     }
 
     [[nodiscard]] RadioToolTraits getTraits() const override {
-        return traits;
+        return k_traits;
     }
 
     [[nodiscard]] QString getInstructions() const override {
@@ -51,5 +51,5 @@ public:
     void setEnabled(bool enable) override;
 
 private:
-    static constexpr RadioToolTraits traits { XY1ReadOnly };
+    static constexpr RadioToolTraits k_traits {XY1ReadOnly };
 };

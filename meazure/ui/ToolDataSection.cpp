@@ -47,64 +47,64 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
 
 void ToolDataSection::createFields() {
     m_x1Label = new QLabel(tr("X1:"));
-    m_x1Field = new DataField(fieldShortWidth, true);
+    m_x1Field = new DataField(k_fieldShortWidth, true);
 
     m_y1Label = new QLabel(tr("Y1:"));
-    m_y1Field = new DataField(fieldShortWidth, true);
+    m_y1Field = new DataField(k_fieldShortWidth, true);
     m_y1Units = new QLabel();
     auto* y1Layout = new QHBoxLayout();
     y1Layout->addWidget(m_y1Field);
     y1Layout->addWidget(m_y1Units);
 
     m_x2Label = new QLabel(tr("X2:"));
-    m_x2Field = new DataField(fieldShortWidth, true);
+    m_x2Field = new DataField(k_fieldShortWidth, true);
 
     m_y2Label = new QLabel(tr("Y2:"));
-    m_y2Field = new DataField(fieldShortWidth, true);
+    m_y2Field = new DataField(k_fieldShortWidth, true);
     m_y2Units = new QLabel();
     auto* y2Layout = new QHBoxLayout();
     y2Layout->addWidget(m_y2Field);
     y2Layout->addWidget(m_y2Units);
 
     m_xvLabel = new QLabel(tr("XV:"));
-    m_xvField = new DataField(fieldShortWidth, true);
+    m_xvField = new DataField(k_fieldShortWidth, true);
 
     m_yvLabel = new QLabel(tr("YV:"));
-    m_yvField = new DataField(fieldShortWidth, true);
+    m_yvField = new DataField(k_fieldShortWidth, true);
     m_yvUnits = new QLabel();
     auto* yvLayout = new QHBoxLayout();
     yvLayout->addWidget(m_yvField);
     yvLayout->addWidget(m_yvUnits);
 
     m_wLabel = new QLabel(tr("W:"));
-    m_wField = new DataField(fieldShortWidth, false);
+    m_wField = new DataField(k_fieldShortWidth, false);
 
     m_hLabel = new QLabel(tr("H:"));
-    m_hField = new DataField(fieldShortWidth, false);
+    m_hField = new DataField(k_fieldShortWidth, false);
     m_hUnits = new QLabel();
     auto* hLayout = new QHBoxLayout();
     hLayout->addWidget(m_hField);
     hLayout->addWidget(m_hUnits);
 
     m_dLabel = new QLabel(tr("D:"));
-    m_dField = new DataField(fieldShortWidth, false);
+    m_dField = new DataField(k_fieldShortWidth, false);
     m_dUnits = new QLabel();
     auto* dLayout = new QHBoxLayout();
     dLayout->addWidget(m_dField);
     dLayout->addWidget(m_dUnits);
 
     m_aLabel = new QLabel(tr("A:"));
-    m_aField = new DataField(fieldShortWidth, false);
+    m_aField = new DataField(k_fieldShortWidth, false);
     m_aUnits = new QLabel();
     auto* aLayout = new QHBoxLayout();
     aLayout->addWidget(m_aField);
     aLayout->addWidget(m_aUnits);
 
     m_asLabel = new QLabel(tr("As:"));
-    m_asField = new DataField(fieldLongWidth, false);
+    m_asField = new DataField(k_fieldLongWidth, false);
 
     m_arLabel = new QLabel(tr("Ar:"));
-    m_arField = new DataField(fieldLongWidth, false);
+    m_arField = new DataField(k_fieldLongWidth, false);
     m_arUnits = new QLabel();
     auto* arLayout = new QHBoxLayout();
     arLayout->addWidget(m_arField);
@@ -200,7 +200,7 @@ void ToolDataSection::linearUnitsChanged(LinearUnitsId) {
     m_wField->setDecimals(linearUnits->getDisplayPrecision(Width));
     m_hField->setDecimals(linearUnits->getDisplayPrecision(Height));
     m_dField->setDecimals(linearUnits->getDisplayPrecision(Distance));
-    m_asField->setDecimals(aspectPrecision);
+    m_asField->setDecimals(k_aspectPrecision);
     m_arField->setDecimals(linearUnits->getDisplayPrecision(Area));
 }
 

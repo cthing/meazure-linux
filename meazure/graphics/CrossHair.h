@@ -79,7 +79,7 @@ public:
     ///
     /// @param[in] flashCount Number of times to cycle the crosshair background.
     ///
-    void flash(int flashCount = defaultFlashCount);
+    void flash(int flashCount = k_defaultFlashCount);
 
 signals:
     /// Indicates that the crosshair position has been change.
@@ -111,13 +111,13 @@ private slots:
     void flashHandler();
 
 private:
-    static constexpr double outerSize { 0.30 };     // Inches
-    static constexpr int outerSizeMin { 25 };       // Pixels
-    static constexpr double petalWidth { 0.12 };    // Inches
-    static constexpr int petalWidthMin { 10 };      // Pixels
-    static constexpr int centerOffset { 2 };        // Pixels
-    static constexpr double outlineWidth { 1.5 };   // Pixels
-    static constexpr int defaultFlashCount { 9 };
+    static constexpr double k_outerSize { 0.30 };   // Inches
+    static constexpr int k_outerSizeMin { 25 };     // Pixels
+    static constexpr double k_petalWidth { 0.12 };  // Inches
+    static constexpr int k_petalWidthMin { 10 };    // Pixels
+    static constexpr int k_centerOffset { 2 };      // Pixels
+    static constexpr double k_outlineWidth { 1.5 }; // Pixels
+    static constexpr int k_defaultFlashCount { 9 };
 
     /// Determines the center point of the crosshair relative to the specified point.
     ///

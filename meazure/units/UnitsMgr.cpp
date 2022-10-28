@@ -88,24 +88,24 @@ void UnitsMgr::loadProfile(Profile& profile) {
     if (profile.getVersion() == 1) {
         setLinearUnits(static_cast<LinearUnitsId>(profile.readInt("Units", PixelsId)));
     } else {
-        setLinearUnits(profile.readStr("LinearUnits", defLinearUnits));
+        setLinearUnits(profile.readStr("LinearUnits", k_defLinearUnits));
     }
-    setAngularUnits(profile.readStr("AngularUnits", defAngularUnits));
-    setInvertY(profile.readBool("InvertY", defInvertY));
-    setSupplementalAngle(profile.readBool("SupplementalAngle", defSupplmentalAngle));
+    setAngularUnits(profile.readStr("AngularUnits", k_defAngularUnits));
+    setInvertY(profile.readBool("InvertY", k_defInvertY));
+    setSupplementalAngle(profile.readBool("SupplementalAngle", k_defSupplmentalAngle));
 
     const QPointF pt(profile.readDbl("OriginX", 0.0), profile.readDbl("OriginY", 0.0));
     setOrigin(unconvertPos(pt));
 }
 
 void UnitsMgr::masterReset() {
-    m_haveWarned = defHaveWarned;
+    m_haveWarned = k_defHaveWarned;
 
-    setLinearUnits(defLinearUnits);
-    setAngularUnits(defAngularUnits);
+    setLinearUnits(k_defLinearUnits);
+    setAngularUnits(k_defAngularUnits);
 
-    setInvertY(defInvertY);
-    setSupplementalAngle(defSupplmentalAngle);
+    setInvertY(k_defInvertY);
+    setSupplementalAngle(k_defSupplmentalAngle);
     setOrigin(QPoint());
 
     for (const auto& unitsEntry : m_linearUnitsMap) {
@@ -188,7 +188,7 @@ QSizeF UnitsMgr::getMinorIncr(const QRect& rect) const {
     //
     const int screenIndex = m_screenInfoProvider.screenForRect(rect);
     const QSizeF res = m_screenInfoProvider.getScreenRes(screenIndex);
-    const QSize sepPixels = convertToPixels(InchesId, res, minSepInches, minSepPixels);
+    const QSize sepPixels = convertToPixels(InchesId, res, k_minSepInches, k_minSepPixels);
 
     // Convert the minimum tick separation to the current units.
     //
@@ -206,19 +206,19 @@ QSizeF UnitsMgr::getMinorIncr(const QRect& rect) const {
 
     sepPower += delta;
 
-    const int count = numTickIncrements - 1;
+    const int count = k_numTickIncrements - 1;
 
     int idx = 0;
-    while ((idx < count) && (log10(tickIncrements[idx]) < sepPower.width())) {
+    while ((idx < count) && (log10(k_tickIncrements[idx]) < sepPower.width())) {
         idx++;
     }
-    const double incrementX = tickIncrements[idx] * pow(10.0, -delta.width());
+    const double incrementX = k_tickIncrements[idx] * pow(10.0, -delta.width());
 
     idx = 0;
-    while ((idx < count) && (log10(tickIncrements[idx]) < sepPower.height())) {
+    while ((idx < count) && (log10(k_tickIncrements[idx]) < sepPower.height())) {
         idx++;
     }
-    const double incrementY = tickIncrements[idx] * pow(10.0, -delta.height());
+    const double incrementY = k_tickIncrements[idx] * pow(10.0, -delta.height());
 
     return { incrementX, incrementY };
 }

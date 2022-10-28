@@ -21,12 +21,12 @@
 
 
 SettingsProfile::SettingsProfile() : m_settings(new QSettings()) {
-    m_settings->beginGroup(QString::number(version));
+    m_settings->beginGroup(QString::number(k_version));
 }
 
 SettingsProfile::SettingsProfile(const QString& pathname) :
         m_settings(new QSettings(pathname, QSettings::Format::IniFormat)) {
-    m_settings->beginGroup(QString::number(version));
+    m_settings->beginGroup(QString::number(k_version));
 }
 
 SettingsProfile::~SettingsProfile() {
@@ -85,5 +85,5 @@ bool SettingsProfile::userInitiated() {
 }
 
 int SettingsProfile::getVersion() {
-    return version;
+    return k_version;
 }

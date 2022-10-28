@@ -46,7 +46,7 @@ void PointerTracker::stop() {
 }
 
 void PointerTracker::run() {
-    constexpr long selectTimeout = 2;   // Seconds
+    constexpr long k_selectTimeout = 2;   // Seconds
 
     // Two display connections are recommended by the XRecord spec
     // (https://www.x.org/releases/X11R7.6/doc/libXtst/recordlib.html#record_clients). The spec also indicates which
@@ -108,7 +108,7 @@ void PointerTracker::run() {
                             fd_set fds;
                             FD_ZERO(&fds);
                             FD_SET(displayFd, &fds);
-                            timeval timeout { selectTimeout, 0 };
+                            timeval timeout { k_selectTimeout, 0 };
                             select(displayFd + 1, &fds, nullptr, nullptr, &timeout);
                             if (FD_ISSET(displayFd, &fds)) {
                                 XRecordProcessReplies(dataDisplay);

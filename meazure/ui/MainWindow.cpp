@@ -59,13 +59,13 @@ void MainWindow::createActions() {
     m_cursorToolAction->setCheckable(true);
     m_cursorToolAction->setToolTip("Tracks cursor position");
     connect(m_cursorToolAction, &QAction::triggered, this,
-            [&toolMgr] { toolMgr.selectRadioTool(CursorTool::toolName); });
+            [&toolMgr] { toolMgr.selectRadioTool(CursorTool::k_toolName); });
 
     m_pointToolAction = new QAction(QIcon(":/images/PointTool.svg"), tr("&Point"), radioToolGroup);
     m_pointToolAction->setCheckable(true);
     m_pointToolAction->setToolTip("Measures a point");
     connect(m_pointToolAction, &QAction::triggered, this,
-            [&toolMgr] { toolMgr.selectRadioTool(PointTool::toolName); });
+            [&toolMgr] { toolMgr.selectRadioTool(PointTool::k_toolName); });
 
     m_lineToolAction = new QAction(QIcon(":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
     m_lineToolAction->setCheckable(true);

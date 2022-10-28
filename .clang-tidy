@@ -47,3 +47,11 @@ Checks: >
 
 CheckOptions:
   - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctionsWhenCopyIsDeleted, value: 1 }
+  - { key: readability-identifier-naming.PrivateMemberPrefix, value: m_ }
+  - { key: readability-identifier-naming.ConstexprVariablePrefix, value: k_ }
+  - { key: readability-identifier-naming.NamespaceCase, value: CamelCase }
+  - { key: readability-identifier-naming.ClassCase, value: CamelCase }
+  - { key: readability-identifier-naming.StructCase, value: CamelCase }
+  - { key: readability-identifier-naming.EnumCase, value: CamelCase }
+  - { key: readability-identifier-naming.TemplateParameterCase, value: UPPER_CASE }
+  - { key: readability-identifier-naming.ParameterCase, value: camelBack }

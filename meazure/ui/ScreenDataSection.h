@@ -38,7 +38,7 @@ private slots:
     void linearUnitsChanged(LinearUnitsId unitsId);
 
 private:
-    static constexpr int fieldWidth { 7 };
+    static constexpr int k_fieldWidth { 7 };
 
     /// Creates the text fields that provide the screen information display.
     ///

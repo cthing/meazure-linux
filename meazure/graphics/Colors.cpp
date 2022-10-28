@@ -298,14 +298,14 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
     // paper and references to the equation numbers are included in the comments in this implementation.
 
     // Constants
-    constexpr double pow25To7 = 6103515625.0;     // 25^7
-    constexpr double deg360Rad = qDegreesToRadians(360.0);
-    constexpr double deg180Rad = qDegreesToRadians(180.0);
-    constexpr double deg30Rad = qDegreesToRadians(30.0);
-    constexpr double deg63Rad = qDegreesToRadians(63.0);
-    constexpr double deg6Rad = qDegreesToRadians(6.0);
-    constexpr double deg25Rad = qDegreesToRadians(25.0);
-    constexpr double deg275Rad = qDegreesToRadians(275.0);
+    constexpr double k_pow25To7 = 6103515625.0;     // 25^7
+    constexpr double k_deg360Rad = qDegreesToRadians(360.0);
+    constexpr double k_deg180Rad = qDegreesToRadians(180.0);
+    constexpr double k_deg30Rad = qDegreesToRadians(30.0);
+    constexpr double k_deg63Rad = qDegreesToRadians(63.0);
+    constexpr double k_deg6Rad = qDegreesToRadians(6.0);
+    constexpr double k_deg25Rad = qDegreesToRadians(25.0);
+    constexpr double k_deg275Rad = qDegreesToRadians(275.0);
 
     //
     // Step 1
@@ -322,7 +322,7 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
 
     // Equation 4
     const double cAvePow7 = std::pow(cAve, 7.0);
-    const double g = 0.5 * (1.0 - std::sqrt(cAvePow7 / (cAvePow7 + pow25To7)));
+    const double g = 0.5 * (1.0 - std::sqrt(cAvePow7 / (cAvePow7 + k_pow25To7)));
 
     // Equation 5
     const double aPrime1 = (1.0 + g) * color1.a;
@@ -342,7 +342,7 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
 
         // Per implementation clarification 1, add 360 degrees to negative hue angles
         if (hPrime < 0.0) {
-            hPrime += deg360Rad;
+            hPrime += k_deg360Rad;
         }
 
         return hPrime;
@@ -370,10 +370,10 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
     } else {
         deltahPrime = hPrime2 - hPrime1;
 
-        if (deltahPrime > deg180Rad) {
-            deltahPrime -= deg360Rad;
-        } else if (deltahPrime < -deg180Rad) {
-            deltahPrime += deg360Rad;
+        if (deltahPrime > k_deg180Rad) {
+            deltahPrime -= k_deg360Rad;
+        } else if (deltahPrime < -k_deg180Rad) {
+            deltahPrime += k_deg360Rad;
         }
     }
 
@@ -397,30 +397,30 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
     if (MathUtils::fuzzyZero(cPrimeProduct)) {
         hPrimeAve = hPrimeSum;
     } else {
-        if (std::fabs(hPrime1 - hPrime2) <= deg180Rad) {
+        if (std::fabs(hPrime1 - hPrime2) <= k_deg180Rad) {
             hPrimeAve = hPrimeSum / 2.0;
         } else {
-            if (hPrimeSum < deg360Rad) {
-                hPrimeAve = (hPrimeSum + deg360Rad) / 2.0;
+            if (hPrimeSum < k_deg360Rad) {
+                hPrimeAve = (hPrimeSum + k_deg360Rad) / 2.0;
             } else {
-                hPrimeAve = (hPrimeSum - deg360Rad) / 2.0;
+                hPrimeAve = (hPrimeSum - k_deg360Rad) / 2.0;
             }
         }
     }
 
     // Equation 15
     const double t = 1.0
-            - 0.17 * std::cos(hPrimeAve - deg30Rad)
+            - 0.17 * std::cos(hPrimeAve - k_deg30Rad)
             + 0.24 * std::cos(2.0 * hPrimeAve)
-            + 0.32 * cos(3.0 * hPrimeAve + deg6Rad)
-            - 0.20 * std::cos(4.0 * hPrimeAve - deg63Rad);
+            + 0.32 * cos(3.0 * hPrimeAve + k_deg6Rad)
+            - 0.20 * std::cos(4.0 * hPrimeAve - k_deg63Rad);
 
     // Equation 16
-    const double deltaTheta = deg30Rad * std::exp(-std::pow((hPrimeAve - deg275Rad) / deg25Rad, 2.0));
+    const double deltaTheta = k_deg30Rad * std::exp(-std::pow((hPrimeAve - k_deg275Rad) / k_deg25Rad, 2.0));
 
     // Equation 17
     const double cPrimeAveTo7 = std::pow(cPrimeAve, 7.0);
-    const double rc = 2.0 * std::sqrt(cPrimeAveTo7 / (cPrimeAveTo7 + pow25To7));
+    const double rc = 2.0 * std::sqrt(cPrimeAveTo7 / (cPrimeAveTo7 + k_pow25To7));
 
     // Equation 18
     const double lPrimeAveMinus50Squared = std::pow(lPrimeAve - 50.0, 2.0);
@@ -644,19 +644,19 @@ Colors::XYZ Colors::RGBtoXYZ(QRgb rgb) {
 Colors::Lab Colors::XYZtoLab(const Colors::XYZ& xyz) {
     // 1931 D65 2 degree illuminant reference.
     //
-    constexpr double xref = 95.047;
-    constexpr double yref = 100.000;
-    constexpr double zref = 108.883;
+    constexpr double k_xref = 95.047;
+    constexpr double k_yref = 100.000;
+    constexpr double k_zref = 108.883;
 
-    constexpr double k = 903.3 / 116.0;
-    constexpr double m = 16.0 / 116.0;
+    constexpr double k_k = 903.3 / 116.0;
+    constexpr double k_m = 16.0 / 116.0;
 
-    double x = xyz.x / xref;
-    double y = xyz.y / yref;
-    double z = xyz.z / zref;
+    double x = xyz.x / k_xref;
+    double y = xyz.y / k_yref;
+    double z = xyz.z / k_zref;
 
     auto func = [](double value) {
-        return (value > 0.008856) ? std::cbrt(value) : k * value + m;
+        return (value > 0.008856) ? std::cbrt(value) : k_k * value + k_m;
     };
 
     x = func(x);

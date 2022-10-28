@@ -43,8 +43,8 @@ public:
     };
 
 
-    static constexpr double defScaleFactor { 1.0 };                ///< Default scale factor.
-    static constexpr ScaleBasis defScaleBasis { PixelBasis };      ///< Default basis for the custom units.
+    static constexpr double k_defScaleFactor {1.0 };               ///< Default scale factor.
+    static constexpr ScaleBasis k_defScaleBasis {PixelBasis };     ///< Default basis for the custom units.
 
 
     /// Constructs custom units.

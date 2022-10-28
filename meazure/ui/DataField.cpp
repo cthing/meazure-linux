@@ -44,7 +44,7 @@ QSize DataField::sizeHint() const {
 
     const QString s(m_charWidth, u'0');
     const int h = QDoubleSpinBox::sizeHint().height();
-    const int w = fontMetrics().horizontalAdvance(s) + cursorBlinkingSpace;
+    const int w = fontMetrics().horizontalAdvance(s) + k_cursorBlinkingSpace;
 
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);

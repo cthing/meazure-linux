@@ -32,13 +32,13 @@ class UnitsMgr : public QObject, public UnitsProvider {
     Q_OBJECT
 
 public:
-    static constexpr bool defHaveWarned { false };              ///< Indicates whether the user has already been
+    static constexpr bool k_defHaveWarned {false };             ///< Indicates whether the user has already been
                                                                 ///< warned about using the operating system
                                                                 ///< reported resolution.
-    static constexpr const char* defLinearUnits { "px" };       ///< Default units for linear measurements.
-    static constexpr const char* defAngularUnits { "deg" };     ///< Default units for angular measurements.
-    static constexpr bool defInvertY { false };                 ///< Default orientation of the y-axis.
-    static constexpr bool defSupplmentalAngle { false };        ///< Default angle to show
+    static constexpr const char* k_defLinearUnits {"px" };      ///< Default units for linear measurements.
+    static constexpr const char* k_defAngularUnits {"deg" };    ///< Default units for angular measurements.
+    static constexpr bool k_defInvertY {false };                ///< Default orientation of the y-axis.
+    static constexpr bool k_defSupplmentalAngle {false };       ///< Default angle to show
 
 
     ~UnitsMgr() override = default;
@@ -340,16 +340,16 @@ signals:
 
 private:
     /// Ruler tick increments. The order of magnitude of these values is adjusted based on the units.
-    static constexpr double tickIncrements[] { 10.0, 25.0, 50.0, 75.0, 100.0 };
+    static constexpr double k_tickIncrements[] {10.0, 25.0, 50.0, 75.0, 100.0 };
 
     /// Number of tick mark increments in the kTickIncrements array.
-    static constexpr int numTickIncrements { sizeof(tickIncrements) / sizeof(*tickIncrements) };
+    static constexpr int k_numTickIncrements {sizeof(k_tickIncrements) / sizeof(*k_tickIncrements) };
 
     /// Minimum separation between ruler tick marks, in pixels.
-    static constexpr int minSepPixels { 5 };
+    static constexpr int k_minSepPixels {5 };
 
     ///< Minimum separation between ruler tick marks, in inches.
-    static constexpr double minSepInches { 0.1 };
+    static constexpr double k_minSepInches {0.1 };
 
 
     using LinearUnitsMap = std::map<LinearUnitsId, LinearUnits*>;
@@ -372,7 +372,7 @@ private:
     AngularUnits* m_currentAngularUnits;
     LinearUnitsMap m_linearUnitsMap;
     AngularUnitsMap m_angularUnitsMap;
-    bool m_haveWarned { defHaveWarned };    ///< Indicates whether the user has already been warned about using
+    bool m_haveWarned {k_defHaveWarned };    ///< Indicates whether the user has already been warned about using
                                             ///< the operating system reported resolution.
     int m_majorTickCount { 10 };            ///< Number of minor ruler tick marks between major tick marks.
 

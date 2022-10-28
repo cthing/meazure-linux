@@ -79,171 +79,171 @@ private slots:
     [[maybe_unused]] void testCharacters();
 
 private:
-    std::unique_ptr<TestFixture> fixture;
+    std::unique_ptr<TestFixture> m_fixture;
 };
 
 
 [[maybe_unused]] void XMLWriterTest::init()
 {
-    fixture.reset(new TestFixture());
+    m_fixture.reset(new TestFixture());
 }
 
 
 [[maybe_unused]] void XMLWriterTest::testWriteLiteralChar() {
-    fixture->clear();
-    fixture->writer.writeLiteral('a');
-    QCOMPARE(fixture->stream.str().data(), "a");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral('a');
+    QCOMPARE(m_fixture->stream.str().data(), "a");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(' ');
-    QCOMPARE(fixture->stream.str().data(), " ");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(' ');
+    QCOMPARE(m_fixture->stream.str().data(), " ");
 
-    fixture->clear();
-    fixture->writer.writeLiteral('<');
-    QCOMPARE(fixture->stream.str().data(), "<");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral('<');
+    QCOMPARE(m_fixture->stream.str().data(), "<");
 
-    fixture->clear();
-    fixture->writer.writeLiteral('>');
-    QCOMPARE(fixture->stream.str().data(), ">");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral('>');
+    QCOMPARE(m_fixture->stream.str().data(), ">");
 
-    fixture->clear();
-    fixture->writer.writeLiteral('\x99');
-    QCOMPARE(fixture->stream.str().data(), "\x99");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral('\x99');
+    QCOMPARE(m_fixture->stream.str().data(), "\x99");
 }
 
 [[maybe_unused]] void XMLWriterTest::testWriteLiteralString() {
-    fixture->clear();
-    fixture->writer.writeLiteral("a");
-    QCOMPARE(fixture->stream.str().data(), "a");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral("a");
+    QCOMPARE(m_fixture->stream.str().data(), "a");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(" ");
-    QCOMPARE(fixture->stream.str().data(), " ");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(" ");
+    QCOMPARE(m_fixture->stream.str().data(), " ");
 
-    fixture->clear();
-    fixture->writer.writeLiteral("<");
-    QCOMPARE(fixture->stream.str().data(), "<");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral("<");
+    QCOMPARE(m_fixture->stream.str().data(), "<");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(">");
-    QCOMPARE(fixture->stream.str().data(), ">");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(">");
+    QCOMPARE(m_fixture->stream.str().data(), ">");
 
-    fixture->clear();
-    fixture->writer.writeLiteral("A bc<>&\"'");
-    QCOMPARE(fixture->stream.str().data(), "A bc<>&\"'");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral("A bc<>&\"'");
+    QCOMPARE(m_fixture->stream.str().data(), "A bc<>&\"'");
 
-    fixture->clear();
-    fixture->writer.writeLiteral("\u2122\u2026");
-    QCOMPARE(fixture->stream.str().data(), "\u2122\u2026");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral("\u2122\u2026");
+    QCOMPARE(m_fixture->stream.str().data(), "\u2122\u2026");
 }
 
 [[maybe_unused]] void XMLWriterTest::testWriteLiteralQString() {
-    fixture->clear();
-    fixture->writer.writeLiteral(QString("a"));
-    QCOMPARE(fixture->stream.str().data(), "a");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(QString("a"));
+    QCOMPARE(m_fixture->stream.str().data(), "a");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(QString(" "));
-    QCOMPARE(fixture->stream.str().data(), " ");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(QString(" "));
+    QCOMPARE(m_fixture->stream.str().data(), " ");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(QString("<"));
-    QCOMPARE(fixture->stream.str().data(), "<");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(QString("<"));
+    QCOMPARE(m_fixture->stream.str().data(), "<");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(QString(">"));
-    QCOMPARE(fixture->stream.str().data(), ">");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(QString(">"));
+    QCOMPARE(m_fixture->stream.str().data(), ">");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(QString("A bc<>&\"'"));
-    QCOMPARE(fixture->stream.str().data(), "A bc<>&\"'");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(QString("A bc<>&\"'"));
+    QCOMPARE(m_fixture->stream.str().data(), "A bc<>&\"'");
 
-    fixture->clear();
-    fixture->writer.writeLiteral(QString("\u2122\u2026"));
-    QCOMPARE(fixture->stream.str().data(), "\u2122\u2026");
+    m_fixture->clear();
+    m_fixture->writer.writeLiteral(QString("\u2122\u2026"));
+    QCOMPARE(m_fixture->stream.str().data(), "\u2122\u2026");
 }
 
 [[maybe_unused]] void XMLWriterTest::testWriteNewline() {
-    fixture->writer.writeNewline();
-    QCOMPARE(fixture->stream.str().data(), "\n");
+    m_fixture->writer.writeNewline();
+    QCOMPARE(m_fixture->stream.str().data(), "\n");
 }
 
 [[maybe_unused]] void XMLWriterTest::testWriteEscapedChar() {
-    fixture->writer.writeEscaped('a');
-    QCOMPARE(fixture->stream.str().data(), "a");
+    m_fixture->writer.writeEscaped('a');
+    QCOMPARE(m_fixture->stream.str().data(), "a");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('\n');
-    QCOMPARE(fixture->stream.str().data(), "\n");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('\n');
+    QCOMPARE(m_fixture->stream.str().data(), "\n");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('\t');
-    QCOMPARE(fixture->stream.str().data(), "\t");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('\t');
+    QCOMPARE(m_fixture->stream.str().data(), "\t");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('\r');
-    QCOMPARE(fixture->stream.str().data(), "\r");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('\r');
+    QCOMPARE(m_fixture->stream.str().data(), "\r");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('&');
-    QCOMPARE(fixture->stream.str().data(), "&amp;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('&');
+    QCOMPARE(m_fixture->stream.str().data(), "&amp;");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('<');
-    QCOMPARE(fixture->stream.str().data(), "&lt;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('<');
+    QCOMPARE(m_fixture->stream.str().data(), "&lt;");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('>');
-    QCOMPARE(fixture->stream.str().data(), "&gt;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('>');
+    QCOMPARE(m_fixture->stream.str().data(), "&gt;");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('"');
-    QCOMPARE(fixture->stream.str().data(), "&quot;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('"');
+    QCOMPARE(m_fixture->stream.str().data(), "&quot;");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('\'');
-    QCOMPARE(fixture->stream.str().data(), "&apos;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('\'');
+    QCOMPARE(m_fixture->stream.str().data(), "&apos;");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('\x99');
-    QCOMPARE(fixture->stream.str().data(), "&#153;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('\x99');
+    QCOMPARE(m_fixture->stream.str().data(), "&#153;");
 
-    fixture->clear();
-    fixture->writer.writeEscaped('\x1A');
-    QCOMPARE(fixture->stream.str().data(), "ctrl-26");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped('\x1A');
+    QCOMPARE(m_fixture->stream.str().data(), "ctrl-26");
 
-    fixture->clear();
-    fixture->writer.writeEscaped(u'\uE010');
-    QCOMPARE(fixture->stream.str().data(), "&#57360;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped(u'\uE010');
+    QCOMPARE(m_fixture->stream.str().data(), "&#57360;");
 }
 
 [[maybe_unused]] void XMLWriterTest::testWriteEscapedString() {
-    fixture->writer.writeEscaped("a\n\t\r&<>\"'");
-    QCOMPARE(fixture->stream.str().data(), "a\n\t\r&amp;&lt;&gt;&quot;&apos;");
+    m_fixture->writer.writeEscaped("a\n\t\r&<>\"'");
+    QCOMPARE(m_fixture->stream.str().data(), "a\n\t\r&amp;&lt;&gt;&quot;&apos;");
 
-    fixture->clear();
-    fixture->writer.writeEscaped("\u2122\u2026");
-    QCOMPARE(fixture->stream.str().data(), "&#8482;&#8230;");
+    m_fixture->clear();
+    m_fixture->writer.writeEscaped("\u2122\u2026");
+    QCOMPARE(m_fixture->stream.str().data(), "&#8482;&#8230;");
 }
 
 [[maybe_unused]] void XMLWriterTest::testWriteQuoted() {
-    fixture->writer.writeQuoted("abcd &efg");
-    QCOMPARE(fixture->stream.str().data(), "\"abcd &amp;efg\"");
+    m_fixture->writer.writeQuoted("abcd &efg");
+    QCOMPARE(m_fixture->stream.str().data(), "\"abcd &amp;efg\"");
 }
 
 [[maybe_unused]] void XMLWriterTest::testStartEndDocument() {
-    fixture->writer.startDocument().endDocument();
-    QCOMPARE(fixture->stream.str().data(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n");
+    m_fixture->writer.startDocument().endDocument();
+    QCOMPARE(m_fixture->stream.str().data(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n");
 }
 
 [[maybe_unused]] void XMLWriterTest::testElements() {
-    fixture->writer.startDocument()
+    m_fixture->writer.startDocument()
                    .startElement("elem1")
                    .startElement("elem2")
                    .endElement()
                    .endElement()
                    .endDocument();
-    QCOMPARE(fixture->stream.str().data(), R"|(<?xml version="1.0" encoding="UTF-8"?>
+    QCOMPARE(m_fixture->stream.str().data(), R"|(<?xml version="1.0" encoding="UTF-8"?>
 <elem1>
     <elem2/>
 </elem1>
@@ -251,37 +251,37 @@ private:
 }
 
 [[maybe_unused]] void XMLWriterTest::testAttributes() {
-    fixture->writer.startDocument()
+    m_fixture->writer.startDocument()
                    .startElement("elem")
                    .addAttribute("attr1", "abc")
                    .addAttribute("attr2", 2)
                    .addAttribute("attr3", 3.5)
                    .endElement()
                    .endDocument();
-    QCOMPARE(fixture->stream.str().data(), R"|(<?xml version="1.0" encoding="UTF-8"?>
+    QCOMPARE(m_fixture->stream.str().data(), R"|(<?xml version="1.0" encoding="UTF-8"?>
 <elem attr1="abc" attr2="2" attr3="3.5"/>
 )|");
 }
 
 [[maybe_unused]] void XMLWriterTest::testDoctype() {
-    fixture->writer.startDocument()
+    m_fixture->writer.startDocument()
                    .doctype("elem", "http://www.cthing.com/dtd/PositionLog1.dtd")
                    .startElement("elem")
                    .endElement()
                    .endDocument();
-    QCOMPARE(fixture->stream.str().data(), R"|(<?xml version="1.0" encoding="UTF-8"?>
+    QCOMPARE(m_fixture->stream.str().data(), R"|(<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE elem SYSTEM "http://www.cthing.com/dtd/PositionLog1.dtd">
 <elem/>
 )|");
 }
 
 [[maybe_unused]] void XMLWriterTest::testCharacters() {
-    fixture->writer.startDocument()
+    m_fixture->writer.startDocument()
                    .startElement("elem")
                    .characters("Hello\n\nWorld")
                    .endElement()
                    .endDocument();
-    QCOMPARE(fixture->stream.str().data(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<elem>Hello\n\nWorld</elem>\n");
+    QCOMPARE(m_fixture->stream.str().data(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<elem>Hello\n\nWorld</elem>\n");
 }
 
 

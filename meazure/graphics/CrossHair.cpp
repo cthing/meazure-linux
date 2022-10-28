@@ -43,7 +43,7 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
     const int screenIndex = m_screenProvider.screenForPoint(screenCenter);
     const QSizeF screenRes = m_screenProvider.getScreenRes(screenIndex);
 
-    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, outerSize, outerSizeMin);
+    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, k_outerSize, k_outerSizeMin);
     actualSize.rwidth() = MathUtils::makeOddUp(actualSize.width());       // Must be odd
     actualSize.rheight() = MathUtils::makeOddUp(actualSize.height());
     setFixedSize(actualSize);
@@ -105,7 +105,7 @@ void CrossHair::paintEvent(QPaintEvent*) {
     painter.fillRect(rect(), m_pointerOver ? m_hiliteColor : m_backgroundColor);
 
     QPen outlinePen(m_hilite ? m_hiliteColor : m_borderColor);
-    outlinePen.setWidthF(outlineWidth);
+    outlinePen.setWidthF(k_outlineWidth);
     painter.setPen(outlinePen);
     painter.strokePath(m_crossHair, outlinePen);
 }
@@ -156,13 +156,13 @@ QPoint CrossHair::findCenter(const QPoint& point) const {
 }
 
 QPainterPath CrossHair::generateCrossHair(const QSizeF& screenRes, const QSize& size) const {
-    QSize actualPetalWidth = m_unitsProvider.convertToPixels(InchesId, screenRes, petalWidth, petalWidthMin);
+    QSize actualPetalWidth = m_unitsProvider.convertToPixels(InchesId, screenRes, k_petalWidth, k_petalWidthMin);
     actualPetalWidth.rwidth() = MathUtils::makeOddUp(actualPetalWidth.width());       // Must be odd
     actualPetalWidth.rheight() = MathUtils::makeOddUp(actualPetalWidth.height());
 
     QPainterPath path;
 
-    Plotter::plotCrosshair(size, actualPetalWidth, centerOffset, [&path](int x, int y, int width, int height) {
+    Plotter::plotCrosshair(size, actualPetalWidth, k_centerOffset, [&path](int x, int y, int width, int height) {
         path.addRect(x, y, width, height);
     });
 
