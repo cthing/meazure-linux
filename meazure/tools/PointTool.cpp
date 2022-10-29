@@ -21,7 +21,7 @@
 
 
 PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QObject *parent) : RadioTool(parent) {
+                     QObject *parent) : RadioTool(unitsProvider, parent) {
     m_crosshair = new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"));
 }
 

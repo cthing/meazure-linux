@@ -21,6 +21,7 @@
 
 #include "Tool.h"
 #include "RadioToolTraits.h"
+#include <meazure/units/UnitsProvider.h>
 #include <QObject>
 
 
@@ -29,7 +30,7 @@ class RadioTool : public Tool {
     Q_OBJECT
 
 public:
-    explicit RadioTool(QObject* parent = nullptr);
+    explicit RadioTool(const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     /// Provides the flags that describe which measurements are provided by the tool and which ones are settable.
     ///

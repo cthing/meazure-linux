@@ -55,8 +55,10 @@ void PointerTracker::run() {
     Display* controlDisplay = XOpenDisplay(nullptr);
     Display* dataDisplay = XOpenDisplay(nullptr);
 
+    const char* errorMessage = nullptr;
+
     if (controlDisplay == nullptr || dataDisplay == nullptr) {
-        emit error("Could not open X11 display for mouse tracking");
+        errorMessage = "Could not open X11 display for mouse tracking";
     } else {
         // Set the control display to sync mode to prevent a fatal X error when the data display context is enabled.
         XSynchronize(controlDisplay, True);
@@ -64,18 +66,18 @@ void PointerTracker::run() {
         int major = 0;
         int minor = 0;
         if (XRecordQueryVersion(controlDisplay, &major, &minor) == 0) {
-            emit error("XRecord extension not supported on this X Server");
+            errorMessage = "XRecord extension not supported on this X Server";
         } else {
             XRecordRange* range = XRecordAllocRange();
             if (range == nullptr) {
-                emit error("Could not allocate XRecord range object");
+                errorMessage = "Could not allocate XRecord range object";
             } else {
                 range->device_events.first = MotionNotify;
                 range->device_events.last = MotionNotify;
                 XRecordClientSpec clientSpec = XRecordAllClients;
                 const XRecordContext context = XRecordCreateContext(controlDisplay, 0, &clientSpec, 1, &range, 1);
                 if (context == 0) {
-                    emit error("Could not create XRecord context");
+                    errorMessage = "Could not create XRecord context";
                 } else {
                     auto callback = [](XPointer priv, XRecordInterceptData *hook) {
                         auto* instance = reinterpret_cast<PointerTracker*>(priv);
@@ -96,7 +98,7 @@ void PointerTracker::run() {
 
                     if (XRecordEnableContextAsync(dataDisplay, context, callback,
                                                   reinterpret_cast<XPointer>(this)) == 0) {
-                        emit error("Could not enable XRecord context");
+                        errorMessage = "Could not enable XRecord context";
                     } else {
                         const int displayFd = ConnectionNumber(dataDisplay);
 
@@ -126,8 +128,16 @@ void PointerTracker::run() {
         }
     }
 
-    XCloseDisplay(dataDisplay);
-    XCloseDisplay(controlDisplay);
+    if (dataDisplay != nullptr) {
+        XCloseDisplay(dataDisplay);
+    }
+    if (controlDisplay != nullptr) {
+        XCloseDisplay(controlDisplay);
+    }
+
+    if (errorMessage != nullptr) {
+        qFatal("%s", errorMessage);
+    }
 }
 
 void PointerTracker::handleMotion(int16_t x, int16_t y) {

@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <meazure/units/UnitsProvider.h>
 #include <QObject>
 
 
@@ -30,7 +31,7 @@ class Tool : public QObject {
     Q_OBJECT
 
 public:
-    explicit Tool(QObject* parent = nullptr);
+    explicit Tool(const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     ~Tool() override = default;
 
@@ -70,6 +71,18 @@ public:
         return m_enabled;
     }
 
+    /// Causes the tool to remeasure thereby emitting any measurement related signals. Typically, this method is
+    /// called when the measurement units are changed or when the tool is first selected. Does nothing if the tool
+    /// is not enabled. The base class implementation does nothing.
+    ///
+    virtual void refresh();
+
+protected:
+    [[nodiscard]] const UnitsProvider& getUnitsProvider() const {
+        return m_unitsProvider;
+    }
+
 private:
+    const UnitsProvider& m_unitsProvider;
     bool m_enabled { false };
 };

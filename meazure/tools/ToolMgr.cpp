@@ -26,11 +26,13 @@
 ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider) {
     // Radio tools
     //
-    Tool* cursorTool = new CursorTool(this);
+    Tool* cursorTool = new CursorTool(unitsProvider, this);
     Tool* pointTool = new PointTool(screenInfoProvider, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;
     m_tools[pointTool->getName()] = pointTool;
+
+    connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
 }
 
 void ToolMgr::selectRadioTool(const char *toolName) {
@@ -48,5 +50,11 @@ void ToolMgr::selectRadioTool(const char *toolName) {
         m_currentRadioTool->flash();
 
         emit radioToolSelected(*m_currentRadioTool);
+
+        refresh();
     }
+}
+
+void ToolMgr::refresh() {
+    m_currentRadioTool->refresh();
 }

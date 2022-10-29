@@ -18,11 +18,34 @@
  */
 
 #include "CursorTool.h"
+#include <QPointF>
 
 
-CursorTool::CursorTool(QObject *parent) : RadioTool(parent) {
+CursorTool::CursorTool(const UnitsProvider& unitsProvider, QObject *parent) : RadioTool(unitsProvider, parent) {
+    connect(m_pointerTracker, &PointerTracker::motion, this, &CursorTool::pointerMotion);
 }
 
 void CursorTool::setEnabled(bool enable) {
     RadioTool::setEnabled(enable);
+
+    if (enable) {
+        m_pointerTracker->start();
+    } else {
+        m_pointerTracker->stop();
+    }
+}
+
+void CursorTool::refresh() {
+    emitMeasurement(QCursor::pos());
+}
+
+void CursorTool::pointerMotion(int16_t x, int16_t y) {
+    emitMeasurement(QPoint(x, y));
+}
+
+void CursorTool::emitMeasurement(QPoint position) {
+    if (isEnabled()) {
+        const QPointF coord = getUnitsProvider().convertCoord(position);
+        emit xy1PositionChanged(coord);
+    }
 }

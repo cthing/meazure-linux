@@ -20,6 +20,7 @@
 #pragma once
 
 #include <meazure/tools/RadioTool.h>
+#include <meazure/units/Units.h>
 #include <QMainWindow>
 #include <QAction>
 
@@ -35,6 +36,9 @@ public:
 
 private slots:
     void radioToolSelected(RadioTool& tool);
+
+    void linearUnitsChanged(LinearUnitsId unitsId);
+    void angularUnitsChanged(AngularUnitsId unitsId);
 
 private:
     /// Creates actions that are referenced in multiple places in the application.

@@ -41,6 +41,10 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     const ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
 
+    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &MainWindow::linearUnitsChanged);
+    connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, &MainWindow::angularUnitsChanged);
+
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
     m_degreeUnitsAction->trigger();
@@ -205,4 +209,12 @@ void MainWindow::createCentralWidget() {
 
 void MainWindow::radioToolSelected(RadioTool& tool) {
     statusBar()->showMessage(tool.getInstructions());
+}
+
+void MainWindow::linearUnitsChanged(LinearUnitsId) {    // NOLINT(readability-convert-member-functions-to-static)
+    App::instance()->getToolMgr().refresh();
+}
+
+void MainWindow::angularUnitsChanged(AngularUnitsId) {  // NOLINT(readability-convert-member-functions-to-static)
+    App::instance()->getToolMgr().refresh();
 }

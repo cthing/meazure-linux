@@ -49,7 +49,6 @@ public:
     void stop();
 
 signals:
-    void error(const char *message);
     void motion(int16_t x, int16_t y);
 
 protected:

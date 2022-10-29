@@ -39,7 +39,6 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
     connect(&toolMgr, &ToolMgr::aspectChanged, this, &ToolDataSection::aspectChanged);
     connect(&toolMgr, &ToolMgr::areaChanged, this, &ToolDataSection::areaChanged);
 
-
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
     connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, &ToolDataSection::angularUnitsChanged);

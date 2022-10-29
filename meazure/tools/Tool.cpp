@@ -20,9 +20,12 @@
 #include "Tool.h"
 
 
-Tool::Tool(QObject *parent) : QObject(parent) {
+Tool::Tool(const UnitsProvider& unitsProvider, QObject *parent) : QObject(parent), m_unitsProvider(unitsProvider) {
 }
 
 void Tool::setEnabled(bool enable) {
     m_enabled = enable;
+}
+
+void Tool::refresh() {
 }

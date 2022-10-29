@@ -21,8 +21,11 @@
 
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
+#include <meazure/environment/PointerTracker.h>
+#include <meazure/units/UnitsProvider.h>
 #include <QObject>
 #include <QString>
+#include <QPoint>
 
 
 /// Cursor position measurement tool. This tool measures the position of the mouse pointer.
@@ -34,7 +37,7 @@ class CursorTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"CursorTool" };
 
-    explicit CursorTool(QObject* parent = nullptr);
+    explicit CursorTool(const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     [[nodiscard]] const char* getName() const override {
         return k_toolName;
@@ -50,6 +53,18 @@ public:
 
     void setEnabled(bool enable) override;
 
+    void refresh() override;
+
+signals:
+    void xy1PositionChanged(QPointF coord);
+
+private slots:
+    void pointerMotion(int16_t x, int16_t y);
+
 private:
     static constexpr RadioToolTraits k_traits {XY1ReadOnly };
+
+    void emitMeasurement(QPoint position);
+
+    PointerTracker* m_pointerTracker { new PointerTracker(this) };
 };
