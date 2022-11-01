@@ -21,8 +21,16 @@
 #include <QPointF>
 
 
-CursorTool::CursorTool(const UnitsProvider& unitsProvider, QObject *parent) : RadioTool(unitsProvider, parent) {
+CursorTool::CursorTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                       QObject *parent) :
+        RadioTool(unitsProvider, parent),
+        m_screenInfo(screenInfoProvider),
+        m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
     connect(m_pointerTracker, &PointerTracker::motion, this, &CursorTool::pointerMotion);
+}
+
+CursorTool::~CursorTool() {
+    delete m_dataWindow;
 }
 
 void CursorTool::setEnabled(bool enable) {
@@ -30,8 +38,10 @@ void CursorTool::setEnabled(bool enable) {
 
     if (enable) {
         m_pointerTracker->start();
+        m_dataWindow->show();
     } else {
         m_pointerTracker->stop();
+        m_dataWindow->hide();
     }
 }
 
@@ -43,9 +53,20 @@ void CursorTool::pointerMotion(int16_t x, int16_t y) {
     emitMeasurement(QPoint(x, y));
 }
 
+void CursorTool::placeDataWin(const QPoint &position) {
+    const int screenIndex = m_screenInfo.screenForPoint(position);
+    const QSize cursorSize = m_screenInfo.getCursorSize(screenIndex);
+    const QRect targetRect(position, cursorSize);
+    m_dataWindow->moveNear(targetRect);
+}
+
 void CursorTool::emitMeasurement(QPoint position) {
     if (isEnabled()) {
         const QPointF coord = getUnitsProvider().convertCoord(position);
+
+        m_dataWindow->xy1PositionChanged(coord);
+        placeDataWin(position);
+
         emit xy1PositionChanged(coord);
     }
 }

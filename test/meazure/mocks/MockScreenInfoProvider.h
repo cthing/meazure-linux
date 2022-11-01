@@ -90,6 +90,10 @@ public:
         return "MockScreen";
     }
 
+    [[nodiscard]] QSize getCursorSize(int /* screenIndex */) const override {
+        return { 24, 24 };
+    }
+
     [[nodiscard]] bool sizeChanged() const override {
         return false;
     }

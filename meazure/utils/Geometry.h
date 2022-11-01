@@ -97,8 +97,7 @@ namespace Geometry {
     inline int contains(const std::vector<RECT*>& rects, const QPoint& point) {
         const std::size_t size = rects.size();
         for (std::size_t i = 0; i < size; i++) {
-            const QRect* r = rects[i];
-            if (r->contains(point, false)) {
+            if (rects[i]->contains(point, false)) {
                 return static_cast<int>(i);
             }
         }
@@ -123,8 +122,7 @@ namespace Geometry {
 
         const std::size_t size = rects.size();
         for (std::size_t i = 0; i < size; i++) {
-            const QRect* r = rects[i];
-            const QRect intersection = r->intersected(rect);
+            const QRect intersection = rects[i]->intersected(rect);
             const int intersectionArea = area(intersection);
             if (intersectionArea > maxArea) {
                 maxArea = intersectionArea;
@@ -150,8 +148,7 @@ namespace Geometry {
 
         const std::size_t size = rects.size();
         for (std::size_t i = 0; i < size; i++) {
-            const QRect* r = rects[i];
-            const double d = distance(*r, point);
+            const double d = distance(*rects[i], point);
             if (d < minDistance) {
                 minDistance = d;
                 bestIndex = static_cast<int>(i);
@@ -202,11 +199,6 @@ namespace Geometry {
     template<class RECT>
     inline QPoint constrain(const std::vector<RECT*>& rects, const QPoint& point) {
         const int closestRectIndex = closest(rects, point);
-        if (closestRectIndex == -1) {
-            return point;
-        }
-
-        const QRect* closestRect = rects[closestRectIndex];
-        return constrain(closestRect, point);
+        return (closestRectIndex == -1) ? point : constrain(rects[closestRectIndex], point);
     }
 }

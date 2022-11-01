@@ -43,7 +43,6 @@ struct ScreenInfoProvider {
     /// Obtains the screen that contains the specified point.
     ///
     /// @param[in] point Point whose screen is desired.
-    ///
     /// @return Index of the screen containing the specified point or -1 if the specified point is outside any screen.
     ///
     [[nodiscard]] virtual int screenForPoint(const QPoint& point) const = 0;
@@ -52,7 +51,6 @@ struct ScreenInfoProvider {
     /// the specified rectangle is returned.
     ///
     /// @param[in] rect Rectangle whose screen is desired.
-    ///
     /// @return Index of the screen containing the specified rectangle or -1 if the rectangle is outside any screen.
     ///
     [[nodiscard]] virtual int screenForRect(const QRect& rect) const = 0;
@@ -61,7 +59,6 @@ struct ScreenInfoProvider {
     /// the specified widget is returned.
     ///
     /// @param[in] wnd Window whose screen is desired.
-    ///
     /// @return Index of the screen containing the specified window or -1 if the specified window is outside any screen.
     ///
     [[nodiscard]] virtual int screenForWindow(const QWidget* wnd) const = 0;
@@ -88,7 +85,6 @@ struct ScreenInfoProvider {
     /// Returns the rectangle for the specified screen.
     ///
     /// @param[in] screenIndex Screen whose rectangle is desired.
-    ///
     /// @return Screen rectangle, in pixels.
     ///
     [[nodiscard]] virtual QRect getScreenRect(int screenIndex) const = 0;
@@ -104,7 +100,6 @@ struct ScreenInfoProvider {
     /// Returns the resolution for the specified screen.
     ///
     /// @param[in] screenIndex Screen whose resolution is desired.
-    ///
     /// @return Screen resolution, in pixels per inch. If the resolution has been set manually, it is returned.
     ///         Otherwise, the operating system reported resolution is returned.
     ///
@@ -113,7 +108,6 @@ struct ScreenInfoProvider {
     /// Indicates whether the resolution for the specified screen has been set manually.
     ///
     /// @param[in] screenIndex Screen whose resolution setting is being queried.
-    ///
     /// @return true if the screen's resolution was set manually.
     ///
     [[nodiscard]] virtual bool isManualRes(int screenIndex) const = 0;
@@ -128,7 +122,6 @@ struct ScreenInfoProvider {
     /// Indicates if the specified screen is the primary.
     ///
     /// @param[in] screenIndex Screen to test for primary.
-    ///
     /// @return true if the specified screen is the primary.
     ///
     [[nodiscard]] virtual bool isPrimary(int screenIndex) const = 0;
@@ -136,10 +129,16 @@ struct ScreenInfoProvider {
     /// Returns the name for the specified screen.
     ///
     /// @param[in] screenIndex Screen whose name is desired.
-    ///
     /// @return Name of the specified screen.
     ///
     [[nodiscard]] virtual QString getScreenName(int screenIndex) const = 0;
+
+    /// Provides the size of the system cursor.
+    ///
+    /// @param[in] Screen whose cursor size is desired.
+    /// @return Size of the system cursor
+    ///
+    [[nodiscard]] virtual QSize getCursorSize(int screenIndex) const = 0;
 
     /// Indicates whether the virtual screen rectangle has changed since the last time the application was run. If
     /// the virtual screen size has changed, re-calibration is recommended.
@@ -151,7 +150,6 @@ struct ScreenInfoProvider {
     /// Ensures that the specified point is on a screen.
     ///
     /// @param[in] point Point to check.
-    ///
     /// @return New point based on the specified point that is guaranteed to be on a screen.
     ///
     [[nodiscard]] virtual QPoint constrainPosition(const QPoint& point) const = 0;

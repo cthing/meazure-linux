@@ -18,13 +18,16 @@
  */
 
 #include "ScreenInfo.h"
+#include "DesktopDetector.h"
 #include <meazure/utils/Geometry.h>
+#include <meazure/utils/GnomeUtils.h>
 #include <meazure/utils/StringUtils.h>
 #include <QScreen>
 #include <QRect>
 #include <QSizeF>
 #include <QApplication>
 #include <QMainWindow>
+#include <qpa/qplatformcursor.h>
 #include <limits>
 #include <algorithm>
 
@@ -32,6 +35,9 @@
 class ScreenInfo::Screen : public QRect {
 
 public:
+    // Default implementation of QPlatformCursor::size() returns QSize(16, 16)
+    static constexpr QSize k_defaultCursorSize = QSize(16, 16);
+
     Screen(const QScreen* screen, bool primary) :
             QRect(screen->geometry()),
             m_name(screen->name()),
@@ -40,7 +46,19 @@ public:
             m_useManualRes(ScreenInfo::k_defUseManualRes),
             m_calInInches(ScreenInfo::k_defCalInInches),
             m_currentRes(m_platformRes) {
-    }
+
+        if (DesktopDetector::isGnome()) {
+            const int cursorSize = GnomeUtils::cursorSize();
+            if (cursorSize > 0) {
+                m_cursorSize.rwidth() = cursorSize;
+                m_cursorSize.rheight() = cursorSize;
+            }
+        }
+        if (m_cursorSize.isEmpty()) {
+            const QPlatformCursor* platformCursor = screen->handle()->cursor();
+            m_cursorSize = (platformCursor == nullptr) ? k_defaultCursorSize : platformCursor->size();
+        }
+   }
 
     /// Returns the descriptive name for the screen.
     ///
@@ -111,6 +129,12 @@ public:
     ///
     [[nodiscard]] bool isCalInInches() const { return m_calInInches; }
 
+    /// Provides the size of the system cursor.
+    ///
+    /// @return Size of the system cursor
+    ///
+    [[nodiscard]] QSize getCursorSize() const { return m_cursorSize; }
+
 private:
     QString m_name;         ///< Displayable name for the screen
     bool m_primary;         ///< Indicates if the screen is the primary display
@@ -119,6 +143,7 @@ private:
     bool m_useManualRes;    ///< Indicates if manually calibrated resolution is used.
     bool m_calInInches;     ///< Indicates if calibration in inches or centimeters.
     QSizeF m_currentRes;    ///< Current screen resolution, pixels per inch.
+    QSize m_cursorSize;     ///< Size of the screen's system cursor.
 };
 
 
@@ -286,6 +311,10 @@ bool ScreenInfo::isPrimary(int screenIndex) const {
 
 QString ScreenInfo::getScreenName(int screenIndex) const {
     return isValidScreen(screenIndex) ? m_screens[screenIndex]->getName() : QString();
+}
+
+QSize ScreenInfo::getCursorSize(int screenIndex) const {
+    return isValidScreen(screenIndex) ? m_screens[screenIndex]->getCursorSize() : Screen::k_defaultCursorSize;
 }
 
 bool ScreenInfo::isCalInInches(int screenIndex) const {

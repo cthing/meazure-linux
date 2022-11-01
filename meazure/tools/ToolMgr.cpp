@@ -26,7 +26,7 @@
 ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider) {
     // Radio tools
     //
-    Tool* cursorTool = new CursorTool(unitsProvider, this);
+    Tool* cursorTool = new CursorTool(screenInfoProvider, unitsProvider, this);
     Tool* pointTool = new PointTool(screenInfoProvider, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;

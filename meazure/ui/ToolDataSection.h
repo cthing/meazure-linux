@@ -24,7 +24,6 @@
 #include <meazure/units/Units.h>
 #include <QGroupBox>
 #include <QLabel>
-#include <limits>
 
 
 /// Presents the tool measurement information.
@@ -54,7 +53,6 @@ private slots:
 private:
     static constexpr int k_fieldShortWidth { 7 };
     static constexpr int k_fieldLongWidth { 20 };
-    static constexpr int k_aspectPrecision { std::numeric_limits<float>::digits10 - 1 };
 
     /// Creates the text fields that provide the tool measurement display.
     ///

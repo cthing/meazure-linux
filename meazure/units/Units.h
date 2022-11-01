@@ -28,6 +28,7 @@
 #include <QSize>
 #include <QSizeF>
 #include <QWidget>
+#include <limits>
 
 
 /// Identifiers for linear measurement units.
@@ -94,7 +95,6 @@ class Units {
 public:
     using DisplayPrecisions = std::vector<int>;             ///< Decimal places to display for each type of measurement.
     using DisplayPrecisionNames = std::vector<QString>;     ///< Strings to identify units precisions in profiles.
-
 
     virtual ~Units() = default;
 
@@ -361,6 +361,8 @@ public:
 class LinearUnits : public Units {
 
 public:
+    static constexpr int k_aspectPrecision { std::numeric_limits<float>::digits10 - 1 };
+
     /// Destroys the linear units.
     ///
     ~LinearUnits() override = default;
@@ -434,6 +436,15 @@ public:
     /// @return Measurement value formatted with the appropriate precision and returned as a string.
     ///
     [[nodiscard]] QString format(LinearMeasurementId id, double value) const;
+
+    /// Formats the specifiedaspect ratio value with the appropriate precision.
+    ///
+    /// @param[in] value Aspect ratio
+    /// @return Aspect ratio formatted for display
+    ///
+    [[nodiscard]] static QString formatAspect(double value) {
+        return QString::number(value, 'f', k_aspectPrecision);
+    }
 
     /// Obtains the user visible length measurement label.
     ///

@@ -22,7 +22,9 @@
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
 #include <meazure/environment/PointerTracker.h>
+#include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
+#include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
 #include <QString>
 #include <QPoint>
@@ -35,9 +37,16 @@ class CursorTool : public RadioTool {
     Q_OBJECT
 
 public:
-    static constexpr const char* k_toolName {"CursorTool" };
+    static constexpr const char* k_toolName { "CursorTool" };
 
-    explicit CursorTool(const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit CursorTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                        QObject* parent = nullptr);
+
+    ~CursorTool() override;
+
+    CursorTool(const CursorTool&) = delete;
+    CursorTool(CursorTool&&) = delete;
+    CursorTool& operator=(const CursorTool&) = delete;
 
     [[nodiscard]] const char* getName() const override {
         return k_toolName;
@@ -62,9 +71,13 @@ private slots:
     void pointerMotion(int16_t x, int16_t y);
 
 private:
-    static constexpr RadioToolTraits k_traits {XY1ReadOnly };
+    static constexpr RadioToolTraits k_traits { XY1ReadOnly };
+
+    void placeDataWin(const QPoint& position);
 
     void emitMeasurement(QPoint position);
 
+    const ScreenInfoProvider& m_screenInfo;
     PointerTracker* m_pointerTracker { new PointerTracker(this) };
+    ToolDataWindow* m_dataWindow;
 };

@@ -93,6 +93,8 @@ public:
 
     [[nodiscard]] QString getScreenName(int screenIndex) const override;
 
+    [[nodiscard]] QSize getCursorSize(int screenIndex) const override;
+
     /// Indicates if the specified screen was calibrated in inches or centimeters.
     ///
     /// @param[in] screenIndex Points at the screen whose calibration units are desired.

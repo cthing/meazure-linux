@@ -24,6 +24,8 @@ set(UI_SOURCES
     ui/ScreenDataSection.h
     ui/ToolDataSection.cpp
     ui/ToolDataSection.h
+    ui/ToolDataWindow.cpp
+    ui/ToolDataWindow.h
     )
 source_group(UI FILES ${UI_SOURCES})
 
@@ -72,6 +74,8 @@ source_group(XML FILES ${XML_SOURCES})
 
 set(UTILS_SOURCES
     utils/Geometry.h
+    utils/GnomeUtils.cpp
+    utils/GnomeUtils.h
     utils/MathUtils.h
     utils/StringUtils.cpp
     utils/StringUtils.h
@@ -79,6 +83,8 @@ set(UTILS_SOURCES
 source_group(UTILS FILES ${UTILS_SOURCES})
 
 set(ENVIRONMENT_SOURCES
+    environment/DesktopDetector.cpp
+    environment/DesktopDetector.h
     environment/PointerTracker.cpp
     environment/PointerTracker.h
     environment/ScreenInfo.cpp
@@ -124,10 +130,16 @@ set(MEAZURE_RESOURCES
     resources/images/WindowTool.svg
     )
 
+# To provide access to the QPlatform* classes
+set(Qt6_Gui_Platform_INCLUDE_DIRS ${Qt6_Gui_INCLUDE_DIRS})
+list(TRANSFORM Qt6_Gui_Platform_INCLUDE_DIRS APPEND "/${Qt6_VERSION}/QtGui")
+
 qt6_add_library(libmeazure STATIC ${MEAZURE_SOURCES})
 target_compile_options(libmeazure PRIVATE -fPIC)
 target_include_directories(libmeazure PRIVATE
                            ${Qt6_INCLUDE_DIRS}
+                           ${Qt6_Gui_Platform_INCLUDE_DIRS}
+                           ${glib_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_CURRENT_BINARY_DIR}"
@@ -137,6 +149,8 @@ qt6_add_resources(libmeazure "resources" PREFIX "/" BASE "resources" FILES ${MEA
 qt6_add_executable(meazure main.cpp)
 target_include_directories(meazure PRIVATE
                            ${Qt6_INCLUDE_DIRS}
+                           ${Qt6_Gui_Platform_INCLUDE_DIRS}
+                           ${glib_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_CURRENT_BINARY_DIR}"

@@ -141,7 +141,6 @@ private:
     QColor m_backgroundColor;
     QColor m_hiliteColor;
     QColor m_borderColor;
-    double m_opacity;
     QPainterPath m_crossHair;
     bool m_pointerOver { false };
     bool m_hilite { false };

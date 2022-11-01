@@ -21,6 +21,7 @@
 #include <meazure/tools/ToolMgr.h>
 #include <meazure/tools/RadioToolTraits.h>
 #include <meazure/units/UnitsMgr.h>
+#include <meazure/units/Units.h>
 #include <meazure/App.h>
 #include <QGridLayout>
 
@@ -199,7 +200,7 @@ void ToolDataSection::linearUnitsChanged(LinearUnitsId) {
     m_wField->setDecimals(linearUnits->getDisplayPrecision(Width));
     m_hField->setDecimals(linearUnits->getDisplayPrecision(Height));
     m_dField->setDecimals(linearUnits->getDisplayPrecision(Distance));
-    m_asField->setDecimals(k_aspectPrecision);
+    m_asField->setDecimals(LinearUnits::k_aspectPrecision);
     m_arField->setDecimals(linearUnits->getDisplayPrecision(Area));
 }
 

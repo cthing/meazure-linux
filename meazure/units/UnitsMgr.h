@@ -32,13 +32,13 @@ class UnitsMgr : public QObject, public UnitsProvider {
     Q_OBJECT
 
 public:
-    static constexpr bool k_defHaveWarned {false };             ///< Indicates whether the user has already been
+    static constexpr bool k_defHaveWarned { false };            ///< Indicates whether the user has already been
                                                                 ///< warned about using the operating system
                                                                 ///< reported resolution.
-    static constexpr const char* k_defLinearUnits {"px" };      ///< Default units for linear measurements.
-    static constexpr const char* k_defAngularUnits {"deg" };    ///< Default units for angular measurements.
-    static constexpr bool k_defInvertY {false };                ///< Default orientation of the y-axis.
-    static constexpr bool k_defSupplmentalAngle {false };       ///< Default angle to show
+    static constexpr const char* k_defLinearUnits { "px" };     ///< Default units for linear measurements.
+    static constexpr const char* k_defAngularUnits { "deg" };   ///< Default units for angular measurements.
+    static constexpr bool k_defInvertY { false };               ///< Default orientation of the y-axis.
+    static constexpr bool k_defSupplmentalAngle { false };      ///< Default angle to show
 
 
     ~UnitsMgr() override = default;

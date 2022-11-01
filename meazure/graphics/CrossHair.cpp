@@ -36,8 +36,7 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         m_id(id),
         m_backgroundColor(backgroundColor),
         m_hiliteColor(hiliteColor),
-        m_borderColor(borderColor),
-        m_opacity(qAlpha(opacity) / 255.0) {
+        m_borderColor(borderColor) {
 
     const QPoint screenCenter = m_screenProvider.getCenter();
     const int screenIndex = m_screenProvider.screenForPoint(screenCenter);
@@ -51,7 +50,7 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
     m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
     m_crossHair = generateCrossHair(screenRes, actualSize);
 
-    setWindowOpacity(m_opacity);
+    setWindowOpacity(qAlpha(opacity) / 255.0);
 
     if (!tooltip.isEmpty()) {
         setToolTip(tooltip);
