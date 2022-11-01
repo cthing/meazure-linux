@@ -22,7 +22,7 @@
 
 Graphic::Graphic(QWidget *parent) : QWidget(parent) {
     if (parent == nullptr) {
-        setWindowFlags(Qt::FramelessWindowHint);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         setAttribute(Qt::WA_QuitOnClose, false);
         setAttribute(Qt::WA_AlwaysShowToolTips, true);
     }
