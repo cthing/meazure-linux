@@ -21,6 +21,7 @@
 
 #include <QRect>
 #include <QPoint>
+#include <QtMath>
 #include <vector>
 #include <cstddef>
 #include <cmath>
@@ -82,6 +83,117 @@ namespace Geometry {
             return point.x() - rect.right();
         }
         return std::hypot(rect.right() - point.x(), rect.bottom() - point.y());
+    }
+
+    /// Returns the angular sector containing the vector specified by the two points. A circle centered at the
+    /// starting point of the vector is divided into eight 45 degree sectors numbered -4 through 4 inclusive.
+    /// The sectors are numbered according to the following table of angle ranges. Positive angles go clockwise
+    /// from the positive x-axis.
+    ///
+    /// <table>
+    /// <tr>
+    ///     <th>Angle Range (deg)</th>
+    ///     <th>Sector</th>
+    /// </tr>
+    /// <tr>
+    ///     <td>[0, 45)</td>
+    ///     <td>1</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>[45, 90)</td>
+    ///     <td>2</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>[90, 135)</td>
+    ///     <td>3</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>[135, 180)</td>
+    ///     <td>4</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>[180, 225]</td>
+    ///     <td>-4</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>(225, 270]</td>
+    ///     <td>-3</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>(270, 315]</td>
+    ///     <td>-2</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>(315, 0]</td>
+    ///     <td>-1</td>
+    /// </tr>
+    /// <tr>
+    ///     <td>Zero vector</td>
+    ///     <td>0</td>
+    /// </tr>
+    /// </table>
+    ///
+    /// @param[in] start Starting point for the vector.
+    /// @param[in] end Ending point for the vector.
+    ///
+    /// @return The circular sector corresponding to the vector in the range [-4.0, 4.0].
+    ///
+    inline int calcSector(const QPoint& start, const QPoint& end) {
+        const QPoint delta = end - start;
+
+        if (delta.isNull()) {
+            return 0;
+        }
+        if (delta.x() == 0) {
+            return (delta.y() < 0) ? -3 : 3;
+        }
+        if (delta.y() == 0) {
+            return (delta.x() < 0) ? -4 : 1;
+        }
+
+        // Note: 45 degrees == PI/4 radians
+        const double result = atan2(static_cast<double>(delta.y()), static_cast<double>(delta.x())) / M_PI_4;
+        return static_cast<int>(result + std::copysign(1.0, result));
+    }
+
+    /// Indicates whether the specified vector is oriented in a vertical direction. A vector is considered
+    /// vertically oriented if it is in sector +/-2 or +/-3. See the documentation for the CalcSector method.
+    ///
+    /// @param[in] start Starting point for the vector
+    /// @param[in] end Ending point for the vector
+    /// @return true if the specified vector is vertically oriented. Returns false if the vector is horizontally
+    ///     oriented or is the empty vector.
+    ///
+    inline bool isVerticallyOriented(const QPoint& start, const QPoint& end) {
+        switch (calcSector(start, end)) {
+            case 2:
+            case -2:
+            case 3:
+            case -3:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /// Indicates whether the specified vector is oriented in a horizontal direction. A vector is considered
+    /// horizontally oriented if it is in sector +/-1 or +/-4. See the documentation for the CalcSector method.
+    ///
+    /// @param[in] start Starting point for the vector
+    /// @param[in] end Ending point for the vector
+    /// @return true if the specified vector is horizontally oriented. Returns false if the vector is vertically
+    ///     oriented or is the empty vector.
+    ///
+    inline bool isHorizontallyOriented(const QPoint& start, const QPoint& end) {
+        switch (calcSector(start, end)) {
+            case 1:
+            case -1:
+            case 4:
+            case -4:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /// Determines whether one of the specified rectangles contains the specified point.

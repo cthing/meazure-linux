@@ -24,7 +24,9 @@
 #include <meazure/graphics/CrossHair.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
+#include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
+#include <QPoint>
 
 
 /// Point measurement tool. This tool provides a crosshair that can be placed arbitrarily on the screen to measure
@@ -62,8 +64,19 @@ public:
 
     void flash() override;
 
-private:
-    static constexpr RadioToolTraits k_traits {XY1ReadWrite };
+    void strobe() override;
 
+private slots:
+    void entered(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void departed(CrossHair& crosshair, int id);
+    void dragged(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void moved(CrossHair& crosshair, int id, QPoint center);
+
+private:
+    static constexpr RadioToolTraits k_traits { XY1ReadWrite };
+
+    QPoint m_center;            ///< Position of the crosshair
+    QPoint m_anchorPoint;       ///< Location for vertical / horizontal lock when Shift is held while dragging
     CrossHair* m_crosshair;
+    ToolDataWindow* m_dataWindow;
 };

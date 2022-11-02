@@ -30,6 +30,7 @@ CursorTool::CursorTool(const ScreenInfoProvider& screenInfoProvider, const Units
 }
 
 CursorTool::~CursorTool() {
+    setEnabled(false);
     delete m_dataWindow;
 }
 
@@ -47,6 +48,10 @@ void CursorTool::setEnabled(bool enable) {
 
 void CursorTool::refresh() {
     emitMeasurement(QCursor::pos());
+}
+
+void CursorTool::strobe() {
+    m_dataWindow->strobe();
 }
 
 void CursorTool::pointerMotion(int16_t x, int16_t y) {

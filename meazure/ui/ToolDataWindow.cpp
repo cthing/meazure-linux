@@ -24,10 +24,10 @@
 
 ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, // NOLINT(cppcoreguidelines-pro-type-member-init)
                                RadioToolTraits traits, QWidget* parent, QRgb opacity) :
-        QWidget(parent),
+        QFrame(parent),
         m_screenInfo(screenInfoProvider),
         m_units(unitsProvider) {
-    constexpr int k_margin = 3;           // Pixels
+    constexpr int k_margin = 4;           // Pixels
     constexpr int k_verticalSpace = 2;    // Pixels
     constexpr int k_horizontalSpace = 3;  // Pixels
 
@@ -36,12 +36,17 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
         setAttribute(Qt::WA_QuitOnClose, false);
     }
 
-    QPalette p;
-    p.setColor(QPalette::Window, palette().color(QPalette::ToolTipBase));
-    p.setColor(QPalette::WindowText, palette().color(QPalette::ToolTipText));
-    setPalette(p);
+    m_backgroundColor = palette().color(QPalette::ToolTipBase);
+    m_textColor = palette().color(QPalette::ToolTipText);
 
+    setFrameStyle(Box | Plain);
+    setLineWidth(1);
+    setColors();
     setWindowOpacity(qAlpha(opacity) / 255.0);
+
+    m_flashTimer.setTimerType(Qt::PreciseTimer);
+    m_flashTimer.setInterval(100);
+    connect(&m_flashTimer, &QTimer::timeout, this, &ToolDataWindow::flashHandler);
 
     auto* layout = new QGridLayout();
     layout->setContentsMargins(k_margin, k_margin, k_margin, k_margin);
@@ -96,6 +101,32 @@ void ToolDataWindow::moveNear(const QRect& target) {
     }
 
     move(x, y);
+}
+
+void ToolDataWindow::strobe() {
+    m_flashCountDown = 1;
+    m_flashTimer.start();
+}
+
+void ToolDataWindow::flashHandler() {
+    m_flashCountDown--;
+    if (m_flashCountDown < 0) {
+        m_showText = true;
+        m_flashTimer.stop();
+    } else {
+        m_showText = !m_showText;
+    }
+
+    setColors();
+}
+
+void ToolDataWindow::setColors() {
+    QPalette p;
+    p.setColor(QPalette::Window, m_backgroundColor);
+    p.setColor(QPalette::WindowText, m_showText ? m_textColor : m_backgroundColor);
+    setPalette(p);
+
+    repaint();
 }
 
 void ToolDataWindow::xy1PositionChanged(QPointF coord) {

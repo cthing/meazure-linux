@@ -54,4 +54,11 @@ public:
     /// screen. This base class implementation does nothing.
     ///
     virtual void flash();
+
+    /// Visually strobes the tool. Typically, if a tool uses crosshairs, their borders are cycled once between a
+    /// hilite color and their normal. In addition, if the tool has a data window attached to the crosshairs, their
+    /// text is flashed. Examples of when strobing the tool is done is to visually confirm region capture and position
+    /// recording. This base class implementation does nothing.
+    ///
+    virtual void strobe();
 };

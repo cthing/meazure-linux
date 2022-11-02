@@ -19,6 +19,7 @@
 
 #include <QTest>
 #include <QtPlugin>
+#include <QPoint>
 #include <meazure/utils/Geometry.h>
 #include <vector>
 
@@ -33,6 +34,8 @@ Q_OBJECT
 private slots:
     [[maybe_unused]] void testArea();
     [[maybe_unused]] void testDistance();
+    [[maybe_unused]] void testCalcSector_data();
+    [[maybe_unused]] void testCalcSector();
     [[maybe_unused]] void testContainsPoint();
     [[maybe_unused]] void testContainsRect();
     [[maybe_unused]] void testClosestRect();
@@ -65,6 +68,46 @@ private slots:
     QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(55, 20)), 6.0);
     QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(55, 10)), 7.81024967591);
     QCOMPARE(Geometry::distance(QRect(10, 15, 40, 20), QPoint(40, 10)), 5.0);
+}
+
+[[maybe_unused]] void GeometryTest::testCalcSector_data() {
+    QTest::addColumn<int>("x");
+    QTest::addColumn<int>("y");
+    QTest::addColumn<int>("sector");
+    QTest::addColumn<bool>("horizontal");
+    QTest::addColumn<bool>("vertical");
+
+    QTest::newRow("0,0,0")    <<  0 <<  0 <<  0 << false << false;      // Zero vector
+    QTest::newRow("1,0,1")    <<  1 <<  0 <<  1 <<  true << false;      // 0 degrees
+    QTest::newRow("2,1,1")    <<  2 <<  1 <<  1 <<  true << false;      // 27 degrees
+    QTest::newRow("1,1,2")    <<  1 <<  1 <<  2 << false <<  true;      // 45 degrees
+    QTest::newRow("1,2,2")    <<  1 <<  2 <<  2 << false <<  true;      // 63 degrees
+    QTest::newRow("0,1,3")    <<  0 <<  1 <<  3 << false <<  true;      // 90 degrees
+    QTest::newRow("-1,2,3")   << -1 <<  2 <<  3 << false <<  true;      // 117 degrees
+    QTest::newRow("-1,1,4")   << -1 <<  1 <<  4 <<  true << false;      // 135 degrees
+    QTest::newRow("-2,1,4")   << -2 <<  1 <<  4 <<  true << false;      // 153 degrees
+    QTest::newRow("-1,0,-4")  << -1 <<  0 << -4 <<  true << false;      // 180 degrees
+    QTest::newRow("-2,-1,-4") << -2 << -1 << -4 <<  true << false;      // 207 degrees
+    QTest::newRow("-1,-1,-4") << -1 << -1 << -4 <<  true << false;      // 225 degrees
+    QTest::newRow("-1,-2,-3") << -1 << -2 << -3 << false <<  true;      // 243 degrees
+    QTest::newRow("0,-1,-3")  <<  0 << -1 << -3 << false <<  true;      // 270 degrees
+    QTest::newRow("1,-2,-2")  <<  1 << -2 << -2 << false <<  true;      // 297 degrees
+    QTest::newRow("1,-1,-2")  <<  1 << -1 << -2 << false <<  true;      // 315 degrees
+    QTest::newRow("2,-1,-1")  <<  2 << -1 << -1 <<  true << false;      // 333 degrees
+}
+
+[[maybe_unused]] void GeometryTest::testCalcSector() {
+    const QFETCH(int, x);
+    const QFETCH(int, y);
+    const QFETCH(int, sector);
+    const QFETCH(bool, horizontal);
+    const QFETCH(bool, vertical);
+
+    const QPoint p0(1, 2);
+    const QPoint p1(p0.x() + x, p0.y() + y);
+    QCOMPARE(Geometry::calcSector(p0, p1), sector);
+    QCOMPARE(Geometry::isHorizontallyOriented(p0, p1), horizontal);
+    QCOMPARE(Geometry::isVerticallyOriented(p0, p1), vertical);
 }
 
 [[maybe_unused]] void GeometryTest::testContainsPoint() {

@@ -86,6 +86,10 @@ void CrossHair::flash(int flashCount) {
     m_flashTimer.start();
 }
 
+void CrossHair::strobe() {
+    flash(k_strobeCount);
+}
+
 void CrossHair::flashHandler() {
     m_flashCountDown--;
     if (m_flashCountDown < 0) {

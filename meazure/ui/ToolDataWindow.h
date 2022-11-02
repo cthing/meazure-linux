@@ -23,10 +23,12 @@
 #include <meazure/tools/RadioToolTraits.h>
 #include <meazure/graphics/Colors.h>
 #include <meazure/environment/ScreenInfoProvider.h>
-#include <QWidget>
+#include <QFrame>
 #include <QLabel>
 #include <QRect>
 #include <QMargins>
+#include <QTimer>
+#include <QColor>
 
 
 /// A popup data display window. A data display window is attached to each radio tool's crosshair and a corner of the
@@ -34,7 +36,7 @@
 /// shown and provides a continuous readout of the measurements appropriate to the tool. The user can set a preference
 /// to not display the data windows.
 ///
-class ToolDataWindow : public QWidget {
+class ToolDataWindow : public QFrame {
 
     Q_OBJECT
 
@@ -64,6 +66,11 @@ public:
     ///
     void moveNear(const QRect& target);
 
+    /// Visually strobes the data window by cycling the text between the background and foreground colors once.
+    /// Typically, this is done to indicate a position has been logged.
+    ///
+    void strobe();
+
 public slots:
     void xy1PositionChanged(QPointF coord);
     void xy2PositionChanged(QPointF coord);
@@ -74,11 +81,22 @@ public slots:
     void aspectChanged(double aspect);
     void areaChanged(double area);
 
+private slots:
+    void flashHandler();
+
 private:
     static constexpr QMargins k_targetMargins { 5, 5, 5, 5 };
 
+    void setColors();
+
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_units;
+    QTimer m_flashTimer;
+    int m_flashCountDown { -1 };
+    bool m_showText { true };
+
+    QColor m_backgroundColor;
+    QColor m_textColor;
 
     QLabel* m_x1Value;
     QLabel* m_y1Value;

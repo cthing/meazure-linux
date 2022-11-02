@@ -25,3 +25,6 @@ RadioTool::RadioTool(const UnitsProvider& unitsProvider, QObject *parent) : Tool
 
 void RadioTool::flash() {
 }
+
+void RadioTool::strobe() {
+}

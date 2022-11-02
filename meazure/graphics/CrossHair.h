@@ -81,8 +81,12 @@ public:
     ///
     void flash(int flashCount = k_defaultFlashCount);
 
+    /// Visually flashes the crosshair by cycling its background between normal and hilite colors once.
+    ///
+    void strobe();
+
 signals:
-    /// Indicates that the crosshair position has been change.
+    /// Emitted when the crosshair position has been change.
     ///
     /// @param[in] crosshair Crosshair whose position has changed
     /// @param[in] id User provided identifier for the crosshair
@@ -90,12 +94,49 @@ signals:
     ///
     void moved(CrossHair& crosshair, int id, QPoint center);
 
+    /// Emitted when the pointer has moved into the crosshair.
+    ///
+    /// @param[in] crosshair Crosshair that has been entered
+    /// @param[in] id User provided identifier for the crosshair
+    /// @param[in] center Center position of the crosshair in global pixel coordinates
+    /// @param[in] keyboardModifiers Keyboard modifiers in effect when the pointer entered the crosshair
+    ///
     void entered(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+
+    /// Emitted when the pointer has moved out of the crosshair.
+    ///
+    /// @param[in] crosshair Crosshair that has been exited
+    /// @param[in] id User provided identifier for the crosshair
+    ///
     void departed(CrossHair& crosshair, int id);
 
+    /// Emitted when the mouse selected button is pressed while over the crosshair.
+    ///
+    /// @param[in] crosshair Crosshair that has been selected
+    /// @param[in] id User provided identifier for the crosshair
+    /// @param[in] center Center position of the crosshair in global pixel coordinates
+    /// @param[in] keyboardModifiers Keyboard modifiers in effect when the crosshair is selected
+    ///
     void selected(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+
+    /// Emitted when the mouse selected button is released while over the crosshair.
+    ///
+    /// @param[in] crosshair Crosshair that has been deselected
+    /// @param[in] id User provided identifier for the crosshair
+    /// @param[in] center Center position of the crosshair in global pixel coordinates
+    /// @param[in] keyboardModifiers Keyboard modifiers in effect when the crosshair is deselected
+    ///
     void deselected(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
 
+    /// Emitted when the pointer is dragged over the crosshair while it is selected (i.e. pointer grabbed). Note
+    /// that this signal only indicates a motion of the pointer over the crosshair, not an actual movement of the
+    /// crosshair, which is indicated by the moved signal.
+    ///
+    /// @param[in] crosshair Crosshair over which the drag is taking place
+    /// @param[in] id User provided identifier for the crosshair
+    /// @param[in] center Center position of the crosshair if it had been moved to the dragged position
+    /// @param[in] keyboardModifiers Keyboard modifiers in effect during the drag
+    ///
     void dragged(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
 
 protected:
@@ -118,6 +159,7 @@ private:
     static constexpr int k_centerOffset { 2 };      // Pixels
     static constexpr double k_outlineWidth { 1.5 }; // Pixels
     static constexpr int k_defaultFlashCount { 9 };
+    static constexpr int k_strobeCount { 1 };
 
     /// Determines the center point of the crosshair relative to the specified point.
     ///

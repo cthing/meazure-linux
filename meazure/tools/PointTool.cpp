@@ -18,14 +18,24 @@
  */
 
 #include "PointTool.h"
-
+#include <meazure/utils/Geometry.h>
 
 PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QObject *parent) : RadioTool(unitsProvider, parent) {
+                     QObject *parent) :
+        RadioTool(unitsProvider, parent),
+        m_center(screenInfoProvider.getCenter()),
+        m_anchorPoint(m_center),
+        m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
     m_crosshair = new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"));
+    connect(m_crosshair, &CrossHair::entered, this, &PointTool::entered);
+    connect(m_crosshair, &CrossHair::departed, this, &PointTool::departed);
+    connect(m_crosshair, &CrossHair::dragged, this, &PointTool::dragged);
+    connect(m_crosshair, &CrossHair::moved, this, &PointTool::moved);
 }
 
 PointTool::~PointTool() {
+    m_dataWindow->hide();
+    setEnabled(false);
     delete m_crosshair;
 }
 
@@ -41,4 +51,37 @@ void PointTool::setEnabled(bool enable) {
 
 void PointTool::flash() {
     m_crosshair->flash();
+}
+
+void PointTool::strobe() {
+    m_crosshair->strobe();
+}
+
+void PointTool::entered(CrossHair&, int, QPoint, Qt::KeyboardModifiers) {
+    m_dataWindow->show();
+}
+
+void PointTool::departed(CrossHair&, int) {
+    m_dataWindow->hide();
+}
+
+void PointTool::dragged(CrossHair&, int, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
+    m_center = center;
+
+    // Shift + drag locks the movement of the crosshair to vertical or horizontal.
+    if ((keyboardModifiers & Qt::ShiftModifier) != 0) {
+        if (Geometry::isVerticallyOriented(m_anchorPoint, m_center)) {
+            m_center.rx() = m_anchorPoint.x();
+        } else {
+            m_center.ry() = m_anchorPoint.y();
+        }
+    } else {
+        m_anchorPoint = m_center;
+    }
+
+    m_crosshair->setPosition(m_center);
+}
+
+void PointTool::moved(CrossHair&, int, QPoint center) { // NOLINT(readability-convert-member-functions-to-static)
+    printf("================================================== %d %d\n", center.x(), center.y());
 }

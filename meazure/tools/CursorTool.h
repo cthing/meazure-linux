@@ -64,6 +64,8 @@ public:
 
     void refresh() override;
 
+    void strobe() override;
+
 signals:
     void xy1PositionChanged(QPointF coord);
 
