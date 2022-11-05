@@ -153,6 +153,19 @@ struct UnitsProvider {
     ///
     [[nodiscard]] virtual QPointF convertPos(const QPoint& pos) const = 0;
 
+    /// Converts from the current units to pixels. The conversion takes into account the location of the origin and
+    /// the orientation of the y-axis. The conversion is performed for the specified coordinate located on the
+    /// specified axis.
+    ///
+    /// @param[in] dir Axis on which the conversion should take place.
+    /// @param[in] wnd Window used to determine the screen resolution.
+    /// @param[in] pos Coordinate to convert to pixels.
+    ///
+    /// @return Coordinate converted from the current units to pixels. The conversion takes into account the location
+    ///         of the origin and the orientation of the y-axis.
+    ///
+    [[nodiscard]] virtual double unconvertCoord(ConvertDir dir, const QWidget* wnd, double pos) const = 0;
+
     /// Converts from the current units to pixels. The conversion does not take into account the location of the
     /// origin nor the orientation of the y-axis.
     ///

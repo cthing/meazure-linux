@@ -32,7 +32,7 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
     constexpr int k_horizontalSpace = 3;  // Pixels
 
     if (parent == nullptr) {
-        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        setWindowFlags(Qt::X11BypassWindowManagerHint);
         setAttribute(Qt::WA_QuitOnClose, false);
     }
 

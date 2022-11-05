@@ -19,10 +19,14 @@
 
 #include "PointTool.h"
 #include <meazure/utils/Geometry.h>
+#include <meazure/utils/StringUtils.h>
+#include <QRect>
+#include <cmath>
 
 PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                      QObject *parent) :
         RadioTool(unitsProvider, parent),
+        m_screenInfo(screenInfoProvider),
         m_center(screenInfoProvider.getCenter()),
         m_anchorPoint(m_center),
         m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
@@ -47,6 +51,60 @@ void PointTool::setEnabled(bool enable) {
     } else {
         m_crosshair->hide();
     }
+}
+
+void PointTool::saveProfile(Profile& profile) {
+    // Save the position of the crosshair.
+    //
+    const QPointF coord = getUnitsProvider().convertPos(m_center);
+    profile.writeStr("PointX1", StringUtils::dblToStr(coord.x()));
+    profile.writeStr("PointY1", StringUtils::dblToStr(coord.y()));
+}
+
+void PointTool::loadProfile(Profile& profile) {
+    // Use the current position as the default value for those position components that are not
+    // specified in the profile.
+    //
+    const QPointF defaultCoord = getUnitsProvider().convertPos(m_center);
+
+    // Load the crosshair position.
+    //
+    QPointF coord;
+    coord.rx() = profile.readDbl("PointX1", defaultCoord.x());
+    coord.ry() = profile.readDbl("PointY1", defaultCoord.y());
+    m_center = getUnitsProvider().unconvertPos(coord);
+    m_anchorPoint = m_center;
+
+    setPosition();
+}
+
+void PointTool::setX1Position(double x) {
+    m_center.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_crosshair, x)));
+    setPosition();
+}
+
+void PointTool::setY1Position(double y) {
+    m_center.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_crosshair, y)));
+    setPosition();
+}
+
+void PointTool::stepX1Position(int numSteps) {
+    m_center.rx() += numSteps;
+    setPosition();
+}
+
+void PointTool::stepY1Position(int numSteps) {
+    m_center.ry() += numSteps;
+    setPosition();
+}
+
+void PointTool::setPosition() {
+    m_center = m_screenInfo.constrainPosition(m_center);
+    m_crosshair->setPosition(m_center);
+}
+
+void PointTool::refresh() {
+    setPosition();
 }
 
 void PointTool::flash() {
@@ -79,9 +137,16 @@ void PointTool::dragged(CrossHair&, int, QPoint center, Qt::KeyboardModifiers ke
         m_anchorPoint = m_center;
     }
 
-    m_crosshair->setPosition(m_center);
+    setPosition();
 }
 
 void PointTool::moved(CrossHair&, int, QPoint center) { // NOLINT(readability-convert-member-functions-to-static)
-    printf("================================================== %d %d\n", center.x(), center.y());
+    if (isEnabled()) {
+        const QPointF coord = getUnitsProvider().convertCoord(center);
+
+        m_dataWindow->xy1PositionChanged(coord);
+        m_dataWindow->moveNear(m_crosshair->geometry());
+
+        emit xy1PositionChanged(coord);
+    }
 }

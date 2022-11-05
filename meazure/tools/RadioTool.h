@@ -61,4 +61,76 @@ public:
     /// recording. This base class implementation does nothing.
     ///
     virtual void strobe();
+
+    /// Sets the radio tool's position 1 x coordinate.
+    ///
+    /// @param[in] x X coordinate in the current units, origin and y-axis direction.
+    ///
+    virtual void setX1Position(double x);
+
+    /// Sets the radio tool's position 1 y coordinate.
+    ///
+    /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
+    ///
+    virtual void setY1Position(double y);
+
+    /// Sets the radio tool's position 2 x coordinate.
+    ///
+    /// @param[in] x X coordinate in the current units, origin and y-axis direction.
+    ///
+    virtual void setX2Position(double x);
+
+    /// Sets the radio tool's position 2 y coordinate.
+    ///
+    /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
+    ///
+    virtual void setY2Position(double y);
+
+    /// Sets the radio tool's vertex position x coordinate.
+    ///
+    /// @param[in] x X coordinate in the current units, origin and y-axis direction.
+    ///
+    virtual void setXVPosition(double x);
+
+    /// Sets the radio tool's vertex position y coordinate.
+    ///
+    /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
+    ///
+    virtual void setYVPosition(double y);
+
+    /// Increments or decrements the radio tool's position 1 x coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the x coordinate
+    ///
+    virtual void stepX1Position(int numSteps);
+
+    /// Increments or decrements the radio tool's position 1 y coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the y coordinate
+    ///
+    virtual void stepY1Position(int numSteps);
+
+    /// Increments or decrements the radio tool's position 2 x coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the x coordinate
+    ///
+    virtual void stepX2Position(int numSteps);
+
+    /// Increments or decrements the radio tool's position 2 y coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the y coordinate
+    ///
+    virtual void stepY2Position(int numSteps);
+
+    /// Increments or decrements the radio tool's vertex position x coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the x coordinate
+    ///
+    virtual void stepXVPosition(int numSteps);
+
+    /// Increments or decrements the radio tool's vertex position y coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the y coordinate
+    ///
+    virtual void stepYVPosition(int numSteps);
 };

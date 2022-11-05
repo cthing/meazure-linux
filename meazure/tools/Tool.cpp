@@ -27,5 +27,11 @@ void Tool::setEnabled(bool enable) {
     m_enabled = enable;
 }
 
+void Tool::saveProfile(Profile&) {
+}
+
+void Tool::loadProfile(Profile&) {
+}
+
 void Tool::refresh() {
 }

@@ -47,11 +47,25 @@ public:
     ///
     [[nodiscard]] QSize minimumSizeHint() const override;
 
+signals:
+    /// Emitted to indicate that the user has either pressed an up/down arrow button, up/down arrow key, or page
+    /// up/down key while the field has keyboard focus.
+    ///
+    /// @param[in] steps The number of steps to increment or decrement the current tool position. The number of steps
+    ///     is greater for the page up/down keys. A positive value indicates an up arrow or key and a negative value
+    ///     indicates an down arrow or key.
+    ///
+    void stepRequested(int steps);
+
 protected:
     bool event(QEvent *e) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     static constexpr int k_cursorBlinkingSpace { 2 };
+
+    void emitSteps(int numSteps);
 
     int m_charWidth;
     QColor m_defaultBackground;

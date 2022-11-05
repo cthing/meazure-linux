@@ -28,3 +28,39 @@ void RadioTool::flash() {
 
 void RadioTool::strobe() {
 }
+
+void RadioTool::setX1Position(double) {
+}
+
+void RadioTool::setY1Position(double) {
+}
+
+void RadioTool::setX2Position(double) {
+}
+
+void RadioTool::setY2Position(double) {
+}
+
+void RadioTool::setXVPosition(double) {
+}
+
+void RadioTool::setYVPosition(double) {
+}
+
+void RadioTool::stepX1Position(int) {
+}
+
+void RadioTool::stepY1Position(int) {
+}
+
+void RadioTool::stepX2Position(int) {
+}
+
+void RadioTool::stepY2Position(int) {
+}
+
+void RadioTool::stepXVPosition(int) {
+}
+
+void RadioTool::stepYVPosition(int) {
+}

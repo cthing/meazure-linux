@@ -20,6 +20,7 @@
 #pragma once
 
 #include <meazure/units/UnitsProvider.h>
+#include <meazure/profile/Profile.h>
 #include <QObject>
 
 
@@ -70,6 +71,20 @@ public:
     [[nodiscard]] bool isEnabled() const {
         return m_enabled;
     }
+
+    /// Persists the state of the tool to the specified profile object. This base class implementation does nothing.
+    ///
+    /// @param[in] profile The destination for the state information, which is typically a FileProfile or
+    ///         SettingsProfile object.
+    ///
+    virtual void saveProfile(Profile& profile);
+
+    /// Restores the state of the tool from the specified profile object. This base class implementation does nothing.
+    ///
+    /// @param[in] profile The source for the state information, which is typically a FileProfile or SettingsProfile
+    ///         object.
+    ///
+    virtual void loadProfile(Profile& profile);
 
     /// Causes the tool to remeasure thereby emitting any measurement related signals. Typically, this method is
     /// called when the measurement units are changed or when the tool is first selected. Does nothing if the tool

@@ -36,18 +36,70 @@ public:
     ToolDataSection();
 
 private slots:
+    /// Called when a radio tool has been selected.
+    ///
+    /// @param[in] tool Newly selected radio tool
+    ///
     void radioToolSelected(RadioTool& tool);
 
+    /// Called when the linear units have changed.
+    ///
+    /// @param[in] unitsId Identifier of the newly selected units
+    ///
     void linearUnitsChanged(LinearUnitsId unitsId);
+
+    /// Called when the angular units have changed.
+    ///
+    /// @param[in] unitsId Identifier of the newly selected units
+    ///
     void angularUnitsChanged(AngularUnitsId unitsId);
 
+    /// Called when a tool's position 1 has changed.
+    ///
+    /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
+    ///
     void xy1PositionChanged(QPointF coord);
+
+    /// Called when a tool's position 2 has changed.
+    ///
+    /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
+    ///
     void xy2PositionChanged(QPointF coord);
+
+    /// Called when a tool's vertex position has changed.
+    ///
+    /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
+    ///
     void xyvPositionChanged(QPointF coord);
+
+    /// Called when a tool's width and height change
+    ///
+    /// @param[in] widthHeight New width and height in the current units
+    ///
     void widthHeightChanged(QSizeF widthHeight);
+
+    /// Called when the current tool's distance has changed (e.g. diagonal of the Rectangle tool).
+    ///
+    /// @param[in] distance Tool distance in the current linear units.
+    ///
     void distanceChanged(double distance);
+
+    /// Called when the current tool's angle has changed.
+    ///
+    /// @param[in] angle Tool angle in the current angular units.
+    ///
     void angleChanged(double angle);
+
+    /// Called when the current tool's aspect ratio has changed (e.g. Rectangle tool aspect ratio).
+    ///
+    /// @param[in] aspect Tool aspect ratio
+    ///
     void aspectChanged(double aspect);
+
+    /// Called when the current tool's area has changed (e.g. area of the Rectangle tool).
+    ///
+    /// @param[in] area Tool area
+    ///
     void areaChanged(double area);
 
 private:

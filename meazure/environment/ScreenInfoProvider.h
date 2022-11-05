@@ -91,7 +91,7 @@ struct ScreenInfoProvider {
 
     /// Returns the manually set screen resolution for the screen pointed to by the specified iterator.
     ///
-    /// @param[in] screenIdex Screen iterator pointed at the screen whose manual resolution is desired.
+    /// @param[in] screenIndex Screen iterator pointed at the screen whose manual resolution is desired.
     /// @param[out] useManualRes true if the resolution was set manually.
     /// @param[out] manualRes Manually set resolution, in pixels per inch.
     ///
@@ -135,7 +135,7 @@ struct ScreenInfoProvider {
 
     /// Provides the size of the system cursor.
     ///
-    /// @param[in] Screen whose cursor size is desired.
+    /// @param[in] screenIndex Screen whose cursor size is desired.
     /// @return Size of the system cursor
     ///
     [[nodiscard]] virtual QSize getCursorSize(int screenIndex) const = 0;

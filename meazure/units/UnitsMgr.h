@@ -292,6 +292,10 @@ public:
         return m_currentLinearUnits->convertCoord(pos);
     }
 
+    [[nodiscard]] double unconvertCoord(ConvertDir dir, const QWidget* wnd, double pos) const override {
+        return m_currentLinearUnits->unconvertCoord(dir, wnd, pos);
+    }
+
     /// Converts from the current units to pixels. The conversion takes into account the location of the origin
     /// and the orientation of the y-axis.
     ///

@@ -33,6 +33,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     m_tools[pointTool->getName()] = pointTool;
 
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
+    connect(pointTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
 }
 
 void ToolMgr::selectRadioTool(const char *toolName) {
@@ -53,6 +54,54 @@ void ToolMgr::selectRadioTool(const char *toolName) {
 
         refresh();
     }
+}
+
+void ToolMgr::setX1Position(double x) {
+    m_currentRadioTool->setX1Position(x);
+}
+
+void ToolMgr::setY1Position(double y) {
+    m_currentRadioTool->setY1Position(y);
+}
+
+void ToolMgr::setX2Position(double x) {
+    m_currentRadioTool->setX2Position(x);
+}
+
+void ToolMgr::setY2Position(double y) {
+    m_currentRadioTool->setY2Position(y);
+}
+
+void ToolMgr::setXVPosition(double x) {
+    m_currentRadioTool->setXVPosition(x);
+}
+
+void ToolMgr::setYVPosition(double y) {
+    m_currentRadioTool->setYVPosition(y);
+}
+
+void ToolMgr::stepX1Position(int numSteps) {
+    m_currentRadioTool->stepX1Position(numSteps);
+}
+
+void ToolMgr::stepY1Position(int numSteps) {
+    m_currentRadioTool->stepY1Position(numSteps);
+}
+
+void ToolMgr::stepX2Position(int numSteps) {
+    m_currentRadioTool->stepX2Position(numSteps);
+}
+
+void ToolMgr::stepY2Position(int numSteps) {
+    m_currentRadioTool->stepY2Position(numSteps);
+}
+
+void ToolMgr::stepXVPosition(int numSteps) {
+    m_currentRadioTool->stepXVPosition(numSteps);
+}
+
+void ToolMgr::stepYVPosition(int numSteps) {
+    m_currentRadioTool->stepYVPosition(numSteps);
 }
 
 void ToolMgr::refresh() {

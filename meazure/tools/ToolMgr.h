@@ -61,6 +61,78 @@ public slots:
     ///
     void selectRadioTool(const char* toolName);
 
+    /// Sets the current radio tool's position 1 x coordinate.
+    ///
+    /// @param[in] x X coordinate in the current units, origin and y-axis direction.
+    ///
+    void setX1Position(double x);
+
+    /// Sets the current radio tool's position 1 y coordinate.
+    ///
+    /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
+    ///
+    void setY1Position(double y);
+
+    /// Sets the current radio tool's position 2 x coordinate.
+    ///
+    /// @param[in] x X coordinate in the current units, origin and y-axis direction.
+    ///
+    void setX2Position(double x);
+
+    /// Sets the current radio tool's position 2 y coordinate.
+    ///
+    /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
+    ///
+    void setY2Position(double y);
+
+    /// Sets the current radio tool's vertex position x coordinate.
+    ///
+    /// @param[in] x X coordinate in the current units, origin and y-axis direction.
+    ///
+    void setXVPosition(double x);
+
+    /// Sets the current radio tool's vertex position y coordinate.
+    ///
+    /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
+    ///
+    void setYVPosition(double y);
+
+    /// Increments or decrements the current radio tool's position 1 x coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the x coordinate
+    ///
+    void stepX1Position(int numSteps);
+
+    /// Increments or decrements the current radio tool's position 1 y coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the y coordinate
+    ///
+    void stepY1Position(int numSteps);
+
+    /// Increments or decrements the current radio tool's position 2 x coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the x coordinate
+    ///
+    void stepX2Position(int numSteps);
+
+    /// Increments or decrements the current radio tool's position 2 y coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the y coordinate
+    ///
+    void stepY2Position(int numSteps);
+
+    /// Increments or decrements the current radio tool's vertex position x coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the x coordinate
+    ///
+    void stepXVPosition(int numSteps);
+
+    /// Increments or decrements the current radio tool's vertex position y coordinate.
+    ///
+    /// @param[in] numSteps Number of pixels to increment or decrement the y coordinate
+    ///
+    void stepYVPosition(int numSteps);
+
 signals:
     /// Called when a radio tool has been selected by a call to selectRadioTool.
     ///

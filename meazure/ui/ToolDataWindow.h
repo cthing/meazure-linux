@@ -72,21 +72,64 @@ public:
     void strobe();
 
 public slots:
+    /// Called when current tool's position 1 has changed.
+    ///
+    /// @param[in] coord Tool coordinates in the current linear units, origin and y-axis direction.
+    ///
     void xy1PositionChanged(QPointF coord);
+
+    /// Called when current tool's position 2 has changed.
+    ///
+    /// @param[in] coord Tool coordinates in the current linear units, origin and y-axis direction.
+    ///
     void xy2PositionChanged(QPointF coord);
+
+    /// Called when current tool's vertex position has changed.
+    ///
+    /// @param[in] coord Tool coordinates in the current linear units, origin and y-axis direction.
+    ///
     void xyvPositionChanged(QPointF coord);
+
+    /// Called when the current tool's width or height has changed.
+    ///
+    /// @param[in] widthHeight Width and height of the tool in the current linear units.
+    ///
     void widthHeightChanged(QSizeF widthHeight);
+
+    /// Called when the current tool's distance has changed (e.g. diagonal of the Rectangle tool).
+    ///
+    /// @param[in] distance Tool distance in the current linear units.
+    ///
     void distanceChanged(double distance);
+
+    /// Called when the current tool's angle has changed.
+    ///
+    /// @param[in] angle Tool angle in the current angular units.
+    ///
     void angleChanged(double angle);
+
+    /// Called when the current tool's aspect ratio has changed (e.g. Rectangle tool aspect ratio).
+    ///
+    /// @param[in] aspect Tool aspect ratio
+    ///
     void aspectChanged(double aspect);
+
+    /// Called when the current tool's area has changed (e.g. area of the Rectangle tool).
+    ///
+    /// @param[in] area Tool area
+    ///
     void areaChanged(double area);
 
 private slots:
+    /// Called to cycle the data window text between its normal color and the window background color.
+    ///
     void flashHandler();
 
 private:
     static constexpr QMargins k_targetMargins { 5, 5, 5, 5 };
 
+    /// Sets the data window's background and text colors.
+    ///
     void setColors();
 
     const ScreenInfoProvider& m_screenInfo;

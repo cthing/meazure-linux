@@ -247,7 +247,7 @@ int ScreenInfo::screenForRect(const QRect& rect) const {
 
 int ScreenInfo::screenForWindow(const QWidget* wnd) const {
     const QRect geom = wnd->geometry();
-    const QPoint topLeftGlobal = wnd->mapToGlobal(geom.topLeft());
+    const QPoint topLeftGlobal = wnd->parent() == nullptr ? geom.topLeft() : wnd->mapToGlobal(geom.topLeft());
 
     return screenForRect(QRect(topLeftGlobal, geom.size()));
 }

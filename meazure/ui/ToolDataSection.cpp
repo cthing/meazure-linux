@@ -24,6 +24,7 @@
 #include <meazure/units/Units.h>
 #include <meazure/App.h>
 #include <QGridLayout>
+#include <QSignalBlocker>
 
 
 ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -39,6 +40,20 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
     connect(&toolMgr, &ToolMgr::angleChanged, this, &ToolDataSection::angleChanged);
     connect(&toolMgr, &ToolMgr::aspectChanged, this, &ToolDataSection::aspectChanged);
     connect(&toolMgr, &ToolMgr::areaChanged, this, &ToolDataSection::areaChanged);
+
+    connect(m_x1Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setX1Position);
+    connect(m_y1Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setY1Position);
+    connect(m_x2Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setX2Position);
+    connect(m_y2Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setY2Position);
+    connect(m_xvField, &DataField::valueChanged, &toolMgr, &ToolMgr::setXVPosition);
+    connect(m_yvField, &DataField::valueChanged, &toolMgr, &ToolMgr::setYVPosition);
+
+    connect(m_x1Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepX1Position);
+    connect(m_y1Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepY1Position);
+    connect(m_x2Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepX2Position);
+    connect(m_y2Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepY2Position);
+    connect(m_xvField, &DataField::stepRequested, &toolMgr, &ToolMgr::stepXVPosition);
+    connect(m_yvField, &DataField::stepRequested, &toolMgr, &ToolMgr::stepYVPosition);
 
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
@@ -191,6 +206,13 @@ void ToolDataSection::linearUnitsChanged(LinearUnitsId) {
     m_dUnits->setText(lengthLabel);
     m_arUnits->setText(linearUnits->getAreaLabel());
 
+    const QSignalBlocker x1Blocker(m_x1Field);
+    const QSignalBlocker y1Blocker(m_y1Field);
+    const QSignalBlocker x2Blocker(m_x2Field);
+    const QSignalBlocker y2Blocker(m_y2Field);
+    const QSignalBlocker xvBlocker(m_xvField);
+    const QSignalBlocker yvBlocker(m_yvField);
+
     m_x1Field->setDecimals(linearUnits->getDisplayPrecision(XCoord));
     m_y1Field->setDecimals(linearUnits->getDisplayPrecision(YCoord));
     m_x2Field->setDecimals(linearUnits->getDisplayPrecision(XCoord));
@@ -214,16 +236,25 @@ void ToolDataSection::angularUnitsChanged(AngularUnitsId) {
 }
 
 void ToolDataSection::xy1PositionChanged(QPointF coord) {
+    const QSignalBlocker x1Blocker(m_x1Field);
+    const QSignalBlocker y1Blocker(m_y1Field);
+
     m_x1Field->setValue(coord.x());
     m_y1Field->setValue(coord.y());
 }
 
 void ToolDataSection::xy2PositionChanged(QPointF coord) {
+    const QSignalBlocker x2Blocker(m_x2Field);
+    const QSignalBlocker y2Blocker(m_y2Field);
+
     m_x2Field->setValue(coord.x());
     m_y2Field->setValue(coord.y());
 }
 
 void ToolDataSection::xyvPositionChanged(QPointF coord) {
+    const QSignalBlocker xvBlocker(m_xvField);
+    const QSignalBlocker yvBlocker(m_yvField);
+
     m_xvField->setValue(coord.x());
     m_yvField->setValue(coord.y());
 }

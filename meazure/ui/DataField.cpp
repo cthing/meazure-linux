@@ -23,6 +23,7 @@
 #include <QFontMetrics>
 #include <QString>
 #include <QEvent>
+#include <QMouseEvent>
 #include <limits>
 
 
@@ -60,4 +61,44 @@ bool DataField::event(QEvent* ev)  {
     }
 
     return QDoubleSpinBox::event(ev);
+}
+
+void DataField::mousePressEvent(QMouseEvent *event) {
+    QStyleOptionSpinBox opt;
+    this->initStyleOption(&opt);
+    const QRect upRect = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxUp);
+    const QRect downRect = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxDown);
+    if (upRect.contains(event->pos())) {
+        emitSteps(1);
+    } else if (downRect.contains(event->pos())) {
+        emitSteps(-1);
+    } else {
+        QDoubleSpinBox::mousePressEvent(event);
+    }
+}
+
+void DataField::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+        case Qt::Key_PageUp:
+            emitSteps(10);
+            break;
+        case Qt::Key_PageDown:
+            emitSteps(-10);
+            break;
+        case Qt::Key_Up:
+            emitSteps(1);
+            break;
+        case Qt::Key_Down:
+            emitSteps(-1);
+            break;
+        default:
+            QDoubleSpinBox::keyPressEvent(event);
+            break;
+   }
+}
+
+void DataField::emitSteps(int numSteps) {
+    if (isEnabled() && !isReadOnly() && buttonSymbols() != NoButtons) {
+        emit stepRequested(numSteps);
+    }
 }

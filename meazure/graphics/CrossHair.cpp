@@ -74,9 +74,8 @@ void CrossHair::setOpacity(int opacity) {
 }
 
 void CrossHair::setPosition(const QPoint &center) {
-    const QPoint upperLeft = center - m_centerPosition;
-    move(upperLeft);
-
+    const QPoint topLeft = center - m_centerPosition;
+    move(topLeft);
     emit moved(*this, m_id, center);
 }
 

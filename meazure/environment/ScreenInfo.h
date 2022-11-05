@@ -97,7 +97,7 @@ public:
 
     /// Indicates if the specified screen was calibrated in inches or centimeters.
     ///
-    /// @param[in] screenIndex Points at the screen whose calibration units are desired.
+    /// @param[in] screenIndex Index of the screen whose calibration units are desired.
     ///
     /// @return true if the resolution was calibrated in inches.
     ///
@@ -105,7 +105,7 @@ public:
 
     /// Specifies calibration units for the specified screen.
     ///
-    /// @param[in] iter Points at the screen whose calibration units are to be set.
+    /// @param[in] screenIndex Index of the screen whose calibration units are to be set.
     /// @param[in] calInInches true if the resolution is calibrated in inches.
     ///
     void setCalInInches(int screenIndex, bool calInInches);
