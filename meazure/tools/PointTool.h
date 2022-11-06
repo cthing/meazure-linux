@@ -63,21 +63,17 @@ public:
     void setEnabled(bool enable) override;
 
     void saveProfile(Profile& profile) override;
-
     void loadProfile(Profile& profile) override;
 
     void refresh() override;
 
     void flash() override;
-
     void strobe() override;
 
     void setX1Position(double x) override;
-
     void setY1Position(double y) override;
 
     void stepX1Position(int numSteps) override;
-
     void stepY1Position(int numSteps) override;
 
 signals:
@@ -94,7 +90,6 @@ private:
 
     void setPosition();
 
-    const ScreenInfoProvider& m_screenInfo;
     QPoint m_center;            ///< Position of the crosshair
     QPoint m_anchorPoint;       ///< Location for vertical / horizontal lock when Shift is held while dragging
     CrossHair* m_crosshair;

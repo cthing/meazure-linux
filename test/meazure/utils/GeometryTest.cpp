@@ -20,6 +20,7 @@
 #include <QTest>
 #include <QtPlugin>
 #include <QPoint>
+#include <QSizeF>
 #include <meazure/utils/Geometry.h>
 #include <vector>
 
@@ -32,7 +33,13 @@ class GeometryTest : public QObject {
 Q_OBJECT
 
 private slots:
-    [[maybe_unused]] void testArea();
+    [[maybe_unused]] void testAreaRect();
+    [[maybe_unused]] void testAreaSizeF();
+    [[maybe_unused]] void testAspectRatio();
+    [[maybe_unused]] void testDiagonal();
+    [[maybe_unused]] void testAngle2Points_data();
+    [[maybe_unused]] void testAngle2Points();
+    [[maybe_unused]] void testAngle3Points();
     [[maybe_unused]] void testDistance();
     [[maybe_unused]] void testCalcSector_data();
     [[maybe_unused]] void testCalcSector();
@@ -44,7 +51,7 @@ private slots:
 };
 
 
-[[maybe_unused]] void GeometryTest::testArea() {
+[[maybe_unused]] void GeometryTest::testAreaRect() {
     QCOMPARE(Geometry::area(QRect()), 0);
     QCOMPARE(Geometry::area(QRect(0, 0, 0, 0)), 0);
     QCOMPARE(Geometry::area(QRect(0, 0, 1, 0)), 0);
@@ -54,6 +61,87 @@ private slots:
     QCOMPARE(Geometry::area(QRect(-1, 2, 10, 20)), 200);
     QCOMPARE(Geometry::area(QRect(1, -2, 10, 20)), 200);
     QCOMPARE(Geometry::area(QRect(-1, -2, 10, 20)), 200);
+}
+
+[[maybe_unused]] void GeometryTest::testAreaSizeF() {
+    QCOMPARE(Geometry::area(QSizeF()), 0.0);
+    QCOMPARE(Geometry::area(QSizeF(0.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::area(QSizeF(1.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::area(QSizeF(0.0, 1.0)), 0.0);
+    QCOMPARE(Geometry::area(QSizeF(10.5, 20.5)), 215.25);
+}
+
+[[maybe_unused]] void GeometryTest::testAspectRatio() {
+    QCOMPARE(Geometry::aspectRatio(QSizeF()), 0.0);
+    QCOMPARE(Geometry::aspectRatio(QSizeF(0.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::aspectRatio(QSizeF(1.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::aspectRatio(QSizeF(0.0, 1.0)), 0.0);
+    QCOMPARE(Geometry::aspectRatio(QSizeF(10.5, 20.5)), 0.512195121951);
+}
+
+[[maybe_unused]] void GeometryTest::testDiagonal() {
+    QCOMPARE(Geometry::diagonal(QSizeF()), 0.0);
+    QCOMPARE(Geometry::diagonal(QSizeF(0.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::diagonal(QSizeF(1.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::diagonal(QSizeF(0.0, 1.0)), 0.0);
+    QCOMPARE(Geometry::diagonal(QSizeF(10.5, 20.5)), 23.03258561256);
+}
+
+[[maybe_unused]] void GeometryTest::testAngle2Points_data() {
+    QTest::addColumn<double>("x");
+    QTest::addColumn<double>("y");
+    QTest::addColumn<double>("angle");
+
+    QTest::newRow("0.0,0.0,0.0")               <<  0.0 <<  0.0 <<  0.0;             // Zero vector
+    QTest::newRow("1.0,0.0,0.0")               <<  1.0 <<  0.0 <<  0.0;             // 0 degrees
+    QTest::newRow("2.0,1.0,0.463647609001")    <<  2.0 <<  1.0 <<  0.463647609001;  // 27 degrees
+    QTest::newRow("1.0,1.0,0.785398163397")    <<  1.0 <<  1.0 <<  0.785398163397;  // 45 degrees
+    QTest::newRow("1.0,2.0,1.107148717794")    <<  1.0 <<  2.0 <<  1.107148717794;  // 63 degrees
+    QTest::newRow("0.0,1.0,1.570796326795")    <<  0.0 <<  1.0 <<  1.570796326795;  // 90 degrees
+    QTest::newRow("-1.0,2.0,2.034443935796")   << -1.0 <<  2.0 <<  2.034443935796;  // 117 degrees
+    QTest::newRow("-1.0,1.0,2.35619449019")    << -1.0 <<  1.0 <<  2.35619449019;   // 135 degrees
+    QTest::newRow("-2.0,1.0,2.67794504459")    << -2.0 <<  1.0 <<  2.67794504459;   // 153 degrees
+    QTest::newRow("-1.0,0.0,3.14159265359")    << -1.0 <<  0.0 <<  3.14159265359;   // 180 degrees
+    QTest::newRow("-2.0,-1.0,-2.67794504459")  << -2.0 << -1.0 << -2.67794504459;   // 207 degrees
+    QTest::newRow("-1.0,-1.0,-2.35619449019")  << -1.0 << -1.0 << -2.35619449019;   // 225 degrees
+    QTest::newRow("-1.0,-2.0,-2.034443935796") << -1.0 << -2.0 << -2.034443935796;  // 243 degrees
+    QTest::newRow("0.0,-1.0,-1.570796326795")  <<  0.0 << -1.0 << -1.570796326795;  // 270 degrees
+    QTest::newRow("1.0,-2.0,-1.107148717794")  <<  1.0 << -2.0 << -1.107148717794;  // 297 degrees
+    QTest::newRow("1.0,-1.0,-0.785398163397")  <<  1.0 << -1.0 << -0.785398163397;  // 315 degrees
+    QTest::newRow("2.0,-1.0,-0.463647609001")  <<  2.0 << -1.0 << -0.463647609001;  // 333 degrees
+    QTest::newRow("1.0,-1.0,-0.785398163397")  <<  1.0 << -1.0 << -0.785398163397;  // 315 degrees
+}
+
+[[maybe_unused]] void GeometryTest::testAngle2Points() {
+    const QFETCH(double, x);
+    const QFETCH(double, y);
+    const QFETCH(double, angle);
+
+    const QPointF p0(1.0, 2.0);
+    const QPointF p1(p0.x() + x, p0.y() + y);
+    QCOMPARE(Geometry::angle(p0, p1), angle);
+}
+
+[[maybe_unused]] void GeometryTest::testAngle3Points() {
+    const QPointF p0(1.0, 2.0);
+    QCOMPARE(Geometry::angle(p0, p0, p0), 0.0);
+
+    const QPointF p1(5.0, 6.0);
+    QCOMPARE(Geometry::angle(p0, p1, p1), 0.0);
+
+    const QPointF p2(4.0, -1.0);
+    const QPointF p3(5.0, 6.0);
+    QCOMPARE(Geometry::angle(p0, p2, p3), 1.570796326795);
+    QCOMPARE(Geometry::angle(p0, p3, p2), -1.570796326795);
+
+    const QPointF p4(1.0, 5.0);
+    const QPointF p5(5.0, 2.0);
+    QCOMPARE(Geometry::angle(p0, p4, p5), -1.570796326795);
+    QCOMPARE(Geometry::angle(p0, p5, p4), 1.570796326795);
+
+    const QPointF p6(5.0, -2.0);
+    const QPointF p7(-4.0, 4.0);
+    QCOMPARE(Geometry::angle(p0, p6, p7), -2.736700867305);
 }
 
 [[maybe_unused]] void GeometryTest::testDistance() {

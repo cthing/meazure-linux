@@ -19,8 +19,10 @@
 
 #pragma once
 
+#include "MathUtils.h"
 #include <QRect>
 #include <QPoint>
+#include <QSizeF>
 #include <QtMath>
 #include <vector>
 #include <cstddef>
@@ -37,11 +39,85 @@ namespace Geometry {
     ///     area=width*height
     /// \f]
     /// @param[in] rect Rectangle whose area is to be calculated
-    ///
     /// @return Area of the rectangle or 0 if the rectangle is null or invalid.
     ///
-    constexpr inline int area(const QRect& rect) {
+    inline int area(const QRect& rect) {
         return (rect.isNull() || !rect.isValid()) ? 0 : rect.width() * rect.height();
+    }
+
+    /// Calculates the area of the specified rectangle using the formula:
+    /// \f[
+    ///     area=width*height
+    /// \f]
+    /// @param[in] wh Rectangle whose area is to be calculated
+    /// @return Area of the rectangle or 0.0 if the rectangle is null or invalid.
+    ///
+    inline double area(const QSizeF& wh) {
+        return (wh.isNull() || !wh.isValid()) ? 0.0 : wh.width() * wh.height();
+    }
+
+    /// Calculates the aspect ratio of the specified rectangle using the formula:
+    /// \f[
+    ///     aspect=width/height
+    /// \f]
+    /// @param[in] wh Rectangle whose aspect ratio is to be calculated
+    /// @return Aspect ratio of the rectangle or 0.0 if the rectangle has zero width or height.
+    ///
+    inline double aspectRatio(const QSizeF& wh) {
+        return wh.isEmpty() ? 0.0 : wh.width() / wh.height();
+    }
+
+    /// Calculates the distance between the opposite corners of the specified rectangle.
+    ///
+    /// @param[in] wh Rectangle whose diagonal length is to be calculated
+    /// @return Length of the diagonal of the rectangle.
+    ///
+    inline double diagonal(const QSizeF& wh) {
+        return wh.isEmpty() ? 0.0 : std::sqrt(wh.width() * wh.width() + wh.height() * wh.height());
+    }
+
+    /// Returns the angle of the vector from the specified start point to the specified end point relative to
+    /// the horizontal (x-axis), measured in radians. Using the default coordinate system (i.e. positive y-axis
+    /// pointed down from the origin), positive angles are measured clockwise from the horizontal to the vector.
+    /// The following formula is used:
+    /// \f[
+    ///     angle=atan2(end_y-start_y, end_x-start_x)
+    /// \f]
+    /// @param[in] start Starting point for the vector whose angle is to be determined.
+    /// @param[in] end Ending point for the vector whose angle is to be determined.
+    ///
+    /// @return Angle between the x-axis and the line, in radians. Degenerate cases return 0.0.
+    ///
+    inline double angle(const QPointF& start, const QPointF& end) {
+        const QPointF delta = end - start;
+
+        if (MathUtils::fuzzyZero(delta.x()) && MathUtils::fuzzyZero(delta.y())) {
+            return 0.0;
+        }
+        return std::atan2(delta.y(), delta.x());
+    }
+
+    /// Returns the angle, in radians, between the vector from the vertex to point p1 and the vector from the
+    /// vertex to point p2. Using the default coordinate system (i.e. positive y-axis pointed down from the origin),
+    /// positive angles are measured clockwise from the vertex-p1 line to the vertex-p2 line.
+    ///
+    /// @param[in] vertex Intersection point for the two lines.
+    /// @param[in] p1 Forms the end point for the first line from the vertex.
+    /// @param[in] p2 Forms the end point for the second line from the vertex.
+    ///
+    /// @return Angle between the vectors vertex-p1 and vertex-p2, in radians.
+    ///
+    inline double angle(const QPointF& vertex, const QPointF& p1, const QPointF& p2) {
+        const QPointF delta1 = p1 - vertex;
+        const QPointF delta2 = p2 - vertex;
+
+        const double numer = delta2.y() * delta1.x() - delta1.y() * delta2.x();
+        const double denom = delta2.x() * delta1.x() + delta1.y() * delta2.y();
+
+        if (MathUtils::fuzzyZero(numer) && MathUtils::fuzzyZero(denom)) {
+            return 0.0;
+        }
+        return std::atan2(numer, denom);
     }
 
     /// Calculates the distance between a point and a rectangle.
@@ -135,7 +211,6 @@ namespace Geometry {
     ///
     /// @param[in] start Starting point for the vector.
     /// @param[in] end Ending point for the vector.
-    ///
     /// @return The circular sector corresponding to the vector in the range [-4.0, 4.0].
     ///
     inline int calcSector(const QPoint& start, const QPoint& end) {

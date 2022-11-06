@@ -20,6 +20,7 @@
 #pragma once
 
 #include <meazure/units/UnitsProvider.h>
+#include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/profile/Profile.h>
 #include <QObject>
 
@@ -32,7 +33,8 @@ class Tool : public QObject {
     Q_OBJECT
 
 public:
-    explicit Tool(const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit Tool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                  QObject* parent = nullptr);
 
     ~Tool() override = default;
 
@@ -93,11 +95,16 @@ public:
     virtual void refresh();
 
 protected:
+    [[nodiscard]] const ScreenInfoProvider& getScreenInfo() const {
+        return m_screenInfo;
+    }
+
     [[nodiscard]] const UnitsProvider& getUnitsProvider() const {
         return m_unitsProvider;
     }
 
 private:
+    const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
     bool m_enabled { false };
 };

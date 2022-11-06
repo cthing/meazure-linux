@@ -63,7 +63,6 @@ public:
     void setEnabled(bool enable) override;
 
     void refresh() override;
-
     void strobe() override;
 
 signals:
@@ -79,7 +78,6 @@ private:
 
     void emitMeasurement(QPoint position);
 
-    const ScreenInfoProvider& m_screenInfo;
     PointerTracker* m_pointerTracker { new PointerTracker(this) };
     ToolDataWindow* m_dataWindow;
 };

@@ -43,6 +43,8 @@ source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 set(TOOLS_SOURCES
     tools/CursorTool.cpp
     tools/CursorTool.h
+    tools/LineTool.cpp
+    tools/LineTool.h
     tools/PointTool.cpp
     tools/PointTool.h
     tools/RadioTool.cpp

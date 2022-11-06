@@ -20,7 +20,8 @@
 #include "RadioTool.h"
 
 
-RadioTool::RadioTool(const UnitsProvider& unitsProvider, QObject *parent) : Tool(unitsProvider, parent) {
+RadioTool::RadioTool(const ScreenInfoProvider& screenInfo, const UnitsProvider& unitsProvider, QObject *parent) :
+        Tool(screenInfo, unitsProvider, parent) {
 }
 
 void RadioTool::flash() {

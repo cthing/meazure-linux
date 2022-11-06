@@ -23,6 +23,7 @@
 #include <meazure/tools/ToolMgr.h>
 #include <meazure/tools/CursorTool.h>
 #include <meazure/tools/PointTool.h>
+#include <meazure/tools/LineTool.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
 #include <QMenu>
@@ -74,6 +75,8 @@ void MainWindow::createActions() {
     m_lineToolAction = new QAction(QIcon(":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
     m_lineToolAction->setCheckable(true);
     m_lineToolAction->setToolTip("Measures using line");
+    connect(m_lineToolAction, &QAction::triggered, this,
+            [&toolMgr] { toolMgr.selectRadioTool(LineTool::k_toolName); });
 
     m_rectangleToolAction = new QAction(QIcon(":/images/RectangleTool.svg"), tr("&Rectangle"), radioToolGroup);
     m_rectangleToolAction->setCheckable(true);

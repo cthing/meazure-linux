@@ -20,17 +20,16 @@
 #include "PointTool.h"
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/StringUtils.h>
-#include <QRect>
+#include <QPointF>
 #include <cmath>
 
 PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                      QObject *parent) :
-        RadioTool(unitsProvider, parent),
-        m_screenInfo(screenInfoProvider),
+        RadioTool(screenInfoProvider, unitsProvider, parent),
         m_center(screenInfoProvider.getCenter()),
         m_anchorPoint(m_center),
+        m_crosshair(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"))),
         m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
-    m_crosshair = new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"));
     connect(m_crosshair, &CrossHair::entered, this, &PointTool::entered);
     connect(m_crosshair, &CrossHair::departed, this, &PointTool::departed);
     connect(m_crosshair, &CrossHair::dragged, this, &PointTool::dragged);
@@ -40,6 +39,7 @@ PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
 PointTool::~PointTool() {
     m_dataWindow->hide();
     setEnabled(false);
+    delete m_dataWindow;
     delete m_crosshair;
 }
 
@@ -99,7 +99,7 @@ void PointTool::stepY1Position(int numSteps) {
 }
 
 void PointTool::setPosition() {
-    m_center = m_screenInfo.constrainPosition(m_center);
+    m_center = getScreenInfo().constrainPosition(m_center);
     m_crosshair->setPosition(m_center);
 }
 
@@ -113,6 +113,7 @@ void PointTool::flash() {
 
 void PointTool::strobe() {
     m_crosshair->strobe();
+    m_dataWindow->strobe();
 }
 
 void PointTool::entered(CrossHair&, int, QPoint, Qt::KeyboardModifiers) {
@@ -140,7 +141,7 @@ void PointTool::dragged(CrossHair&, int, QPoint center, Qt::KeyboardModifiers ke
     setPosition();
 }
 
-void PointTool::moved(CrossHair&, int, QPoint center) { // NOLINT(readability-convert-member-functions-to-static)
+void PointTool::moved(CrossHair&, int, QPoint center) {
     if (isEnabled()) {
         const QPointF coord = getUnitsProvider().convertCoord(center);
 

@@ -23,8 +23,7 @@
 
 CursorTool::CursorTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                        QObject *parent) :
-        RadioTool(unitsProvider, parent),
-        m_screenInfo(screenInfoProvider),
+        RadioTool(screenInfoProvider, unitsProvider, parent),
         m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
     connect(m_pointerTracker, &PointerTracker::motion, this, &CursorTool::pointerMotion);
 }
@@ -59,8 +58,8 @@ void CursorTool::pointerMotion(int16_t x, int16_t y) {
 }
 
 void CursorTool::placeDataWin(const QPoint &position) {
-    const int screenIndex = m_screenInfo.screenForPoint(position);
-    const QSize cursorSize = m_screenInfo.getCursorSize(screenIndex);
+    const int screenIndex = getScreenInfo().screenForPoint(position);
+    const QSize cursorSize = getScreenInfo().getCursorSize(screenIndex);
     const QRect targetRect(position, cursorSize);
     m_dataWindow->moveNear(targetRect);
 }
