@@ -18,6 +18,7 @@
  */
 
 #include "ToolMgr.h"
+#include "AngleTool.h"
 #include "CursorTool.h"
 #include "LineTool.h"
 #include "PointTool.h"
@@ -30,10 +31,12 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     Tool* cursorTool = new CursorTool(screenInfoProvider, unitsProvider, this);
     Tool* pointTool = new PointTool(screenInfoProvider, unitsProvider, this);
     Tool* lineTool = new LineTool(screenInfoProvider, unitsProvider, this);
+    Tool* angleTool = new AngleTool(screenInfoProvider, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;
     m_tools[pointTool->getName()] = pointTool;
     m_tools[lineTool->getName()] = lineTool;
+    m_tools[angleTool->getName()] = angleTool;
 
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
 
@@ -46,6 +49,11 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(lineTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
     connect(lineTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(lineTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
+
+    connect(angleTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
+    connect(angleTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
+    connect(angleTool, SIGNAL(xyvPositionChanged(QPointF)), this, SIGNAL(xyvPositionChanged(QPointF)));
+    connect(angleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
 }
 
 void ToolMgr::selectRadioTool(const char *toolName) {

@@ -43,6 +43,8 @@ set(GRAPHICS_SOURCES
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 
 set(TOOLS_SOURCES
+    tools/AngleTool.cpp
+    tools/AngleTool.h
     tools/CursorTool.cpp
     tools/CursorTool.h
     tools/LineTool.cpp
@@ -121,6 +123,7 @@ set(MEAZURE_SOURCES
     )
 
 set(MEAZURE_RESOURCES
+    resources/images/AngleTool.svg
     resources/images/CalWarning.svg
     resources/images/CircleTool.svg
     resources/images/Clipboard.svg

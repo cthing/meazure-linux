@@ -23,6 +23,7 @@
 #include "RadioToolTraits.h"
 #include <meazure/graphics/CrossHair.h>
 #include <meazure/graphics/Line.h>
+#include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>

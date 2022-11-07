@@ -87,20 +87,20 @@ void LineTool::saveProfile(Profile& profile) {
 void LineTool::loadProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
-    const QPointF defaultCoord1 = getUnitsProvider().convertPos(m_point1);
-    const QPointF defaultCoord2 = getUnitsProvider().convertPos(m_point2);
+    const QPointF defaultPos1 = getUnitsProvider().convertPos(m_point1);
+    const QPointF defaultPos2 = getUnitsProvider().convertPos(m_point2);
 
     // Load the end point positions.
     //
-    QPointF coord1;
-    coord1.rx() = profile.readDbl("LineX1", defaultCoord1.x());
-    coord1.ry() = profile.readDbl("LineY1", defaultCoord1.y());
-    m_point1 = getUnitsProvider().unconvertPos(coord1);
+    QPointF pos1;
+    pos1.rx() = profile.readDbl("LineX1", defaultPos1.x());
+    pos1.ry() = profile.readDbl("LineY1", defaultPos1.y());
+    m_point1 = getUnitsProvider().unconvertPos(pos1);
 
-    QPointF coord2;
-    coord2.rx() = profile.readDbl("LineX2", defaultCoord2.x());
-    coord2.ry() = profile.readDbl("LineY2", defaultCoord2.y());
-    m_point2 = getUnitsProvider().unconvertPos(coord2);
+    QPointF pos2;
+    pos2.rx() = profile.readDbl("LineX2", defaultPos2.x());
+    pos2.ry() = profile.readDbl("LineY2", defaultPos2.y());
+    m_point2 = getUnitsProvider().unconvertPos(pos2);
 
     setPosition();
 }
@@ -188,6 +188,7 @@ void LineTool::departed(CrossHair&, int id) {
 
 void LineTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
     // Ctrl+drag moves all the crosshairs as a single unit
+    //
     if ((keyboardModifiers & Qt::ControlModifier) != 0) {
         QPoint movingDelta;
         QPoint followingPos;
@@ -208,6 +209,7 @@ void LineTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers 
         *m_curPos = center;
 
         // Shift + drag locks the movement of the crosshair to vertical or horizontal.
+        //
         if ((keyboardModifiers & Qt::ShiftModifier) != 0) {
             const QPoint& fixedPoint = (id == k_point1Id) ? m_point2 : m_point1;
 
@@ -223,33 +225,35 @@ void LineTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers 
 }
 
 void LineTool::moved(CrossHair&, int id, QPoint) {
-    if (isEnabled()) {
-        const QPointF coord1 = getUnitsProvider().convertCoord(m_point1);
-        const QPointF coord2 = getUnitsProvider().convertCoord(m_point2);
-        const QSizeF wh = getUnitsProvider().getWidthHeight(m_point1, m_point2);
-        const double distance = Geometry::diagonal(wh);
-        const double aspect = Geometry::aspectRatio(wh);
-        const double area = Geometry::area(wh);
-        const double angle = getUnitsProvider().convertAngle(Geometry::angle(coord1, coord2));
-
-        m_dataWin1->distanceChanged(distance);
-        m_dataWin2->distanceChanged(distance);
-        if (id == k_point1Id) {
-            m_dataWin1->xy1PositionChanged(coord1);
-            m_dataWin1->moveNear(m_point1CH->geometry());
-
-            emit xy1PositionChanged(coord1);
-        } else {
-            m_dataWin2->xy2PositionChanged(coord2);
-            m_dataWin2->moveNear(m_point2CH->geometry());
-
-            emit xy2PositionChanged(coord2);
-        }
-
-        emit widthHeightChanged(wh);
-        emit distanceChanged(distance);
-        emit areaChanged(area);
-        emit aspectChanged(aspect);
-        emit angleChanged(angle);
+    if (!isEnabled()) {
+        return;
     }
+
+    const QPointF coord1 = getUnitsProvider().convertCoord(m_point1);
+    const QPointF coord2 = getUnitsProvider().convertCoord(m_point2);
+    const QSizeF wh = getUnitsProvider().getWidthHeight(m_point1, m_point2);
+    const double distance = Geometry::diagonal(wh);
+    const double aspect = Geometry::aspectRatio(wh);
+    const double area = Geometry::area(wh);
+    const double angle = getUnitsProvider().convertAngle(Geometry::angle(coord1, coord2));
+
+    m_dataWin1->distanceChanged(distance);
+    m_dataWin2->distanceChanged(distance);
+    if (id == k_point1Id) {
+        m_dataWin1->xy1PositionChanged(coord1);
+        m_dataWin1->moveNear(m_point1CH->geometry());
+
+        emit xy1PositionChanged(coord1);
+    } else {
+        m_dataWin2->xy2PositionChanged(coord2);
+        m_dataWin2->moveNear(m_point2CH->geometry());
+
+        emit xy2PositionChanged(coord2);
+    }
+
+    emit widthHeightChanged(wh);
+    emit distanceChanged(distance);
+    emit areaChanged(area);
+    emit aspectChanged(aspect);
+    emit angleChanged(angle);
 }
