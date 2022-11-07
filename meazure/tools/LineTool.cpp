@@ -31,6 +31,7 @@ LineTool::LineTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProv
         m_point2(screenInfoProvider.getCenter() + QPoint(30, 30)),
         m_point1CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
         m_point2CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
+        m_line(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
         m_dataWin1(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly | DistReadOnly)),
         m_dataWin2(new ToolDataWindow(screenInfoProvider, unitsProvider, XY2ReadOnly | DistReadOnly)) {
     connect(m_point1CH, &CrossHair::entered, this, &LineTool::entered);
@@ -54,6 +55,7 @@ LineTool::~LineTool() {
     delete m_dataWin2;
     delete m_point1CH;
     delete m_point2CH;
+    delete m_line;
 }
 
 void LineTool::setEnabled(bool enable) {
@@ -62,9 +64,11 @@ void LineTool::setEnabled(bool enable) {
     if (enable) {
         m_point1CH->show();
         m_point2CH->show();
+        m_line->show();
     } else {
         m_point1CH->hide();
         m_point2CH->hide();
+        m_line->hide();
     }
 }
 
@@ -147,6 +151,7 @@ void LineTool::setPosition() {
 
     m_point1CH->setPosition(m_point1);
     m_point2CH->setPosition(m_point2);
+    m_line->setPosition(m_point1, m_point2);
 }
 
 void LineTool::refresh() {

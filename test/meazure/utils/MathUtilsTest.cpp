@@ -31,7 +31,7 @@ Q_OBJECT
 
 private slots:
     [[maybe_unused]] void testFuzzyEqual();
-    [[maybe_unused]] void testFuzzyZero();
+    [[maybe_unused]] void testFuzzyEqualZero();
     [[maybe_unused]] void testMakeOddUp();
     [[maybe_unused]] void testMakeOddDown();
     [[maybe_unused]] void testMakeEvenUp();
@@ -54,15 +54,15 @@ private slots:
     QVERIFY(!MathUtils::fuzzyEqual(1.000001F, 1.000002F));
 }
 
-[[maybe_unused]] void MathUtilsTest::testFuzzyZero() {
-    QVERIFY(MathUtils::fuzzyZero(0.0));
-    QVERIFY(MathUtils::fuzzyZero(-0.0));
-    QVERIFY(MathUtils::fuzzyZero(std::numeric_limits<double>::epsilon()));
+[[maybe_unused]] void MathUtilsTest::testFuzzyEqualZero() {
+    QVERIFY(MathUtils::fuzzyEqualZero(0.0));
+    QVERIFY(MathUtils::fuzzyEqualZero(-0.0));
+    QVERIFY(MathUtils::fuzzyEqualZero(std::numeric_limits<double>::epsilon()));
 
-    QVERIFY(!MathUtils::fuzzyZero(1.0));
-    QVERIFY(!MathUtils::fuzzyZero(-1.0));
-    QVERIFY(!MathUtils::fuzzyZero(2.0 * std::numeric_limits<double>::epsilon()));
-    QVERIFY(!MathUtils::fuzzyZero(-2.0 * std::numeric_limits<double>::epsilon()));
+    QVERIFY(!MathUtils::fuzzyEqualZero(1.0));
+    QVERIFY(!MathUtils::fuzzyEqualZero(-1.0));
+    QVERIFY(!MathUtils::fuzzyEqualZero(2.0 * std::numeric_limits<double>::epsilon()));
+    QVERIFY(!MathUtils::fuzzyEqualZero(-2.0 * std::numeric_limits<double>::epsilon()));
 }
 
 [[maybe_unused]] void MathUtilsTest::testMakeOddUp() {

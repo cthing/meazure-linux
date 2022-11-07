@@ -36,6 +36,8 @@ set(GRAPHICS_SOURCES
     graphics/CrossHair.h
     graphics/Graphic.cpp
     graphics/Graphic.h
+    graphics/Line.cpp
+    graphics/Line.h
     graphics/Plotter.h
     )
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})

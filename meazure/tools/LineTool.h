@@ -22,6 +22,7 @@
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
 #include <meazure/graphics/CrossHair.h>
+#include <meazure/graphics/Line.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
@@ -104,12 +105,12 @@ private:
     void setPosition();
 
 
-    QPoint* m_curPos;           ///< Points to #m_point1 or #m_point2 depending on which point the user is moving
-    QPoint m_point1;            ///< Location of one end point of the line
-    QPoint m_point2;            ///< Location of one end point of the line
-    CrossHair* m_point1CH;      ///< Crosshair for point 1
-    CrossHair* m_point2CH;      ///< Crosshair for point 2
-///    Line m_line;             ///< Line connecting point 1 and point 2
+    QPoint* m_curPos;            ///< Points to #m_point1 or #m_point2 depending on which point the user is moving
+    QPoint m_point1;             ///< Location of one end point of the line
+    QPoint m_point2;             ///< Location of one end point of the line
+    CrossHair* m_point1CH;       ///< Crosshair for point 1
+    CrossHair* m_point2CH;       ///< Crosshair for point 2
+    Line* m_line;                ///< Line connecting point 1 and point 2
     ToolDataWindow* m_dataWin1;  ///< Data window tooltip for point 1
     ToolDataWindow* m_dataWin2;  ///< Data window tooltip for point 2
 };

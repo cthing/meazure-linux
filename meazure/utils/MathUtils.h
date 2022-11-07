@@ -55,7 +55,7 @@ namespace MathUtils {
     /// @return true if the value is equal to zero within an epsilon of the floating point type.
     ///
     template<typename T>
-    inline bool fuzzyZero(T f) {
+    inline bool fuzzyEqualZero(T f) {
         return std::fabs(f) <= std::numeric_limits<T>::epsilon();
     }
 

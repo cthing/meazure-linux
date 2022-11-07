@@ -30,6 +30,11 @@
 #include <QTimer>
 
 
+/// A crosshair graphical element. A crosshair consists of four triangular window segments called petals arranged
+/// vertically and horizontally such that each triangle is aimed at a center point. The crosshair is used by a number
+/// of the measurement tools to identify their measurement points and to allow the user to perform measurements
+/// by dragging the crosshairs using the pointer.
+///
 class CrossHair : public Graphic {
 
     Q_OBJECT
@@ -53,6 +58,14 @@ public:
                        QRgb hiliteColor = Colors::get(Colors::CrossHairHilite),
                        QRgb borderColor = Colors::get(Colors::CrossHairBorder),
                        QRgb opacity = Colors::get(Colors::CrossHairOpacity));
+
+    /// Provides the default size for the crosshair, in inches.
+    ///
+    /// @return Default size of the crosshair, in inches.
+    ///
+    static constexpr double getDefaultSize() {
+        return k_outerSize;
+    }
 
     /// Sets the crosshair colors.
     ///

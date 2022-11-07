@@ -334,7 +334,7 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
 
     // Equation 7
     auto hueAngle = [](const Lab& color, double aPrime) {
-        if (MathUtils::fuzzyZero(color.b) && MathUtils::fuzzyZero(aPrime)) {
+        if (MathUtils::fuzzyEqualZero(color.b) && MathUtils::fuzzyEqualZero(aPrime)) {
             return 0.0;
         }
 
@@ -365,7 +365,7 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
     const double cPrimeProduct = cPrime1 * cPrime2;
     double deltahPrime;       // NOLINT(cppcoreguidelines-init-variables)
 
-    if (MathUtils::fuzzyZero(cPrimeProduct)) {
+    if (MathUtils::fuzzyEqualZero(cPrimeProduct)) {
         deltahPrime = 0.0;
     } else {
         deltahPrime = hPrime2 - hPrime1;
@@ -394,7 +394,7 @@ double Colors::colorDifference(const Colors::Lab& color1, const Colors::Lab& col
     const double hPrimeSum = hPrime1 + hPrime2;
     double hPrimeAve;       // NOLINT(cppcoreguidelines-init-variables)
 
-    if (MathUtils::fuzzyZero(cPrimeProduct)) {
+    if (MathUtils::fuzzyEqualZero(cPrimeProduct)) {
         hPrimeAve = hPrimeSum;
     } else {
         if (std::fabs(hPrime1 - hPrime2) <= k_deg180Rad) {
@@ -519,7 +519,7 @@ Colors::HSL Colors::RGBtoHSL(QRgb rgb) {
     const double delta = cmax - cmin;
 
     l = (cmax + cmin) / 2.0;
-    if (MathUtils::fuzzyZero(delta)) {      // Gray
+    if (MathUtils::fuzzyEqualZero(delta)) {      // Gray
         h = 0.0;
         s = 0.0;
     } else {                                // Chroma

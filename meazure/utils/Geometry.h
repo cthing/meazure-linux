@@ -91,7 +91,7 @@ namespace Geometry {
     inline double angle(const QPointF& start, const QPointF& end) {
         const QPointF delta = end - start;
 
-        if (MathUtils::fuzzyZero(delta.x()) && MathUtils::fuzzyZero(delta.y())) {
+        if (MathUtils::fuzzyEqualZero(delta.x()) && MathUtils::fuzzyEqualZero(delta.y())) {
             return 0.0;
         }
         return std::atan2(delta.y(), delta.x());
@@ -114,7 +114,7 @@ namespace Geometry {
         const double numer = delta2.y() * delta1.x() - delta1.y() * delta2.x();
         const double denom = delta2.x() * delta1.x() + delta1.y() * delta2.y();
 
-        if (MathUtils::fuzzyZero(numer) && MathUtils::fuzzyZero(denom)) {
+        if (MathUtils::fuzzyEqualZero(numer) && MathUtils::fuzzyEqualZero(denom)) {
             return 0.0;
         }
         return std::atan2(numer, denom);
