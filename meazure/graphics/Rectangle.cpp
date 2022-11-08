@@ -17,16 +17,13 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Line.h"
-#include <meazure/utils/Geometry.h>
-#include <QSize>
+#include "Rectangle.h"
 #include <QPainter>
-#include <QPen>
-#include <cmath>
+#include <QSize>
 
 
-Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double offset,
-           QWidget* parent, QRgb lineColor) :
+Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double offset,
+                     QWidget* parent, QRgb lineColor) :
         Graphic(parent),
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
@@ -39,12 +36,12 @@ Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
 }
 
-void Line::setColor(QRgb color) {
+void Rectangle::setColor(QRgb color) {
     m_color.setRgb(color);
     repaint();
 }
 
-void Line::setPosition(const QPoint& start, const QPoint& end) {
+void Rectangle::setPosition(const QPoint& start, const QPoint& end) {
     m_start = start;
     m_end = end;
 
@@ -55,18 +52,6 @@ void Line::setPosition(const QPoint& start, const QPoint& end) {
     normalizedEnd = m_screenInfo.constrainPosition(normalizedEnd);
     QRect windowRect(normalizedStart, normalizedEnd);
 
-    if (m_offset > 0.0) {
-        const int screenIndex = m_screenInfo.screenForPoint(normalizedStart);
-        const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
-
-        const double angle = Geometry::angle(normalizedStart, normalizedEnd);
-        const QSize offset = m_unitsProvider.convertToPixels(InchesId, screenRes, m_offset, 0.0);
-        const int offsetX = static_cast<int>(std::round(offset.width() * std::cos(angle)));
-        const int offsetY = static_cast<int>(std::round(offset.height() * std::sin(angle)));
-
-        windowRect.adjust(offsetX, offsetY, -offsetX, -offsetY);
-    }
-
     // Grow the window by the line thickness so that it is not clipped by the window edge when vertical or horizontal.
     //
     windowRect.adjust(-k_lineWidth, -k_lineWidth, k_lineWidth, k_lineWidth);
@@ -74,8 +59,18 @@ void Line::setPosition(const QPoint& start, const QPoint& end) {
     setGeometry(windowRect);
 }
 
-void Line::paintEvent(QPaintEvent*) {
+void Rectangle::paintEvent(QPaintEvent*) {
+    QSize offset(0, 0);
+
+    if (m_offset > 0.0) {
+        const int screenIndex = m_screenInfo.screenForPoint(m_start);
+        const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+
+        offset = m_unitsProvider.convertToPixels(InchesId, screenRes, m_offset, 0.0);
+    }
+
     QPainter painter(this);
+    //painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(QPen(m_color, k_lineWidth));
 
     // Compensate for margin.
@@ -84,8 +79,14 @@ void Line::paintEvent(QPaintEvent*) {
     const int bottom = height() - k_lineWidth - 1;
 
     if ((m_start.x() > m_end.x()) != (m_start.y() > m_end.y())) {
-        painter.drawLine(k_lineWidth, bottom, right, k_lineWidth);
+        painter.drawLine(k_lineWidth, k_lineWidth, right - offset.width(), k_lineWidth);    // Top
+        painter.drawLine(k_lineWidth, k_lineWidth, k_lineWidth, bottom - offset.height());  // Left
+        painter.drawLine(right, k_lineWidth + offset.height(), right, bottom);              // Right
+        painter.drawLine(k_lineWidth + offset.width(), bottom, right, bottom);              // Bottom
     } else {
-        painter.drawLine(k_lineWidth, k_lineWidth, right, bottom);
+        painter.drawLine(k_lineWidth + offset.width(), k_lineWidth, right, k_lineWidth);    // Top
+        painter.drawLine(k_lineWidth, k_lineWidth + offset.height(), k_lineWidth, bottom);  // Left
+        painter.drawLine(right, k_lineWidth, right, bottom - offset.height());              // Right
+        painter.drawLine(k_lineWidth, bottom, right - offset.width(), bottom);              // Bottom
     }
 }

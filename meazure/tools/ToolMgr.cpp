@@ -23,6 +23,7 @@
 #include "LineTool.h"
 #include "PointTool.h"
 #include "RadioTool.h"
+#include "RectangleTool.h"
 
 
 ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider) {
@@ -31,11 +32,13 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     Tool* cursorTool = new CursorTool(screenInfoProvider, unitsProvider, this);
     Tool* pointTool = new PointTool(screenInfoProvider, unitsProvider, this);
     Tool* lineTool = new LineTool(screenInfoProvider, unitsProvider, this);
+    Tool* rectangleTool = new RectangleTool(screenInfoProvider, unitsProvider, this);
     Tool* angleTool = new AngleTool(screenInfoProvider, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;
     m_tools[pointTool->getName()] = pointTool;
     m_tools[lineTool->getName()] = lineTool;
+    m_tools[rectangleTool->getName()] = rectangleTool;
     m_tools[angleTool->getName()] = angleTool;
 
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
@@ -49,6 +52,14 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(lineTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
     connect(lineTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(lineTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
+
+    connect(rectangleTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
+    connect(rectangleTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
+    connect(rectangleTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
+    connect(rectangleTool, SIGNAL(distanceChanged(double)), this, SIGNAL(distanceChanged(double)));
+    connect(rectangleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
+    connect(rectangleTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
+    connect(rectangleTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
     connect(angleTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
     connect(angleTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));

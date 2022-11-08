@@ -23,40 +23,40 @@
 #include "Colors.h"
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
-#include <QPoint>
+#include <QObject>
 
 
-/// A line graphical element. The line is used by many tools including the Line and Grid tools. The line is positioned
-/// by specifying the location of its two end points.
+/// A rectangle graphical element. The rectangle is used by the Rectangle measurement tool. The rectangle is
+/// positioned by specifying the location of its top left corner (point 1) and its bottom right corner (point 2).
 ///
-class Line : public Graphic {
+class Rectangle : public Graphic {
 
     Q_OBJECT
 
 public:
-    /// Constructs a line.
+    /// Constructs a rectangle.
     ///
     /// @param[in] screenInfoProvider Information about the display screens
     /// @param[in] unitsProvider Measurement units
-    /// @param[in] offset Distance, in inches, to shrink line from start and end points. The typical use for this
-    ///     parameter is in the Line tool. Shrinking the line allows the contents of the end points to be clear
-    ///     for viewing and measuring.
-    /// @param[in] parent Parent widget for the line or nullptr for a top level line
-    /// @param[in] lineColor Line foreground color
+    /// @param[in] offset Distance, in inches, to shrink rectangle from start and end points. The typical use for this
+    ///     parameter is in the Rectangle tool. Offseting the rectangle end points allows the contents of the end
+    ///     points to be clear for viewing and measuring.
+    /// @param[in] parent Parent widget for the rectangle or nullptr for a top level line
+    /// @param[in] lineColor Rectangle line foreground color
     ///
-    explicit Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                  double offset = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore));
+    explicit Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                       double offset = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore));
 
-    /// Sets the line color.
+    /// Sets the rectangle line color.
     ///
     /// @param[in] color Line foreground color
     ///
     void setColor(QRgb color);
 
-    /// Sets the position of the line.
+    /// Sets the position of the rectangle.
     ///
-    /// @param[in] startPoint Location of the start of the line, in pixels
-    /// @param[in] endPoint Location of the end of the line, in pixels
+    /// @param[in] startPoint Location of the start of the rectangle, in pixels
+    /// @param[in] endPoint Location of the end of the rectangle, in pixels
     ///
     void setPosition(const QPoint& startPoint, const QPoint& endPoint);
 

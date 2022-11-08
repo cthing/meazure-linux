@@ -39,6 +39,8 @@ set(GRAPHICS_SOURCES
     graphics/Line.cpp
     graphics/Line.h
     graphics/Plotter.h
+    graphics/Rectangle.cpp
+    graphics/Rectangle.h
     )
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 
@@ -54,6 +56,8 @@ set(TOOLS_SOURCES
     tools/RadioTool.cpp
     tools/RadioTool.h
     tools/RadioToolTraits.h
+    tools/RectangleTool.cpp
+    tools/RectangleTool.h
     tools/Tool.cpp
     tools/Tool.h
     tools/ToolMgr.cpp
