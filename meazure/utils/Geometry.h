@@ -56,6 +56,18 @@ namespace Geometry {
         return (wh.isNull() || !wh.isValid()) ? 0.0 : wh.width() * wh.height();
     }
 
+    /// Calculates the area of the circle with the specified radius.
+    /// \f[
+    ///     area=\pi r^2
+    /// \f]
+    ///
+    /// @param[in] radius Radius of the circle
+    /// @return Area of the circle with the specified radius.
+    ///
+    inline double area(double radius) {
+        return M_PI * radius * radius;
+    }
+
     /// Calculates the aspect ratio of the specified rectangle using the formula:
     /// \f[
     ///     aspect=width/height
@@ -67,13 +79,42 @@ namespace Geometry {
         return wh.isEmpty() ? 0.0 : wh.width() / wh.height();
     }
 
-    /// Calculates the distance between the opposite corners of the specified rectangle.
+    /// Calculates the hypotenuse of the right triangle formed by the specified sides.
+    /// \f[
+    ///     hypot=\sqrt{width^2 + height^2}
+    /// \f]
     ///
-    /// @param[in] wh Rectangle whose diagonal length is to be calculated
-    /// @return Length of the diagonal of the rectangle.
+    /// @param[in] wh Rectangle whose hypotenuse length is to be calculated
+    /// @return Length of the hypotenuse of the right triangle with the specified sides.
     ///
-    inline double diagonal(const QSizeF& wh) {
-        return wh.isEmpty() ? 0.0 : std::sqrt(wh.width() * wh.width() + wh.height() * wh.height());
+    inline double hypot(const QSizeF& wh) {
+        return wh.isEmpty() ? 0.0 : std::hypot(wh.width(), wh.height());
+    }
+
+    /// Calculates the distance between the two specified points.
+    /// \f[
+    ///     hypot=\sqrt{(p2.x-p1.x)^2 + (p2.y-p1.y)^2}
+    /// \f]
+    ///
+    /// @param[in] p1 First point
+    /// @param[in] p2 Second point
+    /// @return Distance between the two points.
+    ///
+    inline double hypot(const QPoint& p1, const QPoint& p2) {
+        return std::hypot(p2.x() - p1.x(), p2.y() - p1.y());
+    }
+
+    /// Calculates the distance between the two specified points.
+    /// \f[
+    ///     hypot=\sqrt{(p2.x-p1.x)^2 + (p2.y-p1.y)^2}
+    /// \f]
+    ///
+    /// @param[in] p1 First point
+    /// @param[in] p2 Second point
+    /// @return Distance between the two points.
+    ///
+    inline double hypot(const QPointF& p1, const QPointF& p2) {
+        return std::hypot(p2.x() - p1.x(), p2.y() - p1.y());
     }
 
     /// Returns the angle of the vector from the specified start point to the specified end point relative to

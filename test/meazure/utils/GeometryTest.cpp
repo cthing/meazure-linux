@@ -35,8 +35,11 @@ Q_OBJECT
 private slots:
     [[maybe_unused]] void testAreaRect();
     [[maybe_unused]] void testAreaSizeF();
+    [[maybe_unused]] void testAreaRadius();
     [[maybe_unused]] void testAspectRatio();
-    [[maybe_unused]] void testDiagonal();
+    [[maybe_unused]] void testHypot1();
+    [[maybe_unused]] void testHypot2();
+    [[maybe_unused]] void testHypot3();
     [[maybe_unused]] void testAngle2Points_data();
     [[maybe_unused]] void testAngle2Points();
     [[maybe_unused]] void testAngle3Points();
@@ -71,6 +74,13 @@ private slots:
     QCOMPARE(Geometry::area(QSizeF(10.5, 20.5)), 215.25);
 }
 
+[[maybe_unused]] void GeometryTest::testAreaRadius() {
+    QCOMPARE(Geometry::area(0.0), 0.0);
+    QCOMPARE(Geometry::area(1.0), M_PI);
+    QCOMPARE(Geometry::area(2.0), 4.0 * M_PI);
+    QCOMPARE(Geometry::area(5.25), 27.5625 * M_PI);
+}
+
 [[maybe_unused]] void GeometryTest::testAspectRatio() {
     QCOMPARE(Geometry::aspectRatio(QSizeF()), 0.0);
     QCOMPARE(Geometry::aspectRatio(QSizeF(0.0, 0.0)), 0.0);
@@ -79,12 +89,30 @@ private slots:
     QCOMPARE(Geometry::aspectRatio(QSizeF(10.5, 20.5)), 0.512195121951);
 }
 
-[[maybe_unused]] void GeometryTest::testDiagonal() {
-    QCOMPARE(Geometry::diagonal(QSizeF()), 0.0);
-    QCOMPARE(Geometry::diagonal(QSizeF(0.0, 0.0)), 0.0);
-    QCOMPARE(Geometry::diagonal(QSizeF(1.0, 0.0)), 0.0);
-    QCOMPARE(Geometry::diagonal(QSizeF(0.0, 1.0)), 0.0);
-    QCOMPARE(Geometry::diagonal(QSizeF(10.5, 20.5)), 23.03258561256);
+[[maybe_unused]] void GeometryTest::testHypot1() {
+    QCOMPARE(Geometry::hypot(QSizeF()), 0.0);
+    QCOMPARE(Geometry::hypot(QSizeF(0.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::hypot(QSizeF(1.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::hypot(QSizeF(0.0, 1.0)), 0.0);
+    QCOMPARE(Geometry::hypot(QSizeF(10.5, 20.5)), 23.03258561256);
+}
+
+[[maybe_unused]] void GeometryTest::testHypot2() {
+    QCOMPARE(Geometry::hypot(QPoint(), QPoint()), 0.0);
+    QCOMPARE(Geometry::hypot(QPoint(0, 0), QPoint(0, 0)), 0.0);
+    QCOMPARE(Geometry::hypot(QPoint(0, 0), QPoint(1, 0)), 1.0);
+    QCOMPARE(Geometry::hypot(QPoint(0, 0), QPoint(0, 1)), 1.0);
+    QCOMPARE(Geometry::hypot(QPoint(0, 0), QPoint(1, 1)), 1.414213562373);
+    QCOMPARE(Geometry::hypot(QPoint(10, 20), QPoint(3, 7)), 14.76482306023);
+}
+
+[[maybe_unused]] void GeometryTest::testHypot3() {
+    QCOMPARE(Geometry::hypot(QPointF(), QPointF()), 0.0);
+    QCOMPARE(Geometry::hypot(QPointF(0.0, 0.0), QPointF(0.0, 0.0)), 0.0);
+    QCOMPARE(Geometry::hypot(QPointF(0.0, 0.0), QPointF(1.0, 0.0)), 1.0);
+    QCOMPARE(Geometry::hypot(QPointF(0.0, 0.0), QPointF(0.0, 1.0)), 1.0);
+    QCOMPARE(Geometry::hypot(QPointF(0.0, 0.0), QPointF(1.0, 1.0)), 1.414213562373);
+    QCOMPARE(Geometry::hypot(QPointF(10.0, 20.0), QPointF(3.0, 7.0)), 14.76482306023);
 }
 
 [[maybe_unused]] void GeometryTest::testAngle2Points_data() {

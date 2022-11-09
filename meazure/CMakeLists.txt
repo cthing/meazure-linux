@@ -30,6 +30,8 @@ set(UI_SOURCES
 source_group(UI FILES ${UI_SOURCES})
 
 set(GRAPHICS_SOURCES
+    graphics/Circle.cpp
+    graphics/Circle.h
     graphics/Colors.cpp
     graphics/Colors.h
     graphics/CrossHair.cpp
@@ -47,6 +49,8 @@ source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 set(TOOLS_SOURCES
     tools/AngleTool.cpp
     tools/AngleTool.h
+    tools/CircleTool.cpp
+    tools/CircleTool.h
     tools/CursorTool.cpp
     tools/CursorTool.h
     tools/LineTool.cpp

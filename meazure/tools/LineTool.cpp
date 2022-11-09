@@ -186,7 +186,7 @@ void LineTool::departed(CrossHair&, int id) {
     }
 }
 
-void LineTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
+void LineTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
     // Ctrl+drag moves all the crosshairs as a single unit
     //
     if ((keyboardModifiers & Qt::ControlModifier) != 0) {
@@ -194,10 +194,10 @@ void LineTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers 
         QPoint followingPos;
 
         if (id == k_point1Id) {
-            movingDelta = center - m_point1;
+            movingDelta = crosshairCenter - m_point1;
             followingPos = m_point2 + movingDelta;
         } else {
-            movingDelta = center - m_point2;
+            movingDelta = crosshairCenter - m_point2;
             followingPos = m_point1 + movingDelta;
         }
 
@@ -206,7 +206,7 @@ void LineTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers 
         m_point2 += movingDelta;
     } else {
         m_curPos = (id == k_point1Id) ? &m_point1 : &m_point2;
-        *m_curPos = center;
+        *m_curPos = crosshairCenter;
 
         // Shift + drag locks the movement of the crosshair to vertical or horizontal.
         //
@@ -232,7 +232,7 @@ void LineTool::moved(CrossHair&, int id, QPoint) {
     const QPointF coord1 = getUnitsProvider().convertCoord(m_point1);
     const QPointF coord2 = getUnitsProvider().convertCoord(m_point2);
     const QSizeF wh = getUnitsProvider().getWidthHeight(m_point1, m_point2);
-    const double distance = Geometry::diagonal(wh);
+    const double distance = Geometry::hypot(wh);
     const double aspect = Geometry::aspectRatio(wh);
     const double area = Geometry::area(wh);
     const double angle = getUnitsProvider().convertAngle(Geometry::angle(coord1, coord2));

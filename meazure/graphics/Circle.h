@@ -23,43 +23,41 @@
 #include "Colors.h"
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
-#include <QObject>
+#include <QPoint>
 #include <QPen>
 
 
-/// A rectangle graphical element. The rectangle is used by the Rectangle measurement tool. The rectangle is
-/// positioned by specifying the location of its top left corner (point 1) and its bottom right corner (point 2).
+/// A circle graphical element. The circle is positioned by specifying the center and it is sized by specifying a
+/// point on the perimeter.
 ///
-class Rectangle : public Graphic {
+class Circle : public Graphic {
 
     Q_OBJECT
 
 public:
-    /// Constructs a rectangle.
+    /// Constructs a circle.
     ///
     /// @param[in] screenInfoProvider Information about the display screens
     /// @param[in] unitsProvider Measurement units
-    /// @param[in] offset Distance, in inches, to shrink rectangle from start and end points. The typical use for this
-    ///     parameter is in the Rectangle tool. Offseting the rectangle end points allows the contents of the end
-    ///     points to be clear for viewing and measuring.
-    /// @param[in] parent Parent widget for the rectangle or nullptr for a top level rectangle
-    /// @param[in] lineColor Rectangle line foreground color
+    /// @param[in] gap Gap, in inches, on the perimeter to accommodate a crosshair.
+    /// @param[in] parent Parent widget for the line or nullptr for a top level circle
+    /// @param[in] lineColor Line foreground color
     ///
-    explicit Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                       double offset = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore));
+    explicit Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                    double gap = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore));
 
-    /// Sets the rectangle line color.
+    /// Sets the line color.
     ///
     /// @param[in] color Line foreground color
     ///
     void setColor(QRgb color);
 
-    /// Sets the position of the rectangle.
+    /// Sets the position of the circle.
     ///
-    /// @param[in] startPoint Location of the start of the rectangle, in pixels
-    /// @param[in] endPoint Location of the end of the rectangle, in pixels
+    /// @param[in] centerPoint Location of the center of the circle, in pixels
+    /// @param[in] perimeterPoint Location on the perimeter of the circle, in pixels
     ///
-    void setPosition(const QPoint& startPoint, const QPoint& endPoint);
+    void setPosition(const QPoint& centerPoint, const QPoint& perimeterPoint);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -69,8 +67,9 @@ private:
 
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
-    double m_offset;
+    double m_gap;
     QPen m_pen;
-    QPoint m_start;
-    QPoint m_end;
+    QPoint m_center;
+    QPoint m_perimeter;
+    double m_radius { 1.0 };
 };

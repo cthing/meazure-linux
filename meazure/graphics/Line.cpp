@@ -21,7 +21,6 @@
 #include <meazure/utils/Geometry.h>
 #include <QSize>
 #include <QPainter>
-#include <QPen>
 #include <cmath>
 
 
@@ -31,16 +30,18 @@ Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_offset(offset),
-        m_color(lineColor),
         m_start(1, 1),
         m_end(10, 10) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+
+    m_pen.setColor(lineColor);
+    m_pen.setWidth(k_lineWidth);
 }
 
 void Line::setColor(QRgb color) {
-    m_color.setRgb(color);
+    m_pen.setColor(color);
     repaint();
 }
 
@@ -76,7 +77,7 @@ void Line::setPosition(const QPoint& start, const QPoint& end) {
 
 void Line::paintEvent(QPaintEvent*) {
     QPainter painter(this);
-    painter.setPen(QPen(m_color, k_lineWidth));
+    painter.setPen(m_pen);
 
     // Compensate for margin.
     //

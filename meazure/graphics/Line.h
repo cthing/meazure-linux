@@ -24,6 +24,7 @@
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QPoint>
+#include <QPen>
 
 
 /// A line graphical element. The line is used by many tools including the Line and Grid tools. The line is positioned
@@ -69,7 +70,7 @@ private:
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
     double m_offset;
-    QColor m_color;
+    QPen m_pen;
     QPoint m_start;
     QPoint m_end;
 };

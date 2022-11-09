@@ -23,6 +23,7 @@
 #include "RadioToolTraits.h"
 #include <meazure/graphics/CrossHair.h>
 #include <meazure/graphics/Line.h>
+#include <meazure/graphics/Circle.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
@@ -30,25 +31,25 @@
 #include <QPoint>
 
 
-/// Line measurement tool. This tool provides a line to measure the distance between two arbitrary points on the
-/// screen. Two crosshairs are provided one at the either end of the line (points 1 and 2). Each crosshair can be
-/// arbitrarily positioned, which results in moving the line connecting the crosshairs.
+/// Circle measurement tool. This tool provides a circle and its radius. Two crosshairs are provided: one at the center
+/// of the circle (vertex) and one where the radius intersects the perimeter (point 1). Each crosshair can be
+/// arbitrarily positioned, which will result in moving and resizing the circle.
 ///
-class LineTool : public RadioTool {
+class CircleTool : public RadioTool {
 
     Q_OBJECT
 
 public:
-    static constexpr const char* k_toolName {"LineTool" };
+    static constexpr const char* k_toolName {"CircleTool" };
 
-    explicit LineTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                      QObject* parent = nullptr);
+    explicit CircleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                        QObject* parent = nullptr);
 
-    ~LineTool() override;
+    ~CircleTool() override;
 
-    LineTool(const LineTool&) = delete;
-    LineTool(LineTool&&) = delete;
-    LineTool& operator=(const LineTool&) = delete;
+    CircleTool(const CircleTool&) = delete;
+    CircleTool(CircleTool&&) = delete;
+    CircleTool& operator=(const CircleTool&) = delete;
 
     [[nodiscard]] const char* getName() const override {
         return k_toolName;
@@ -59,7 +60,7 @@ public:
     }
 
     [[nodiscard]] QString getInstructions() const override {
-        return tr("Shift locks to H or V, Ctrl moves line");
+        return tr("Ctrl moves circle, Ctrl+R captures region");
     }
 
     void setEnabled(bool enable) override;
@@ -74,17 +75,17 @@ public:
 
     void setX1Position(double x) override;
     void setY1Position(double y) override;
-    void setX2Position(double x) override;
-    void setY2Position(double y) override;
+    void setXVPosition(double x) override;
+    void setYVPosition(double y) override;
 
     void stepX1Position(int numSteps) override;
     void stepY1Position(int numSteps) override;
-    void stepX2Position(int numSteps) override;
-    void stepY2Position(int numSteps) override;
+    void stepXVPosition(int numSteps) override;
+    void stepYVPosition(int numSteps) override;
 
 signals:
     void xy1PositionChanged(QPointF coord);
-    void xy2PositionChanged(QPointF coord);
+    void xyvPositionChanged(QPointF coord);
     void widthHeightChanged(QSizeF widthHeight);
     void distanceChanged(double distance);
     void angleChanged(double angle);
@@ -98,20 +99,24 @@ private slots:
     void moved(CrossHair& crosshair, int id, QPoint crosshairCenter);
 
 private:
-    static constexpr RadioToolTraits k_traits { XY1ReadWrite | XY2ReadWrite | WHReadOnly | DistReadOnly |
+    /// Similar to k_crosshairOffset but for use with the perimeter crosshair to provide a bit more spacing.
+    ///
+    static constexpr double k_crosshairRadialOffset { CrossHair::getDefaultSize() / 2.0 + 0.08 };
+    static constexpr RadioToolTraits k_traits { XY1ReadWrite | XYVReadWrite | WHReadOnly | DistReadOnly |
                                                 AngleReadOnly | AspectReadOnly | AreaReadOnly };
-    static constexpr int k_point1Id { 1 };      ///< ID for the point 1 crosshair
-    static constexpr int k_point2Id { 2 };      ///< ID for the point 2 crosshair
+    static constexpr int k_perimeterId { 1 };   ///< ID for the perimeter crosshair
+    static constexpr int k_centerId { 2 };      ///< ID for the center crosshair
 
     void setPosition();
 
 
-    QPoint* m_curPos;            ///< Points to #m_point1 or #m_point2 depending on which point the user is moving
-    QPoint m_point1;             ///< Location of one end point of the line
-    QPoint m_point2;             ///< Location of one end point of the line
-    CrossHair* m_point1CH;       ///< Crosshair for point 1
-    CrossHair* m_point2CH;       ///< Crosshair for point 2
-    Line* m_line;                ///< Line connecting point 1 and point 2
-    ToolDataWindow* m_dataWin1;  ///< Data window tooltip for point 1
-    ToolDataWindow* m_dataWin2;  ///< Data window tooltip for point 2
+    QPoint* m_curPos;                    ///< Points to #m_center or #m_perimeter depending on point the user is moving
+    QPoint m_center;                     ///< Location of the center of the circle
+    QPoint m_perimeter;                  ///< A point on the perimeter of the circle
+    CrossHair* m_centerCH;               ///< Crosshair for the center point
+    CrossHair* m_perimeterCH;            ///< Crosshair for the perimeter point
+    Circle* m_circle;                    ///< Circle graphic object
+    Line* m_line;                        ///< Radial line
+    ToolDataWindow* m_dataWinCenter;     ///< Data window tooltip for the center point
+    ToolDataWindow* m_dataWinPerimeter;  ///< Data window tooltip for the perimeter point
 };

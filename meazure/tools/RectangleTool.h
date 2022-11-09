@@ -31,7 +31,7 @@
 
 
 /// Rectangle measurement tool. This tool provides a rectangle to measure an arbitrary rectangular area of the screen.
-/// Two crosshairs are provided one at the either end of the rectangle's diagonal (points 1 and 2). Each crosshair
+/// Two crosshairs are provided one at the either end of the rectangle's hypot (points 1 and 2). Each crosshair
 /// can be arbitrarily positioned, which results in moving the rectangle.
 ///
 class RectangleTool : public RadioTool {
@@ -92,10 +92,10 @@ signals:
     void areaChanged(double area);
 
 private slots:
-    void entered(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void entered(CrossHair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
     void departed(CrossHair& crosshair, int id);
-    void dragged(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
-    void moved(CrossHair& crosshair, int id, QPoint center);
+    void dragged(CrossHair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
+    void moved(CrossHair& crosshair, int id, QPoint crosshairCenter);
 
 private:
     static constexpr RadioToolTraits k_traits { XY1ReadWrite | XY2ReadWrite | WHReadOnly | DistReadOnly |

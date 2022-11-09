@@ -21,6 +21,7 @@
 #include "MainView.h"
 #include <meazure/App.h>
 #include <meazure/tools/ToolMgr.h>
+#include <meazure/tools/CircleTool.h>
 #include <meazure/tools/CursorTool.h>
 #include <meazure/tools/PointTool.h>
 #include <meazure/tools/LineTool.h>
@@ -89,6 +90,8 @@ void MainWindow::createActions() {
     m_circleToolAction = new QAction(QIcon(":/images/CircleTool.svg"), tr("C&ircle"), radioToolGroup);
     m_circleToolAction->setCheckable(true);
     m_circleToolAction->setToolTip("Measures using circle");
+    connect(m_circleToolAction, &QAction::triggered, this,
+            [&toolMgr] { toolMgr.selectRadioTool(CircleTool::k_toolName); });
 
     m_angleToolAction = new QAction(QIcon(":/images/AngleTool.svg"), tr("&Angle"), radioToolGroup);
     m_angleToolAction->setCheckable(true);

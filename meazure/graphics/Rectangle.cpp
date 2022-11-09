@@ -20,6 +20,7 @@
 #include "Rectangle.h"
 #include <QPainter>
 #include <QSize>
+#include <QLine>
 
 
 Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double offset,
@@ -28,16 +29,18 @@ Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_offset(offset),
-        m_color(lineColor),
         m_start(1, 1),
         m_end(10, 10) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+
+    m_pen.setColor(lineColor);
+    m_pen.setWidth(k_lineWidth);
 }
 
 void Rectangle::setColor(QRgb color) {
-    m_color.setRgb(color);
+    m_pen.setColor(color);
     repaint();
 }
 
@@ -60,6 +63,8 @@ void Rectangle::setPosition(const QPoint& start, const QPoint& end) {
 }
 
 void Rectangle::paintEvent(QPaintEvent*) {
+    static constexpr int k_numSides = 4;
+
     QSize offset(0, 0);
 
     if (m_offset > 0.0) {
@@ -70,8 +75,7 @@ void Rectangle::paintEvent(QPaintEvent*) {
     }
 
     QPainter painter(this);
-    //painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(m_color, k_lineWidth));
+    painter.setPen(m_pen);
 
     // Compensate for margin.
     //
@@ -79,14 +83,20 @@ void Rectangle::paintEvent(QPaintEvent*) {
     const int bottom = height() - k_lineWidth - 1;
 
     if ((m_start.x() > m_end.x()) != (m_start.y() > m_end.y())) {
-        painter.drawLine(k_lineWidth, k_lineWidth, right - offset.width(), k_lineWidth);    // Top
-        painter.drawLine(k_lineWidth, k_lineWidth, k_lineWidth, bottom - offset.height());  // Left
-        painter.drawLine(right, k_lineWidth + offset.height(), right, bottom);              // Right
-        painter.drawLine(k_lineWidth + offset.width(), bottom, right, bottom);              // Bottom
+        const QLine lines[k_numSides] = {
+                QLine(k_lineWidth, k_lineWidth, right - offset.width(), k_lineWidth),    // Top
+                QLine(k_lineWidth, k_lineWidth, k_lineWidth, bottom - offset.height()),  // Left
+                QLine(right, k_lineWidth + offset.height(), right, bottom),              // Right
+                QLine(k_lineWidth + offset.width(), bottom, right, bottom)               // Bottom
+        };
+        painter.drawLines(lines, k_numSides);
     } else {
-        painter.drawLine(k_lineWidth + offset.width(), k_lineWidth, right, k_lineWidth);    // Top
-        painter.drawLine(k_lineWidth, k_lineWidth + offset.height(), k_lineWidth, bottom);  // Left
-        painter.drawLine(right, k_lineWidth, right, bottom - offset.height());              // Right
-        painter.drawLine(k_lineWidth, bottom, right - offset.width(), bottom);              // Bottom
+        const QLine lines[k_numSides] = {
+                QLine(k_lineWidth + offset.width(), k_lineWidth, right, k_lineWidth),    // Top
+                QLine(k_lineWidth, k_lineWidth + offset.height(), k_lineWidth, bottom),  // Left
+                QLine(right, k_lineWidth, right, bottom - offset.height()),              // Right
+                QLine(k_lineWidth, bottom, right - offset.width(), bottom)               // Bottom
+        };
+        painter.drawLines(lines, k_numSides);
     }
 }

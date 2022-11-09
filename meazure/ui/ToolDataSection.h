@@ -78,7 +78,7 @@ private slots:
     ///
     void widthHeightChanged(QSizeF widthHeight);
 
-    /// Called when the current tool's distance has changed (e.g. diagonal of the Rectangle tool).
+    /// Called when the current tool's distance has changed (e.g. hypot of the Rectangle tool).
     ///
     /// @param[in] distance Tool distance in the current linear units.
     ///
