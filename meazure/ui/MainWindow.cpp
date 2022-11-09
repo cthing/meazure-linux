@@ -99,10 +99,6 @@ void MainWindow::createActions() {
     connect(m_angleToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(AngleTool::k_toolName); });
 
-    m_windowToolAction = new QAction(QIcon(":/images/WindowTool.svg"), tr("&Window"), radioToolGroup);
-    m_windowToolAction->setCheckable(true);
-    m_windowToolAction->setToolTip("Measures a window");
-
     m_rulerToolAction = new QAction(QIcon(":/images/RulerTool.svg"), tr("R&uler"), this);
     m_rulerToolAction->setCheckable(true);
     m_rulerToolAction->setToolTip("Adds screen rulers");
@@ -184,7 +180,6 @@ void MainWindow::createMenus() {
     toolsMenu->addAction(m_rectangleToolAction);
     toolsMenu->addAction(m_circleToolAction);
     toolsMenu->addAction(m_angleToolAction);
-    toolsMenu->addAction(m_windowToolAction);
     toolsMenu->addSeparator();
     toolsMenu->addAction(m_rulerToolAction);
     toolsMenu->addAction(m_gridToolAction);
@@ -214,7 +209,6 @@ void MainWindow::createToolbar() {
     toolBar->addAction(m_rectangleToolAction);
     toolBar->addAction(m_circleToolAction);
     toolBar->addAction(m_angleToolAction);
-    toolBar->addAction(m_windowToolAction);
     toolBar->addSeparator();
     toolBar->addAction(m_rulerToolAction);
     toolBar->addAction(m_gridToolAction);

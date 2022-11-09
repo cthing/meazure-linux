@@ -142,7 +142,6 @@ set(MEAZURE_RESOURCES
     resources/images/PointTool.svg
     resources/images/RectangleTool.svg
     resources/images/RulerTool.svg
-    resources/images/WindowTool.svg
     )
 
 # To provide access to the QPlatform* classes
