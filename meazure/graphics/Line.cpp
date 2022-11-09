@@ -25,11 +25,12 @@
 
 
 Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double offset,
-           QWidget* parent, QRgb lineColor) :
+           QWidget* parent, QRgb lineColor, int lineWidth) :
         Graphic(parent),
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_offset(offset),
+        m_lineWidth(lineWidth),
         m_start(1, 1),
         m_end(10, 10) {
     setAttribute(Qt::WA_NoSystemBackground);
@@ -37,11 +38,17 @@ Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
 
     m_pen.setColor(lineColor);
-    m_pen.setWidth(k_lineWidth);
+    m_pen.setWidth(lineWidth);
 }
 
 void Line::setColor(QRgb color) {
     m_pen.setColor(color);
+    repaint();
+}
+
+void Line::setLineWidth(int width) {
+    m_pen.setWidth(width);
+    m_lineWidth = width;
     repaint();
 }
 
@@ -70,7 +77,7 @@ void Line::setPosition(const QPoint& start, const QPoint& end) {
 
     // Grow the window by the line thickness so that it is not clipped by the window edge when vertical or horizontal.
     //
-    windowRect.adjust(-k_lineWidth, -k_lineWidth, k_lineWidth, k_lineWidth);
+    windowRect.adjust(-m_lineWidth, -m_lineWidth, m_lineWidth, m_lineWidth);
 
     setGeometry(windowRect);
 }
@@ -81,12 +88,12 @@ void Line::paintEvent(QPaintEvent*) {
 
     // Compensate for margin.
     //
-    const int right = width() - k_lineWidth - 1;
-    const int bottom = height() - k_lineWidth - 1;
+    const int right = width() - m_lineWidth - 1;
+    const int bottom = height() - m_lineWidth - 1;
 
     if ((m_start.x() > m_end.x()) != (m_start.y() > m_end.y())) {
-        painter.drawLine(k_lineWidth, bottom, right, k_lineWidth);
+        painter.drawLine(m_lineWidth, bottom, right, m_lineWidth);
     } else {
-        painter.drawLine(k_lineWidth, k_lineWidth, right, bottom);
+        painter.drawLine(m_lineWidth, m_lineWidth, right, bottom);
     }
 }

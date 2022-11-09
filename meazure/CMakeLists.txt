@@ -36,6 +36,8 @@ set(GRAPHICS_SOURCES
     graphics/Colors.h
     graphics/CrossHair.cpp
     graphics/CrossHair.h
+    graphics/Dimensions.cpp
+    graphics/Dimensions.h
     graphics/Graphic.cpp
     graphics/Graphic.h
     graphics/Line.cpp

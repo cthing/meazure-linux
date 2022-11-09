@@ -21,6 +21,7 @@
 
 #include "Graphic.h"
 #include "Colors.h"
+#include "Dimensions.h"
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QPoint>
@@ -44,15 +45,23 @@ public:
     ///     for viewing and measuring.
     /// @param[in] parent Parent widget for the line or nullptr for a top level line
     /// @param[in] lineColor Line foreground color
+    /// @param[in] lineWidth Width of line, in pixels
     ///
     explicit Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                  double offset = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore));
+                  double offset = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore),
+                  int lineWidth = Dimensions::getLineWidth());
 
     /// Sets the line color.
     ///
     /// @param[in] color Line foreground color
     ///
     void setColor(QRgb color);
+
+    /// Sets the line width.
+    ///
+    /// @param[in] width Line width, in pixels
+    ///
+    void setLineWidth(int width);
 
     /// Sets the position of the line.
     ///
@@ -65,11 +74,10 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
-    static constexpr int k_lineWidth { 1 };     // Pixels
-
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
     double m_offset;
+    int m_lineWidth;
     QPen m_pen;
     QPoint m_start;
     QPoint m_end;

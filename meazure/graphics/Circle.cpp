@@ -19,7 +19,6 @@
 
 #include "Circle.h"
 #include <meazure/utils/Geometry.h>
-#include <meazure/utils/MathUtils.h>
 #include <QRect>
 #include <QPainter>
 #include <QPainterPath>
@@ -28,7 +27,7 @@
 
 
 Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double gap,
-               QWidget* parent, QRgb lineColor) :
+               QWidget* parent, QRgb lineColor, int lineWidth) :
         Graphic(parent),
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
@@ -40,11 +39,16 @@ Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
 
     m_pen.setColor(lineColor);
-    m_pen.setWidth(k_lineWidth);
+    m_pen.setWidth(lineWidth);
 }
 
 void Circle::setColor(QRgb color) {
     m_pen.setColor(color);
+    repaint();
+}
+
+void Circle::setLineWidth(int width) {
+    m_pen.setWidth(width);
     repaint();
 }
 
