@@ -140,6 +140,7 @@ set(MEAZURE_RESOURCES
     resources/images/CursorTool.svg
     resources/images/GridTool.svg
     resources/images/LineTool.svg
+    resources/images/Meazure.png
     resources/images/Pause.svg
     resources/images/PointTool.svg
     resources/images/RectangleTool.svg

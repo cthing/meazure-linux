@@ -22,6 +22,7 @@
 #include <QtPlugin>
 #include <QCommandLineParser>
 #include <QStyleFactory>
+#include <QPixmap>
 
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
@@ -38,6 +39,8 @@ App::App(int &argc, char **argv):
 
     setOrganizationName("cthing");
     setOrganizationDomain("cthing.com");
+
+    setWindowIcon(QPixmap(":/images/Meazure.png"));
 
     QCommandLineParser parser;
     parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
