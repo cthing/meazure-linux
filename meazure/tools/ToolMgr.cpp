@@ -21,6 +21,7 @@
 #include "AngleTool.h"
 #include "CircleTool.h"
 #include "CursorTool.h"
+#include "GridTool.h"
 #include "LineTool.h"
 #include "PointTool.h"
 #include "RadioTool.h"
@@ -37,12 +38,17 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     Tool* circleTool = new CircleTool(screenInfoProvider, unitsProvider, this);
     Tool* angleTool = new AngleTool(screenInfoProvider, unitsProvider, this);
 
+    // Non-radio tools
+    //
+    Tool* gridTool = new GridTool(screenInfoProvider, unitsProvider, this);
+
     m_tools[cursorTool->getName()] = cursorTool;
     m_tools[pointTool->getName()] = pointTool;
     m_tools[lineTool->getName()] = lineTool;
     m_tools[rectangleTool->getName()] = rectangleTool;
     m_tools[circleTool->getName()] = circleTool;
     m_tools[angleTool->getName()] = angleTool;
+    m_tools[gridTool->getName()] = gridTool;
 
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
 
@@ -78,6 +84,35 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(angleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
 }
 
+void ToolMgr::saveProfile(Profile& profile) const {
+    for (const auto& toolEntry : m_tools) {
+        toolEntry.second->saveProfile(profile);
+    }
+
+    profile.writeStr("CurrentRadioTool", m_currentRadioTool->getName());
+}
+
+void ToolMgr::loadProfile(Profile& profile) {
+    for (const auto& toolEntry : m_tools) {
+        toolEntry.second->loadProfile(profile);
+    }
+
+    const QString currentRadioToolName = profile.readStr("CurrentRadioTool", m_currentRadioTool->getName());
+    selectRadioTool(currentRadioToolName.toUtf8().constData());
+}
+
+void ToolMgr::masterReset() {
+    for (const auto& toolEntry : m_tools) {
+        toolEntry.second->masterReset();
+    }
+
+    selectRadioTool(CursorTool::k_toolName);
+}
+
+Tool* ToolMgr::getTool(const char *toolName) const {
+    return m_tools.at(toolName);
+}
+
 void ToolMgr::selectRadioTool(const char *toolName) {
     Tool* tool = m_tools.at(toolName);
     if (tool->isRadioTool()) {
@@ -95,6 +130,15 @@ void ToolMgr::selectRadioTool(const char *toolName) {
         emit radioToolSelected(*m_currentRadioTool);
 
         refresh();
+    }
+}
+
+void ToolMgr::setEnabled(const char *toolName, bool enable) {
+    Tool* tool = m_tools.at(toolName);
+    tool->setEnabled(enable);
+
+    if (enable) {
+        tool->refresh();
     }
 }
 

@@ -21,7 +21,6 @@
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/StringUtils.h>
 #include <QPointF>
-#include <cmath>
 
 PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                      QObject *parent) :
@@ -53,7 +52,7 @@ void PointTool::setEnabled(bool enable) {
     }
 }
 
-void PointTool::saveProfile(Profile& profile) {
+void PointTool::saveProfile(Profile& profile) const {
     // Save the position of the crosshair.
     //
     const QPointF pos = getUnitsProvider().convertPos(m_center);
@@ -79,12 +78,12 @@ void PointTool::loadProfile(Profile& profile) {
 }
 
 void PointTool::setX1Position(double x) {
-    m_center.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_crosshair, x)));
+    m_center.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_crosshair, x));
     setPosition();
 }
 
 void PointTool::setY1Position(double y) {
-    m_center.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_crosshair, y)));
+    m_center.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_crosshair, y));
     setPosition();
 }
 

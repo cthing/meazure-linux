@@ -70,7 +70,7 @@ namespace Plotter {
     ///
     inline void plotCrosshair(const QSize& size, const QSize& petalWidth, int centerOffset,
                               const std::function<void(int, int, int, int)>& addRect) {
-        const auto slopeTimes = [](double m, int v) { return static_cast<int>(std::round(m * v)); };
+        const auto slopeTimes = [](double m, int v) { return qRound(m * v); };
 
         double slope = static_cast<double>(2.0 * petalWidth.width()) / (size.height() - 2.0 * centerOffset);
         const int xc = size.width() / 2;

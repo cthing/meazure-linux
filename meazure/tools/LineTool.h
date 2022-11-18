@@ -39,7 +39,7 @@ class LineTool : public RadioTool {
     Q_OBJECT
 
 public:
-    static constexpr const char* k_toolName {"LineTool" };
+    static constexpr const char* k_toolName { "LineTool" };
 
     explicit LineTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                       QObject* parent = nullptr);
@@ -64,7 +64,7 @@ public:
 
     void setEnabled(bool enable) override;
 
-    void saveProfile(Profile& profile) override;
+    void saveProfile(Profile& profile) const override;
     void loadProfile(Profile& profile) override;
 
     void refresh() override;

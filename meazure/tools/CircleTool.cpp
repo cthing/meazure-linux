@@ -76,7 +76,7 @@ void CircleTool::setEnabled(bool enable) {
     }
 }
 
-void CircleTool::saveProfile(Profile& profile) {
+void CircleTool::saveProfile(Profile& profile) const {
     // Save the position of each end point.
     //
     const QPointF posCenter = getUnitsProvider().convertPos(m_center);
@@ -110,22 +110,22 @@ void CircleTool::loadProfile(Profile& profile) {
 }
 
 void CircleTool::setX1Position(double x) {
-    m_perimeter.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_perimeterCH, x)));
+    m_perimeter.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_perimeterCH, x));
     setPosition();
 }
 
 void CircleTool::setY1Position(double y) {
-    m_perimeter.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_perimeterCH, y)));
+    m_perimeter.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_perimeterCH, y));
     setPosition();
 }
 
 void CircleTool::setXVPosition(double x) {
-    m_center.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_centerCH, x)));
+    m_center.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_centerCH, x));
     setPosition();
 }
 
 void CircleTool::setYVPosition(double y) {
-    m_center.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_centerCH, y)));
+    m_center.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_centerCH, y));
     setPosition();
 }
 

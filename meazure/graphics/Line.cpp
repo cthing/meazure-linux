@@ -69,8 +69,8 @@ void Line::setPosition(const QPoint& start, const QPoint& end) {
 
         const double angle = Geometry::angle(normalizedStart, normalizedEnd);
         const QSize offset = m_unitsProvider.convertToPixels(InchesId, screenRes, m_offset, 0.0);
-        const int offsetX = static_cast<int>(std::round(offset.width() * std::cos(angle)));
-        const int offsetY = static_cast<int>(std::round(offset.height() * std::sin(angle)));
+        const int offsetX = qRound(offset.width() * std::cos(angle));
+        const int offsetY = qRound(offset.height() * std::sin(angle));
 
         windowRect.adjust(offsetX, offsetY, -offsetX, -offsetY);
     }

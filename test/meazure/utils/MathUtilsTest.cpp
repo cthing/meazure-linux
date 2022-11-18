@@ -36,6 +36,7 @@ private slots:
     [[maybe_unused]] void testMakeOddDown();
     [[maybe_unused]] void testMakeEvenUp();
     [[maybe_unused]] void testMakeEvenDown();
+    [[maybe_unused]] void testLinearInterpolate();
 };
 
 
@@ -107,6 +108,32 @@ private slots:
     QCOMPARE(MathUtils::makeEvenDown(-1), -2);
     QCOMPARE(MathUtils::makeEvenDown(-2), -2);
     QCOMPARE(MathUtils::makeEvenDown(-10), -10);
+}
+
+[[maybe_unused]] void MathUtilsTest::testLinearInterpolate() {
+    QCOMPARE(MathUtils::linearInterpolate(5.0, 10.0, 0.75), 8.75);
+    QCOMPARE(MathUtils::linearInterpolate(5.0, 10.0, 0.0), 5.0);
+    QCOMPARE(MathUtils::linearInterpolate(5.0, 10.0, 1.0), 10.0);
+    QCOMPARE(MathUtils::linearInterpolate(5.0, 10.0, 1.25), 11.25);
+    QCOMPARE(MathUtils::linearInterpolate(-3.0, 5.0, 0.75), 3.0);
+    QCOMPARE(MathUtils::linearInterpolate(-3.0, 5.0, 0.0), -3.0);
+    QCOMPARE(MathUtils::linearInterpolate(-3.0, 5.0, 1.0), 5.0);
+    QCOMPARE(MathUtils::linearInterpolate(3.0, -5.0, 0.75), -3.0);
+    QCOMPARE(MathUtils::linearInterpolate(3.0, -5.0, 0.0), 3.0);
+    QCOMPARE(MathUtils::linearInterpolate(3.0, -5.0, 1.0), -5.0);
+    QVERIFY(std::isnan(MathUtils::linearInterpolate(std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN(),
+                                                    std::numeric_limits<double>::quiet_NaN())));
+    QCOMPARE(MathUtils::linearInterpolate(5.0 * std::numeric_limits<double>::denorm_min(),
+                                          10.0 * std::numeric_limits<double>::denorm_min(),
+                                          0.75), 4.44659081257e-323);
+    QCOMPARE(MathUtils::linearInterpolate(500.0 * std::numeric_limits<double>::denorm_min(),
+                                          1000.0 * std::numeric_limits<double>::denorm_min(),
+                                          0.75), 4.44659081257e-323);
+    QCOMPARE(MathUtils::linearInterpolate(5.0, 5.0, std::numeric_limits<double>::infinity()), 5.0);
+    QCOMPARE(MathUtils::linearInterpolate(5.0 * std::numeric_limits<double>::max() / 16.0,
+                                          10.0 * std::numeric_limits<double>::max() / 16.0,
+                                          3.0 / 4.0), 10 * std::numeric_limits<double>::max() / 32);
 }
 
 

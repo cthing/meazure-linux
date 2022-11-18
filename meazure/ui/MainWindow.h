@@ -21,6 +21,7 @@
 
 #include <meazure/tools/RadioTool.h>
 #include <meazure/units/Units.h>
+#include "GridDialog.h"
 #include <QMainWindow>
 #include <QAction>
 
@@ -40,6 +41,8 @@ private slots:
     void linearUnitsChanged(LinearUnitsId unitsId);
     void angularUnitsChanged(AngularUnitsId unitsId);
 
+    void adjustGrid();
+
 private:
     /// Creates actions that are referenced in multiple places in the application.
     ///
@@ -53,6 +56,10 @@ private:
     ///
     void createToolbar();
 
+    /// Creates application dialogs.
+    ///
+    void createDialogs();
+
     /// Creates the application's main widget.
     ///
     void createCentralWidget();
@@ -65,6 +72,7 @@ private:
     QAction* m_angleToolAction;
     QAction* m_rulerToolAction;
     QAction* m_gridToolAction;
+    QAction* m_gridAdjustAction;
 
     QAction* m_pixelUnitsAction;
     QAction* m_twipUnitsAction;
@@ -77,4 +85,6 @@ private:
     QAction* m_defineCustomUnitsAction;
     QAction* m_degreeUnitsAction;
     QAction* m_radianUnitsAction;
+
+    GridDialog* m_gridDialog;
 };

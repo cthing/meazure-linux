@@ -20,6 +20,7 @@
 #pragma once
 
 #include "Units.h"
+#include "CustomUnits.h"
 #include <QString>
 #include <QSize>
 #include <QSizeF>
@@ -79,6 +80,18 @@ struct UnitsProvider {
     /// @return Angular measurement units object.
     ///
     [[nodiscard]] virtual AngularUnits* getAngularUnits(const QString& unitsStr) const = 0;
+
+    /// Returns the user defined units object. This is not necessarily the current measurement units object.
+    ///
+    /// @return User defined measurement units object.
+    ///
+    [[nodiscard]] virtual CustomUnits* getCustomUnits() = 0;
+
+    /// Returns the user defined units object. This is not necessarily the current measurement units object.
+    ///
+    /// @return User defined measurement units object.
+    ///
+    [[nodiscard]] virtual const CustomUnits* getCustomUnits() const = 0;
 
     /// Returns the orientation of the y-axis.
     ///

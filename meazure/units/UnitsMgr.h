@@ -21,7 +21,6 @@
 
 #include "UnitsProvider.h"
 #include "Units.h"
-#include "CustomUnits.h"
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/profile/Profile.h>
 #include <map>
@@ -153,11 +152,11 @@ public:
         return nullptr;
     }
 
-    /// Returns the user defined units object. This is not necessarily the current measurement units object.
-    ///
-    /// @return User defined measurement units object.
-    ///
-    CustomUnits* getCustomUnits() {
+    [[nodiscard]] CustomUnits* getCustomUnits() override {
+        return &m_customUnits;
+    }
+
+    [[nodiscard]] const CustomUnits* getCustomUnits() const override {
         return &m_customUnits;
     }
 

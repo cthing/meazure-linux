@@ -103,8 +103,8 @@ private slots:
     void areaChanged(double area);
 
 private:
-    static constexpr int k_fieldShortWidth { 7 };
-    static constexpr int k_fieldLongWidth { 20 };
+    static constexpr int k_fieldShortWidth { 7 };   // Characters
+    static constexpr int k_fieldLongWidth { 20 };   // Characters
 
     /// Creates the text fields that provide the tool measurement display.
     ///

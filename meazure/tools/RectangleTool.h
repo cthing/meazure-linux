@@ -64,7 +64,7 @@ public:
 
     void setEnabled(bool enable) override;
 
-    void saveProfile(Profile& profile) override;
+    void saveProfile(Profile& profile) const override;
     void loadProfile(Profile& profile) override;
 
     void refresh() override;

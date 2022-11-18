@@ -24,16 +24,38 @@
 #include <QString>
 #include <QEvent>
 #include <QMouseEvent>
+#include <QSignalBlocker>
 #include <limits>
 
 
-DataField::DataField(int charWidth, bool showButtons, bool readOnly, QWidget *parent) :
+DataField::DataField(int charWidth, bool showButtons, bool readOnly, bool nativeStepHandling, QWidget *parent) :
         QDoubleSpinBox(parent),
         m_charWidth(charWidth),
-        m_defaultBackground(palette().color(QPalette::Base)) {
+        m_defaultBackground(palette().color(QPalette::Base)),
+        m_nativeStepHandling(nativeStepHandling) {
     setButtonSymbols(showButtons ? UpDownArrows : NoButtons);
-    setRange(-std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+    setRangeQuietly(-std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
     setReadOnly(readOnly);
+}
+
+void DataField::setValueQuietly(double value) {
+    const QSignalBlocker blocker(this);
+    setValue(value);
+}
+
+void DataField::setDecimalsQuietly(int precision) {
+    const QSignalBlocker blocker(this);
+    setDecimals(precision);
+}
+
+void DataField::setRangeQuietly(double minimum, double maximum) {
+    const QSignalBlocker blocker(this);
+    setRange(minimum, maximum);
+}
+
+void DataField::setMinimumQuietly(double minimum) {
+    const QSignalBlocker blocker(this);
+    setMinimum(minimum);
 }
 
 QSize DataField::minimumSizeHint() const {
@@ -64,37 +86,45 @@ bool DataField::event(QEvent* ev)  {
 }
 
 void DataField::mousePressEvent(QMouseEvent *event) {
-    QStyleOptionSpinBox opt;
-    this->initStyleOption(&opt);
-    const QRect upRect = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxUp);
-    const QRect downRect = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxDown);
-    if (upRect.contains(event->pos())) {
-        emitSteps(1);
-    } else if (downRect.contains(event->pos())) {
-        emitSteps(-1);
-    } else {
+    if (m_nativeStepHandling) {
         QDoubleSpinBox::mousePressEvent(event);
+    } else {
+        QStyleOptionSpinBox opt;
+        this->initStyleOption(&opt);
+        const QRect upRect = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxUp);
+        const QRect downRect = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxDown);
+        if (upRect.contains(event->pos())) {
+            emitSteps(1);
+        } else if (downRect.contains(event->pos())) {
+            emitSteps(-1);
+        } else {
+            QDoubleSpinBox::mousePressEvent(event);
+        }
     }
 }
 
 void DataField::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_PageUp:
-            emitSteps(10);
-            break;
-        case Qt::Key_PageDown:
-            emitSteps(-10);
-            break;
-        case Qt::Key_Up:
-            emitSteps(1);
-            break;
-        case Qt::Key_Down:
-            emitSteps(-1);
-            break;
-        default:
-            QDoubleSpinBox::keyPressEvent(event);
-            break;
-   }
+    if (m_nativeStepHandling) {
+        QDoubleSpinBox::keyPressEvent(event);
+    } else {
+        switch (event->key()) {
+            case Qt::Key_PageUp:
+                emitSteps(10);
+                break;
+            case Qt::Key_PageDown:
+                emitSteps(-10);
+                break;
+            case Qt::Key_Up:
+                emitSteps(1);
+                break;
+            case Qt::Key_Down:
+                emitSteps(-1);
+                break;
+            default:
+                QDoubleSpinBox::keyPressEvent(event);
+                break;
+        }
+    }
 }
 
 void DataField::emitSteps(int numSteps) {

@@ -24,7 +24,6 @@
 #include <meazure/units/Units.h>
 #include <meazure/App.h>
 #include <QGridLayout>
-#include <QSignalBlocker>
 
 
 ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -62,30 +61,30 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
 
 void ToolDataSection::createFields() {
     m_x1Label = new QLabel(tr("X1:"));
-    m_x1Field = new DataField(k_fieldShortWidth, true);
+    m_x1Field = new DataField(k_fieldShortWidth, true, false, false);
 
     m_y1Label = new QLabel(tr("Y1:"));
-    m_y1Field = new DataField(k_fieldShortWidth, true);
+    m_y1Field = new DataField(k_fieldShortWidth, true, false, false);
     m_y1Units = new QLabel();
     auto* y1Layout = new QHBoxLayout();
     y1Layout->addWidget(m_y1Field);
     y1Layout->addWidget(m_y1Units);
 
     m_x2Label = new QLabel(tr("X2:"));
-    m_x2Field = new DataField(k_fieldShortWidth, true);
+    m_x2Field = new DataField(k_fieldShortWidth, true, false, false);
 
     m_y2Label = new QLabel(tr("Y2:"));
-    m_y2Field = new DataField(k_fieldShortWidth, true);
+    m_y2Field = new DataField(k_fieldShortWidth, true, false, false);
     m_y2Units = new QLabel();
     auto* y2Layout = new QHBoxLayout();
     y2Layout->addWidget(m_y2Field);
     y2Layout->addWidget(m_y2Units);
 
     m_xvLabel = new QLabel(tr("XV:"));
-    m_xvField = new DataField(k_fieldShortWidth, true);
+    m_xvField = new DataField(k_fieldShortWidth, true, false, false);
 
     m_yvLabel = new QLabel(tr("YV:"));
-    m_yvField = new DataField(k_fieldShortWidth, true);
+    m_yvField = new DataField(k_fieldShortWidth, true, false, false);
     m_yvUnits = new QLabel();
     auto* yvLayout = new QHBoxLayout();
     yvLayout->addWidget(m_yvField);
@@ -206,19 +205,12 @@ void ToolDataSection::linearUnitsChanged(LinearUnitsId) {
     m_dUnits->setText(lengthLabel);
     m_arUnits->setText(linearUnits->getAreaLabel());
 
-    const QSignalBlocker x1Blocker(m_x1Field);
-    const QSignalBlocker y1Blocker(m_y1Field);
-    const QSignalBlocker x2Blocker(m_x2Field);
-    const QSignalBlocker y2Blocker(m_y2Field);
-    const QSignalBlocker xvBlocker(m_xvField);
-    const QSignalBlocker yvBlocker(m_yvField);
-
-    m_x1Field->setDecimals(linearUnits->getDisplayPrecision(XCoord));
-    m_y1Field->setDecimals(linearUnits->getDisplayPrecision(YCoord));
-    m_x2Field->setDecimals(linearUnits->getDisplayPrecision(XCoord));
-    m_y2Field->setDecimals(linearUnits->getDisplayPrecision(YCoord));
-    m_xvField->setDecimals(linearUnits->getDisplayPrecision(XCoord));
-    m_yvField->setDecimals(linearUnits->getDisplayPrecision(YCoord));
+    m_x1Field->setDecimalsQuietly(linearUnits->getDisplayPrecision(XCoord));
+    m_y1Field->setDecimalsQuietly(linearUnits->getDisplayPrecision(YCoord));
+    m_x2Field->setDecimalsQuietly(linearUnits->getDisplayPrecision(XCoord));
+    m_y2Field->setDecimalsQuietly(linearUnits->getDisplayPrecision(YCoord));
+    m_xvField->setDecimalsQuietly(linearUnits->getDisplayPrecision(XCoord));
+    m_yvField->setDecimalsQuietly(linearUnits->getDisplayPrecision(YCoord));
     m_wField->setDecimals(linearUnits->getDisplayPrecision(Width));
     m_hField->setDecimals(linearUnits->getDisplayPrecision(Height));
     m_dField->setDecimals(linearUnits->getDisplayPrecision(Distance));
@@ -236,27 +228,18 @@ void ToolDataSection::angularUnitsChanged(AngularUnitsId) {
 }
 
 void ToolDataSection::xy1PositionChanged(QPointF coord) {
-    const QSignalBlocker x1Blocker(m_x1Field);
-    const QSignalBlocker y1Blocker(m_y1Field);
-
-    m_x1Field->setValue(coord.x());
-    m_y1Field->setValue(coord.y());
+    m_x1Field->setValueQuietly(coord.x());
+    m_y1Field->setValueQuietly(coord.y());
 }
 
 void ToolDataSection::xy2PositionChanged(QPointF coord) {
-    const QSignalBlocker x2Blocker(m_x2Field);
-    const QSignalBlocker y2Blocker(m_y2Field);
-
-    m_x2Field->setValue(coord.x());
-    m_y2Field->setValue(coord.y());
+    m_x2Field->setValueQuietly(coord.x());
+    m_y2Field->setValueQuietly(coord.y());
 }
 
 void ToolDataSection::xyvPositionChanged(QPointF coord) {
-    const QSignalBlocker xvBlocker(m_xvField);
-    const QSignalBlocker yvBlocker(m_yvField);
-
-    m_xvField->setValue(coord.x());
-    m_yvField->setValue(coord.y());
+    m_xvField->setValueQuietly(coord.x());
+    m_yvField->setValueQuietly(coord.y());
 }
 
 void ToolDataSection::widthHeightChanged(QSizeF widthHeight) {

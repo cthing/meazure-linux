@@ -279,7 +279,7 @@ QRgb Colors::interpolateColor(QRgb startRGB, QRgb endRGB, int percent) {
     }
 
     auto interpolate = [](int start, int end, int percent) {
-        return start + static_cast<int>(std::round((end - start) * percent / 100.0));
+        return start + qRound((end - start) * percent / 100.0);
     };
 
     const HSL startHSL = RGBtoHSL(startRGB);
@@ -500,9 +500,9 @@ Colors::CMYK Colors::RGBtoCMYK(QRgb rgb) {
     }
 
     const double denom = 255.0 - black;
-    const int cyan = static_cast<int>(std::round(255.0 * (cmy.cyan - black) / denom));
-    const int magenta = static_cast<int>(std::round(255.0 * (cmy.magenta - black) / denom));
-    const int yellow = static_cast<int>(std::round(255.0 * (cmy.yellow - black) / denom));
+    const int cyan = qRound(255.0 * (cmy.cyan - black) / denom);
+    const int magenta = qRound(255.0 * (cmy.magenta - black) / denom);
+    const int yellow = qRound(255.0 * (cmy.yellow - black) / denom);
 
     return { cyan, magenta, yellow, black };
 }
@@ -545,9 +545,7 @@ Colors::HSL Colors::RGBtoHSL(QRgb rgb) {
         }
     }
 
-    return { static_cast<int>(std::round(h * 360.0)),
-             static_cast<int>(std::round(s * 100.0)),
-             static_cast<int>(std::round(l * 100.0)) };
+    return { qRound(h * 360.0), qRound(s * 100.0), qRound(l * 100.0) };
 }
 
 /// Converts a hue to an RGB component value based on the specified weighting factors. See conversion of HSL to RGB at
@@ -597,18 +595,16 @@ QRgb Colors::HSLtoRGB(const HSL& hsl) {
         b = huetoRGB(m1, m2, h - 1.0 / 3.0);
     }
 
-    return qRgb(static_cast<int>(std::round(r * 255.0)),
-                static_cast<int>(std::round(g * 255.0)),
-                static_cast<int>(std::round(b * 255.0)));
+    return qRgb(qRound(r * 255.0), qRound(g * 255.0), qRound(b * 255.0));
 }
 
 Colors::YCbCr Colors::RGBtoYCbCr(QRgb rgb) {
     const double r = qRed(rgb);
     const double g = qGreen(rgb);
     const double b = qBlue(rgb);
-    const int y = static_cast<int>(std::round(0.257 * r + 0.504 * g + 0.098 * b + 16.0));
-    const int cb = static_cast<int>(std::round(-0.148 * r - 0.291 * g + 0.439 * b + 128.0));
-    const int cr = static_cast<int>(std::round(0.439 * r - 0.368 * g - 0.071 * b + 128.0));
+    const int y = qRound(0.257 * r + 0.504 * g + 0.098 * b + 16.0);
+    const int cb = qRound(-0.148 * r - 0.291 * g + 0.439 * b + 128.0);
+    const int cr = qRound(0.439 * r - 0.368 * g - 0.071 * b + 128.0);
     return { y, cb, cr };
 }
 
@@ -616,9 +612,9 @@ Colors::YIQ Colors::RGBtoYIQ(QRgb rgb) {
     const double r = qRed(rgb);
     const double g = qGreen(rgb);
     const double b = qBlue(rgb);
-    const int y = static_cast<int>(std::round(0.299 * r + 0.587 * g + 0.114 * b));
-    const int i = static_cast<int>(std::round(0.596 * r - 0.275 * g - 0.321 * b));
-    const int q = static_cast<int>(std::round(0.212 * r - 0.523 * g + 0.311 * b));
+    const int y = qRound(0.299 * r + 0.587 * g + 0.114 * b);
+    const int i = qRound(0.596 * r - 0.275 * g - 0.321 * b);
+    const int q = qRound(0.212 * r - 0.523 * g + 0.311 * b);
     return { y, i, q };
 }
 

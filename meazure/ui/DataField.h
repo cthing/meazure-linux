@@ -35,9 +35,12 @@ public:
     /// @param[in] charWidth Width of the field in number of visible characters
     /// @param[in] showButtons Specify true to show the up/down arrow buttons
     /// @param[in] readOnly Configures the field to be read only
+    /// @param[in] nativeStepHandling Specifies whether the data field should use its internal step handling for
+    ///     arrow buttons and arrow keys
     /// @param[in] parent Parent for the widget
     ///
-    DataField(int charWidth, bool showButtons, bool readOnly = false, QWidget *parent = nullptr);
+    DataField(int charWidth, bool showButtons, bool readOnly = false, bool nativeStepHandling = true,
+              QWidget *parent = nullptr);
 
     /// Calculates the size of the field based on the desired character width.
     ///
@@ -46,6 +49,31 @@ public:
     /// Calculates the minimum size of the field based on the desired character width.
     ///
     [[nodiscard]] QSize minimumSizeHint() const override;
+
+    /// Sets the value in the spin box without emitting any signals.
+    ///
+    /// @param[in] value Spin box value
+    ///
+    void setValueQuietly(double value);
+
+    /// Sets the numerical precision for the spin box value without emitting any signals.
+    ///
+    /// @param[in] precision Spin box numerical precision
+    ///
+    void setDecimalsQuietly(int precision);
+
+    /// Sets the minimum and maximum values for the field without emitting any signals.
+    ///
+    /// @param[in] minimum Minimum field value
+    /// @param[in] maximum Maximum field value
+    ///
+    void setRangeQuietly(double minimum, double maximum);
+
+    /// Sets the minimum value for the field without emitting any signals.
+    ///
+    /// @param[in] minimum Minimum field value
+    ///
+    void setMinimumQuietly(double minimum);
 
 signals:
     /// Emitted to indicate that the user has either pressed an up/down arrow button, up/down arrow key, or page
@@ -70,4 +98,5 @@ private:
     int m_charWidth;
     QColor m_defaultBackground;
     QColor m_readOnlyBackground { 240, 240, 240 };
+    bool m_nativeStepHandling;
 };

@@ -43,6 +43,7 @@ private slots:
     [[maybe_unused]] void testAngle2Points_data();
     [[maybe_unused]] void testAngle2Points();
     [[maybe_unused]] void testAngle3Points();
+    [[maybe_unused]] void testNormalizedDegrees();
     [[maybe_unused]] void testDistance();
     [[maybe_unused]] void testCalcSector_data();
     [[maybe_unused]] void testCalcSector();
@@ -170,6 +171,20 @@ private slots:
     const QPointF p6(5.0, -2.0);
     const QPointF p7(-4.0, 4.0);
     QCOMPARE(Geometry::angle(p0, p6, p7), -2.736700867305);
+}
+
+[[maybe_unused]] void GeometryTest::testNormalizedDegrees() {
+    QCOMPARE(Geometry::normalizeDegrees(0), 0);
+    QCOMPARE(Geometry::normalizeDegrees(10), 10);
+    QCOMPARE(Geometry::normalizeDegrees(190), 190);
+    QCOMPARE(Geometry::normalizeDegrees(290), 290);
+    QCOMPARE(Geometry::normalizeDegrees(359), 359);
+    QCOMPARE(Geometry::normalizeDegrees(360), 0);
+    QCOMPARE(Geometry::normalizeDegrees(370), 10);
+    QCOMPARE(Geometry::normalizeDegrees(550), 190);
+    QCOMPARE(Geometry::normalizeDegrees(-10), 350);
+    QCOMPARE(Geometry::normalizeDegrees(-180), 180);
+    QCOMPARE(Geometry::normalizeDegrees(-360), 0);
 }
 
 [[maybe_unused]] void GeometryTest::testDistance() {

@@ -23,7 +23,6 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QtMath>
-#include <cmath>
 
 
 Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double gap,
@@ -57,9 +56,9 @@ void Circle::setPosition(const QPoint& center, const QPoint& perimeter) {
     m_perimeter = m_screenInfo.constrainPosition(perimeter);
     m_radius = Geometry::hypot(m_center, m_perimeter);
 
-    const int x = static_cast<int>(std::round(m_center.x() - m_radius));
-    const int y = static_cast<int>(std::round(m_center.y() - m_radius));
-    const int wh = static_cast<int>(std::round(2.0 * m_radius));
+    const int x = qRound(m_center.x() - m_radius);
+    const int y = qRound(m_center.y() - m_radius);
+    const int wh = qRound(2.0 * m_radius);
     setGeometry(QRect(x, y, wh, wh));
 }
 

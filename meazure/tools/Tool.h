@@ -79,7 +79,7 @@ public:
     /// @param[in] profile The destination for the state information, which is typically a FileProfile or
     ///         SettingsProfile object.
     ///
-    virtual void saveProfile(Profile& profile);
+    virtual void saveProfile(Profile& profile) const;
 
     /// Restores the state of the tool from the specified profile object. This base class implementation does nothing.
     ///
@@ -87,6 +87,10 @@ public:
     ///         object.
     ///
     virtual void loadProfile(Profile& profile);
+
+    /// Resets the tool to its default state.
+    ///
+    virtual void masterReset();
 
     /// Causes the tool to remeasure thereby emitting any measurement related signals. Typically, this method is
     /// called when the measurement units are changed or when the tool is first selected. Does nothing if the tool

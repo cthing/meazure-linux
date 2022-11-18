@@ -23,6 +23,7 @@
 #include <meazure/tools/ToolMgr.h>
 #include <meazure/tools/CircleTool.h>
 #include <meazure/tools/CursorTool.h>
+#include <meazure/tools/GridTool.h>
 #include <meazure/tools/PointTool.h>
 #include <meazure/tools/LineTool.h>
 #include <meazure/tools/RectangleTool.h>
@@ -41,6 +42,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     createActions();
     createMenus();
     createToolbar();
+    createDialogs();
 
     const ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
@@ -106,6 +108,11 @@ void MainWindow::createActions() {
     m_gridToolAction = new QAction(QIcon(":/images/GridTool.svg"), tr("&Screen Grid"), this);
     m_gridToolAction->setCheckable(true);
     m_gridToolAction->setToolTip("Adds screen grid");
+    connect(m_gridToolAction, &QAction::triggered, this,
+            [&toolMgr](bool checked) { toolMgr.setEnabled(GridTool::k_toolName, checked); });
+
+    m_gridAdjustAction = new QAction(tr("Screen &Grid Spacing..."));
+    connect(m_gridAdjustAction, &QAction::triggered, this, &MainWindow::adjustGrid);
 
     // Units actions
 
@@ -183,6 +190,7 @@ void MainWindow::createMenus() {
     toolsMenu->addSeparator();
     toolsMenu->addAction(m_rulerToolAction);
     toolsMenu->addAction(m_gridToolAction);
+    toolsMenu->addAction(m_gridAdjustAction);
 
     // Units menu
 
@@ -214,6 +222,12 @@ void MainWindow::createToolbar() {
     toolBar->addAction(m_gridToolAction);
 }
 
+void MainWindow::createDialogs() {
+    App* app = App::instance();
+    auto* gridTool = dynamic_cast<GridTool*>(app->getToolMgr().getTool(GridTool::k_toolName));
+    m_gridDialog = new GridDialog(gridTool, app->getScreenInfo(), app->getUnitsMgr(), this);
+}
+
 void MainWindow::createCentralWidget() {
     QWidget* mainView = new MainView();
     setCentralWidget(mainView);
@@ -229,4 +243,11 @@ void MainWindow::linearUnitsChanged(LinearUnitsId) {    // NOLINT(readability-co
 
 void MainWindow::angularUnitsChanged(AngularUnitsId) {  // NOLINT(readability-convert-member-functions-to-static)
     App::instance()->getToolMgr().refresh();
+}
+
+void MainWindow::adjustGrid() {
+    if (!m_gridToolAction->isChecked()) {
+        m_gridToolAction->trigger();
+    }
+    m_gridDialog->exec();
 }

@@ -9,6 +9,8 @@ set(UI_SOURCES
     ui/ColorData.h
     ui/DataField.cpp
     ui/DataField.h
+    ui/GridDialog.cpp
+    ui/GridDialog.h
     ui/Magnifier.cpp
     ui/Magnifier.h
     ui/MagnifierSection.cpp
@@ -40,6 +42,8 @@ set(GRAPHICS_SOURCES
     graphics/Dimensions.h
     graphics/Graphic.cpp
     graphics/Graphic.h
+    graphics/Grid.cpp
+    graphics/Grid.h
     graphics/Line.cpp
     graphics/Line.h
     graphics/Plotter.h
@@ -55,6 +59,8 @@ set(TOOLS_SOURCES
     tools/CircleTool.h
     tools/CursorTool.cpp
     tools/CursorTool.h
+    tools/GridTool.cpp
+    tools/GridTool.h
     tools/LineTool.cpp
     tools/LineTool.h
     tools/PointTool.cpp

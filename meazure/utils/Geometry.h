@@ -161,6 +161,16 @@ namespace Geometry {
         return std::atan2(numer, denom);
     }
 
+    /// Normalizes the specified angle expressed in degrees such that it will always be in the range 0 <= angle < 360.
+    ///
+    /// @param[in] degrees Angle to normalize (can be negative)
+    /// @return Angle in the range 0 <= angle < 360
+    ///
+    constexpr int normalizeDegrees(int degrees) {
+        const int normalized = degrees % 360;
+        return (normalized < 0) ? 360 + normalized : normalized;
+    }
+
     /// Calculates the distance between a point and a rectangle.
     ///
     /// @param[in] rect Rectangle to which the distance should be calculated

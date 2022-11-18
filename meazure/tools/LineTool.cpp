@@ -72,7 +72,7 @@ void LineTool::setEnabled(bool enable) {
     }
 }
 
-void LineTool::saveProfile(Profile& profile) {
+void LineTool::saveProfile(Profile& profile) const {
     // Save the position of each end point.
     //
     const QPointF pos1 = getUnitsProvider().convertPos(m_point1);
@@ -106,22 +106,22 @@ void LineTool::loadProfile(Profile& profile) {
 }
 
 void LineTool::setX1Position(double x) {
-    m_point1.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x)));
+    m_point1.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x));
     setPosition();
 }
 
 void LineTool::setY1Position(double y) {
-    m_point1.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y)));
+    m_point1.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y));
     setPosition();
 }
 
 void LineTool::setX2Position(double x) {
-    m_point2.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x)));
+    m_point2.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x));
     setPosition();
 }
 
 void LineTool::setY2Position(double y) {
-    m_point2.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y)));
+    m_point2.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y));
     setPosition();
 }
 

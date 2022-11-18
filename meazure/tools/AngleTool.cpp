@@ -94,7 +94,7 @@ void AngleTool::setEnabled(bool enable) {
     }
 }
 
-void AngleTool::saveProfile(Profile& profile) {
+void AngleTool::saveProfile(Profile& profile) const {
     // Save the position of point 1, point 2 and the vertex.
     //
     const QPointF pos1 = getUnitsProvider().convertPos(m_point1);
@@ -140,32 +140,32 @@ void AngleTool::loadProfile(Profile& profile) {
 }
 
 void AngleTool::setX1Position(double x) {
-    m_point1.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x)));
+    m_point1.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x));
     setPosition();
 }
 
 void AngleTool::setY1Position(double y) {
-    m_point1.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y)));
+    m_point1.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y));
     setPosition();
 }
 
 void AngleTool::setX2Position(double x) {
-    m_point2.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x)));
+    m_point2.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x));
     setPosition();
 }
 
 void AngleTool::setY2Position(double y) {
-    m_point2.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y)));
+    m_point2.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y));
     setPosition();
 }
 
 void AngleTool::setXVPosition(double x) {
-    m_vertex.rx() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertX, m_vertexCH, x)));
+    m_vertex.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_vertexCH, x));
     setPosition();
 }
 
 void AngleTool::setYVPosition(double y) {
-    m_vertex.ry() = static_cast<int>(std::round(getUnitsProvider().unconvertCoord(ConvertY, m_vertexCH, y)));
+    m_vertex.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_vertexCH, y));
     setPosition();
 }
 

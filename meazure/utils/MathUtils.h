@@ -98,4 +98,37 @@ namespace MathUtils {
     constexpr int makeEvenDown(int value) {
         return (value % 2 == 0) ? value : (value - 1);
     }
+
+    /// Performs linear interpolation between the specified a and b values. Thr implementation is based on the
+    /// std::lerp source code for C++20, which itself is based on https://github.com/emsr/cxx_linear/blob/master/lerp.h.
+    /// See https://en.cppreference.com/w/cpp/numeric/lerp for a detailed explanation of the behavior of this function.
+    /// This function can be removed once C++20 is used to compile the application.
+    ///
+    /// @tparam T Type of the parameters and return value
+    /// @param[in] a First value
+    /// @param[in] b Second value
+    /// @param[in] t Amount to interpolate between the first and second values. If less than 1.0, interpolation is
+    ///     performed. If greater than 1.0, extrapolation is performed.
+    /// @return The result of a+t(b-a)
+    ///
+    template<typename T>
+    constexpr T linearInterpolate(T a, T b, T t) {
+        if (std::isnan(a) || std::isnan(b) || std::isnan(t)) {
+            return std::numeric_limits<T>::quiet_NaN();
+        }
+
+        if ((a <= 0.0 && b >= 0.0) || (a >= 0.0 && b <= 0.0)) {
+            // ab <= 0 but product could overflow.
+            return t * b + (1.0 - t) * a;
+        }
+
+        if (t == 1.0) {
+            // Exact
+            return b;
+        }
+
+        // Exact at t=0, monotonic except near t=1, bounded, determinate, and consistent:
+        const auto x = a + t * (b - a);
+        return (t > 1.0) == (b > a) ? std::max(b, x) : std::min(b, x);
+    }
 }
