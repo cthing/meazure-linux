@@ -26,6 +26,7 @@
 #include "PointTool.h"
 #include "RadioTool.h"
 #include "RectangleTool.h"
+#include "WindowTool.h"
 
 
 ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider) {
@@ -37,6 +38,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     Tool* rectangleTool = new RectangleTool(screenInfoProvider, unitsProvider, this);
     Tool* circleTool = new CircleTool(screenInfoProvider, unitsProvider, this);
     Tool* angleTool = new AngleTool(screenInfoProvider, unitsProvider, this);
+    Tool* windowTool = new WindowTool(screenInfoProvider, unitsProvider, this);
 
     // Non-radio tools
     //
@@ -48,6 +50,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     m_tools[rectangleTool->getName()] = rectangleTool;
     m_tools[circleTool->getName()] = circleTool;
     m_tools[angleTool->getName()] = angleTool;
+    m_tools[windowTool->getName()] = windowTool;
     m_tools[gridTool->getName()] = gridTool;
 
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
@@ -82,6 +85,14 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(angleTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
     connect(angleTool, SIGNAL(xyvPositionChanged(QPointF)), this, SIGNAL(xyvPositionChanged(QPointF)));
     connect(angleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
+
+    connect(windowTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
+    connect(windowTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
+    connect(windowTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
+    connect(windowTool, SIGNAL(distanceChanged(double)), this, SIGNAL(distanceChanged(double)));
+    connect(windowTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
+    connect(windowTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
+    connect(windowTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 }
 
 void ToolMgr::saveProfile(Profile& profile) const {

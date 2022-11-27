@@ -31,4 +31,8 @@ class Graphic : public QWidget {
 
 public:
     explicit Graphic(QWidget* parent);
+
+    static bool isGraphicWindow(unsigned long windowId);
+
+    bool event(QEvent* ev) override;
 };

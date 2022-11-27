@@ -49,6 +49,11 @@ public:
     void stop();
 
 signals:
+    /// Emitted when the pointer is moved.
+    ///
+    /// @param x Location of the pointer on the x-axis, in pixels
+    /// @param y Location of the pointer on the y-axis, in pixels
+    ///
     void motion(int16_t x, int16_t y);
 
 protected:

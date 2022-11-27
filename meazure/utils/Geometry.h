@@ -325,7 +325,7 @@ namespace Geometry {
     /// Determines whether one of the specified rectangles contains the specified point.
     ///
     /// @tparam Type derived from QRect
-    /// @param[in] rects Rectangles to search for containment
+    /// @param[in] rects Rectangles to scan for containment
     /// @param point Point to test
     /// @return The index in the list of the rectangle containing the specified point. If the rectangles in the list
     ///     overlap, the first containing rectangle is returned. Returns -1 if the point is not contained in any
@@ -335,7 +335,7 @@ namespace Geometry {
     inline int contains(const std::vector<RECT*>& rects, const QPoint& point) {
         const std::size_t size = rects.size();
         for (std::size_t i = 0; i < size; i++) {
-            if (rects[i]->contains(point, false)) {
+            if (rects.at(i)->contains(point, false)) {
                 return static_cast<int>(i);
             }
         }
@@ -348,7 +348,7 @@ namespace Geometry {
     /// test is considered the best match.
     ///
     /// @tparam Type derived from QRect
-    /// @param[in] rects Rectangles to search for containment
+    /// @param[in] rects Rectangles to scan for containment
     /// @param[in] rect Rectangle to test for containment
     /// @return The index in the list of the rectangle containing the specified rectangle. Returns -1 if the
     ///     rectangle is not contained in any rectangle.
@@ -360,7 +360,7 @@ namespace Geometry {
 
         const std::size_t size = rects.size();
         for (std::size_t i = 0; i < size; i++) {
-            const QRect intersection = rects[i]->intersected(rect);
+            const QRect intersection = rects.at(i)->intersected(rect);
             const int intersectionArea = area(intersection);
             if (intersectionArea > maxArea) {
                 maxArea = intersectionArea;
@@ -374,7 +374,7 @@ namespace Geometry {
     /// Finds the rectangle closest to the specified point.
     ///
     /// @tparam RECT Type derived from QRect
-    /// @param[in] rects Rectangles to search
+    /// @param[in] rects Rectangles to scan
     /// @param[in] point Point for which closest rectangle is desired
     /// @return The index in the list of the rectangle to which the point is closest. Returns -1 if the list of
     ///         rectangles is empty.
@@ -386,7 +386,7 @@ namespace Geometry {
 
         const std::size_t size = rects.size();
         for (std::size_t i = 0; i < size; i++) {
-            const double d = distance(*rects[i], point);
+            const double d = distance(*rects.at(i), point);
             if (d < minDistance) {
                 minDistance = d;
                 bestIndex = static_cast<int>(i);

@@ -28,6 +28,7 @@
 #include <meazure/tools/LineTool.h>
 #include <meazure/tools/RectangleTool.h>
 #include <meazure/tools/AngleTool.h>
+#include <meazure/tools/WindowTool.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
 #include <QMenu>
@@ -100,6 +101,12 @@ void MainWindow::createActions() {
     m_angleToolAction->setToolTip("Measures using protractor");
     connect(m_angleToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(AngleTool::k_toolName); });
+
+    m_windowToolAction = new QAction(QIcon(":/images/WindowTool.svg"), tr("&Window"), radioToolGroup);
+    m_windowToolAction->setCheckable(true);
+    m_windowToolAction->setToolTip("Measures a window");
+    connect(m_windowToolAction, &QAction::triggered, this,
+            [&toolMgr] { toolMgr.selectRadioTool(WindowTool::k_toolName); });
 
     m_rulerToolAction = new QAction(QIcon(":/images/RulerTool.svg"), tr("R&uler"), this);
     m_rulerToolAction->setCheckable(true);
@@ -187,6 +194,7 @@ void MainWindow::createMenus() {
     toolsMenu->addAction(m_rectangleToolAction);
     toolsMenu->addAction(m_circleToolAction);
     toolsMenu->addAction(m_angleToolAction);
+    toolsMenu->addAction(m_windowToolAction);
     toolsMenu->addSeparator();
     toolsMenu->addAction(m_rulerToolAction);
     toolsMenu->addAction(m_gridToolAction);
@@ -217,6 +225,7 @@ void MainWindow::createToolbar() {
     toolBar->addAction(m_rectangleToolAction);
     toolBar->addAction(m_circleToolAction);
     toolBar->addAction(m_angleToolAction);
+    toolBar->addAction(m_windowToolAction);
     toolBar->addSeparator();
     toolBar->addAction(m_rulerToolAction);
     toolBar->addAction(m_gridToolAction);

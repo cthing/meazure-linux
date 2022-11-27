@@ -103,6 +103,11 @@ void ToolDataWindow::moveNear(const QRect& target) {
     move(x, y);
 }
 
+void ToolDataWindow::moveNear(const QPoint& target) {
+    const QRect targetRect(target.x(), target.y(), 1, 1);
+    moveNear(targetRect);
+}
+
 void ToolDataWindow::strobe() {
     m_flashCountDown = 1;
     m_flashTimer.start();

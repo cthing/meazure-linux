@@ -17,35 +17,36 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "PointerTracker.h"
+#include "WindowTracker.h"
+#include <meazure/graphics/Graphic.h>
 #include <meazure/utils/XlibUtils.h>
 #include <meazure/utils/XRecordUtils.h>
 #include <X11/Xproto.h>
 #include <sys/select.h>
 
 
-PointerTracker::PointerTracker(QObject *parent) : QThread(parent) {
+WindowTracker::WindowTracker(QObject *parent) : QThread(parent) {
 }
 
-PointerTracker::~PointerTracker() {
+WindowTracker::~WindowTracker() {
     if (isRunning()) {
         stop();
     }
 }
 
-void PointerTracker::start() {
+void WindowTracker::start() {
     m_run = true;
 
     QThread::start();
 }
 
-void PointerTracker::stop() {
+void WindowTracker::stop() {
     m_run = false;
 
     wait();
 }
 
-void PointerTracker::run() {
+void WindowTracker::run() {
     constexpr long k_selectTimeout = 2;   // Seconds
 
     // Two display connections are recommended by the XRecord spec
@@ -63,21 +64,27 @@ void PointerTracker::run() {
     }
 
     XRecord::Range range;
-    range.setDeviceEvent(MotionNotify);
+    range.setDeliveredEvent(ConfigureNotify);
 
     const XRecord::Context context(controlDisplay, dataDisplay, 0, XRecordAllClients, 1, range, 1);
 
     auto callback = [](XPointer priv, XRecordInterceptData *hook) {
-        auto* instance = reinterpret_cast<PointerTracker*>(priv);
+        auto* instance = reinterpret_cast<WindowTracker*>(priv);
 
         if (hook->category == XRecordFromServer) {
-            // The data is formatted as an X Protocol event defined in Xproto.h. For a MotionNotify
-            // event, the data is formatted according to the keyButtonPointer structure in the xEvent
+            // The data is formatted as an X Protocol event defined in Xproto.h. For a ConfigureNotify
+            // event, the data is formatted according to the configureNotify structure in the xEvent
             // union.
-            auto* motionEvent = reinterpret_cast<xEvent*>(hook->data);
-            if (motionEvent->u.u.type == MotionNotify) {
-                instance->handleMotion(motionEvent->u.keyButtonPointer.rootX,
-                                       motionEvent->u.keyButtonPointer.rootY);
+            auto* configureEvent = reinterpret_cast<xEvent*>(hook->data);
+            if (configureEvent->u.u.type == ConfigureNotify) {
+                const Window win = configureEvent->u.configureNotify.window;
+                if (!Graphic::isGraphicWindow(win)) {
+                    instance->handleChange(win,
+                                           configureEvent->u.configureNotify.x,
+                                           configureEvent->u.configureNotify.y,
+                                           configureEvent->u.configureNotify.width,
+                                           configureEvent->u.configureNotify.height);
+                }
             }
         }
 
@@ -104,6 +111,6 @@ void PointerTracker::run() {
     }
 }
 
-void PointerTracker::handleMotion(int16_t x, int16_t y) {
-    emit motion(x, y);
+void WindowTracker::handleChange(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height) {
+    emit windowChanged(windowId, x, y, width, height);
 }

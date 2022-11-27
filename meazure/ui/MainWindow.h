@@ -70,6 +70,7 @@ private:
     QAction* m_rectangleToolAction;
     QAction* m_circleToolAction;
     QAction* m_angleToolAction;
+    QAction* m_windowToolAction;
     QAction* m_rulerToolAction;
     QAction* m_gridToolAction;
     QAction* m_gridAdjustAction;

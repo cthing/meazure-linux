@@ -26,6 +26,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <QRect>
+#include <QPoint>
 #include <QMargins>
 #include <QTimer>
 #include <QColor>
@@ -65,6 +66,13 @@ public:
     /// @param[in] target Rectangle near which the data window will be moved, in global pixel coordinates
     ///
     void moveNear(const QRect& target);
+
+    /// Moves the data window near the specified target point. The data window will be positioned such that it
+    /// never covers the target point and is fully visible on the screen.
+    ///
+    /// @param[in] target Point near which the data window will be moved, in global pixel coordinates
+    ///
+    void moveNear(const QPoint& target);
 
     /// Visually strobes the data window by cycling the text between the background and foreground colors once.
     /// Typically, this is done to indicate a position has been logged.

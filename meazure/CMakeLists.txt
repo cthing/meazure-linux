@@ -74,6 +74,8 @@ set(TOOLS_SOURCES
     tools/Tool.h
     tools/ToolMgr.cpp
     tools/ToolMgr.h
+    tools/WindowTool.cpp
+    tools/WindowTool.h
     )
 source_group(TOOLS FILES ${TOOLS_SOURCES})
 
@@ -101,6 +103,9 @@ set(UTILS_SOURCES
     utils/MathUtils.h
     utils/StringUtils.cpp
     utils/StringUtils.h
+    utils/XcbUtils.h
+    utils/XlibUtils.h
+    utils/XRecordUtils.h
     )
 source_group(UTILS FILES ${UTILS_SOURCES})
 
@@ -112,6 +117,10 @@ set(ENVIRONMENT_SOURCES
     environment/ScreenInfo.cpp
     environment/ScreenInfo.h
     environment/ScreenInfoProvider.h
+    environment/WindowFinder.cpp
+    environment/WindowFinder.h
+    environment/WindowTracker.cpp
+    environment/WindowTracker.h
     )
 source_group(ENVIRONMENT FILES ${ENVIRONMENT_SOURCES})
 
@@ -151,6 +160,7 @@ set(MEAZURE_RESOURCES
     resources/images/PointTool.svg
     resources/images/RectangleTool.svg
     resources/images/RulerTool.svg
+    resources/images/WindowTool.svg
     )
 
 # To provide access to the QPlatform* classes
