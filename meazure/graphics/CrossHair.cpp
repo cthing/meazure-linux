@@ -34,9 +34,10 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         m_screenProvider(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_id(id),
-        m_backgroundColor(backgroundColor),
-        m_hiliteColor(hiliteColor),
-        m_borderColor(borderColor) {
+        m_backgroundBrush(backgroundColor),
+        m_hiliteBrush(hiliteColor),
+        m_hilitePen(QBrush(hiliteColor), k_outlineWidth),
+        m_borderPen(QBrush(borderColor), k_outlineWidth) {
 
     const QPoint screenCenter = m_screenProvider.getCenter();
     const int screenIndex = m_screenProvider.screenForPoint(screenCenter);
@@ -62,9 +63,10 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
 }
 
 void CrossHair::setColors(QRgb background, QRgb hilite, QRgb border) {
-    m_backgroundColor.setRgb(background);
-    m_hiliteColor.setRgb(hilite);
-    m_borderColor.setRgb(border);
+    m_backgroundBrush.setColor(background);
+    m_hiliteBrush.setColor(hilite);
+    m_hilitePen.setColor(hilite);
+    m_borderPen.setColor(border);
 
     repaint();
 }
@@ -104,10 +106,9 @@ void CrossHair::flashHandler() {
 void CrossHair::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
-    painter.fillRect(rect(), m_pointerOver ? m_hiliteColor : m_backgroundColor);
+    painter.fillRect(rect(), m_pointerOver ? m_hiliteBrush : m_backgroundBrush);
 
-    QPen outlinePen(m_hilite ? m_hiliteColor : m_borderColor);
-    outlinePen.setWidthF(k_outlineWidth);
+    const QPen& outlinePen = m_hilite ? m_hilitePen : m_borderPen;
     painter.setPen(outlinePen);
     painter.strokePath(m_crossHair, outlinePen);
 }

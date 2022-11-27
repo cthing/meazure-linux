@@ -28,6 +28,8 @@
 #include <QSizeF>
 #include <QPoint>
 #include <QTimer>
+#include <QBrush>
+#include <QPen>
 
 
 /// A crosshair graphical element. A crosshair consists of four triangular window segments called petals arranged
@@ -193,9 +195,10 @@ private:
     const ScreenInfoProvider& m_screenProvider;
     const UnitsProvider& m_unitsProvider;
     int m_id;
-    QColor m_backgroundColor;
-    QColor m_hiliteColor;
-    QColor m_borderColor;
+    QBrush m_backgroundBrush;
+    QBrush m_hiliteBrush;
+    QPen m_hilitePen;
+    QPen m_borderPen;
     QPainterPath m_crossHair;
     bool m_pointerOver { false };
     bool m_hilite { false };
