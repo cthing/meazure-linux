@@ -26,7 +26,6 @@
 CircleTool::CircleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                        QObject* parent) :
         RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_curPos(&m_center),
         m_center(screenInfoProvider.getCenter()),
         m_perimeter(screenInfoProvider.getCenter() + QPoint(30, 30)),
         m_centerCH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Vertex"), k_centerId)),
@@ -210,8 +209,8 @@ void CircleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::Keyboar
         m_center += movingDelta;
         m_perimeter += movingDelta;
     } else {
-        m_curPos = (id == k_centerId) ? &m_center : &m_perimeter;
-        *m_curPos = crosshairCenter;
+        QPoint* curPos = (id == k_centerId) ? &m_center : &m_perimeter;
+        *curPos = crosshairCenter;
 
         // Shift + drag locks the movement of the crosshair to vertical or horizontal.
         //
@@ -219,9 +218,9 @@ void CircleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::Keyboar
             const QPoint& fixedPoint = (id == k_centerId) ? m_perimeter : m_center;
 
             if (Geometry::isVerticallyOriented(m_center, m_perimeter)) {
-                m_curPos->rx() = fixedPoint.x();
+                curPos->rx() = fixedPoint.x();
             } else {
-                m_curPos->ry() = fixedPoint.y();
+                curPos->ry() = fixedPoint.y();
             }
         }
     }

@@ -26,9 +26,10 @@
 RectangleTool::RectangleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                              QObject* parent) :
         RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_curPos(&m_point1),
         m_point1(screenInfoProvider.getCenter() - QPoint(30, 30)),
         m_point2(screenInfoProvider.getCenter() + QPoint(30, 30)),
+        m_anchorPoint1(m_point1),
+        m_anchorPoint2(m_point2),
         m_point1CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
         m_point2CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
         m_rectangle(new Rectangle(screenInfoProvider, unitsProvider, k_crosshairOffset)),
@@ -101,6 +102,9 @@ void RectangleTool::loadProfile(Profile& profile) {
     pos2.rx() = profile.readDbl("RectX2", defaultPos2.x());
     pos2.ry() = profile.readDbl("RectY2", defaultPos2.y());
     m_point2 = getUnitsProvider().unconvertPos(pos2);
+
+    m_anchorPoint1 = m_point1;
+    m_anchorPoint2 = m_point2;
 
     setPosition();
 }
@@ -205,19 +209,20 @@ void RectangleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::Keyb
         m_point1 += movingDelta;
         m_point2 += movingDelta;
     } else {
-        m_curPos = (id == k_point1Id) ? &m_point1 : &m_point2;
-        *m_curPos = crosshairCenter;
+        QPoint& anchorPoint = (id != k_point1Id) ? m_anchorPoint1 : m_anchorPoint2;
+        QPoint* curPos = (id == k_point1Id) ? &m_point1 : &m_point2;
+        *curPos = crosshairCenter;
 
         // Shift + drag locks the movement of the crosshair to vertical or horizontal.
         //
         if ((keyboardModifiers & Qt::ShiftModifier) != 0) {
-            const QPoint& fixedPoint = (id == k_point1Id) ? m_point2 : m_point1;
-
-            if (Geometry::isVerticallyOriented(m_point1, m_point2)) {
-                m_curPos->rx() = fixedPoint.x();
+            if (Geometry::isVerticallyOriented(anchorPoint, *curPos)) {
+                curPos->rx() = anchorPoint.x();
             } else {
-                m_curPos->ry() = fixedPoint.y();
+                curPos->ry() = anchorPoint.y();
             }
+        } else {
+            anchorPoint = *curPos;
         }
     }
 

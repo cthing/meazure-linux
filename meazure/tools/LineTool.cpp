@@ -26,7 +26,6 @@
 LineTool::LineTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                    QObject* parent) :
         RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_curPos(&m_point1),
         m_point1(screenInfoProvider.getCenter() - QPoint(30, 30)),
         m_point2(screenInfoProvider.getCenter() + QPoint(30, 30)),
         m_point1CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
@@ -205,8 +204,8 @@ void LineTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardM
         m_point1 += movingDelta;
         m_point2 += movingDelta;
     } else {
-        m_curPos = (id == k_point1Id) ? &m_point1 : &m_point2;
-        *m_curPos = crosshairCenter;
+        QPoint* curPos = (id == k_point1Id) ? &m_point1 : &m_point2;
+        *curPos = crosshairCenter;
 
         // Shift + drag locks the movement of the crosshair to vertical or horizontal.
         //
@@ -214,9 +213,9 @@ void LineTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardM
             const QPoint& fixedPoint = (id == k_point1Id) ? m_point2 : m_point1;
 
             if (Geometry::isVerticallyOriented(m_point1, m_point2)) {
-                m_curPos->rx() = fixedPoint.x();
+                curPos->rx() = fixedPoint.x();
             } else {
-                m_curPos->ry() = fixedPoint.y();
+                curPos->ry() = fixedPoint.y();
             }
         }
     }

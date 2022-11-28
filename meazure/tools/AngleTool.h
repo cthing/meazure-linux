@@ -110,7 +110,6 @@ private:
     void setBisectorPosition();
 
 
-    QPoint* m_curPos;           ///< Points to #m_point1, #m_point2, or #m_vertex depending on point the user is moving
     QPoint m_vertex;            ///< Location of the intersection of line 1 and line 2
     QPoint m_point1;            ///< Location of the line 1 end point
     QPoint m_point2;            ///< Location of the line 2 end point

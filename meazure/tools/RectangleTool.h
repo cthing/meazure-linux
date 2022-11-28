@@ -106,9 +106,10 @@ private:
     void setPosition();
 
 
-    QPoint* m_curPos;            ///< Points to #m_point1 or #m_point2 depending on which point the user is moving
     QPoint m_point1;             ///< Location of one end point of the line
     QPoint m_point2;             ///< Location of one end point of the line
+    QPoint m_anchorPoint1;       ///< Location for vertical / horizontal Shift lock while dragging point 1 crosshair
+    QPoint m_anchorPoint2;       ///< Location for vertical / horizontal Shift lock while dragging point 2 crosshair
     CrossHair* m_point1CH;       ///< Crosshair for point 1
     CrossHair* m_point2CH;       ///< Crosshair for point 2
     Rectangle* m_rectangle;      ///< Rectangle from point 1 in the top left to point 2 in the bottom right

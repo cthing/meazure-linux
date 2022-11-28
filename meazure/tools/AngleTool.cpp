@@ -27,7 +27,6 @@
 AngleTool::AngleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                      QObject* parent) :
         RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_curPos(&m_point1),
         m_vertex(screenInfoProvider.getCenter()),
         m_point1(screenInfoProvider.getCenter() + QPoint(80, -50)),
         m_point2(screenInfoProvider.getCenter() + QPoint(80, 50)),
@@ -337,8 +336,6 @@ void AngleTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers
                     m_point1.ry() = m_vertex.y();
                 }
             }
-
-            m_curPos = &m_point1;
         } else if (id == k_point2Id) {
             m_point2 = center;
 
@@ -351,8 +348,6 @@ void AngleTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers
                     m_point2.ry() = m_vertex.y();
                 }
             }
-
-            m_curPos = &m_point2;
         } else {
             m_vertex = center;
 
@@ -367,8 +362,6 @@ void AngleTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers
             } else {
                 m_vertexAnchor = m_vertex;
             }
-
-            m_curPos = &m_vertex;
         }
     }
 

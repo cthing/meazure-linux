@@ -110,7 +110,6 @@ private:
     void setPosition();
 
 
-    QPoint* m_curPos;                    ///< Points to #m_center or #m_perimeter depending on point the user is moving
     QPoint m_center;                     ///< Location of the center of the circle
     QPoint m_perimeter;                  ///< A point on the perimeter of the circle
     CrossHair* m_centerCH;               ///< Crosshair for the center point

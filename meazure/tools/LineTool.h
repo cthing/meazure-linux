@@ -106,7 +106,6 @@ private:
     void setPosition();
 
 
-    QPoint* m_curPos;            ///< Points to #m_point1 or #m_point2 depending on which point the user is moving
     QPoint m_point1;             ///< Location of one end point of the line
     QPoint m_point2;             ///< Location of one end point of the line
     CrossHair* m_point1CH;       ///< Crosshair for point 1
