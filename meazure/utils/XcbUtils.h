@@ -105,7 +105,8 @@ namespace Xcb {
     };
 
 
-    /// Represents an X11 atom.
+    /// Represents an X11 atom. Instances of this class can be used wherever an atom parameter is expected in an XCB
+    /// function.
     ///
     class Atom : public Base<xcb_intern_atom_cookie_t, xcb_intern_atom_reply_t> {
     public:
@@ -120,6 +121,8 @@ namespace Xcb {
                      xcb_intern_atom(connection, onlyIfExists ? 1 : 0, std::strlen(atomName), atomName),
                      xcb_intern_atom_reply) {
         }
+
+        operator xcb_atom_t() { return get()->atom; }     // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
     };
 
 

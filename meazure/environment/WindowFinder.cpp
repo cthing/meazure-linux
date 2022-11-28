@@ -101,17 +101,17 @@ private:
     using Commands = std::vector<std::unique_ptr<BaseCommand>>;
 
     bool hasWMState(xcb_window_t win) {
-        Xcb::Property prop(m_conn, false, win, m_wmStateAtom->atom, XCB_GET_PROPERTY_TYPE_ANY, 0, 0);
+        Xcb::Property prop(m_conn, false, win, m_wmStateAtom, XCB_GET_PROPERTY_TYPE_ANY, 0, 0);
         return prop->type != XCB_ATOM_NONE;
     }
 
     bool isHidden(xcb_window_t win) {
-        Xcb::Property state(m_conn, false, win, m_netWMStateAtom->atom, XCB_ATOM_ATOM, 0, 1024);
+        Xcb::Property state(m_conn, false, win, m_netWMStateAtom, XCB_ATOM_ATOM, 0, 1024);
         if (state->type == XCB_ATOM_ATOM) {
             const int len = state.length();
             const xcb_atom_t* values = static_cast<xcb_atom_t*>(state.value());
             for (int i = 0; i < len; i++) {
-                if (values[i] == m_netWMStateHiddenAtom->atom) { // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                if (values[i] == m_netWMStateHiddenAtom) { // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                     return true;
                 }
             }
