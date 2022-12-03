@@ -24,6 +24,7 @@
 #include <QPoint>
 #include <QSizeF>
 #include <QtMath>
+#include <QTransform>
 #include <vector>
 #include <cstddef>
 #include <cmath>
@@ -376,7 +377,7 @@ namespace Geometry {
     /// @tparam RECT Type derived from QRect
     /// @param[in] rects Rectangles to scan
     /// @param[in] point Point for which closest rectangle is desired
-    /// @return The index in the list of the rectangle to which the point is closest. Returns -1 if the list of
+    /// @return The index in the list of rectangles to which the point is closest. Returns -1 if the list of
     ///         rectangles is empty.
     ///
     template<class RECT>
@@ -438,5 +439,27 @@ namespace Geometry {
     inline QPoint constrain(const std::vector<RECT*>& rects, const QPoint& point) {
         const int closestRectIndex = closest(rects, point);
         return (closestRectIndex == -1) ? point : constrain(rects[closestRectIndex], point);
+    }
+
+    /// Creates a transform that performs a rotation by the specified angle around the specified point.
+    ///
+    /// @param angle Rotation angle in degrees
+    /// @param xc X coordinate of the center of rotation
+    /// @param yc Y coordinate of the center of rotation
+    /// @return Transform representing the rotation
+    ///
+    inline QTransform rotateAround(double angle, double xc, double yc) {
+        return QTransform::fromTranslate(xc, yc).rotate(angle).translate(-xc, -yc);
+    }
+
+    /// Creates a transform that performs a rotation by the specified angle around the specified point.
+    ///
+    /// @param angle Rotation angle in degrees
+    /// @param xc X coordinate of the center of rotation
+    /// @param yc Y coordinate of the center of rotation
+    /// @return Transform representing the rotation
+    ///
+    inline QTransform rotateAround(double angle, QPoint center) {
+        return rotateAround(angle, center.x(), center.y());
     }
 }

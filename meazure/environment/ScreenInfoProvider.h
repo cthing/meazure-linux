@@ -82,6 +82,14 @@ struct ScreenInfoProvider {
     ///
     [[nodiscard]] virtual QRect getVirtualRect() const = 0;
 
+    /// Returns the usable virtual screen rectangle. The usable virtual rectangle is the rectangle containing the
+    /// usable area of all display screens attached to the system. The usable area is the rectangle not used by the
+    /// window manager.
+    ///
+    /// @return Rectangle encompassing the usable area of all display screens attached to the system, in pixels.
+    ///
+    [[nodiscard]] virtual QRect getAvailableVirtualRect() const = 0;
+
     /// Returns the rectangle for the specified screen.
     ///
     /// @param[in] screenIndex Screen whose rectangle is desired.

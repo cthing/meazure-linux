@@ -40,6 +40,7 @@ public:
 
     Screen(const QScreen* screen, bool primary) :
             QRect(screen->geometry()),
+            m_availableGeom(screen->availableGeometry()),
             m_name(screen->name()),
             m_primary(primary),
             m_platformRes(QSizeF(screen->physicalDotsPerInchX(), screen->physicalDotsPerInchY())),
@@ -59,6 +60,12 @@ public:
             m_cursorSize = (platformCursor == nullptr) ? k_defaultCursorSize : platformCursor->size();
         }
    }
+
+   /// Returns the usable geometry (i.e. not used by the window manager).
+   ///
+   /// @return Available screen geometry.
+   ///
+   [[nodiscard]] const QRect& getAvailableGeom() const { return m_availableGeom; }
 
     /// Returns the descriptive name for the screen.
     ///
@@ -136,6 +143,7 @@ public:
     [[nodiscard]] QSize getCursorSize() const { return m_cursorSize; }
 
 private:
+    QRect m_availableGeom;  ///< Usable screen geometry (i.e. not used by window manager)
     QString m_name;         ///< Displayable name for the screen
     bool m_primary;         ///< Indicates if the screen is the primary display
     QSizeF m_platformRes;   ///< Resolution reported by the window system.
@@ -155,6 +163,7 @@ ScreenInfo::ScreenInfo(const QList<QScreen*>& screens) : m_numScreens(static_cas
     }
 
     m_virtualGeometry = screens[0]->virtualGeometry();
+    m_availableVirtualGeometry = screens[0]->availableVirtualGeometry();
 }
 
 ScreenInfo::~ScreenInfo() {
@@ -275,6 +284,10 @@ QPoint ScreenInfo::getOffScreen() const {
 
 QRect ScreenInfo::getVirtualRect() const {
     return m_virtualGeometry;
+}
+
+QRect ScreenInfo::getAvailableVirtualRect() const {
+    return m_availableVirtualGeometry;
 }
 
 QRect ScreenInfo::getScreenRect(int screenIndex) const {

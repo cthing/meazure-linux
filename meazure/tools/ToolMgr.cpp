@@ -27,6 +27,7 @@
 #include "RadioTool.h"
 #include "RectangleTool.h"
 #include "WindowTool.h"
+#include "RulerTool.h"
 
 
 ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider) {
@@ -42,6 +43,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
 
     // Non-radio tools
     //
+    Tool* rulerTool = new RulerTool(screenInfoProvider, unitsProvider, this);
     Tool* gridTool = new GridTool(screenInfoProvider, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;
@@ -51,6 +53,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     m_tools[circleTool->getName()] = circleTool;
     m_tools[angleTool->getName()] = angleTool;
     m_tools[windowTool->getName()] = windowTool;
+    m_tools[rulerTool->getName()] = rulerTool;
     m_tools[gridTool->getName()] = gridTool;
 
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
@@ -202,5 +205,7 @@ void ToolMgr::stepYVPosition(int numSteps) {
 }
 
 void ToolMgr::refresh() {
-    m_currentRadioTool->refresh();
+    for (const auto& toolEntry : m_tools) {
+        toolEntry.second->refresh();
+    }
 }

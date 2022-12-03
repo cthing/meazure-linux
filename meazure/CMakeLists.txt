@@ -44,11 +44,15 @@ set(GRAPHICS_SOURCES
     graphics/Graphic.h
     graphics/Grid.cpp
     graphics/Grid.h
+    graphics/Handle.cpp
+    graphics/Handle.h
     graphics/Line.cpp
     graphics/Line.h
     graphics/Plotter.h
     graphics/Rectangle.cpp
     graphics/Rectangle.h
+    graphics/Ruler.cpp
+    graphics/Ruler.h
     )
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 
@@ -70,6 +74,8 @@ set(TOOLS_SOURCES
     tools/RadioToolTraits.h
     tools/RectangleTool.cpp
     tools/RectangleTool.h
+    tools/RulerTool.cpp
+    tools/RulerTool.h
     tools/Tool.cpp
     tools/Tool.h
     tools/ToolMgr.cpp

@@ -36,7 +36,8 @@ private slots:
     [[maybe_unused]] void testMakeOddDown();
     [[maybe_unused]] void testMakeEvenUp();
     [[maybe_unused]] void testMakeEvenDown();
-    [[maybe_unused]] void testLinearInterpolate();
+    [[maybe_unused]] void testLinearInterpolateDouble();
+    [[maybe_unused]] void testLinearInterpolateInteger();
 };
 
 
@@ -110,7 +111,7 @@ private slots:
     QCOMPARE(MathUtils::makeEvenDown(-10), -10);
 }
 
-[[maybe_unused]] void MathUtilsTest::testLinearInterpolate() {
+[[maybe_unused]] void MathUtilsTest::testLinearInterpolateDouble() {
     QCOMPARE(MathUtils::linearInterpolate(5.0, 10.0, 0.75), 8.75);
     QCOMPARE(MathUtils::linearInterpolate(5.0, 10.0, 0.0), 5.0);
     QCOMPARE(MathUtils::linearInterpolate(5.0, 10.0, 1.0), 10.0);
@@ -134,6 +135,19 @@ private slots:
     QCOMPARE(MathUtils::linearInterpolate(5.0 * std::numeric_limits<double>::max() / 16.0,
                                           10.0 * std::numeric_limits<double>::max() / 16.0,
                                           3.0 / 4.0), 10 * std::numeric_limits<double>::max() / 32);
+}
+
+[[maybe_unused]] void MathUtilsTest::testLinearInterpolateInteger() {
+    QCOMPARE(MathUtils::linearInterpolate(5, 10, 0.75), 9);
+    QCOMPARE(MathUtils::linearInterpolate(5, 10, 0.0), 5);
+    QCOMPARE(MathUtils::linearInterpolate(5, 10, 1.0), 10);
+    QCOMPARE(MathUtils::linearInterpolate(5, 10, 1.25), 11);
+    QCOMPARE(MathUtils::linearInterpolate(-3, 5, 0.75), 3);
+    QCOMPARE(MathUtils::linearInterpolate(-3, 5, 0.0), -3);
+    QCOMPARE(MathUtils::linearInterpolate(-3, 5, 1.0), 5);
+    QCOMPARE(MathUtils::linearInterpolate(3, -5, 0.75), -3);
+    QCOMPARE(MathUtils::linearInterpolate(3, -5, 0.0), 3);
+    QCOMPARE(MathUtils::linearInterpolate(3, -5, 1.0), -5);
 }
 
 

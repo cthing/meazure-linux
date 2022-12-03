@@ -17,19 +17,15 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CrossHair.h"
-#include "Colors.h"
-#include "Plotter.h"
+#include "Handle.h"
 #include <meazure/utils/MathUtils.h>
-#include <QPoint>
-#include <QPainterPath>
-#include <QPainter>
 #include <QMouseEvent>
+#include <QPainter>
 
 
-CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb hiliteColor,
-                     QRgb borderColor, QRgb opacity) :
+Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+               QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb hiliteColor,
+               QRgb borderColor, QRgb opacity) :
         Graphic(parent),
         m_screenProvider(screenInfoProvider),
         m_unitsProvider(unitsProvider),
@@ -38,18 +34,19 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         m_hiliteBrush(hiliteColor),
         m_hilitePen(QBrush(hiliteColor), k_outlineWidth),
         m_borderPen(QBrush(borderColor), k_outlineWidth) {
+    setAttribute(Qt::WA_NoSystemBackground);
+    setAttribute(Qt::WA_TranslucentBackground);
 
     const QPoint screenCenter = m_screenProvider.getCenter();
     const int screenIndex = m_screenProvider.screenForPoint(screenCenter);
     const QSizeF screenRes = m_screenProvider.getScreenRes(screenIndex);
 
-    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, k_outerSize, k_outerSizeMin);
+    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, k_size, k_sizeMin);
     actualSize.rwidth() = MathUtils::makeOddUp(actualSize.width());       // Must be odd
     actualSize.rheight() = MathUtils::makeOddUp(actualSize.height());
     setFixedSize(actualSize);
 
     m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
-    m_crossHair = generateCrossHair(screenRes, actualSize);
 
     setWindowOpacity(qAlpha(opacity) / 255.0);
 
@@ -59,10 +56,10 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
 
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
-    connect(&m_flashTimer, &QTimer::timeout, this, &CrossHair::flashHandler);
+    connect(&m_flashTimer, &QTimer::timeout, this, &Handle::flashHandler);
 }
 
-void CrossHair::setColors(QRgb background, QRgb hilite, QRgb border) {
+void Handle::setColors(QRgb background, QRgb hilite, QRgb border) {
     m_backgroundBrush.setColor(background);
     m_hiliteBrush.setColor(hilite);
     m_hilitePen.setColor(hilite);
@@ -71,27 +68,27 @@ void CrossHair::setColors(QRgb background, QRgb hilite, QRgb border) {
     repaint();
 }
 
-void CrossHair::setOpacity(int opacity) {
+void Handle::setOpacity(int opacity) {
     setWindowOpacity(opacity / 255.0);
 }
 
-void CrossHair::setPosition(const QPoint &center) {
+void Handle::setPosition(const QPoint &center) {
     const QPoint topLeft = center - m_centerPosition;
     move(topLeft);
     emit moved(*this, m_id, center);
 }
 
-void CrossHair::flash(int flashCount) {
+void Handle::flash(int flashCount) {
     m_hilite = false;
     m_flashCountDown = flashCount;
     m_flashTimer.start();
 }
 
-void CrossHair::strobe() {
+void Handle::strobe() {
     flash(k_strobeCount);
 }
 
-void CrossHair::flashHandler() {
+void Handle::flashHandler() {
     m_flashCountDown--;
     if (m_flashCountDown < 0) {
         m_flashTimer.stop();
@@ -103,21 +100,14 @@ void CrossHair::flashHandler() {
     repaint();
 }
 
-void CrossHair::paintEvent(QPaintEvent*) {
+void Handle::paintEvent(QPaintEvent*) {
     QPainter painter(this);
-
-    painter.fillRect(rect(), m_pointerOver ? m_hiliteBrush : m_backgroundBrush);
-
-    const QPen& outlinePen = m_hilite ? m_hilitePen : m_borderPen;
-    painter.strokePath(m_crossHair, outlinePen);
+    painter.setPen(m_hilite ? m_hilitePen : m_borderPen);
+    painter.setBrush(m_pointerOver ? m_hiliteBrush : m_backgroundBrush);
+    painter.drawEllipse(1, 1, width() - 2, height() - 2);
 }
 
-void CrossHair::resizeEvent(QResizeEvent*) {
-    const QRegion maskedRegion(m_crossHair.toFillPolygon().toPolygon());
-    setMask(maskedRegion);
-}
-
-void CrossHair::enterEvent(QEnterEvent* event) {
+void Handle::enterEvent(QEnterEvent* event) {
     m_pointerOver = true;
 
     repaint();
@@ -126,7 +116,7 @@ void CrossHair::enterEvent(QEnterEvent* event) {
     emit entered(*this, m_id, center, event->modifiers());
 }
 
-void CrossHair::leaveEvent(QEvent*) {
+void Handle::leaveEvent(QEvent*) {
     m_pointerOver = false;
 
     repaint();
@@ -134,39 +124,25 @@ void CrossHair::leaveEvent(QEvent*) {
     emit departed(*this, m_id);
 }
 
-void CrossHair::mousePressEvent(QMouseEvent* event) {
+void Handle::mousePressEvent(QMouseEvent* event) {
     m_initialGrabPosition = event->position().toPoint();
 
     const QPoint center = findCenter(event->position().toPoint());
     emit selected(*this, m_id, center, event->modifiers());
 }
 
-void CrossHair::mouseReleaseEvent(QMouseEvent *event) {
+void Handle::mouseReleaseEvent(QMouseEvent *event) {
     const QPoint center = findCenter(event->position().toPoint());
     emit deselected(*this, m_id, center, event->modifiers());
 }
 
-void CrossHair::mouseMoveEvent(QMouseEvent* event) {
+void Handle::mouseMoveEvent(QMouseEvent* event) {
     const QPoint center = findCenter(event->position().toPoint());
     emit dragged(*this, m_id, center, event->modifiers());
 }
 
-QPoint CrossHair::findCenter(const QPoint& point) const {
+QPoint Handle::findCenter(const QPoint& point) const {
     const QPoint center(point - (m_initialGrabPosition - m_centerPosition));
     const QPoint globalCenter(mapToGlobal(center));
     return m_screenProvider.constrainPosition(globalCenter);
-}
-
-QPainterPath CrossHair::generateCrossHair(const QSizeF& screenRes, const QSize& size) const {
-    QSize actualPetalWidth = m_unitsProvider.convertToPixels(InchesId, screenRes, k_petalWidth, k_petalWidthMin);
-    actualPetalWidth.rwidth() = MathUtils::makeOddUp(actualPetalWidth.width());       // Must be odd
-    actualPetalWidth.rheight() = MathUtils::makeOddUp(actualPetalWidth.height());
-
-    QPainterPath path;
-
-    Plotter::plotCrosshair(size, actualPetalWidth, k_centerOffset, [&path](int x, int y, int width, int height) {
-        path.addRect(x, y, width, height);
-    });
-
-    return path.simplified();
 }

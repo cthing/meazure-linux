@@ -24,6 +24,7 @@
 #include <meazure/tools/CircleTool.h>
 #include <meazure/tools/CursorTool.h>
 #include <meazure/tools/GridTool.h>
+#include <meazure/tools/RulerTool.h>
 #include <meazure/tools/PointTool.h>
 #include <meazure/tools/LineTool.h>
 #include <meazure/tools/RectangleTool.h>
@@ -111,6 +112,8 @@ void MainWindow::createActions() {
     m_rulerToolAction = new QAction(QIcon(":/images/RulerTool.svg"), tr("R&uler"), this);
     m_rulerToolAction->setCheckable(true);
     m_rulerToolAction->setToolTip("Adds screen rulers");
+    connect(m_rulerToolAction, &QAction::triggered, this,
+            [&toolMgr](bool checked) { toolMgr.setEnabled(RulerTool::k_toolName, checked); });
 
     m_gridToolAction = new QAction(QIcon(":/images/GridTool.svg"), tr("&Screen Grid"), this);
     m_gridToolAction->setCheckable(true);

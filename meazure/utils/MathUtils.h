@@ -131,4 +131,17 @@ namespace MathUtils {
         const auto x = a + t * (b - a);
         return (t > 1.0) == (b > a) ? std::max(b, x) : std::min(b, x);
     }
+
+    /// Performs a linear interpolation between the specified a and b values. This is a convenience specialization
+    /// for use with integer values.
+    ///
+    /// @param[in] a First value
+    /// @param[in] b Second value
+    /// @param[in] t  Amount to interpolate between the first and second values. If less than 1.0, interpolation is
+    ///     performed. If greater than 1.0, extrapolation is performed.
+    /// @return The result of a+t(b-a) rounded to the nearest integer.
+    ///
+    constexpr int linearInterpolate(int a, int b, double t) {
+        return qRound(linearInterpolate(static_cast<double>(a), static_cast<double>(b), t));
+    }
 }

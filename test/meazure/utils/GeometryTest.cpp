@@ -52,6 +52,7 @@ private slots:
     [[maybe_unused]] void testClosestRect();
     [[maybe_unused]] void testConstrainPointToRect();
     [[maybe_unused]] void testConstrainPointToRects();
+    [[maybe_unused]] void testRotateAround();
 };
 
 
@@ -372,6 +373,19 @@ private slots:
     QCOMPARE(Geometry::constrain(rects, QPoint(200, 275)), QPoint(200, 275));
     QCOMPARE(Geometry::constrain(rects, QPoint(110, 3)), QPoint(110, 5));
     QCOMPARE(Geometry::constrain(rects, QPoint(100, 3)), QPoint(100, 5));
+}
+
+[[maybe_unused]] void GeometryTest::testRotateAround() {
+    const QTransform transform = Geometry::rotateAround(20, 100, 200);
+    QCOMPARE(transform.m11(), 0.939692620786);
+    QCOMPARE(transform.m12(), 0.342020143326);
+    QCOMPARE(transform.m13(), 0.0);
+    QCOMPARE(transform.m21(), -0.342020143326);
+    QCOMPARE(transform.m22(), 0.939692620786);
+    QCOMPARE(transform.m23(), 0.0);
+    QCOMPARE(transform.m31(), 74.4347665865);
+    QCOMPARE(transform.m32(), -22.14053848976);
+    QCOMPARE(transform.m33(), 1.0);
 }
 
 

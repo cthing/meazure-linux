@@ -19,6 +19,7 @@
 
 #include "Grid.h"
 #include <meazure/utils/MathUtils.h>
+#include <meazure/utils/Geometry.h>
 #include <QTransform>
 #include <QPainter>
 #include <QLine>
@@ -54,9 +55,7 @@ void Grid::setPosition(int x, int y, int width, int height, int angle) {
     const QRect requestedDimensions(x, y, width, height);
     const QPoint requestedCenter = requestedDimensions.center();
 
-    const QTransform boundingTransform = QTransform::fromTranslate(requestedCenter.x(), requestedCenter.y())
-                                                    .rotate(m_angle)
-                                                    .translate(-requestedCenter.x(), -requestedCenter.y());
+    const QTransform boundingTransform = Geometry::rotateAround(m_angle, requestedCenter);
     const QRect boundingRect = boundingTransform.mapRect(requestedDimensions);
 
     setGeometry(boundingRect);
@@ -66,10 +65,7 @@ void Grid::setPosition(int x, int y, int width, int height, int angle) {
                        requestedDimensions.width(),
                        requestedDimensions.height());
 
-    const QPoint gridCenter = m_gridRect.center();
-    m_gridTransform = QTransform::fromTranslate(gridCenter.x(), gridCenter.y())
-                                 .rotate(m_angle)
-                                 .translate(-gridCenter.x(), -gridCenter.y());
+    m_gridTransform = Geometry::rotateAround(m_angle, m_gridRect.center());
 
 }
 

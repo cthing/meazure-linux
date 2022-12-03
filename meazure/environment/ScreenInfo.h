@@ -71,6 +71,8 @@ public:
 
     [[nodiscard]] QRect getVirtualRect() const override;
 
+    [[nodiscard]] QRect getAvailableVirtualRect() const override;
+
     [[nodiscard]] QRect getScreenRect(int screenIndex) const override;
 
     void getScreenRes(int screenIndex, bool& useManualRes, QSizeF& manualRes) const override;
@@ -118,6 +120,7 @@ private:
     class Screen;
 
     using Screens = std::vector<Screen*>;
+    using AvailableScreens = std::vector<const QRect*>;
 
     explicit ScreenInfo(const QList<QScreen*>& screens);
 
@@ -128,6 +131,7 @@ private:
     int m_numScreens;
     Screens m_screens;
     QRect m_virtualGeometry;
+    QRect m_availableVirtualGeometry;
     bool m_sizeChanged { false };   ///< Virtual screen rectangle changed since last run.
 
     friend class App;

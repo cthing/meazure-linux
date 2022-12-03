@@ -102,10 +102,10 @@ private:
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
     QPen m_pen;
-    QRect m_gridRect;                       // Grid rectangle positioned for rotation, in pixels
-    QTransform m_gridTransform;             // Rotational transform for the grid
-    int m_angle { 0 };                      // Degrees
-    double m_hSpacing { 50 };               // Horizontal line spacing, in m_units
-    double m_vSpacing { 50 };               // Vertical line spacing, in m_units
-    LinearUnitsId m_units { PixelsId };     // Units for the grid spacing
+    QRect m_gridRect;                       ///< Grid rectangle positioned for rotation, in pixels
+    QTransform m_gridTransform;             ///< Rotational transform for the grid
+    int m_angle { 0 };                      ///< Degrees
+    double m_hSpacing { 50 };               ///< Horizontal line spacing, in m_units
+    double m_vSpacing { 50 };               ///< Vertical line spacing, in m_units
+    LinearUnitsId m_units { PixelsId };     ///< Units for the grid spacing
 };
