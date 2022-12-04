@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
 
 project(meazure_linux
-        VERSION 1.0.0.1
+        VERSION 5.0.0.1
         DESCRIPTION "A tool for easily measuring and capturing portions of the screen."
         HOMEPAGE_URL "https://github.com/cthing/meazure-linux")
 

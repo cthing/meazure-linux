@@ -177,6 +177,9 @@ QRect RulerTool::constructBoundingRect() {
 
 void RulerTool::refresh() {
     setPosition();
+
+    m_hRuler->repaint();
+    m_vRuler->repaint();
 }
 
 void RulerTool::handleEntered(Handle&, int id, QPoint center, Qt::KeyboardModifiers) {

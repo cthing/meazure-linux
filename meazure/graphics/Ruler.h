@@ -20,16 +20,21 @@
 #pragma once
 
 #include "Graphic.h"
+#include "Colors.h"
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QFont>
 #include <QRect>
 #include <QPoint>
+#include <QPen>
+#include <QBrush>
+#include <QTransform>
+#include <QFontMetrics>
+
 
 
 /// A ruler graphical element. The ruler resembles a classic measurement straight edge. The ruler can be oriented at
-/// any angle. A ruler can be positioned anywhere on the screen and given a length. The ruler can be interactively
-/// dragged resized and rotated using grab points.
+/// any angle. A ruler can be positioned anywhere on the screen and given a length.
 ///
 /// Multiple position indicators can be displayed on the face of the ruler. These indicators can be used to show the
 /// current position of crosshairs and other measurement points.
@@ -40,7 +45,13 @@ class Ruler : public Graphic {
 
 public:
     explicit Ruler(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, bool flip,
-                   QWidget* parent = nullptr);
+                   QWidget* parent = nullptr, QRgb backgroundColor = Colors::get(Colors::RulerBack),
+                   QRgb borderColor = Colors::get(Colors::RulerBorder),
+                   QRgb opacity = Colors::get(Colors::RulerOpacity));
+
+    void setColors(QRgb background, QRgb border);
+
+    void setOpacity(int opacity);
 
     void setPosition(const QPoint& origin, int length, int angle);
 
@@ -50,20 +61,25 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
+    static constexpr double k_borderWidth { 1.0 };        ///< Ruler border width
     static constexpr double k_majorTickHeight { 0.125 };  ///< Height of major tick marks, inches
     static constexpr int k_majorTickMinHeight { 8 };      ///< Minimum height of major tick marks, pixels
     static constexpr double k_minorTickHeight { 0.0625 }; ///< Height of minor tick marks, inches
     static constexpr int k_minorTickMinHeight { 4 };      ///< Minimum height of minor tick marks, pixels
-    static constexpr double k_labelBottomMargin { 0.02 }; ///< Space between major tick and label bottom, inches
-    static constexpr int k_labelBottomMinMargin { 2 };    ///< Minimum space between major tick and label bottom, pixels
-    static constexpr double k_labelTopMargin { 0.02 };    ///< Space between label top and ruler border, inches
-    static constexpr int k_labelTopMinMargin { 2 };       ///< Minimum space between label top and ruler border, pixels
+    static constexpr double k_labelBottomMargin { 0.04 }; ///< Space between major tick and label bottom, inches
+    static constexpr int k_labelBottomMinMargin { 3 };    ///< Minimum space between major tick and label bottom, pixels
+    static constexpr double k_labelTopMargin { 0.04 };    ///< Space between label top and ruler border, inches
+    static constexpr int k_labelTopMinMargin { 3 };       ///< Minimum space between label top and ruler border, pixels
 
+    int convertToPixels(LinearUnitsId unitsId, const QSizeF& res, double angleFrac, double value, int minValue);
     int convertToPixels(const QSizeF& res, double angleFrac, double value, int minValue);
 
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
+    QBrush m_backgroundBrush;
+    QPen m_borderPen;
     QFont m_font;
+    QFontMetrics m_fontMetrics;
     bool m_flip;                                        ///< Flip rule on long edge
     int m_length { 100 };                               ///< Ruler length, pixels
     int m_angle { 0 };                                  ///< Rotation angle, degrees
@@ -72,6 +88,5 @@ private:
     int m_minorTickHeight { k_minorTickMinHeight };     ///< Height of minor tick marks, pixels
     int m_labelBottomMargin { k_labelBottomMinMargin }; ///< Space between major tick and label bottom, pixels
     int m_labelTopMargin { k_labelTopMinMargin };       ///< Space between label top and ruler border, pixels
-    int m_fontHeight;                                   ///< Height of the label font, pixels
     QTransform m_rulerTransform;                        ///< Rotational transform for the ruler
 };

@@ -61,6 +61,10 @@ public:
         return m_rect;
     }
 
+    [[nodiscard]] QRect getAvailableVirtualRect() const override {
+        return m_rect;
+    }
+
     [[nodiscard]] QRect getScreenRect(int /* screenIndex */) const override {
         return m_rect;
     }

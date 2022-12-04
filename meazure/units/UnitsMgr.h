@@ -78,11 +78,7 @@ public:
         return m_currentLinearUnits;
     }
 
-    /// Returns the identifier for the current linear measurement units.
-    ///
-    /// @return Identifier for the current linear measurement units.
-    ///
-    [[nodiscard]] LinearUnitsId getLinearUnitsId() const {
+    [[nodiscard]] LinearUnitsId getLinearUnitsId() const override {
         return m_currentLinearUnits->getUnitsId();
     }
 
@@ -332,7 +328,7 @@ public:
         return m_majorTickCount;
     }
 
-    [[nodiscard]] QSizeF getMinorIncr(const QRect& rect) const override;
+    [[nodiscard]] QSizeF getMinorTickIncr(const QRect& rect) const override;
 
 signals:
     void linearUnitsChanged(LinearUnitsId unitsId);

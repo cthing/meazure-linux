@@ -39,6 +39,12 @@ struct UnitsProvider {
     UnitsProvider(UnitsProvider&&) = delete;
     UnitsProvider& operator=(const UnitsProvider&) = delete;
 
+    /// Returns the identifier for the current linear measurement units.
+    ///
+    /// @return Identifier for the current linear measurement units.
+    ///
+    [[nodiscard]] virtual LinearUnitsId getLinearUnitsId() const = 0;
+
     /// Returns the current linear measurement units.
     ///
     /// @return Current linear units.
@@ -227,10 +233,9 @@ struct UnitsProvider {
 
     /// Returns the increment between minor tick marks on the measurement rulers.
     ///
-    /// @param rect     [in] Rectangle in screen coordinates, used to determine
-    ///                 the current screen resolution.
+    /// @param[in] rect Rectangle in screen coordinates, used to determine the current screen resolution.
     ///
     /// @return Increment for the minor tick marks, in the current units.
     ///
-    [[nodiscard]] virtual QSizeF getMinorIncr(const QRect& rect) const = 0;
+    [[nodiscard]] virtual QSizeF getMinorTickIncr(const QRect& rect) const = 0;
 };

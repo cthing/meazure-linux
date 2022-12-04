@@ -74,7 +74,7 @@ private slots:
     QVERIFY(!mgr.isSupplementalAngle());
 
     QCOMPARE(mgr.getMajorTickCount(), 10);
-    QCOMPARE(mgr.getMinorIncr(QRect(10, 10, 20, 20)), QSizeF(10.0, 10.0));
+    QCOMPARE(mgr.getMinorTickIncr(QRect(10, 10, 20, 20)), QSizeF(10.0, 10.0));
 }
 
 [[maybe_unused]] void UnitsMgrTest::testInvertY() {

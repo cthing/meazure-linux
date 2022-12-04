@@ -181,7 +181,7 @@ QSizeF UnitsMgr::getWidthHeight(const QPoint& p1, const QPoint& p2) const {
     return { fabs(cp1.x() - cp2.x()), fabs(cp1.y() - cp2.y()) };
 }
 
-QSizeF UnitsMgr::getMinorIncr(const QRect& rect) const {
+QSizeF UnitsMgr::getMinorTickIncr(const QRect& rect) const {
     // We want to ensure a minimum resolution-independent
     // separation between the minor ticks. Start by converting
     // the resolution-independent minimum separation to pixels.
