@@ -369,6 +369,10 @@ void AngleTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers
 }
 
 void AngleTool::moved(CrossHair&, int id, QPoint) {
+    if (!isEnabled()) {
+        return;
+    }
+
     const QPointF coord1 = getUnitsProvider().convertCoord(m_point1);
     const QPointF coord2 = getUnitsProvider().convertCoord(m_point2);
     const QPointF coordV = getUnitsProvider().convertCoord(m_vertex);
