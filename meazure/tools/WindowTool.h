@@ -64,8 +64,8 @@ public:
     void strobe() override;
 
 signals:
-    void xy1PositionChanged(QPointF coord);
-    void xy2PositionChanged(QPointF coord);
+    void xy1PositionChanged(QPointF coord, QPoint rawPos);
+    void xy2PositionChanged(QPointF coord, QPoint rawPos);
     void widthHeightChanged(QSizeF widthHeight);
     void distanceChanged(double distance);
     void angleChanged(double angle);

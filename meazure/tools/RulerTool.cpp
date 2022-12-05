@@ -162,6 +162,19 @@ bool RulerTool::setPosition() {
                             m_origin.y() + m_vLength + qRound(m_vLengthHandle->rect().height() / 2.0));
     m_vLengthHandle->setPosition(originTransform.map(vHandlePos));
 
+    const QTransform indicatorTransform = Geometry::rotateAround(-m_angle, m_origin);
+    for (int i = 0; i < static_cast<int>(m_indicators.size()); i++) {
+        const QPoint indicatorPos = m_indicators[i];
+        if (indicatorPos == k_unusedIndicator) {
+            m_hRuler->setIndicator(i, indicatorPos.x());
+            m_vRuler->setIndicator(i, indicatorPos.y());
+        } else {
+            const QPoint relativePos = indicatorTransform.map(indicatorPos) - m_origin;
+            m_hRuler->setIndicator(i, relativePos.x());
+            m_vRuler->setIndicator(i, relativePos.y());
+        }
+    }
+
     const QRect boundingRect = constructBoundingRect();
     return getScreenInfo().getAvailableVirtualRect().contains(boundingRect);
 }
@@ -180,6 +193,16 @@ void RulerTool::refresh() {
 
     m_hRuler->repaint();
     m_vRuler->repaint();
+}
+
+void RulerTool::radioToolSelected(RadioTool&) {
+    m_indicators.fill(k_unusedIndicator);
+    setPosition();
+}
+
+void RulerTool::setIndicator(int indicatorIdx, QPoint pos) {
+    m_indicators.at(indicatorIdx) = pos;
+    setPosition();
 }
 
 void RulerTool::handleEntered(Handle&, int id, QPoint center, Qt::KeyboardModifiers) {
@@ -308,7 +331,7 @@ void RulerTool::moved(Handle&, int id, QPoint) {
             m_vLengthDataWin->distanceChanged(m_vLength);
             break;
         case k_moveId:
-            m_moveDataWin->xyvPositionChanged(getUnitsProvider().convertCoord(m_origin));
+            m_moveDataWin->xyvPositionChanged(getUnitsProvider().convertCoord(m_origin), m_origin);
             break;
         case k_rotateId:
             m_rotateDataWin->angleChanged(getUnitsProvider().convertAngle(qDegreesToRadians(m_angle)));

@@ -68,9 +68,9 @@ void CursorTool::emitMeasurement(QPoint position) {
     if (isEnabled()) {
         const QPointF coord = getUnitsProvider().convertCoord(position);
 
-        m_dataWindow->xy1PositionChanged(coord);
+        m_dataWindow->xy1PositionChanged(coord, position);
         placeDataWin(position);
 
-        emit xy1PositionChanged(coord);
+        emit xy1PositionChanged(coord, position);
     }
 }

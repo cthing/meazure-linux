@@ -77,7 +77,7 @@ public:
     void stepY1Position(int numSteps) override;
 
 signals:
-    void xy1PositionChanged(QPointF coord);
+    void xy1PositionChanged(QPointF coord, QPoint rawPos);
 
 private slots:
     void entered(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);

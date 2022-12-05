@@ -378,20 +378,20 @@ void AngleTool::moved(CrossHair&, int id, QPoint) {
     m_dataWin2->angleChanged(angle);
     m_dataWinV->angleChanged(angle);
     if (id == k_point1Id) {
-        m_dataWin1->xy1PositionChanged(coord1);
+        m_dataWin1->xy1PositionChanged(coord1, m_point1);
         m_dataWin1->moveNear(m_point1CH->geometry());
 
-        emit xy1PositionChanged(coord1);
+        emit xy1PositionChanged(coord1, m_point1);
     } else if (id == k_point2Id){
-        m_dataWin2->xy2PositionChanged(coord2);
+        m_dataWin2->xy2PositionChanged(coord2, m_point2);
         m_dataWin2->moveNear(m_point2CH->geometry());
 
-        emit xy2PositionChanged(coord2);
+        emit xy2PositionChanged(coord2, m_point2);
     } else {
-        m_dataWinV->xyvPositionChanged(coordV);
+        m_dataWinV->xyvPositionChanged(coordV, m_vertex);
         m_dataWinV->moveNear(m_vertexCH->geometry());
 
-        emit xyvPositionChanged(coordV);
+        emit xyvPositionChanged(coordV, m_vertex);
     }
 
     emit angleChanged(angle);

@@ -20,12 +20,14 @@
 #pragma once
 
 #include "Tool.h"
+#include "RadioTool.h"
 #include <meazure/graphics/Handle.h>
 #include <meazure/graphics/Ruler.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QPoint>
+#include <array>
 
 
 /// Ruler measurement tool. Provides one or more rulers that can be moved, rotated and resized.
@@ -57,6 +59,11 @@ public:
 
     void refresh() override;
 
+    void setIndicator(int indicatorIdx, QPoint pos);
+
+public slots:
+    void radioToolSelected(RadioTool& tool);
+
 private slots:
     void handleEntered(Handle& handle, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
     void handleDeparted(Handle& handle, int id);
@@ -72,6 +79,7 @@ private:
     static constexpr int k_rotateId { 4 };
     static constexpr int k_minLength { 30 };            // pixels
     static constexpr int k_rotateHandleSpacing { 4 };   // pixels
+    static constexpr QPoint k_unusedIndicator { Ruler::k_unusedIndicator, Ruler::k_unusedIndicator };
 
     void setPositionConstrained(const QPoint& origin, int angle, int hLength, int vLength);
     bool setPosition();
@@ -83,6 +91,7 @@ private:
     int m_hLength { 400 };
     int m_vLength { 400 };
     int m_angle { 0 };
+    std::array<QPoint, 3> m_indicators { k_unusedIndicator, k_unusedIndicator, k_unusedIndicator };
     Ruler* m_hRuler;
     Ruler* m_vRuler;
     Handle* m_hLengthHandle;

@@ -33,18 +33,18 @@
 ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider) {
     // Radio tools
     //
-    Tool* cursorTool = new CursorTool(screenInfoProvider, unitsProvider, this);
-    Tool* pointTool = new PointTool(screenInfoProvider, unitsProvider, this);
-    Tool* lineTool = new LineTool(screenInfoProvider, unitsProvider, this);
-    Tool* rectangleTool = new RectangleTool(screenInfoProvider, unitsProvider, this);
-    Tool* circleTool = new CircleTool(screenInfoProvider, unitsProvider, this);
-    Tool* angleTool = new AngleTool(screenInfoProvider, unitsProvider, this);
-    Tool* windowTool = new WindowTool(screenInfoProvider, unitsProvider, this);
+    auto* cursorTool = new CursorTool(screenInfoProvider, unitsProvider, this);
+    auto* pointTool = new PointTool(screenInfoProvider, unitsProvider, this);
+    auto* lineTool = new LineTool(screenInfoProvider, unitsProvider, this);
+    auto* rectangleTool = new RectangleTool(screenInfoProvider, unitsProvider, this);
+    auto* circleTool = new CircleTool(screenInfoProvider, unitsProvider, this);
+    auto* angleTool = new AngleTool(screenInfoProvider, unitsProvider, this);
+    auto* windowTool = new WindowTool(screenInfoProvider, unitsProvider, this);
 
     // Non-radio tools
     //
-    Tool* rulerTool = new RulerTool(screenInfoProvider, unitsProvider, this);
-    Tool* gridTool = new GridTool(screenInfoProvider, unitsProvider, this);
+    auto* rulerTool = new RulerTool(screenInfoProvider, unitsProvider, this);
+    auto* gridTool = new GridTool(screenInfoProvider, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;
     m_tools[pointTool->getName()] = pointTool;
@@ -56,46 +56,113 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     m_tools[rulerTool->getName()] = rulerTool;
     m_tools[gridTool->getName()] = gridTool;
 
-    connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
+    connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
+    connect(cursorTool, &CursorTool::xy1PositionChanged, this, [cursorTool, rulerTool](QPointF, QPoint rawPos) {
+        if (cursorTool->isEnabled()) {
+            rulerTool->setIndicator(0, rawPos);
+        }
+    });
 
-    connect(pointTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
+    connect(pointTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
+    connect(pointTool, &PointTool::xy1PositionChanged, this, [pointTool, rulerTool](QPointF, QPoint rawPos) {
+        if (pointTool->isEnabled()) {
+            rulerTool->setIndicator(0, rawPos);
+        }
+    });
 
-    connect(lineTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
-    connect(lineTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
+    connect(lineTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
+    connect(lineTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
+    connect(lineTool, &LineTool::xy1PositionChanged, this, [lineTool, rulerTool](QPointF, QPoint rawPos) {
+        if (lineTool->isEnabled()) {
+            rulerTool->setIndicator(0, rawPos);
+        }
+    });
+    connect(lineTool, &LineTool::xy2PositionChanged, this, [lineTool, rulerTool](QPointF, QPoint rawPos) {
+        if (lineTool->isEnabled()) {
+            rulerTool->setIndicator(1, rawPos);
+        }
+    });
     connect(lineTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
     connect(lineTool, SIGNAL(distanceChanged(double)), this, SIGNAL(distanceChanged(double)));
     connect(lineTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
     connect(lineTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(lineTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
-    connect(rectangleTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
-    connect(rectangleTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
+    connect(rectangleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
+    connect(rectangleTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
+    connect(rectangleTool, &RectangleTool::xy1PositionChanged, this, [rectangleTool, rulerTool](QPointF, QPoint rawPos) {
+        if (rectangleTool->isEnabled()) {
+            rulerTool->setIndicator(0, rawPos);
+        }
+    });
+    connect(rectangleTool, &RectangleTool::xy2PositionChanged, this, [rectangleTool, rulerTool](QPointF, QPoint rawPos) {
+        if (rectangleTool->isEnabled()) {
+            rulerTool->setIndicator(1, rawPos);
+        }
+    });
     connect(rectangleTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
     connect(rectangleTool, SIGNAL(distanceChanged(double)), this, SIGNAL(distanceChanged(double)));
     connect(rectangleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
     connect(rectangleTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(rectangleTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
-    connect(circleTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
-    connect(circleTool, SIGNAL(xyvPositionChanged(QPointF)), this, SIGNAL(xyvPositionChanged(QPointF)));
+    connect(circleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
+    connect(circleTool, SIGNAL(xyvPositionChanged(QPointF, QPoint)), this, SIGNAL(xyvPositionChanged(QPointF, QPoint)));
+    connect(circleTool, &CircleTool::xy1PositionChanged, this, [circleTool, rulerTool](QPointF, QPoint rawPos) {
+        if (circleTool->isEnabled()) {
+            rulerTool->setIndicator(0, rawPos);
+        }
+    });
+    connect(circleTool, &CircleTool::xyvPositionChanged, this, [circleTool, rulerTool](QPointF, QPoint rawPos) {
+        if (circleTool->isEnabled()) {
+            rulerTool->setIndicator(1, rawPos);
+        }
+    });
     connect(circleTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
     connect(circleTool, SIGNAL(distanceChanged(double)), this, SIGNAL(distanceChanged(double)));
     connect(circleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
     connect(circleTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(circleTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
-    connect(angleTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
-    connect(angleTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
-    connect(angleTool, SIGNAL(xyvPositionChanged(QPointF)), this, SIGNAL(xyvPositionChanged(QPointF)));
+    connect(angleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
+    connect(angleTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
+    connect(angleTool, SIGNAL(xyvPositionChanged(QPointF, QPoint)), this, SIGNAL(xyvPositionChanged(QPointF, QPoint)));
+    connect(angleTool, &AngleTool::xy1PositionChanged, this, [angleTool, rulerTool](QPointF, QPoint rawPos) {
+        if (angleTool->isEnabled()) {
+            rulerTool->setIndicator(0, rawPos);
+        }
+    });
+    connect(angleTool, &AngleTool::xy2PositionChanged, this, [angleTool, rulerTool](QPointF, QPoint rawPos) {
+        if (angleTool->isEnabled()) {
+            rulerTool->setIndicator(1, rawPos);
+        }
+    });
+    connect(angleTool, &AngleTool::xyvPositionChanged, this, [angleTool, rulerTool](QPointF, QPoint rawPos) {
+        if (angleTool->isEnabled()) {
+            rulerTool->setIndicator(2, rawPos);
+        }
+    });
     connect(angleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
 
-    connect(windowTool, SIGNAL(xy1PositionChanged(QPointF)), this, SIGNAL(xy1PositionChanged(QPointF)));
-    connect(windowTool, SIGNAL(xy2PositionChanged(QPointF)), this, SIGNAL(xy2PositionChanged(QPointF)));
+    connect(windowTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
+    connect(windowTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
+    connect(windowTool, &WindowTool::xy1PositionChanged, this, [windowTool, rulerTool](QPointF, QPoint rawPos) {
+        if (windowTool->isEnabled()) {
+            rulerTool->setIndicator(0, rawPos);
+        }
+    });
+    connect(windowTool, &WindowTool::xy2PositionChanged, this, [windowTool, rulerTool](QPointF, QPoint rawPos) {
+        if (windowTool->isEnabled()) {
+            rulerTool->setIndicator(1, rawPos);
+        }
+    });
     connect(windowTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
     connect(windowTool, SIGNAL(distanceChanged(double)), this, SIGNAL(distanceChanged(double)));
     connect(windowTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
     connect(windowTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(windowTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
+
+    connect(this, &ToolMgr::radioToolSelected, rulerTool, &RulerTool::radioToolSelected);
 }
 
 void ToolMgr::saveProfile(Profile& profile) const {

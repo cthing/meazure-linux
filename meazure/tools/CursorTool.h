@@ -66,7 +66,7 @@ public:
     void strobe() override;
 
 signals:
-    void xy1PositionChanged(QPointF coord);
+    void xy1PositionChanged(QPointF coord, QPoint rawPos);
 
 private slots:
     void pointerMotion(int16_t x, int16_t y);

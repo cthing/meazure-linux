@@ -245,15 +245,15 @@ void CircleTool::moved(CrossHair&, int id, QPoint) {
     m_dataWinPerimeter->distanceChanged(radius);
     m_dataWinCenter->distanceChanged(radius);
     if (id == k_perimeterId) {
-        m_dataWinPerimeter->xy1PositionChanged(coordPerimeter);
+        m_dataWinPerimeter->xy1PositionChanged(coordPerimeter, m_perimeter);
         m_dataWinPerimeter->moveNear(m_perimeterCH->geometry());
 
-        emit xy1PositionChanged(coordPerimeter);
+        emit xy1PositionChanged(coordPerimeter, m_perimeter);
     } else {
-        m_dataWinCenter->xyvPositionChanged(coordCenter);
+        m_dataWinCenter->xyvPositionChanged(coordCenter, m_center);
         m_dataWinCenter->moveNear(m_centerCH->geometry());
 
-        emit xyvPositionChanged(coordCenter);
+        emit xyvPositionChanged(coordCenter, m_center);
     }
 
     emit widthHeightChanged(wh);

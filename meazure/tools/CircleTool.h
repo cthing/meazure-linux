@@ -84,8 +84,8 @@ public:
     void stepYVPosition(int numSteps) override;
 
 signals:
-    void xy1PositionChanged(QPointF coord);
-    void xyvPositionChanged(QPointF coord);
+    void xy1PositionChanged(QPointF coord, QPoint rawPos);
+    void xyvPositionChanged(QPointF coord, QPoint rawPos);
     void widthHeightChanged(QSizeF widthHeight);
     void distanceChanged(double distance);
     void angleChanged(double angle);

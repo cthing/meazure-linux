@@ -239,15 +239,15 @@ void LineTool::moved(CrossHair&, int id, QPoint) {
     m_dataWin1->distanceChanged(distance);
     m_dataWin2->distanceChanged(distance);
     if (id == k_point1Id) {
-        m_dataWin1->xy1PositionChanged(coord1);
+        m_dataWin1->xy1PositionChanged(coord1, m_point1);
         m_dataWin1->moveNear(m_point1CH->geometry());
 
-        emit xy1PositionChanged(coord1);
+        emit xy1PositionChanged(coord1, m_point1);
     } else {
-        m_dataWin2->xy2PositionChanged(coord2);
+        m_dataWin2->xy2PositionChanged(coord2, m_point2);
         m_dataWin2->moveNear(m_point2CH->geometry());
 
-        emit xy2PositionChanged(coord2);
+        emit xy2PositionChanged(coord2, m_point2);
     }
 
     emit widthHeightChanged(wh);

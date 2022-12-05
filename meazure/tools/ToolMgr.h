@@ -27,6 +27,7 @@
 #include <QObject>
 #include <QString>
 #include <QPointF>
+#include <QPoint>
 #include <QSizeF>
 #include <map>
 
@@ -170,9 +171,9 @@ signals:
     ///
     void radioToolSelected(RadioTool& tool);
 
-    void xy1PositionChanged(QPointF coord);
-    void xy2PositionChanged(QPointF coord);
-    void xyvPositionChanged(QPointF coord);
+    void xy1PositionChanged(QPointF coord, QPoint rawPos);
+    void xy2PositionChanged(QPointF coord, QPoint rawPos);
+    void xyvPositionChanged(QPointF coord, QPoint rawPos);
     void widthHeightChanged(QSizeF widthHeight);
     void distanceChanged(double distance);
     void angleChanged(double angle);

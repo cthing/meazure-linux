@@ -227,17 +227,17 @@ void ToolDataSection::angularUnitsChanged(AngularUnitsId) {
     m_aField->setDecimals(angularUnits->getDisplayPrecision(Angle));
 }
 
-void ToolDataSection::xy1PositionChanged(QPointF coord) {
+void ToolDataSection::xy1PositionChanged(QPointF coord, QPoint) {
     m_x1Field->setValueQuietly(coord.x());
     m_y1Field->setValueQuietly(coord.y());
 }
 
-void ToolDataSection::xy2PositionChanged(QPointF coord) {
+void ToolDataSection::xy2PositionChanged(QPointF coord, QPoint) {
     m_x2Field->setValueQuietly(coord.x());
     m_y2Field->setValueQuietly(coord.y());
 }
 
-void ToolDataSection::xyvPositionChanged(QPointF coord) {
+void ToolDataSection::xyvPositionChanged(QPointF coord, QPoint) {
     m_xvField->setValueQuietly(coord.x());
     m_yvField->setValueQuietly(coord.y());
 }

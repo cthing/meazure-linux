@@ -84,19 +84,19 @@ public slots:
     ///
     /// @param[in] coord Tool coordinates in the current linear units, origin and y-axis direction.
     ///
-    void xy1PositionChanged(QPointF coord);
+    void xy1PositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when current tool's position 2 has changed.
     ///
     /// @param[in] coord Tool coordinates in the current linear units, origin and y-axis direction.
     ///
-    void xy2PositionChanged(QPointF coord);
+    void xy2PositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when current tool's vertex position has changed.
     ///
     /// @param[in] coord Tool coordinates in the current linear units, origin and y-axis direction.
     ///
-    void xyvPositionChanged(QPointF coord);
+    void xyvPositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when the current tool's width or height has changed.
     ///

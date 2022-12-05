@@ -134,19 +134,19 @@ void ToolDataWindow::setColors() {
     repaint();
 }
 
-void ToolDataWindow::xy1PositionChanged(QPointF coord) {
+void ToolDataWindow::xy1PositionChanged(QPointF coord, QPoint) {
     m_x1Value->setText(m_units.format(XCoord, coord.x()));
     m_y1Value->setText(m_units.format(YCoord, coord.y()));
     adjustSize();
 }
 
-void ToolDataWindow::xy2PositionChanged(QPointF coord) {
+void ToolDataWindow::xy2PositionChanged(QPointF coord, QPoint) {
     m_x2Value->setText(m_units.format(XCoord, coord.x()));
     m_y2Value->setText(m_units.format(YCoord, coord.y()));
     adjustSize();
 }
 
-void ToolDataWindow::xyvPositionChanged(QPointF coord) {
+void ToolDataWindow::xyvPositionChanged(QPointF coord, QPoint) {
     m_xvValue->setText(m_units.format(XCoord, coord.x()));
     m_yvValue->setText(m_units.format(YCoord, coord.y()));
     adjustSize();

@@ -30,7 +30,7 @@ Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_backgroundBrush(backgroundColor),
-        m_borderPen(QBrush(borderColor), k_borderWidth),
+        m_linePen(QBrush(borderColor), k_lineWidth),
         m_font("FreeSans", 10),
         m_fontMetrics(m_font),
         m_flip(flip) {
@@ -38,11 +38,13 @@ Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
     setWindowOpacity(qAlpha(opacity) / 255.0);
+
+    m_font.setLetterSpacing(QFont::PercentageSpacing, 120);
 }
 
 void Ruler::setColors(QRgb background, QRgb border) {
     m_backgroundBrush.setColor(background);
-    m_borderPen.setColor(border);
+    m_linePen.setColor(border);
 
     repaint();
 }
@@ -54,16 +56,15 @@ void Ruler::setOpacity(int opacity) {
 void Ruler::setPosition(const QPoint& origin, int length, int angle) {
     m_angle = angle;
     m_length = length;
-
-    const double angleFrac = (m_angle % 90) / 90.0;
+    m_angleFraction = (m_angle % 90) / 90.0;
 
     const int screenIdx = m_screenInfo.screenForPoint(origin);
     const QSizeF res = m_screenInfo.getScreenRes(screenIdx);
 
-    m_majorTickHeight = convertToPixels(InchesId, res, angleFrac, k_majorTickHeight, k_majorTickMinHeight);
-    m_minorTickHeight = convertToPixels(InchesId, res, angleFrac, k_minorTickHeight, k_minorTickMinHeight);
-    m_labelBottomMargin = convertToPixels(InchesId, res, angleFrac,k_labelBottomMargin, k_labelBottomMinMargin);
-    m_labelTopMargin = convertToPixels(InchesId, res, angleFrac, k_labelTopMargin, k_labelTopMinMargin);
+    m_majorTickHeight = convertToPixels(InchesId, res, m_angleFraction, k_majorTickHeight, k_majorTickMinHeight);
+    m_minorTickHeight = convertToPixels(InchesId, res, m_angleFraction, k_minorTickHeight, k_minorTickMinHeight);
+    m_labelBottomMargin = convertToPixels(InchesId, res, m_angleFraction,k_labelBottomMargin, k_labelBottomMinMargin);
+    m_labelTopMargin = convertToPixels(InchesId, res, m_angleFraction, k_labelTopMargin, k_labelTopMinMargin);
 
     const int rulerThk = m_majorTickHeight + m_labelBottomMargin + m_labelTopMargin + m_fontMetrics.height();
 
@@ -87,14 +88,19 @@ int Ruler::convertToPixels(const QSizeF& res, double angleFrac, double value, in
     return convertToPixels(m_unitsProvider.getLinearUnitsId(), res, angleFrac, value, minValue);
 }
 
+void Ruler::setIndicator(int indicatorIdx, int position) {
+    m_indicators.at(indicatorIdx) = position;
+    repaint();
+}
+
 void Ruler::paintEvent(QPaintEvent*) {
     QPainter painter(this);
+    painter.setFont(m_font);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    painter.setPen(m_borderPen);
+    painter.setPen(m_linePen);
     painter.setBrush(m_backgroundBrush);
 
-    const double angleFrac = (m_angle % 90) / 90.0;
     const int majorTickCount = m_unitsProvider.getMajorTickCount();
 
     for (int idx = 0; idx < m_screenInfo.getNumScreens(); idx++) {
@@ -107,7 +113,7 @@ void Ruler::paintEvent(QPaintEvent*) {
         const QSizeF minorTickIncr = m_unitsProvider.getMinorTickIncr(intersectRect);
         const double effectiveMinorTickIncr = MathUtils::linearInterpolate(minorTickIncr.width(),
                                                                            minorTickIncr.height(),
-                                                                           angleFrac);
+                                                                           m_angleFraction);
 
         std::vector<std::pair<int, QString>> labels;
         std::vector<QLine> lines;
@@ -115,19 +121,29 @@ void Ruler::paintEvent(QPaintEvent*) {
         int tick;       // NOLINT(cppcoreguidelines-init-variables)
         double p;       // NOLINT(cppcoreguidelines-init-variables)
         for (l = 0, p = 0.0, tick = 0; l < m_length;
-             tick++, p += effectiveMinorTickIncr, l = convertToPixels(res, angleFrac, p, 1)) {
+             tick++, p += effectiveMinorTickIncr, l = convertToPixels(res, m_angleFraction, p, 1)) {
             const int x = m_rulerRect.x() + l;
             const bool isMajorTick = ((tick % majorTickCount) == 0);
             const int tickHeight = isMajorTick ? m_majorTickHeight : m_minorTickHeight;
+
+            // Tick marks
             if (m_flip) {
                 lines.emplace_back(x, m_rulerRect.top(), x, m_rulerRect.top() + tickHeight);
             } else {
                 lines.emplace_back(x, m_rulerRect.bottom(), x, m_rulerRect.bottom() - tickHeight);
             }
 
+            // Labels
             if (isMajorTick && p > 0.0) {
-                const QString label = m_unitsProvider.format(Width, p);
-                labels.emplace_back(x, label);
+                labels.emplace_back(x, m_unitsProvider.format(Width, p));
+            }
+        }
+
+        // Indicators
+        for (const int indicatorX : m_indicators) {
+            if (indicatorX != k_unusedIndicator) {
+                const int x = m_rulerRect.x() + indicatorX;
+                lines.emplace_back(x, m_rulerRect.top(), x, m_rulerRect.bottom());
             }
         }
 
@@ -142,13 +158,13 @@ void Ruler::paintEvent(QPaintEvent*) {
                 ? m_rulerRect.top() + m_majorTickHeight + m_labelBottomMargin
                 : m_rulerRect.bottom() - m_majorTickHeight - m_labelBottomMargin;
 
+        // Ensure text is not drawn upside down.
         if (m_angle >= 90 || m_angle <= -90) {
             const int y = m_flip ? labelBottom + m_fontMetrics.descent() : labelBottom - m_fontMetrics.ascent();
             for (const std::pair<int, QString> &label: labels) {
-                const QTransform textTransform = Geometry::rotateAround(180, label.first, y) * m_rulerTransform;
-                painter.save();
-                painter.setTransform(textTransform);
                 const int x = label.first - m_fontMetrics.boundingRect(label.second).width() / 2;
+                painter.save();
+                painter.setTransform(Geometry::rotateAround(180, label.first, y) * m_rulerTransform);
                 painter.drawText(x, y, label.second);
                 painter.restore();
             }

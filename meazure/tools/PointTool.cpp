@@ -144,9 +144,9 @@ void PointTool::moved(CrossHair&, int, QPoint center) {
     if (isEnabled()) {
         const QPointF coord = getUnitsProvider().convertCoord(center);
 
-        m_dataWindow->xy1PositionChanged(coord);
+        m_dataWindow->xy1PositionChanged(coord, center);
         m_dataWindow->moveNear(m_crosshair->geometry());
 
-        emit xy1PositionChanged(coord);
+        emit xy1PositionChanged(coord, center);
     }
 }

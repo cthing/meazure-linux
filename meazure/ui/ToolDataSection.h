@@ -58,19 +58,19 @@ private slots:
     ///
     /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
     ///
-    void xy1PositionChanged(QPointF coord);
+    void xy1PositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when a tool's position 2 has changed.
     ///
     /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
     ///
-    void xy2PositionChanged(QPointF coord);
+    void xy2PositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when a tool's vertex position has changed.
     ///
     /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
     ///
-    void xyvPositionChanged(QPointF coord);
+    void xyvPositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when a tool's width and height change
     ///
