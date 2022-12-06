@@ -20,9 +20,13 @@
 #pragma once
 
 #include <meazure/units/Units.h>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/environment/ScreenInfoProvider.h>
 #include "DataField.h"
 #include <QGroupBox>
 #include <QLabel>
+#include <QPointF>
+#include <QPoint>
 
 
 /// Presents the display screen information.
@@ -36,6 +40,7 @@ public:
 
 private slots:
     void linearUnitsChanged(LinearUnitsId unitsId);
+    void update(QPointF coord, QPoint rawPos);
 
 private:
     static constexpr int k_fieldWidth { 7 };
@@ -44,10 +49,16 @@ private:
     ///
     void createFields();
 
+    void refresh();
+
+    const ScreenInfoProvider& m_screenInfo;
+    const UnitsMgr& m_unitsMgr;
+    int m_currentScreenIdx { -1 };
     DataField* m_wField;
     DataField* m_hField;
     DataField* m_rxField;
     DataField* m_ryField;
+    QLabel* m_screenName;
     QLabel* m_hUnits;
     QLabel* m_ryUnits;
 };

@@ -18,21 +18,30 @@
  */
 
 #include "ScreenDataSection.h"
-#include <meazure/units/UnitsMgr.h>
+#include <meazure/tools/ToolMgr.h>
 #include <meazure/App.h>
 #include <QGridLayout>
 #include <QPushButton>
 #include <QIcon>
 
 
-ScreenDataSection::ScreenDataSection() {    // NOLINT(cppcoreguidelines-pro-type-member-init)
+ScreenDataSection::ScreenDataSection() : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        m_screenInfo(App::instance()->getScreenInfo()),
+        m_unitsMgr(App::instance()->getUnitsMgr()) {
     createFields();
 
-    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
-    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ScreenDataSection::linearUnitsChanged);
+    const ToolMgr& toolMgr = App::instance()->getToolMgr();
+    connect(&toolMgr, &ToolMgr::xy1PositionChanged, this, &ScreenDataSection::update);
+    connect(&toolMgr, &ToolMgr::xy2PositionChanged, this, &ScreenDataSection::update);
+    connect(&toolMgr, &ToolMgr::xyvPositionChanged, this, &ScreenDataSection::update);
+
+    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ScreenDataSection::linearUnitsChanged);
 }
 
 void ScreenDataSection::createFields() {
+    auto* screenLabel = new QLabel(tr("Screen:"));
+    m_screenName = new QLabel();
+
     auto* wLabel = new QLabel(tr("W:"));
     m_wField = new DataField(k_fieldWidth, false, true);
 
@@ -59,22 +68,53 @@ void ScreenDataSection::createFields() {
     ryLayout->addWidget(m_ryUnits);
 
     auto* layout = new QGridLayout();
-    layout->addWidget(wLabel, 0, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_wField, 0, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(hLabel, 0, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(hLayout, 0, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(screenLabel, 0, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_screenName, 0, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(rxLabel, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_rxField, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(ryLabel, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(ryLayout, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(wLabel, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_wField, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(hLabel, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(hLayout, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+
+    layout->addWidget(rxLabel, 2, 0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_rxField, 2, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(ryLabel, 2, 3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(ryLayout, 2, 4, Qt::AlignLeft | Qt::AlignVCenter);
 
     setLayout(layout);
 }
 
+void ScreenDataSection::update(QPointF, QPoint rawPos) {
+    const int screenIdx = m_screenInfo.screenForPoint(rawPos);
+    if (screenIdx != m_currentScreenIdx) {
+        m_currentScreenIdx = screenIdx;
+        refresh();
+    }
+}
+
+void ScreenDataSection::refresh() {
+    QString title = m_screenInfo.getScreenName(m_currentScreenIdx);
+    if (title.isEmpty()) {
+        title = QString("%1").arg(m_currentScreenIdx);
+    }
+    if (m_screenInfo.isPrimary(m_currentScreenIdx)) {
+        title += tr(" (primary)");
+    }
+    m_screenName->setText(title);
+
+    const QRect screenRect = m_screenInfo.getScreenRect(m_currentScreenIdx);
+    const QSizeF wh = m_unitsMgr.getWidthHeight(screenRect.topLeft(), screenRect.bottomRight());
+    m_wField->setValue(wh.width());
+    m_hField->setValue(wh.height());
+
+    const QSizeF res = m_screenInfo.getScreenRes(m_currentScreenIdx);
+    const QSizeF convertedRes = m_unitsMgr.convertRes(res);
+    m_rxField->setValue(convertedRes.width());
+    m_ryField->setValue(convertedRes.height());
+}
+
 void ScreenDataSection::linearUnitsChanged(LinearUnitsId) {
-    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
-    const LinearUnits* linearUnits = unitsMgr.getLinearUnits();
+    const LinearUnits* linearUnits = m_unitsMgr.getLinearUnits();
 
     m_hUnits->setText(linearUnits->getLengthLabel());
     m_ryUnits->setText(linearUnits->getResLabel());
@@ -83,4 +123,6 @@ void ScreenDataSection::linearUnitsChanged(LinearUnitsId) {
     m_hField->setDecimals(linearUnits->getDisplayPrecision(Height));
     m_rxField->setDecimals(linearUnits->getDisplayPrecision(ResX));
     m_ryField->setDecimals(linearUnits->getDisplayPrecision(ResY));
+
+    refresh();
 }

@@ -160,6 +160,12 @@ void UnitsMgr::setAngularUnits(const QString& unitsStr) {
 }
 
 QSizeF UnitsMgr::getWidthHeight(const QPoint& p1, const QPoint& p2) const {
+    const int screenIndex1 = m_screenInfoProvider.screenForPoint(p1);
+    const QSizeF from1 = m_currentLinearUnits->fromPixels(m_screenInfoProvider.getScreenRes(screenIndex1));
+
+    const int screenIndex2 = m_screenInfoProvider.screenForPoint(p2);
+    const QSizeF from2 = m_currentLinearUnits->fromPixels(m_screenInfoProvider.getScreenRes(screenIndex2));
+
     QPoint np1(p1);
     QPoint np2(p2);
 
@@ -175,8 +181,8 @@ QSizeF UnitsMgr::getWidthHeight(const QPoint& p1, const QPoint& p2) const {
         np1.ry()++;
     }
 
-    const QPointF cp1 = convertCoord(np1);
-    const QPointF cp2 = convertCoord(np2);
+    const QPointF cp1(from1.width() * np1.x(), from1.height() * np1.y());
+    const QPointF cp2(from2.width() * np2.x(), from2.height() * np2.y());
 
     return { fabs(cp1.x() - cp2.x()), fabs(cp1.y() - cp2.y()) };
 }
