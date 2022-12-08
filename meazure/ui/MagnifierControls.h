@@ -21,14 +21,25 @@
 
 #include "Magnifier.h"
 #include <QWidget>
+#include <QAction>
 
 
-/// Provides the zoom control for the magnifier.
+/// Provides the zoom and freeze controls for the magnifier.
 ///
-class MagnifierZoom : public QWidget {
+class MagnifierControls : public QWidget {
 
     Q_OBJECT
 
 public:
-    explicit MagnifierZoom(Magnifier* magnifier);
+    explicit MagnifierControls(Magnifier* magnifier);
+
+    [[nodiscard]] QAction* getFreezeAction() const {
+        return m_freezeAction;
+    }
+
+private:
+    static constexpr int k_freezeButtonSize { 20 };
+    static constexpr int k_freezeButtonIconSize { k_freezeButtonSize - 6 };
+
+    QAction* m_freezeAction;
 };

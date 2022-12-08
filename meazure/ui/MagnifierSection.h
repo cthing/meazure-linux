@@ -20,6 +20,7 @@
 #pragma once
 
 #include "Magnifier.h"
+#include "MagnifierControls.h"
 #include "ColorDisplay.h"
 #include <QWidget>
 #include <QAction>
@@ -49,20 +50,18 @@ public:
     }
 
     [[nodiscard]] QAction* getFreezeAction() const {
-        return m_freezeAction;
+        return m_magnifierControls->getFreezeAction();
     }
 
 private:
-    static constexpr int k_buttonSize { 20 };
-    static constexpr int k_buttonIconSize { k_buttonSize - 6 };
     static constexpr bool k_initialShowGrid { true };
     static constexpr int k_initialZoomIndex { 1 };
     static constexpr bool k_initialFreeze { false };
     static constexpr ColorDisplay::ColorFormatId k_initialColorFmt { ColorDisplay::RGBFmt };
 
     Magnifier* m_magnifier;
+    MagnifierControls* m_magnifierControls;
     QAction* m_zoomInAction;
     QAction* m_zoomOutAction;
     QAction* m_gridAction;
-    QAction* m_freezeAction;
 };

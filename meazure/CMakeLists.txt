@@ -13,10 +13,10 @@ set(UI_SOURCES
     ui/GridDialog.h
     ui/Magnifier.cpp
     ui/Magnifier.h
+    ui/MagnifierControls.cpp
+    ui/MagnifierControls.h
     ui/MagnifierSection.cpp
     ui/MagnifierSection.h
-    ui/MagnifierZoom.cpp
-    ui/MagnifierZoom.h
     ui/MainWindow.cpp
     ui/MainWindow.h
     ui/MainWindow.cpp

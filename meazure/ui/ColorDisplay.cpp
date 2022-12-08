@@ -20,6 +20,7 @@
 #include "ColorDisplay.h"
 #include <meazure/graphics/Colors.h>
 #include <QHBoxLayout>
+#include <QPushButton>
 
 
 ColorDisplay::ColorDisplay() :
@@ -33,13 +34,18 @@ ColorDisplay::ColorDisplay() :
     layout->addWidget(m_colorSpaceLabel);
 
     m_colorField->setAlignment(Qt::AlignLeft);
-    layout->addWidget(m_colorField);
+    layout->addWidget(m_colorField, Qt::AlignVCenter);
 
     m_colorSwatch->setFixedSize(70, 20);
     m_colorSwatch->setAutoFillBackground(true);
     m_colorSwatch->setLineWidth(1);
     m_colorSwatch->setFrameStyle(QFrame::Box | QFrame::Plain);
-    layout->addWidget(m_colorSwatch);
+    layout->addWidget(m_colorSwatch, Qt::AlignVCenter);
+
+    auto* copyButton = new QPushButton(QIcon(":/images/Clipboard.svg"), "");
+    copyButton->setIconSize(QSize(k_copyButtonIconSize, k_copyButtonIconSize));
+    copyButton->setFixedSize(QSize(k_copyButtonSize, k_copyButtonSize));
+    layout->addWidget(copyButton, Qt::AlignVCenter);
 }
 
 void ColorDisplay::setColorFmt(ColorFormatId colorFmt) {

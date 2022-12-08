@@ -60,6 +60,8 @@ public slots:
     void setColor(QRgb color);
 
 private:
+    static constexpr int k_copyButtonSize { 20 };
+    static constexpr int k_copyButtonIconSize { k_copyButtonSize - 6 };
     static constexpr QChar k_fillChar { '0' };
 
     ColorFormatId m_colorFmt { RGBFmt };

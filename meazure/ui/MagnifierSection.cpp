@@ -18,21 +18,23 @@
  */
 
 #include "MagnifierSection.h"
-#include "MagnifierZoom.h"
+#include "MagnifierControls.h"
 #include <QHBoxLayout>
-#include <QPushButton>
-#include <QToolButton>
-#include <QIcon>
 #include <QKeySequence>
 
 
-MagnifierSection::MagnifierSection() : m_magnifier(new Magnifier()) {
+MagnifierSection::MagnifierSection() :
+        m_magnifier(new Magnifier()),
+        m_magnifierControls(new MagnifierControls(m_magnifier)) {
     auto* layout = new QVBoxLayout();
     setLayout(layout);
 
+    // Use an HBox to center magnifier horizontally
     auto* magnifierLayout = new QHBoxLayout();
     magnifierLayout->addWidget(m_magnifier);
     layout->addLayout(magnifierLayout);
+
+    layout->addWidget(m_magnifierControls);
 
     m_zoomInAction = new QAction(tr("Zoom In"), this);
     m_zoomInAction->setShortcut(QKeySequence(QKeySequence::ZoomIn));
@@ -53,38 +55,9 @@ MagnifierSection::MagnifierSection() : m_magnifier(new Magnifier()) {
     connect(m_gridAction, &QAction::triggered, m_magnifier, &Magnifier::setGrid);
     connect(m_magnifier, &Magnifier::gridChanged, m_gridAction, &QAction::setChecked);
 
-    auto* colorLayout = new QHBoxLayout();
-
     auto* colorDisplay = new ColorDisplay();
-    colorLayout->addWidget(colorDisplay);
+    layout->addWidget(colorDisplay);
     connect(m_magnifier, &Magnifier::currentColorChanged, colorDisplay, &ColorDisplay::setColor);
-
-    auto* copyButton = new QPushButton(QIcon(":/images/Clipboard.svg"), "");
-    copyButton->setIconSize(QSize(k_buttonIconSize, k_buttonIconSize));
-    copyButton->setFixedSize(QSize(k_buttonSize, k_buttonSize));
-    colorLayout->addWidget(copyButton);
-
-    QIcon freezeIcon;
-    freezeIcon.addFile(":/images/PauseOff.svg", QSize(), QIcon::Normal, QIcon::Off);
-    freezeIcon.addFile(":/images/PauseOn.svg", QSize(), QIcon::Normal, QIcon::On);
-
-    m_freezeAction = new QAction(tr("&Freeze Magnifier"), this);
-    m_freezeAction->setCheckable(true);
-    m_freezeAction->setShortcut(QKeySequence("Ctrl+M"));
-    m_freezeAction->setIcon(freezeIcon);
-    connect(m_freezeAction, &QAction::triggered, m_magnifier, &Magnifier::setFreeze);
-    connect(m_magnifier, &Magnifier::freezeChanged, m_freezeAction, &QAction::setChecked);
-
-    auto* freezeButton = new QToolButton();
-    freezeButton->setDefaultAction(m_freezeAction);
-    freezeButton->setIconSize(QSize(k_buttonIconSize, k_buttonIconSize));
-    freezeButton->setFixedSize(QSize(k_buttonSize, k_buttonSize));
-    freezeButton->setToolTip(tr("Freeze magnifier"));
-    colorLayout->addWidget(freezeButton);
-    layout->addLayout(colorLayout);
-
-    auto* zoom = new MagnifierZoom(m_magnifier);
-    layout->addWidget(zoom);
 
     m_magnifier->setGrid(k_initialShowGrid);
     m_magnifier->setFreeze(k_initialFreeze);

@@ -17,14 +17,16 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MagnifierZoom.h"
+#include "MagnifierControls.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSlider>
 #include <QSignalBlocker>
+#include <QToolButton>
+#include <QIcon>
 
 
-MagnifierZoom::MagnifierZoom(Magnifier* magnifier) {
+MagnifierControls::MagnifierControls(Magnifier* magnifier) {
     auto* layout = new QHBoxLayout();
     setLayout(layout);
 
@@ -36,6 +38,24 @@ MagnifierZoom::MagnifierZoom(Magnifier* magnifier) {
 
     auto* factorLabel = new QLabel();
     layout->addWidget(factorLabel);
+
+    QIcon freezeIcon;
+    freezeIcon.addFile(":/images/PauseOff.svg", QSize(), QIcon::Normal, QIcon::Off);
+    freezeIcon.addFile(":/images/PauseOn.svg", QSize(), QIcon::Normal, QIcon::On);
+
+    m_freezeAction = new QAction(tr("&Freeze Magnifier"), this);
+    m_freezeAction->setCheckable(true);
+    m_freezeAction->setShortcut(QKeySequence("Ctrl+M"));
+    m_freezeAction->setIcon(freezeIcon);
+    connect(m_freezeAction, &QAction::triggered, magnifier, &Magnifier::setFreeze);
+    connect(magnifier, &Magnifier::freezeChanged, m_freezeAction, &QAction::setChecked);
+
+    auto* freezeButton = new QToolButton();
+    freezeButton->setDefaultAction(m_freezeAction);
+    freezeButton->setIconSize(QSize(k_freezeButtonIconSize, k_freezeButtonIconSize));
+    freezeButton->setFixedSize(QSize(k_freezeButtonSize, k_freezeButtonSize));
+    freezeButton->setToolTip(tr("Freeze magnifier"));
+    layout->addWidget(freezeButton);
 
     zoom->setRange(0, Magnifier::getZoomFactors().size() - 1);
     connect(zoom, &QSlider::valueChanged, magnifier, &Magnifier::setZoom);
