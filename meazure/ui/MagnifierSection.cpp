@@ -18,9 +18,7 @@
  */
 
 #include "MagnifierSection.h"
-#include "Magnifier.h"
 #include "MagnifierZoom.h"
-#include "ColorData.h"
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QToolButton>
@@ -28,38 +26,38 @@
 #include <QKeySequence>
 
 
-MagnifierSection::MagnifierSection() {
+MagnifierSection::MagnifierSection() : m_magnifier(new Magnifier()) {
     auto* layout = new QVBoxLayout();
     setLayout(layout);
 
     auto* magnifierLayout = new QHBoxLayout();
-    auto* magnifier = new Magnifier();
-    magnifierLayout->addWidget(magnifier);
+    magnifierLayout->addWidget(m_magnifier);
     layout->addLayout(magnifierLayout);
 
     m_zoomInAction = new QAction(tr("Zoom In"), this);
     m_zoomInAction->setShortcut(QKeySequence(QKeySequence::ZoomIn));
-    connect(m_zoomInAction, &QAction::triggered, magnifier, &Magnifier::zoomIn);
-    connect(magnifier, &Magnifier::zoomChanged, this, [this](int zoomIndex) {
+    connect(m_zoomInAction, &QAction::triggered, m_magnifier, &Magnifier::zoomIn);
+    connect(m_magnifier, &Magnifier::zoomChanged, this, [this](int zoomIndex) {
         m_zoomInAction->setEnabled(zoomIndex < static_cast<int>(Magnifier::getZoomFactors().size() - 1));
     });
 
     m_zoomOutAction = new QAction(tr("Zoom Out"), this);
     m_zoomOutAction->setShortcut(QKeySequence(QKeySequence::ZoomOut));
-    connect(m_zoomOutAction, &QAction::triggered, magnifier, &Magnifier::zoomOut);
-    connect(magnifier, &Magnifier::zoomChanged, this, [this](int zoomIndex) {
+    connect(m_zoomOutAction, &QAction::triggered, m_magnifier, &Magnifier::zoomOut);
+    connect(m_magnifier, &Magnifier::zoomChanged, this, [this](int zoomIndex) {
         m_zoomOutAction->setEnabled(zoomIndex > 0);
     });
 
     m_gridAction = new QAction(tr("Magnifier &Grid"), this);
     m_gridAction->setCheckable(true);
-    connect(m_gridAction, &QAction::triggered, magnifier, &Magnifier::setGrid);
-    connect(magnifier, &Magnifier::gridChanged, m_gridAction, &QAction::setChecked);
+    connect(m_gridAction, &QAction::triggered, m_magnifier, &Magnifier::setGrid);
+    connect(m_magnifier, &Magnifier::gridChanged, m_gridAction, &QAction::setChecked);
 
     auto* colorLayout = new QHBoxLayout();
 
-    auto* colorData = new ColorData();
-    colorLayout->addWidget(colorData);
+    auto* colorDisplay = new ColorDisplay();
+    colorLayout->addWidget(colorDisplay);
+    connect(m_magnifier, &Magnifier::currentColorChanged, colorDisplay, &ColorDisplay::setColor);
 
     auto* copyButton = new QPushButton(QIcon(":/images/Clipboard.svg"), "");
     copyButton->setIconSize(QSize(k_buttonIconSize, k_buttonIconSize));
@@ -74,8 +72,8 @@ MagnifierSection::MagnifierSection() {
     m_freezeAction->setCheckable(true);
     m_freezeAction->setShortcut(QKeySequence("Ctrl+M"));
     m_freezeAction->setIcon(freezeIcon);
-    connect(m_freezeAction, &QAction::triggered, magnifier, &Magnifier::setFreeze);
-    connect(magnifier, &Magnifier::freezeChanged, m_freezeAction, &QAction::setChecked);
+    connect(m_freezeAction, &QAction::triggered, m_magnifier, &Magnifier::setFreeze);
+    connect(m_magnifier, &Magnifier::freezeChanged, m_freezeAction, &QAction::setChecked);
 
     auto* freezeButton = new QToolButton();
     freezeButton->setDefaultAction(m_freezeAction);
@@ -85,10 +83,16 @@ MagnifierSection::MagnifierSection() {
     colorLayout->addWidget(freezeButton);
     layout->addLayout(colorLayout);
 
-    auto* zoom = new MagnifierZoom(magnifier);
+    auto* zoom = new MagnifierZoom(m_magnifier);
     layout->addWidget(zoom);
 
-    magnifier->setGrid(k_initialShowGrid);
-    magnifier->setFreeze(k_initialFreeze);
-    magnifier->setZoom(k_initialZoomIndex);
+    m_magnifier->setGrid(k_initialShowGrid);
+    m_magnifier->setFreeze(k_initialFreeze);
+    m_magnifier->setZoom(k_initialZoomIndex);
+}
+
+void MagnifierSection::masterReset() {
+    m_magnifier->setGrid(k_initialShowGrid);
+    m_magnifier->setFreeze(k_initialFreeze);
+    m_magnifier->setZoom(k_initialZoomIndex);
 }

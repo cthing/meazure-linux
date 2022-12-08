@@ -5,8 +5,8 @@ set(TOP_SOURCES
 source_group(App FILES ${TOP_SOURCES})
 
 set(UI_SOURCES
-    ui/ColorData.cpp
-    ui/ColorData.h
+    ui/ColorDisplay.cpp
+    ui/ColorDisplay.h
     ui/DataField.cpp
     ui/DataField.h
     ui/GridDialog.cpp

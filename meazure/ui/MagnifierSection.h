@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "Magnifier.h"
+#include "ColorDisplay.h"
 #include <QWidget>
 #include <QAction>
 
@@ -31,6 +33,8 @@ class MagnifierSection : public QWidget {
 
 public:
     MagnifierSection();
+
+    void masterReset();
 
     [[nodiscard]] QAction* getZoomInAction() const {
         return m_zoomInAction;
@@ -54,7 +58,9 @@ private:
     static constexpr bool k_initialShowGrid { true };
     static constexpr int k_initialZoomIndex { 1 };
     static constexpr bool k_initialFreeze { false };
+    static constexpr ColorDisplay::ColorFormatId k_initialColorFmt { ColorDisplay::RGBFmt };
 
+    Magnifier* m_magnifier;
     QAction* m_zoomInAction;
     QAction* m_zoomOutAction;
     QAction* m_gridAction;
