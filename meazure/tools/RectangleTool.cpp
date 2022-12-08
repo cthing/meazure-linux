@@ -160,6 +160,8 @@ void RectangleTool::setPosition() {
 
 void RectangleTool::refresh() {
     setPosition();
+
+    emitActivePosition();
 }
 
 void RectangleTool::flash() {
@@ -191,6 +193,8 @@ void RectangleTool::departed(CrossHair&, int id) {
 }
 
 void RectangleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
+    m_activePointId = id;
+
     // Ctrl+drag moves all the crosshairs as a single unit
     //
     if ((keyboardModifiers & Qt::ControlModifier) != 0) {
@@ -256,9 +260,19 @@ void RectangleTool::moved(CrossHair&, int id, QPoint) {
         emit xy2PositionChanged(coord2, m_point2);
     }
 
+    emitActivePosition();
+
     emit widthHeightChanged(wh);
     emit distanceChanged(distance);
     emit areaChanged(area);
     emit aspectChanged(aspect);
     emit angleChanged(angle);
+}
+
+void RectangleTool::emitActivePosition() {
+    if (m_activePointId == k_point1Id) {
+        emit activePositionChanged(m_point1);
+    } else {
+        emit activePositionChanged(m_point2);
+    }
 }

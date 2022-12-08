@@ -171,6 +171,8 @@ signals:
     ///
     void radioToolSelected(RadioTool& tool);
 
+    void activePositionChanged(QPoint rawPos);
+
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
     void xy2PositionChanged(QPointF coord, QPoint rawPos);
     void xyvPositionChanged(QPointF coord, QPoint rawPos);

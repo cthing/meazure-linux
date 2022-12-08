@@ -44,6 +44,8 @@ private slots:
     void adjustGrid();
 
 private:
+    static constexpr int k_toolbarIconSize { 20 };
+
     /// Creates actions that are referenced in multiple places in the application.
     ///
     void createActions();

@@ -84,6 +84,7 @@ public:
     void stepYVPosition(int numSteps) override;
 
 signals:
+    void activePositionChanged(QPoint rawPos);
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
     void xyvPositionChanged(QPointF coord, QPoint rawPos);
     void widthHeightChanged(QSizeF widthHeight);
@@ -109,13 +110,16 @@ private:
 
     void setPosition();
 
+    void emitActivePosition();
 
-    QPoint m_center;                     ///< Location of the center of the circle
-    QPoint m_perimeter;                  ///< A point on the perimeter of the circle
-    CrossHair* m_centerCH;               ///< Crosshair for the center point
-    CrossHair* m_perimeterCH;            ///< Crosshair for the perimeter point
-    Circle* m_circle;                    ///< Circle graphic object
-    Line* m_line;                        ///< Radial line
-    ToolDataWindow* m_dataWinCenter;     ///< Data window tooltip for the center point
-    ToolDataWindow* m_dataWinPerimeter;  ///< Data window tooltip for the perimeter point
+
+    QPoint m_center;                         ///< Location of the center of the circle
+    QPoint m_perimeter;                      ///< A point on the perimeter of the circle
+    int m_activePointId { k_perimeterId };   ///< ID of point being changed
+    CrossHair* m_centerCH;                   ///< Crosshair for the center point
+    CrossHair* m_perimeterCH;                ///< Crosshair for the perimeter point
+    Circle* m_circle;                        ///< Circle graphic object
+    Line* m_line;                            ///< Radial line
+    ToolDataWindow* m_dataWinCenter;         ///< Data window tooltip for the center point
+    ToolDataWindow* m_dataWinPerimeter;      ///< Data window tooltip for the perimeter point
 };

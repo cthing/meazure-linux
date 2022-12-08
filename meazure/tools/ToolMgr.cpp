@@ -56,10 +56,13 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     m_tools[rulerTool->getName()] = rulerTool;
     m_tools[gridTool->getName()] = gridTool;
 
+    connect(cursorTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
 
+    connect(pointTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(pointTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
 
+    connect(lineTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(lineTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(lineTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
     connect(lineTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
@@ -68,6 +71,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(lineTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(lineTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
+    connect(rectangleTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(rectangleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(rectangleTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
     connect(rectangleTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
@@ -76,6 +80,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(rectangleTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(rectangleTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
+    connect(circleTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(circleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(circleTool, SIGNAL(xyvPositionChanged(QPointF, QPoint)), this, SIGNAL(xyvPositionChanged(QPointF, QPoint)));
     connect(circleTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
@@ -84,11 +89,13 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(circleTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(circleTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
+    connect(angleTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(angleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(angleTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
     connect(angleTool, SIGNAL(xyvPositionChanged(QPointF, QPoint)), this, SIGNAL(xyvPositionChanged(QPointF, QPoint)));
     connect(angleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
 
+    connect(windowTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(windowTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(windowTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
     connect(windowTool, SIGNAL(widthHeightChanged(QSizeF)), this, SIGNAL(widthHeightChanged(QSizeF)));
@@ -217,6 +224,8 @@ void ToolMgr::stepYVPosition(int numSteps) {
 
 void ToolMgr::refresh() {
     for (const auto& toolEntry : m_tools) {
-        toolEntry.second->refresh();
+        if (toolEntry.second->isEnabled()) {
+            toolEntry.second->refresh();
+        }
     }
 }

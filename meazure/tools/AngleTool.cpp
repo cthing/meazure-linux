@@ -253,6 +253,8 @@ void AngleTool::setBisectorPosition() {
 
 void AngleTool::refresh() {
     setPosition();
+
+    emitActivePosition();
 }
 
 void AngleTool::flash() {
@@ -291,6 +293,8 @@ void AngleTool::departed(CrossHair&, int id) {
 }
 
 void AngleTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
+    m_activePointId = id;
+
     // Ctrl + drag moves the all the crosshairs as a single unit.
     //
     if ((keyboardModifiers & Qt::ControlModifier) != 0) {
@@ -399,4 +403,16 @@ void AngleTool::moved(CrossHair&, int id, QPoint) {
     }
 
     emit angleChanged(angle);
+
+    emitActivePosition();
+}
+
+void AngleTool::emitActivePosition() {
+    if (m_activePointId == k_point1Id) {
+        emit activePositionChanged(m_point1);
+    } else if (m_activePointId == k_point2Id) {
+        emit activePositionChanged(m_point2);
+    } else {
+        emit activePositionChanged(m_vertex);
+    }
 }

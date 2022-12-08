@@ -21,14 +21,12 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSlider>
+#include <QSignalBlocker>
 
 
-MagnifierZoom::MagnifierZoom() {
-    createControls();
-}
-
-void MagnifierZoom::createControls() {
+MagnifierZoom::MagnifierZoom(Magnifier* magnifier) {
     auto* layout = new QHBoxLayout();
+    setLayout(layout);
 
     auto* zoomLabel = new QLabel(tr("Zoom:"));
     layout->addWidget(zoomLabel);
@@ -36,8 +34,17 @@ void MagnifierZoom::createControls() {
     auto* zoom = new QSlider(Qt::Horizontal);
     layout->addWidget(zoom);
 
-    auto* magnification = new QLabel(tr("2X"));
-    layout->addWidget(magnification);
+    auto* factorLabel = new QLabel();
+    layout->addWidget(factorLabel);
 
-    setLayout(layout);
+    zoom->setRange(0, Magnifier::getZoomFactors().size() - 1);
+    connect(zoom, &QSlider::valueChanged, magnifier, &Magnifier::setZoom);
+
+    connect(magnifier, &Magnifier::zoomChanged, this, [this, zoom, factorLabel](int zoomIndex) {
+        const QSignalBlocker blocker(this);
+        zoom->setValue(zoomIndex);
+
+        const QString zoomFactor = QString("%1X").arg(Magnifier::getZoomFactors()[zoomIndex]);
+        factorLabel->setText(zoomFactor);
+    });
 }

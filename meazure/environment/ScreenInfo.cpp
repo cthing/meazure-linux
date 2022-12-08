@@ -27,6 +27,7 @@
 #include <QSizeF>
 #include <QApplication>
 #include <QMainWindow>
+#include <QPixmap>
 #include <qpa/qplatformcursor.h>
 #include <limits>
 #include <algorithm>
@@ -346,4 +347,8 @@ bool ScreenInfo::sizeChanged() const {
 
 QPoint ScreenInfo::constrainPosition(const QPoint& point) const {
     return Geometry::constrain(m_screens, point);
+}
+
+QImage ScreenInfo::grabScreen(int x, int y, int width, int height) const {
+    return QGuiApplication::primaryScreen()->grabWindow(0, x, y, width, height).toImage();
 }

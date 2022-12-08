@@ -24,7 +24,7 @@
 #include <QVBoxLayout>
 
 
-MainView::MainView() {
+MainView::MainView() : m_magnifierSection(new MagnifierSection) {
     auto* layout = new QVBoxLayout();
 
     auto* toolDataSection = new ToolDataSection();
@@ -33,8 +33,23 @@ MainView::MainView() {
     auto* screenDataSection = new ScreenDataSection();
     layout->addWidget(screenDataSection);
 
-    auto* magnifierSection = new MagnifierSection();
-    layout->addWidget(magnifierSection);
+    layout->addWidget(m_magnifierSection);
 
     setLayout(layout);
+}
+
+QAction* MainView::getMagnifierZoomInAction() const {
+    return m_magnifierSection->getZoomInAction();
+}
+
+QAction* MainView::getMagnifierZoomOutAction() const {
+    return m_magnifierSection->getZoomOutAction();
+}
+
+QAction* MainView::getMagnifierGridAction() const {
+    return m_magnifierSection->getGridAction();
+}
+
+QAction* MainView::getMagnifierFreezeAction() const {
+    return m_magnifierSection->getFreezeAction();
 }

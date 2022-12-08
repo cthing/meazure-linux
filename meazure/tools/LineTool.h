@@ -83,6 +83,7 @@ public:
     void stepY2Position(int numSteps) override;
 
 signals:
+    void activePositionChanged(QPoint rawPos);
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
     void xy2PositionChanged(QPointF coord, QPoint rawPos);
     void widthHeightChanged(QSizeF widthHeight);
@@ -105,12 +106,15 @@ private:
 
     void setPosition();
 
+    void emitActivePosition();
 
-    QPoint m_point1;             ///< Location of one end point of the line
-    QPoint m_point2;             ///< Location of one end point of the line
-    CrossHair* m_point1CH;       ///< Crosshair for point 1
-    CrossHair* m_point2CH;       ///< Crosshair for point 2
-    Line* m_line;                ///< Line connecting point 1 and point 2
-    ToolDataWindow* m_dataWin1;  ///< Data window tooltip for point 1
-    ToolDataWindow* m_dataWin2;  ///< Data window tooltip for point 2
+
+    QPoint m_point1;                     ///< Location of one end point of the line
+    QPoint m_point2;                     ///< Location of one end point of the line
+    int m_activePointId { k_point1Id};   ///< ID of point being changed
+    CrossHair* m_point1CH;               ///< Crosshair for point 1
+    CrossHair* m_point2CH;               ///< Crosshair for point 2
+    Line* m_line;                        ///< Line connecting point 1 and point 2
+    ToolDataWindow* m_dataWin1;          ///< Data window tooltip for point 1
+    ToolDataWindow* m_dataWin2;          ///< Data window tooltip for point 2
 };

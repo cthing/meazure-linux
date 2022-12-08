@@ -19,7 +19,17 @@
 
 #pragma once
 
+#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/profile/Profile.h>
 #include <QWidget>
+#include <QPoint>
+#include <QImage>
+#include <QTimer>
+#include <QTransform>
+#include <QPen>
+#include <QLine>
+#include <array>
+#include <vector>
 
 
 /// Displays a magnified image of an area of the screen.
@@ -29,10 +39,59 @@ class Magnifier : public QWidget {
     Q_OBJECT
 
 public:
+    using ZoomFactors = std::array<int, 8>;
+
     Magnifier();
 
+    static constexpr const ZoomFactors& getZoomFactors() {
+        return k_zoomFactors;
+    }
+
+    void saveProfile(Profile& profile) const;
+
+    void loadProfile(Profile& profile);
+
+public slots:
+    void setZoom(int zoomIndex);
+    void zoomIn();
+    void zoomOut();
+    void setFreeze(bool frozen);
+    void setGrid(bool show);
+
+signals:
+    void zoomChanged(int zoomIndex);
+    void freezeChanged(bool frozen);
+    void gridChanged(bool shown);
+    void currentColorChanged(QRgb color);
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void setCurPos(QPoint rawPos);
+    void periodicGrab();
+
 private:
-    /// Creates the magnifier display.
-    ///
+    static constexpr int k_size { 251 };        ///< Magnifier size, pixels
+    static constexpr int k_updateRate { 50 };   ///< Magnifier refresh rate, in milliseconds.
+    static constexpr ZoomFactors k_zoomFactors { 1, 2, 3, 4, 6, 8, 16, 32 };
+    static constexpr int k_centerMarkerMinIndex { 4 };
+    static constexpr int k_gridMinIndex { 4 };
+
     void create();
+
+    void grabScreen();
+
+    const ScreenInfoProvider& m_screenInfo;
+    QPoint m_curPos { -1, -1 };
+    QImage m_image;
+    QPen m_gridPen;
+    QPen m_centerMarkerPen;
+    QRect m_centerMarker;
+    QTimer m_grabTimer;
+    int m_zoomIndex { 0 };
+    QTransform m_zoomTransform;
+    std::vector<QLine> m_gridLines;
+    bool m_showGrid { true };
+    QRgb m_currentColor { 1 };
 };

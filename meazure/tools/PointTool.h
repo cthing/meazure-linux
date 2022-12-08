@@ -77,6 +77,7 @@ public:
     void stepY1Position(int numSteps) override;
 
 signals:
+    void activePositionChanged(QPoint rawPos);
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
 
 private slots:

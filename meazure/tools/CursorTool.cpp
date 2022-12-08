@@ -71,6 +71,7 @@ void CursorTool::emitMeasurement(QPoint position) {
         m_dataWindow->xy1PositionChanged(coord, position);
         placeDataWin(position);
 
+        emit activePositionChanged(position);
         emit xy1PositionChanged(coord, position);
     }
 }

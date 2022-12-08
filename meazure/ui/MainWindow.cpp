@@ -32,11 +32,11 @@
 #include <meazure/tools/WindowTool.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
-#include <QMenu>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QToolBar>
 #include <QActionGroup>
+#include <QMenu>
 
 
 MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -56,6 +56,11 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
     m_degreeUnitsAction->trigger();
+}
+
+void MainWindow::createCentralWidget() {
+    QWidget* mainView = new MainView();
+    setCentralWidget(mainView);
 }
 
 void MainWindow::createActions() {
@@ -215,13 +220,24 @@ void MainWindow::createMenus() {
     unitsMenu->addAction(m_millimeterUnitsAction);
     unitsMenu->addAction(m_customUnitsAction);
     unitsMenu->addAction(m_defineCustomUnitsAction);
-    toolsMenu->addSeparator();
+    unitsMenu->addSeparator();
     unitsMenu->addAction(m_degreeUnitsAction);
     unitsMenu->addAction(m_radianUnitsAction);
+
+    // View menu
+
+    const MainView* mainView = dynamic_cast<MainView*>(centralWidget());
+
+    QMenu* viewMenu = menuBar()->addMenu(tr("&View"));
+    viewMenu->addAction(mainView->getMagnifierZoomInAction());
+    viewMenu->addAction(mainView->getMagnifierZoomOutAction());
+    viewMenu->addAction(mainView->getMagnifierGridAction());
+    viewMenu->addAction(mainView->getMagnifierFreezeAction());
 }
 
 void MainWindow::createToolbar() {
     QToolBar* toolBar = addToolBar("");
+    toolBar->setIconSize(QSize(k_toolbarIconSize, k_toolbarIconSize));
     toolBar->addAction(m_cursorToolAction);
     toolBar->addAction(m_pointToolAction);
     toolBar->addAction(m_lineToolAction);
@@ -238,11 +254,6 @@ void MainWindow::createDialogs() {
     App* app = App::instance();
     auto* gridTool = dynamic_cast<GridTool*>(app->getToolMgr().getTool(GridTool::k_toolName));
     m_gridDialog = new GridDialog(gridTool, app->getScreenInfo(), app->getUnitsMgr(), this);
-}
-
-void MainWindow::createCentralWidget() {
-    QWidget* mainView = new MainView();
-    setCentralWidget(mainView);
 }
 
 void MainWindow::radioToolSelected(RadioTool& tool) {

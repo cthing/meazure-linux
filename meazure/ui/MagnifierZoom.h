@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "Magnifier.h"
 #include <QWidget>
 
 
@@ -29,10 +30,5 @@ class MagnifierZoom : public QWidget {
     Q_OBJECT
 
 public:
-    MagnifierZoom();
-
-private:
-    /// Creates the zoom slider and magnification indicator.
-    ///
-    void createControls();
+    explicit MagnifierZoom(Magnifier* magnifier);
 };

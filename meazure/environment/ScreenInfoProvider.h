@@ -23,6 +23,7 @@
 #include <QPoint>
 #include <QRect>
 #include <QSizeF>
+#include <QImage>
 
 
 struct ScreenInfoProvider {
@@ -161,4 +162,14 @@ struct ScreenInfoProvider {
     /// @return New point based on the specified point that is guaranteed to be on a screen.
     ///
     [[nodiscard]] virtual QPoint constrainPosition(const QPoint& point) const = 0;
+
+    /// Grabs the specified portion of the screen.
+    ///
+    /// @param[in] x Left corner of the rectangle to grab
+    /// @param[in] y Upper corner of the rectangle to grab
+    /// @param[in] width Width of the rectangle to grab
+    /// @param[in] height Height of the rectangle to grab
+    /// @return Image of the screen contents in the specified rectangle
+    ///
+    [[nodiscard]] virtual QImage grabScreen(int x, int y, int width, int height) const = 0;
 };

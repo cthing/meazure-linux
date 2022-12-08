@@ -160,6 +160,8 @@ void CircleTool::setPosition() {
 
 void CircleTool::refresh() {
     setPosition();
+
+    emitActivePosition();
 }
 
 void CircleTool::flash() {
@@ -191,6 +193,8 @@ void CircleTool::departed(CrossHair&, int id) {
 }
 
 void CircleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
+    m_activePointId = id;
+
     // Ctrl+drag moves all the crosshairs as a single unit
     //
     if ((keyboardModifiers & Qt::ControlModifier) != 0) {
@@ -256,9 +260,19 @@ void CircleTool::moved(CrossHair&, int id, QPoint) {
         emit xyvPositionChanged(coordCenter, m_center);
     }
 
+    emitActivePosition();
+
     emit widthHeightChanged(wh);
     emit distanceChanged(radius);
     emit areaChanged(area);
     emit aspectChanged(aspect);
     emit angleChanged(angle);
+}
+
+void CircleTool::emitActivePosition() {
+    if (m_activePointId == k_perimeterId) {
+        emit activePositionChanged(m_perimeter);
+    } else {
+        emit activePositionChanged(m_center);
+    }
 }

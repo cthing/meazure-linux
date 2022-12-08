@@ -88,6 +88,7 @@ public:
     void stepYVPosition(int numSteps) override;
 
 signals:
+    void activePositionChanged(QPoint rawPos);
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
     void xy2PositionChanged(QPointF coord, QPoint rawPos);
     void xyvPositionChanged(QPointF coord, QPoint rawPos);
@@ -109,18 +110,21 @@ private:
     void setPosition();
     void setBisectorPosition();
 
+    void emitActivePosition();
 
-    QPoint m_vertex;            ///< Location of the intersection of line 1 and line 2
-    QPoint m_point1;            ///< Location of the line 1 end point
-    QPoint m_point2;            ///< Location of the line 2 end point
-    QPoint m_vertexAnchor;      ///< Location for vertical / horizontal lock when Shift is held while dragging
-    CrossHair* m_vertexCH;      ///< Crosshair for the line 1 / line 2 intersection point
-    CrossHair* m_point1CH;      ///< Crosshair for the line 1 end point
-    CrossHair* m_point2CH;      ///< Crosshair for the line 2 end point
-    Line* m_lineB;              ///< Line forming the angle bisector
-    Line* m_line1;              ///< Line from vertex to point 1
-    Line* m_line2;              ///< Line from vertex to point 2
-    ToolDataWindow* m_dataWinV; ///< Data window tooltip for the vertex
-    ToolDataWindow* m_dataWin1; ///< Data window tooltip for point 1
-    ToolDataWindow* m_dataWin2; ///< Data window tooltip for point 2
+
+    QPoint m_vertex;                     ///< Location of the intersection of line 1 and line 2
+    QPoint m_point1;                     ///< Location of the line 1 end point
+    QPoint m_point2;                     ///< Location of the line 2 end point
+    QPoint m_vertexAnchor;               ///< Location for vertical / horizontal lock when Shift is held while dragging
+    int m_activePointId { k_point1Id};   ///< ID of point being changed
+    CrossHair* m_vertexCH;               ///< Crosshair for the line 1 / line 2 intersection point
+    CrossHair* m_point1CH;               ///< Crosshair for the line 1 end point
+    CrossHair* m_point2CH;               ///< Crosshair for the line 2 end point
+    Line* m_lineB;                       ///< Line forming the angle bisector
+    Line* m_line1;                       ///< Line from vertex to point 1
+    Line* m_line2;                       ///< Line from vertex to point 2
+    ToolDataWindow* m_dataWinV;          ///< Data window tooltip for the vertex
+    ToolDataWindow* m_dataWin1;          ///< Data window tooltip for point 1
+    ToolDataWindow* m_dataWin2;          ///< Data window tooltip for point 2
 };

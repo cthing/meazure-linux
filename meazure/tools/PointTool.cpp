@@ -104,6 +104,8 @@ void PointTool::setPosition() {
 
 void PointTool::refresh() {
     setPosition();
+
+    emit activePositionChanged(m_center);
 }
 
 void PointTool::flash() {
@@ -147,6 +149,7 @@ void PointTool::moved(CrossHair&, int, QPoint center) {
         m_dataWindow->xy1PositionChanged(coord, center);
         m_dataWindow->moveNear(m_crosshair->geometry());
 
+        emit activePositionChanged(center);
         emit xy1PositionChanged(coord, center);
     }
 }

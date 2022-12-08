@@ -100,6 +100,7 @@ void WindowTool::setPosition(const QPoint& position) {
         m_dataWindow->moveNear(point1);
         m_dataWindow->show();
 
+        emit activePositionChanged(point1);
         emit xy1PositionChanged(coord1, point1);
         emit xy2PositionChanged(coord2, point2);
         emit widthHeightChanged(wh);

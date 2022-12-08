@@ -18,14 +18,146 @@
  */
 
 #include "Magnifier.h"
+#include <meazure/App.h>
+#include <meazure/tools/ToolMgr.h>
+#include <QPainter>
+#include <QBrush>
+#include <QColor>
 
 
-Magnifier::Magnifier() {
+Magnifier::Magnifier() :
+        m_screenInfo(App::instance()->getScreenInfo()),
+        m_gridPen(QBrush(QColor(0, 0, 0)), 1),
+        m_centerMarkerPen(QBrush(QColor(255, 0, 0)), 1) {
     create();
+
+    m_grabTimer.setTimerType(Qt::PreciseTimer);
+    m_grabTimer.setInterval(k_updateRate);
+    connect(&m_grabTimer, &QTimer::timeout, this, &Magnifier::periodicGrab);
+
+    const ToolMgr& toolMgr = App::instance()->getToolMgr();
+    connect(&toolMgr, &ToolMgr::activePositionChanged, this, &Magnifier::setCurPos);
+
+    setZoom(m_zoomIndex);
+    setGrid(m_showGrid);
+
+    m_grabTimer.start();
 }
 
 void Magnifier::create() {
-    setFixedSize(100, 100);
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet("background-color: blue");
+    setFixedSize(k_size, k_size);
+}
+
+void Magnifier::saveProfile(Profile& profile) const {
+    if (!profile.userInitiated()) {
+        profile.writeInt("ZoomIndex", m_zoomIndex);
+        profile.writeBool("MagGrid", m_showGrid);
+    }
+}
+
+void Magnifier::loadProfile(Profile& profile) {
+    if (!profile.userInitiated()) {
+        setZoom(profile.readInt("ZoomIndex", m_zoomIndex));
+        setGrid(profile.readBool("MagGrid", m_showGrid));
+    }
+}
+
+void Magnifier::zoomIn() {
+    setZoom(m_zoomIndex + 1);
+}
+
+void Magnifier::zoomOut() {
+    setZoom(m_zoomIndex - 1);
+}
+
+void Magnifier::setZoom(int zoomIndex) {
+    if (zoomIndex >= 0 && zoomIndex < static_cast<int>(k_zoomFactors.size())) {
+        m_zoomIndex = zoomIndex;
+
+        const int zoomFactor = k_zoomFactors[zoomIndex];
+        const int origin = k_size * (1 - zoomFactor) / 2;
+        m_zoomTransform = QTransform::fromTranslate(origin, origin).scale(zoomFactor, zoomFactor);
+
+        const int pixelWidth = zoomFactor + 1;
+
+        const int markerCoord = (k_size - zoomFactor) / 2;
+        m_centerMarker = QRect(markerCoord, markerCoord, pixelWidth, pixelWidth);
+
+        m_gridLines.clear();
+        const int coordMax = k_size - 1;
+        for (int x = markerCoord; x > 0; x -= pixelWidth) {
+            m_gridLines.emplace_back(x, 0, x, coordMax);
+        }
+        for (int x = markerCoord + pixelWidth; x < k_size; x += pixelWidth) {
+            m_gridLines.emplace_back(x, 0, x, coordMax);
+        }
+        for (int y = markerCoord; y > 0; y -= pixelWidth) {
+            m_gridLines.emplace_back(0, y, coordMax, y);
+        }
+        for (int y = markerCoord + pixelWidth; y < k_size; y += pixelWidth) {
+            m_gridLines.emplace_back(0, y, coordMax, y);
+        }
+
+        repaint();
+
+        emit zoomChanged(zoomIndex);
+    }
+}
+
+void Magnifier::setFreeze(bool frozen) {
+    if (frozen) {
+        m_grabTimer.stop();
+    } else {
+        m_grabTimer.start();
+    }
+
+    emit freezeChanged(frozen);
+}
+
+void Magnifier::setGrid(bool show) {
+    m_showGrid = show;
+    repaint();
+
+    emit gridChanged(show);
+}
+
+void Magnifier::setCurPos(QPoint rawPos) {
+    m_curPos = rawPos;
+}
+
+void Magnifier::periodicGrab() {
+    grabScreen();
+    repaint();
+}
+
+void Magnifier::grabScreen() {
+    const int c = k_size / 2;
+    const int x = m_curPos.x() - c;
+    const int y = m_curPos.y() - c;
+    m_image = m_screenInfo.grabScreen(x, y, k_size, k_size);
+
+    const QRgb color = m_image.pixel(c, c);
+    if (color != m_currentColor) {
+        m_currentColor = color;
+        emit currentColorChanged(color);
+    }
+}
+
+void Magnifier::paintEvent(QPaintEvent*) {
+    QPainter painter(this);
+
+    painter.save();
+    painter.setTransform(m_zoomTransform);
+    painter.drawImage(0, 0, m_image);
+    painter.restore();
+
+    if (m_showGrid && (m_zoomIndex >= k_gridMinIndex)) {
+        painter.setPen(m_gridPen);
+        painter.drawLines(m_gridLines.data(), static_cast<int>(m_gridLines.size()));
+    }
+
+    if (m_zoomIndex >= k_centerMarkerMinIndex) {
+        painter.setPen(m_centerMarkerPen);
+        painter.drawRect(m_centerMarker);
+    }
 }

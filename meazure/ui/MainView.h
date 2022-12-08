@@ -20,6 +20,10 @@
 #pragma once
 
 #include <QWidget>
+#include <QAction>
+
+
+class MagnifierSection;
 
 
 /// Contains the tool data, screen data and magnifier sections of the application.
@@ -30,4 +34,12 @@ class MainView : public QWidget {
 
 public:
     MainView();
+
+    [[nodiscard]] QAction* getMagnifierZoomInAction() const;
+    [[nodiscard]] QAction* getMagnifierZoomOutAction() const;
+    [[nodiscard]] QAction* getMagnifierGridAction() const;
+    [[nodiscard]] QAction* getMagnifierFreezeAction() const;
+
+private:
+    MagnifierSection* m_magnifierSection;
 };

@@ -116,6 +116,8 @@ public:
 
     [[nodiscard]] QPoint constrainPosition(const QPoint& point) const override;
 
+    [[nodiscard]] QImage grabScreen(int x, int y, int width, int height) const override;
+
 private:
     class Screen;
 

@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QAction>
 
 
 /// Provides the screen magnifier, pixel color display and zoom control.
@@ -31,8 +32,31 @@ class MagnifierSection : public QWidget {
 public:
     MagnifierSection();
 
+    [[nodiscard]] QAction* getZoomInAction() const {
+        return m_zoomInAction;
+    }
+
+    [[nodiscard]] QAction* getZoomOutAction() const {
+        return m_zoomOutAction;
+    }
+
+    [[nodiscard]] QAction* getGridAction() const {
+        return m_gridAction;
+    }
+
+    [[nodiscard]] QAction* getFreezeAction() const {
+        return m_freezeAction;
+    }
+
 private:
-    /// Creates the magnifier, magnifier zoom and color data components.
-    ///
-    void createComponents();
+    static constexpr int k_buttonSize { 20 };
+    static constexpr int k_buttonIconSize { k_buttonSize - 6 };
+    static constexpr bool k_initialShowGrid { true };
+    static constexpr int k_initialZoomIndex { 1 };
+    static constexpr bool k_initialFreeze { false };
+
+    QAction* m_zoomInAction;
+    QAction* m_zoomOutAction;
+    QAction* m_gridAction;
+    QAction* m_freezeAction;
 };
