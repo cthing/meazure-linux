@@ -56,6 +56,10 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
     m_degreeUnitsAction->trigger();
+
+    setWindowFlags(windowFlags() & (~Qt::WindowMaximizeButtonHint));
+    setMaximumWidth(sizeHint().width());
+    setMaximumHeight(sizeHint().height());
 }
 
 void MainWindow::createCentralWidget() {
