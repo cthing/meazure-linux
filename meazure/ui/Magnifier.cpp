@@ -29,7 +29,7 @@ Magnifier::Magnifier() :
         m_screenInfo(App::instance()->getScreenInfo()),
         m_gridPen(QBrush(QColor(0, 0, 0)), 1),
         m_centerMarkerPen(QBrush(QColor(255, 0, 0)), 1) {
-    create();
+    setFixedSize(k_size, k_size);
 
     m_grabTimer.setTimerType(Qt::PreciseTimer);
     m_grabTimer.setInterval(k_updateRate);
@@ -42,10 +42,6 @@ Magnifier::Magnifier() :
     setGrid(m_showGrid);
 
     m_grabTimer.start();
-}
-
-void Magnifier::create() {
-    setFixedSize(k_size, k_size);
 }
 
 void Magnifier::saveProfile(Profile& profile) const {
@@ -146,18 +142,24 @@ void Magnifier::grabScreen() {
 void Magnifier::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
+    // Image
     painter.save();
     painter.setTransform(m_zoomTransform);
     painter.drawImage(0, 0, m_image);
     painter.restore();
 
+    // Grid
     if (m_showGrid && (m_zoomIndex >= k_gridMinIndex)) {
         painter.setPen(m_gridPen);
         painter.drawLines(m_gridLines.data(), static_cast<int>(m_gridLines.size()));
     }
 
+    // Center marker
     if (m_zoomIndex >= k_centerMarkerMinIndex) {
         painter.setPen(m_centerMarkerPen);
         painter.drawRect(m_centerMarker);
     }
+
+    // Border
+    painter.drawRect(0, 0, k_size - 1, k_size - 1);
 }

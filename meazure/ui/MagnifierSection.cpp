@@ -27,6 +27,7 @@ MagnifierSection::MagnifierSection() :
         m_magnifier(new Magnifier()),
         m_magnifierControls(new MagnifierControls(m_magnifier)) {
     auto* layout = new QVBoxLayout();
+    layout->setContentsMargins(0, 5, 0, 0);
     setLayout(layout);
 
     // Use an HBox to center magnifier horizontally

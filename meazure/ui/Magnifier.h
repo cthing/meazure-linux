@@ -72,13 +72,11 @@ private slots:
     void periodicGrab();
 
 private:
-    static constexpr int k_size { 251 };        ///< Magnifier size, pixels
+    static constexpr int k_size { 281 };        ///< Magnifier size, pixels
     static constexpr int k_updateRate { 50 };   ///< Magnifier refresh rate, in milliseconds.
     static constexpr ZoomFactors k_zoomFactors { 1, 2, 3, 4, 6, 8, 16, 32 };
     static constexpr int k_centerMarkerMinIndex { 4 };
     static constexpr int k_gridMinIndex { 4 };
-
-    void create();
 
     void grabScreen();
 
