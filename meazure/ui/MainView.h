@@ -21,6 +21,7 @@
 
 #include <QWidget>
 #include <QAction>
+#include <vector>
 
 
 class MagnifierSection;
@@ -39,6 +40,8 @@ public:
     [[nodiscard]] QAction* getMagnifierZoomOutAction() const;
     [[nodiscard]] QAction* getMagnifierGridAction() const;
     [[nodiscard]] QAction* getMagnifierFreezeAction() const;
+    [[nodiscard]] std::vector<QAction*> getColorFormatActions() const;
+    [[nodiscard]] QAction* getCopyColorAction() const;
 
 private:
     MagnifierSection* m_magnifierSection;

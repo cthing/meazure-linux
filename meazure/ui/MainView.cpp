@@ -53,3 +53,11 @@ QAction* MainView::getMagnifierGridAction() const {
 QAction* MainView::getMagnifierFreezeAction() const {
     return m_magnifierSection->getFreezeAction();
 }
+
+std::vector<QAction*> MainView::getColorFormatActions() const {
+    return m_magnifierSection->getColorFormatActions();
+}
+
+QAction* MainView::getCopyColorAction() const {
+    return m_magnifierSection->getCopyColorAction();
+}

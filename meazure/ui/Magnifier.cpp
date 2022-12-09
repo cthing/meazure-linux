@@ -155,11 +155,10 @@ void Magnifier::paintEvent(QPaintEvent*) {
     }
 
     // Center marker
-    if (m_zoomIndex >= k_centerMarkerMinIndex) {
-        painter.setPen(m_centerMarkerPen);
-        painter.drawRect(m_centerMarker);
-    }
+    painter.setPen(m_centerMarkerPen);
+    painter.drawRect(m_centerMarker);
 
     // Border
+    painter.setPen(m_gridPen);
     painter.drawRect(0, 0, k_size - 1, k_size - 1);
 }

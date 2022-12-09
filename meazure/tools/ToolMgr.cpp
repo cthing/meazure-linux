@@ -56,12 +56,15 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     m_tools[rulerTool->getName()] = rulerTool;
     m_tools[gridTool->getName()] = gridTool;
 
+    connect(cursorTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(cursorTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(cursorTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
 
+    connect(pointTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(pointTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(pointTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
 
+    connect(lineTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(lineTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(lineTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(lineTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
@@ -71,6 +74,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(lineTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(lineTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
+    connect(rectangleTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(rectangleTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(rectangleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(rectangleTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
@@ -80,6 +84,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(rectangleTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(rectangleTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
+    connect(circleTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(circleTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(circleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(circleTool, SIGNAL(xyvPositionChanged(QPointF, QPoint)), this, SIGNAL(xyvPositionChanged(QPointF, QPoint)));
@@ -89,12 +94,14 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(circleTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(circleTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
+    connect(angleTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(angleTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(angleTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(angleTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
     connect(angleTool, SIGNAL(xyvPositionChanged(QPointF, QPoint)), this, SIGNAL(xyvPositionChanged(QPointF, QPoint)));
     connect(angleTool, SIGNAL(angleChanged(double)), this, SIGNAL(angleChanged(double)));
 
+    connect(windowTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(windowTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
     connect(windowTool, SIGNAL(xy1PositionChanged(QPointF, QPoint)), this, SIGNAL(xy1PositionChanged(QPointF, QPoint)));
     connect(windowTool, SIGNAL(xy2PositionChanged(QPointF, QPoint)), this, SIGNAL(xy2PositionChanged(QPointF, QPoint)));
@@ -104,6 +111,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(windowTool, SIGNAL(areaChanged(double)), this, SIGNAL(areaChanged(double)));
     connect(windowTool, SIGNAL(aspectChanged(double)), this, SIGNAL(aspectChanged(double)));
 
+    connect(rulerTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(this, &ToolMgr::radioToolSelected, rulerTool, &RulerTool::radioToolSelected);
     connect(this, &ToolMgr::xy1PositionChanged, this, [rulerTool](QPointF, QPoint rawPos) {
         rulerTool->setIndicator(0, rawPos);
@@ -114,6 +122,8 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(this, &ToolMgr::xyvPositionChanged, this, [rulerTool](QPointF, QPoint rawPos) {
         rulerTool->setIndicator(2, rawPos);
     });
+
+    connect(gridTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
 }
 
 void ToolMgr::saveProfile(Profile& profile) const {

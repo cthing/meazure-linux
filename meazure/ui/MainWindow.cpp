@@ -37,6 +37,7 @@
 #include <QToolBar>
 #include <QActionGroup>
 #include <QMenu>
+#include <vector>
 
 
 MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -81,54 +82,85 @@ void MainWindow::createActions() {
     m_cursorToolAction->setToolTip("Tracks cursor position");
     connect(m_cursorToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(CursorTool::k_toolName); });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_cursorToolAction->setChecked(tool.getName() == CursorTool::k_toolName);
+    });
 
     m_pointToolAction = new QAction(QIcon(":/images/PointTool.svg"), tr("&Point"), radioToolGroup);
     m_pointToolAction->setCheckable(true);
     m_pointToolAction->setToolTip("Measures a point");
     connect(m_pointToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(PointTool::k_toolName); });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_pointToolAction->setChecked(tool.getName() == PointTool::k_toolName);
+    });
 
     m_lineToolAction = new QAction(QIcon(":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
     m_lineToolAction->setCheckable(true);
     m_lineToolAction->setToolTip("Measures using line");
     connect(m_lineToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(LineTool::k_toolName); });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_lineToolAction->setChecked(tool.getName() == LineTool::k_toolName);
+    });
 
     m_rectangleToolAction = new QAction(QIcon(":/images/RectangleTool.svg"), tr("&Rectangle"), radioToolGroup);
     m_rectangleToolAction->setCheckable(true);
     m_rectangleToolAction->setToolTip("Measures using rectangle");
     connect(m_rectangleToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(RectangleTool::k_toolName); });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_rectangleToolAction->setChecked(tool.getName() == RectangleTool::k_toolName);
+    });
 
     m_circleToolAction = new QAction(QIcon(":/images/CircleTool.svg"), tr("C&ircle"), radioToolGroup);
     m_circleToolAction->setCheckable(true);
     m_circleToolAction->setToolTip("Measures using circle");
     connect(m_circleToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(CircleTool::k_toolName); });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_circleToolAction->setChecked(tool.getName() == CircleTool::k_toolName);
+    });
 
     m_angleToolAction = new QAction(QIcon(":/images/AngleTool.svg"), tr("&Angle"), radioToolGroup);
     m_angleToolAction->setCheckable(true);
     m_angleToolAction->setToolTip("Measures using protractor");
     connect(m_angleToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(AngleTool::k_toolName); });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_angleToolAction->setChecked(tool.getName() == AngleTool::k_toolName);
+    });
 
     m_windowToolAction = new QAction(QIcon(":/images/WindowTool.svg"), tr("&Window"), radioToolGroup);
     m_windowToolAction->setCheckable(true);
     m_windowToolAction->setToolTip("Measures a window");
     connect(m_windowToolAction, &QAction::triggered, this,
             [&toolMgr] { toolMgr.selectRadioTool(WindowTool::k_toolName); });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_windowToolAction->setChecked(tool.getName() == WindowTool::k_toolName);
+    });
 
     m_rulerToolAction = new QAction(QIcon(":/images/RulerTool.svg"), tr("R&uler"), this);
     m_rulerToolAction->setCheckable(true);
     m_rulerToolAction->setToolTip("Adds screen rulers");
     connect(m_rulerToolAction, &QAction::triggered, this,
             [&toolMgr](bool checked) { toolMgr.setEnabled(RulerTool::k_toolName, checked); });
+    connect(&toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
+        if (tool.getName() == RulerTool::k_toolName) {
+            m_rulerToolAction->setChecked(enabled);
+        }
+    });
 
     m_gridToolAction = new QAction(QIcon(":/images/GridTool.svg"), tr("&Screen Grid"), this);
     m_gridToolAction->setCheckable(true);
     m_gridToolAction->setToolTip("Adds screen grid");
     connect(m_gridToolAction, &QAction::triggered, this,
             [&toolMgr](bool checked) { toolMgr.setEnabled(GridTool::k_toolName, checked); });
+    connect(&toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
+        if (tool.getName() == GridTool::k_toolName) {
+            m_gridToolAction->setChecked(enabled);
+        }
+    });
 
     m_gridAdjustAction = new QAction(tr("Screen &Grid Spacing..."));
     connect(m_gridAdjustAction, &QAction::triggered, this, &MainWindow::adjustGrid);
@@ -141,30 +173,51 @@ void MainWindow::createActions() {
     m_pixelUnitsAction = new QAction(tr("&Pixels"), linearUnitsGroup);
     m_pixelUnitsAction->setCheckable(true);
     connect(m_pixelUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(PixelsId); });
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_pixelUnitsAction->setChecked(id == PixelsId);
+    });
 
     m_twipUnitsAction = new QAction(tr("&Twips"), linearUnitsGroup);
     m_twipUnitsAction->setCheckable(true);
     connect(m_twipUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(TwipsId); });
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_twipUnitsAction->setChecked(id == TwipsId);
+    });
 
     m_pointUnitsAction = new QAction(tr("P&oints"), linearUnitsGroup);
     m_pointUnitsAction->setCheckable(true);
     connect(m_pointUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(PointsId); });
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_pointUnitsAction->setChecked(id == PointsId);
+    });
 
     m_picaUnitsAction = new QAction(tr("Pic&as"), linearUnitsGroup);
     m_picaUnitsAction->setCheckable(true);
     connect(m_picaUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(PicasId); });
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_picaUnitsAction->setChecked(id == PicasId);
+    });
 
     m_inchUnitsAction = new QAction(tr("&Inches"), linearUnitsGroup);
     m_inchUnitsAction->setCheckable(true);
     connect(m_inchUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(InchesId); });
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_inchUnitsAction->setChecked(id == InchesId);
+    });
 
     m_centimeterUnitsAction = new QAction(tr("&Centimeters"), linearUnitsGroup);
     m_centimeterUnitsAction->setCheckable(true);
     connect(m_centimeterUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(CentimetersId); });
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_centimeterUnitsAction->setChecked(id == CentimetersId);
+    });
 
     m_millimeterUnitsAction = new QAction(tr("&Millimeters"), linearUnitsGroup);
     m_millimeterUnitsAction->setCheckable(true);
     connect(m_millimeterUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setLinearUnits(MillimetersId); });
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_millimeterUnitsAction->setChecked(id == MillimetersId);
+    });
 
     m_customUnitsAction = new QAction(tr("[custom]"), linearUnitsGroup);
     m_customUnitsAction->setCheckable(true);
@@ -178,13 +231,21 @@ void MainWindow::createActions() {
     m_degreeUnitsAction = new QAction(tr("&Degrees"), angularUnitsGroup);
     m_degreeUnitsAction->setCheckable(true);
     connect(m_degreeUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setAngularUnits(DegreesId); });
+    connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, [this](AngularUnitsId id) {
+        m_degreeUnitsAction->setChecked(id == DegreesId);
+    });
 
     m_radianUnitsAction = new QAction(tr("&Radians"), angularUnitsGroup);
     m_radianUnitsAction->setCheckable(true);
     connect(m_radianUnitsAction, &QAction::triggered, this, [&unitsMgr] { unitsMgr.setAngularUnits(RadiansId); });
+    connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, [this](AngularUnitsId id) {
+        m_radianUnitsAction->setChecked(id == RadiansId);
+    });
 }
 
 void MainWindow::createMenus() {
+    const MainView* mainView = dynamic_cast<MainView*>(centralWidget());
+
     // File menu
 
     QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
@@ -197,8 +258,13 @@ void MainWindow::createMenus() {
     connect(exitAct, &QAction::triggered, this, &QWidget::close);
     fileMenu->addAction(exitAct);
 
-    // Tools menu
+    // Edit menu
 
+    QMenu* editMenu = menuBar()->addMenu(tr("&Edit"));
+    editMenu->addAction(mainView->getCopyColorAction());
+
+    // Tools menu
+    
     QMenu* toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(m_cursorToolAction);
     toolsMenu->addAction(m_pointToolAction);
@@ -230,13 +296,16 @@ void MainWindow::createMenus() {
 
     // View menu
 
-    const MainView* mainView = dynamic_cast<MainView*>(centralWidget());
-
     QMenu* viewMenu = menuBar()->addMenu(tr("&View"));
     viewMenu->addAction(mainView->getMagnifierZoomInAction());
     viewMenu->addAction(mainView->getMagnifierZoomOutAction());
     viewMenu->addAction(mainView->getMagnifierGridAction());
     viewMenu->addAction(mainView->getMagnifierFreezeAction());
+
+    QMenu* colorMenu = viewMenu->addMenu("&Color Format");
+    for (QAction* colorFormat : mainView->getColorFormatActions()) {
+        colorMenu->addAction(colorFormat);
+    }
 }
 
 void MainWindow::createToolbar() {

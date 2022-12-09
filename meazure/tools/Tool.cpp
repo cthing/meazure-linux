@@ -26,6 +26,8 @@ Tool::Tool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
 
 void Tool::setEnabled(bool enable) {
     m_enabled = enable;
+
+    emit toolEnabled(*this, enable);
 }
 
 void Tool::saveProfile(Profile&) const {

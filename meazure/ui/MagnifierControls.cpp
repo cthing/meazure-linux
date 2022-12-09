@@ -28,6 +28,7 @@
 
 MagnifierControls::MagnifierControls(Magnifier* magnifier) {
     auto* layout = new QHBoxLayout();
+    layout->setContentsMargins(0, 5, 0, 5);
     setLayout(layout);
 
     auto* zoomLabel = new QLabel(tr("Zoom:"));

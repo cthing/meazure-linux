@@ -25,7 +25,8 @@
 
 MagnifierSection::MagnifierSection() :
         m_magnifier(new Magnifier()),
-        m_magnifierControls(new MagnifierControls(m_magnifier)) {
+        m_magnifierControls(new MagnifierControls(m_magnifier)),
+        m_colorDisplay(new ColorDisplay()) {
     auto* layout = new QVBoxLayout();
     layout->setContentsMargins(0, 5, 0, 0);
     setLayout(layout);
@@ -56,17 +57,18 @@ MagnifierSection::MagnifierSection() :
     connect(m_gridAction, &QAction::triggered, m_magnifier, &Magnifier::setGrid);
     connect(m_magnifier, &Magnifier::gridChanged, m_gridAction, &QAction::setChecked);
 
-    auto* colorDisplay = new ColorDisplay();
-    layout->addWidget(colorDisplay);
-    connect(m_magnifier, &Magnifier::currentColorChanged, colorDisplay, &ColorDisplay::setColor);
+    layout->addWidget(m_colorDisplay);
+    connect(m_magnifier, &Magnifier::currentColorChanged, m_colorDisplay, &ColorDisplay::setColor);
 
     m_magnifier->setGrid(k_initialShowGrid);
     m_magnifier->setFreeze(k_initialFreeze);
     m_magnifier->setZoom(k_initialZoomIndex);
+    m_colorDisplay->setColorFormat(RGBFmt);
 }
 
 void MagnifierSection::masterReset() {
     m_magnifier->setGrid(k_initialShowGrid);
     m_magnifier->setFreeze(k_initialFreeze);
     m_magnifier->setZoom(k_initialZoomIndex);
+    m_colorDisplay->setColorFormat(RGBFmt);
 }

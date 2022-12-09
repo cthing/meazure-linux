@@ -24,6 +24,7 @@
 #include "ColorDisplay.h"
 #include <QWidget>
 #include <QAction>
+#include <vector>
 
 
 /// Provides the screen magnifier, pixel color display and zoom control.
@@ -53,14 +54,23 @@ public:
         return m_magnifierControls->getFreezeAction();
     }
 
+    [[nodiscard]] std::vector<QAction*> getColorFormatActions() const {
+        return m_colorDisplay->getColorFormatActions();
+    }
+
+    [[nodiscard]] QAction* getCopyColorAction() const {
+        return m_colorDisplay->getCopyColorAction();
+    }
+
 private:
     static constexpr bool k_initialShowGrid { true };
     static constexpr int k_initialZoomIndex { 1 };
     static constexpr bool k_initialFreeze { false };
-    static constexpr ColorDisplay::ColorFormatId k_initialColorFmt { ColorDisplay::RGBFmt };
+    static constexpr ColorFormatId k_initialColorFmt { RGBFmt };
 
     Magnifier* m_magnifier;
     MagnifierControls* m_magnifierControls;
+    ColorDisplay* m_colorDisplay;
     QAction* m_zoomInAction;
     QAction* m_zoomOutAction;
     QAction* m_gridAction;

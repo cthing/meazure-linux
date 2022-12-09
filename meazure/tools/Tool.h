@@ -98,6 +98,9 @@ public:
     ///
     virtual void refresh();
 
+signals:
+    void toolEnabled(Tool& tool, bool enabled);
+
 protected:
     [[nodiscard]] const ScreenInfoProvider& getScreenInfo() const {
         return m_screenInfo;
