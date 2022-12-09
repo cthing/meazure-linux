@@ -235,13 +235,13 @@ public:
     ///
     /// @param showSupplemental     [in] true to show supplemental angle instead of included angle
     ///
-    static void setSupplementalAngle(bool showSupplemental) { m_supplementalAngle = showSupplemental; }
+    void setSupplementalAngle(bool showSupplemental) { m_supplementalAngle = showSupplemental; }
 
     /// Indicates whether the included angle is shown (default) or the supplemental angle.
     ///
     /// @return true if the supplemental angle is shown.
     ///
-    static bool isSupplementalAngle() { return m_supplementalAngle; }
+    [[nodiscard]] bool isSupplementalAngle() const { return m_supplementalAngle; }
 
     /// Obtains the number of decimal places to display the specified measurement.
     ///
@@ -289,9 +289,8 @@ protected:
     AngularUnits& operator=(AngularUnits&&) = default;
 
 private:
-    static bool m_supplementalAngle;   ///< Indicates if the supplemental rather than included angle should be shown.
-
-    AngularUnitsId m_unitsId;          ///< Identifier for the units.
+    AngularUnitsId m_unitsId;           ///< Identifier for the units.
+    bool m_supplementalAngle { false }; ///< Indicates if the supplemental rather than included angle should be shown.
 };
 
 

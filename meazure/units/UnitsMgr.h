@@ -37,7 +37,7 @@ public:
     static constexpr const char* k_defLinearUnits { "px" };     ///< Default units for linear measurements.
     static constexpr const char* k_defAngularUnits { "deg" };   ///< Default units for angular measurements.
     static constexpr bool k_defInvertY { false };               ///< Default orientation of the y-axis.
-    static constexpr bool k_defSupplmentalAngle { false };      ///< Default angle to show
+    static constexpr bool k_defSupplementalAngle { false };     ///< Default angle to show
 
 
     ~UnitsMgr() override = default;
@@ -232,29 +232,11 @@ public:
         return LinearUnits::isInvertY();
     }
 
-    /// Sets whether to show the included angle (default) or the supplemental angle. The supplemental angle is
-    /// defined as:
-    /// \f[
-    ///     \theta_{s} =
-    ///         \begin{cases}
-    ///             180^\circ - \theta_{i}  & \theta_{i} \ge 0\\
-    ///             -180^\circ - \theta_{i} & \theta_{i} < 0
-    ///         \end{cases}
-    /// \f]
-    ///
-    /// @param[in] showSupplemental true to show supplemental angle instead of included angle
-    ///
-    static void setSupplementalAngle(bool showSupplemental) {
-        AngularUnits::setSupplementalAngle(showSupplemental);
-    }
-
     /// Indicates whether the included angle is shown (default) or the supplemental angle.
     ///
     /// @return true if the supplemental angle is shown.
     ///
-    static bool isSupplementalAngle() {
-        return AngularUnits::isSupplementalAngle();
-    }
+    [[nodiscard]] bool isSupplementalAngle() const;
 
     /// Moves the origin of the coordinate system to the specified point. The orientation of the axes is not
     /// effected by this method. To change the orientation of the y-axis use the setInvertY method.
@@ -330,12 +312,29 @@ public:
 
     [[nodiscard]] QSizeF getMinorTickIncr(const QRect& rect) const override;
 
+public slots:
+    /// Sets whether to show the included angle (default) or the supplemental angle. The supplemental angle is
+    /// defined as:
+    /// \f[
+    ///     \theta_{s} =
+    ///         \begin{cases}
+    ///             180^\circ - \theta_{i}  & \theta_{i} \ge 0\\
+    ///             -180^\circ - \theta_{i} & \theta_{i} < 0
+    ///         \end{cases}
+    /// \f]
+    ///
+    /// @param[in] showSupplemental true to show supplemental angle instead of included angle
+    ///
+    void setSupplementalAngle(bool showSupplemental);
+
 signals:
     void linearUnitsChanged(LinearUnitsId unitsId);
 
     void angularUnitsChanged(AngularUnitsId unitsId);
 
     void calibrationRequired();
+
+    void supplementalAngleChanged(bool showSupplemental);
 
 private:
     /// Ruler tick increments. The order of magnitude of these values is adjusted based on the units.

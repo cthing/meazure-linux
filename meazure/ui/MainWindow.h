@@ -38,9 +38,6 @@ public:
 private slots:
     void radioToolSelected(RadioTool& tool);
 
-    void linearUnitsChanged(LinearUnitsId unitsId);
-    void angularUnitsChanged(AngularUnitsId unitsId);
-
     void adjustGrid();
 
 private:
@@ -88,6 +85,8 @@ private:
     QAction* m_defineCustomUnitsAction;
     QAction* m_degreeUnitsAction;
     QAction* m_radianUnitsAction;
+
+    QAction* m_supplementalAngleAction;
 
     GridDialog* m_gridDialog;
 };

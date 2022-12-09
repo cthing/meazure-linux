@@ -65,9 +65,9 @@ void Units::masterReset() {
 // AngularUnits
 //*************************************************************************
 
-bool AngularUnits::m_supplementalAngle = false;
-
-AngularUnits::AngularUnits(AngularUnitsId unitsId, const QString& unitsStr) : Units(unitsStr), m_unitsId(unitsId) {
+AngularUnits::AngularUnits(AngularUnitsId unitsId, const QString& unitsStr) :
+        Units(unitsStr),
+        m_unitsId(unitsId) {
     addPrecisionName("angle");
 }
 

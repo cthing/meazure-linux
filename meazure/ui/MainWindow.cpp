@@ -51,8 +51,9 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
 
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
-    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &MainWindow::linearUnitsChanged);
-    connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, &MainWindow::angularUnitsChanged);
+    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, &toolMgr, &ToolMgr::refresh);
+    connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, &toolMgr, &ToolMgr::refresh);
+    connect(&unitsMgr, &UnitsMgr::supplementalAngleChanged, &toolMgr, &ToolMgr::refresh);
 
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
@@ -241,6 +242,13 @@ void MainWindow::createActions() {
     connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, [this](AngularUnitsId id) {
         m_radianUnitsAction->setChecked(id == RadiansId);
     });
+
+    // View actions
+
+    m_supplementalAngleAction = new QAction(tr("Supplemental &Angle"));
+    m_supplementalAngleAction->setCheckable(true);
+    connect(m_supplementalAngleAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setSupplementalAngle);
+    connect(&unitsMgr, &UnitsMgr::supplementalAngleChanged, m_supplementalAngleAction, &QAction::setChecked);
 }
 
 void MainWindow::createMenus() {
@@ -264,7 +272,7 @@ void MainWindow::createMenus() {
     editMenu->addAction(mainView->getCopyColorAction());
 
     // Tools menu
-    
+
     QMenu* toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(m_cursorToolAction);
     toolsMenu->addAction(m_pointToolAction);
@@ -306,6 +314,10 @@ void MainWindow::createMenus() {
     for (QAction* colorFormat : mainView->getColorFormatActions()) {
         colorMenu->addAction(colorFormat);
     }
+
+    viewMenu->addSeparator();
+
+    viewMenu->addAction(m_supplementalAngleAction);
 }
 
 void MainWindow::createToolbar() {
@@ -331,14 +343,6 @@ void MainWindow::createDialogs() {
 
 void MainWindow::radioToolSelected(RadioTool& tool) {
     statusBar()->showMessage(tool.getInstructions());
-}
-
-void MainWindow::linearUnitsChanged(LinearUnitsId) {    // NOLINT(readability-convert-member-functions-to-static)
-    App::instance()->getToolMgr().refresh();
-}
-
-void MainWindow::angularUnitsChanged(AngularUnitsId) {  // NOLINT(readability-convert-member-functions-to-static)
-    App::instance()->getToolMgr().refresh();
 }
 
 void MainWindow::adjustGrid() {

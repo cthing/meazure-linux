@@ -92,7 +92,7 @@ void UnitsMgr::loadProfile(Profile& profile) {
     }
     setAngularUnits(profile.readStr("AngularUnits", k_defAngularUnits));
     setInvertY(profile.readBool("InvertY", k_defInvertY));
-    setSupplementalAngle(profile.readBool("SupplementalAngle", k_defSupplmentalAngle));
+    setSupplementalAngle(profile.readBool("SupplementalAngle", k_defSupplementalAngle));
 
     const QPointF pt(profile.readDbl("OriginX", 0.0), profile.readDbl("OriginY", 0.0));
     setOrigin(unconvertPos(pt));
@@ -105,7 +105,7 @@ void UnitsMgr::masterReset() {
     setAngularUnits(k_defAngularUnits);
 
     setInvertY(k_defInvertY);
-    setSupplementalAngle(k_defSupplmentalAngle);
+    setSupplementalAngle(k_defSupplementalAngle);
     setOrigin(QPoint());
 
     for (const auto& unitsEntry : m_linearUnitsMap) {
@@ -157,6 +157,18 @@ void UnitsMgr::setAngularUnits(const QString& unitsStr) {
             setAngularUnits(unitsEntry.first);
         }
     }
+}
+
+void UnitsMgr::setSupplementalAngle(bool showSupplemental) {
+    for (const auto& unitsEntry : m_angularUnitsMap) {
+        unitsEntry.second->setSupplementalAngle(showSupplemental);
+    }
+
+    emit supplementalAngleChanged(showSupplemental);
+}
+
+bool UnitsMgr::isSupplementalAngle() const {
+    return m_degreeUnits.isSupplementalAngle();
 }
 
 QSizeF UnitsMgr::getWidthHeight(const QPoint& p1, const QPoint& p2) const {

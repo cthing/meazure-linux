@@ -65,12 +65,6 @@ public:
     ///
     void masterReset();
 
-    /// Causes the current tool to remeasure thereby emitting any measurement related signals. Typically, this method
-    /// is called when the measurement units are changed or when the tool is first selected. Does nothing if the tool
-    /// is not enabled. The base class implementation does nothing.
-    ///
-    void refresh();
-
     /// Obtains the specified tool. Note that this method does not activate the requested tool.
     ///
     /// @param[in] toolName Name of the tool to obtain
@@ -80,6 +74,12 @@ public:
     Tool* getTool(const char* toolName) const;
 
 public slots:
+    /// Causes the current tool to remeasure thereby emitting any measurement related signals. Typically, this method
+    /// is called when the measurement units are changed or when the tool is first selected. Does nothing if the tool
+    /// is not enabled. The base class implementation does nothing.
+    ///
+    void refresh();
+
     /// Selects the specified radio tool making it visible and ready for providing measurements. The radioToolSelected
     /// signal is emitted.
     ///
