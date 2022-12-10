@@ -73,6 +73,10 @@ public:
     ///
     Tool* getTool(const char* toolName) const;
 
+    [[nodiscard]] const QPoint& getActivePosition() const {
+        return m_activePosition;
+    };
+
 public slots:
     /// Causes the current tool to remeasure thereby emitting any measurement related signals. Typically, this method
     /// is called when the measurement units are changed or when the tool is first selected. Does nothing if the tool
@@ -192,6 +196,7 @@ private:
 
     ToolsMap m_tools;
     RadioTool* m_currentRadioTool { nullptr };
+    QPoint m_activePosition;
 
     friend class App;
 };

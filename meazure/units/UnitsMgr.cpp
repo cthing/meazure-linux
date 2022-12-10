@@ -145,6 +145,30 @@ void UnitsMgr::setLinearUnits(const QString& unitsStr) {
     }
 }
 
+void UnitsMgr::setOrigin(const QPoint& origin) {
+    for (const auto& unitsEntry : m_linearUnitsMap) {
+        unitsEntry.second->setOrigin(origin);
+    }
+
+    emit originChanged(origin);
+}
+
+QPoint UnitsMgr::getOrigin() const {
+    return m_inchUnits.getOrigin();
+}
+
+void UnitsMgr::setInvertY(bool invertY) {
+    for (const auto& unitsEntry : m_linearUnitsMap) {
+        unitsEntry.second->setInvertY(invertY);
+    }
+
+    emit invertYChanged(invertY);
+}
+
+bool UnitsMgr::isInvertY() const {
+    return m_inchUnits.isInvertY();
+}
+
 void UnitsMgr::setAngularUnits(AngularUnitsId unitsId) {
     m_currentAngularUnits = (*m_angularUnitsMap.find(unitsId)).second;
 

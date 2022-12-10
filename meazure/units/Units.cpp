@@ -115,10 +115,6 @@ double RadianUnits::convertAngle(double angle) const {
 // LinearUnits
 //*************************************************************************
 
-bool LinearUnits::m_invertY = false;
-QPoint LinearUnits::m_originOffset;
-
-
 LinearUnits::LinearUnits(LinearUnitsId unitsId, const QString& unitsStr, const ScreenInfoProvider& screenInfoProvider) :
         Units(unitsStr), m_screenInfoProvider(screenInfoProvider), m_unitsId(unitsId) {
     addPrecisionName("x");

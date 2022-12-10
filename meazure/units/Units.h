@@ -384,7 +384,7 @@ public:
     /// @param[in] invertY true inverts the y-axis, placing the origin at the lower left of the primary
     ///         display screen and making positive y pointing upward.
     ///
-    static void setInvertY(bool invertY) { m_invertY = invertY; }
+    void setInvertY(bool invertY) { m_invertY = invertY; }
 
     /// Returns the orientation of the y-axis.
     ///
@@ -393,20 +393,20 @@ public:
     ///         the upper left corner and the positive y-axis is pointing down. Note that the actual location of the
     ///         origin is determined by the setOrigin method.
     ///
-    static bool isInvertY() { return m_invertY; }
+    [[nodiscard]] bool isInvertY() const { return m_invertY; }
 
     /// Moves the origin of the coordinate system to the specified point. The orientation of the axes is not
     /// effected by this method. To change the  orientation of the y-axis use the setInvertY method.
     ///
     /// @param[in] origin New location for the origin of the coordinate system, in pixels.
     ///
-    static void setOrigin(const QPoint& origin) { m_originOffset = origin; }
+    void setOrigin(const QPoint& origin) { m_originOffset = origin; }
 
     /// Returns the location of the origin of the coordinate system.
     ///
     /// @return Location of the origin of the coordinate system, in pixels.
     ///
-    static const QPoint& getOrigin() { return m_originOffset; }
+    [[nodiscard]] const QPoint& getOrigin() const { return m_originOffset; }
 
     /// Internally all measurements are in pixels. Measurement units based solely on pixels do not require the use of
     /// the screen resolution for conversion. Measurement units such as inches, require the screen resolution for
@@ -619,8 +619,8 @@ protected:
     [[nodiscard]] QSizeF findResFromPos(const QPointF& pos) const;
 
 private:
-    static QPoint m_originOffset;                   ///< Offset of the origin from the system origin, in pixels.
-    static bool m_invertY;                          ///< Indicates if the y-axis direction is inverted.
+    QPoint m_originOffset { 0, 0 };                 ///< Offset of the origin from the system origin, in pixels.
+    bool m_invertY { false };                       ///< Indicates if the y-axis direction is inverted.
     const ScreenInfoProvider& m_screenInfoProvider; ///< Display screen information
     LinearUnitsId m_unitsId;                        ///< Linear units identifier.
 };

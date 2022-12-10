@@ -215,22 +215,7 @@ public:
         return m_angularUnitsMap.at(unitsId)->getDefaultPrecisions();
     }
 
-    /// By default, the X11 coordinate system is inverted from the typical Cartesian coordinate system in that
-    /// the origin is located in the upper left corner of the primary screen and the positive y-axis points downward.
-    /// This method sets whether the y-axis should be inverted so that the origin is moved to the lower left corner
-    /// of the primary screen and the positive y-axis points up. Note that the actual location of the origin is
-    /// determined by the setOrigin method.
-    ///
-    /// @param[in] invertY true inverts the y-axis, placing the origin at the lower left of the primary display
-    ///         screen and making positive y pointing upward.
-    ///
-    static void setInvertY(bool invertY) {
-        LinearUnits::setInvertY(invertY);
-    }
-
-    [[nodiscard]] bool isInvertY() const override {
-        return LinearUnits::isInvertY();
-    }
+    [[nodiscard]] bool isInvertY() const override;
 
     /// Indicates whether the included angle is shown (default) or the supplemental angle.
     ///
@@ -238,18 +223,7 @@ public:
     ///
     [[nodiscard]] bool isSupplementalAngle() const;
 
-    /// Moves the origin of the coordinate system to the specified point. The orientation of the axes is not
-    /// effected by this method. To change the orientation of the y-axis use the setInvertY method.
-    ///
-    /// @param[in] origin New location for the origin of the coordinate system, in pixels.
-    ///
-    static void setOrigin(const QPoint& origin) {
-        LinearUnits::setOrigin(origin);
-    }
-
-    [[nodiscard]] QPoint getOrigin() const override {
-        return LinearUnits::getOrigin();
-    }
+    [[nodiscard]] QPoint getOrigin() const override;
 
     [[nodiscard]] QSizeF getWidthHeight(const QPoint& p1, const QPoint& p2) const override;
 
@@ -313,6 +287,24 @@ public:
     [[nodiscard]] QSizeF getMinorTickIncr(const QRect& rect) const override;
 
 public slots:
+    /// Moves the origin of the coordinate system to the specified point. The orientation of the axes is not
+    /// effected by this method. To change the orientation of the y-axis use the setInvertY method.
+    ///
+    /// @param[in] origin New location for the origin of the coordinate system, in pixels.
+    ///
+    void setOrigin(const QPoint& origin);
+
+    /// By default, the X11 coordinate system is inverted from the typical Cartesian coordinate system in that
+    /// the origin is located in the upper left corner of the primary screen and the positive y-axis points downward.
+    /// This method sets whether the y-axis should be inverted so that the origin is moved to the lower left corner
+    /// of the primary screen and the positive y-axis points up. Note that the actual location of the origin is
+    /// determined by the setOrigin method.
+    ///
+    /// @param[in] invertY true inverts the y-axis, placing the origin at the lower left of the primary display
+    ///         screen and making positive y pointing upward.
+    ///
+    void setInvertY(bool invertY);
+
     /// Sets whether to show the included angle (default) or the supplemental angle. The supplemental angle is
     /// defined as:
     /// \f[
@@ -335,6 +327,10 @@ signals:
     void calibrationRequired();
 
     void supplementalAngleChanged(bool showSupplemental);
+
+    void invertYChanged(bool invert);
+
+    void originChanged(QPoint origin);
 
 private:
     /// Ruler tick increments. The order of magnitude of these values is adjusted based on the units.

@@ -30,14 +30,12 @@ Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         m_unitsProvider(unitsProvider),
         m_offset(offset),
         m_lineWidth(lineWidth),
+        m_pen(QBrush(lineColor), lineWidth),
         m_start(1, 1),
         m_end(10, 10) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
-
-    m_pen.setColor(lineColor);
-    m_pen.setWidth(lineWidth);
 }
 
 void Rectangle::setColor(QRgb color) {

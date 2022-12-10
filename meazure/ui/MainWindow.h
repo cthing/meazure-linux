@@ -86,7 +86,10 @@ private:
     QAction* m_degreeUnitsAction;
     QAction* m_radianUnitsAction;
 
+    QAction* m_invertYAction;
     QAction* m_supplementalAngleAction;
+    QAction* m_setOriginAction;
+    QAction* m_resetOriginAction;
 
     GridDialog* m_gridDialog;
 };

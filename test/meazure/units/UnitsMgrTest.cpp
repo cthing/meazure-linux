@@ -35,12 +35,6 @@ class UnitsMgrTest : public QObject {
 Q_OBJECT
 
 private slots:
-    [[maybe_unused]] void init() {
-        UnitsMgr::setInvertY(false);
-        UnitsMgr::setOrigin(QPoint());
-        UnitsMgr::setSupplementalAngle(false);
-    }
-
     [[maybe_unused]] void testDefaults();
     [[maybe_unused]] void testInvertY();
     [[maybe_unused]] void testOrigin();
@@ -79,28 +73,28 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testInvertY() {
     const MockScreenInfoProvider screenProvider;
-    const UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(screenProvider);
 
     QVERIFY(!mgr.isInvertY());
-    UnitsMgr::setInvertY(true);
+    mgr.setInvertY(true);
     QVERIFY(mgr.isInvertY());
 }
 
 [[maybe_unused]] void UnitsMgrTest::testOrigin() {
     const MockScreenInfoProvider screenProvider;
-    const UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(screenProvider);
 
     QCOMPARE(mgr.getOrigin(), QPoint());
-    UnitsMgr::setOrigin(QPoint(100, 200));
+    mgr.setOrigin(QPoint(100, 200));
     QCOMPARE(mgr.getOrigin(), QPoint(100, 200));
 }
 
 [[maybe_unused]] void UnitsMgrTest::testSupplementalAngle() {
     const MockScreenInfoProvider screenProvider;
-    const UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(screenProvider);
 
     QVERIFY(!mgr.isSupplementalAngle());
-    UnitsMgr::setSupplementalAngle(true);
+    mgr.setSupplementalAngle(true);
     QVERIFY(mgr.isSupplementalAngle());
 }
 
@@ -272,7 +266,7 @@ private slots:
     mgr.setLinearUnits(LinearUnitsId::PixelsId);
     QCOMPARE(mgr.format(YCoord, 120.0), "120");
 
-    AngularUnits::setSupplementalAngle(true);
+    mgr.setSupplementalAngle(true);
     mgr.setAngularUnits(AngularUnitsId::DegreesId);
     QCOMPARE(mgr.formatConvertAngle(qDegreesToRadians(120.0)), "60.0");
     mgr.setAngularUnits(AngularUnitsId::RadiansId);
@@ -283,8 +277,8 @@ private slots:
     const MockScreenInfoProvider screenProvider;
     UnitsMgr mgr(screenProvider);
 
-    LinearUnits::setOrigin(QPoint(10, 20));
-    LinearUnits::setInvertY(true);
+    mgr.setOrigin(QPoint(10, 20));
+    mgr.setInvertY(true);
 
     mgr.setLinearUnits(LinearUnitsId::PixelsId);
 

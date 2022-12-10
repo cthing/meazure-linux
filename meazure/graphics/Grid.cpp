@@ -30,13 +30,11 @@ Grid::Grid(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
         Graphic(parent),
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
+        m_pen(QBrush(lineColor), lineWidth),
         m_gridRect(0, 0, 100, 100) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
-
-    m_pen.setColor(lineColor);
-    m_pen.setWidth(lineWidth);
 }
 
 void Grid::setColor(QRgb color) {

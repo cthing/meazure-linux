@@ -27,6 +27,7 @@
 #include <meazure/tools/RulerTool.h>
 #include <meazure/tools/PointTool.h>
 #include <meazure/tools/LineTool.h>
+#include <meazure/tools/OriginTool.h>
 #include <meazure/tools/RectangleTool.h>
 #include <meazure/tools/AngleTool.h>
 #include <meazure/tools/WindowTool.h>
@@ -47,17 +48,21 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     createToolbar();
     createDialogs();
 
-    const ToolMgr& toolMgr = App::instance()->getToolMgr();
+    ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
 
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, &toolMgr, &ToolMgr::refresh);
     connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, &toolMgr, &ToolMgr::refresh);
     connect(&unitsMgr, &UnitsMgr::supplementalAngleChanged, &toolMgr, &ToolMgr::refresh);
+    connect(&unitsMgr, &UnitsMgr::invertYChanged, &toolMgr, &ToolMgr::refresh);
+    connect(&unitsMgr, &UnitsMgr::originChanged, &toolMgr, &ToolMgr::refresh);
 
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
     m_degreeUnitsAction->trigger();
+
+    toolMgr.setEnabled(OriginTool::k_toolName, true);
 
     setWindowFlags(windowFlags() & (~Qt::WindowMaximizeButtonHint));
     setMaximumWidth(sizeHint().width());
@@ -245,10 +250,26 @@ void MainWindow::createActions() {
 
     // View actions
 
+    m_invertYAction = new QAction(tr("Invert &Y"));
+    m_invertYAction->setCheckable(true);
+    connect(m_invertYAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setInvertY);
+    connect(&unitsMgr, &UnitsMgr::invertYChanged, m_invertYAction, &QAction::setChecked);
+
     m_supplementalAngleAction = new QAction(tr("Supplemental &Angle"));
     m_supplementalAngleAction->setCheckable(true);
     connect(m_supplementalAngleAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setSupplementalAngle);
     connect(&unitsMgr, &UnitsMgr::supplementalAngleChanged, m_supplementalAngleAction, &QAction::setChecked);
+
+    m_setOriginAction = new QAction(tr("Set Origin"));
+    m_setOriginAction->setShortcut(QKeySequence("Ctrl+N"));
+    connect(m_setOriginAction, &QAction::triggered, this, [&toolMgr, &unitsMgr] {
+        unitsMgr.setOrigin(toolMgr.getActivePosition());
+    });
+
+    m_resetOriginAction = new QAction(tr("Reset Origin"));
+    connect(m_resetOriginAction, &QAction::triggered, this, [&unitsMgr] {
+        unitsMgr.setOrigin(QPoint(0, 0));
+    });
 }
 
 void MainWindow::createMenus() {
@@ -317,7 +338,10 @@ void MainWindow::createMenus() {
 
     viewMenu->addSeparator();
 
+    viewMenu->addAction(m_invertYAction);
     viewMenu->addAction(m_supplementalAngleAction);
+    viewMenu->addAction(m_setOriginAction);
+    viewMenu->addAction(m_resetOriginAction);
 }
 
 void MainWindow::createToolbar() {

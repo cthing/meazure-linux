@@ -48,6 +48,8 @@ set(GRAPHICS_SOURCES
     graphics/Handle.h
     graphics/Line.cpp
     graphics/Line.h
+    graphics/OriginMarker.cpp
+    graphics/OriginMarker.h
     graphics/Plotter.h
     graphics/Rectangle.cpp
     graphics/Rectangle.h
@@ -67,6 +69,8 @@ set(TOOLS_SOURCES
     tools/GridTool.h
     tools/LineTool.cpp
     tools/LineTool.h
+    tools/OriginTool.cpp
+    tools/OriginTool.h
     tools/PointTool.cpp
     tools/PointTool.h
     tools/RadioTool.cpp

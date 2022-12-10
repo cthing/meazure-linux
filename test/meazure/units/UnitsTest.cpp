@@ -37,13 +37,6 @@ class UnitsTest : public QObject {
 Q_OBJECT
 
 private slots:
-    [[maybe_unused]] void init() {
-        LinearUnits::setInvertY(false);
-        LinearUnits::setOrigin(QPoint());
-
-        AngularUnits::setSupplementalAngle(false);
-    }
-
     [[maybe_unused]] void testSupplementalProperty();
     [[maybe_unused]] void testDegreeUnits();
     [[maybe_unused]] void testDegreeUnitsSupplemental();
@@ -105,7 +98,7 @@ void verifyConvertAngle(AngularUnits& units, double radians, double expected) {
 
 void verifyInvertY(LinearUnits& units) {
     QVERIFY(!units.isInvertY());
-    LinearUnits::setInvertY(true);
+    units.setInvertY(true);
     QVERIFY(units.isInvertY());
 }
 
@@ -114,7 +107,7 @@ void verifyOrigin(LinearUnits& units) {
     QCOMPARE(units.getOrigin(), origin);
 
     const QPoint newOrigin(100, 200);
-    LinearUnits::setOrigin(newOrigin);
+    units.setOrigin(newOrigin);
     QCOMPARE(units.getOrigin(), newOrigin);
 }
 
@@ -123,8 +116,8 @@ void verifyRequiresRes(const LinearUnits& units, bool requiresRes) {
 }
 
 void verifyConvertCoords(LinearUnits& units, const QPointF& corrected, const QPointF& uncorrected) {
-    LinearUnits::setOrigin(QPoint(100, 200));
-    LinearUnits::setInvertY(true);
+    units.setOrigin(QPoint(100, 200));
+    units.setInvertY(true);
     const QPoint pos(110, 220);
     QPointF result = units.convertCoord(pos);
     QCOMPARE(result.x(), corrected.x());
@@ -175,9 +168,10 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 //=========================================================================
 
 [[maybe_unused]] void UnitsTest::testSupplementalProperty() {
-    QVERIFY(!AngularUnits::isSupplementalAngle());
-    AngularUnits::setSupplementalAngle(true);
-    QVERIFY(AngularUnits::isSupplementalAngle());
+    DegreeUnits units;
+    QVERIFY(!units.isSupplementalAngle());
+    units.setSupplementalAngle(true);
+    QVERIFY(units.isSupplementalAngle());
 }
 
 [[maybe_unused]] void UnitsTest::testDegreeUnits() {
@@ -199,7 +193,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 [[maybe_unused]] void UnitsTest::testDegreeUnitsSupplemental() {
     DegreeUnits units;
 
-    AngularUnits::setSupplementalAngle(true);
+    units.setSupplementalAngle(true);
     MEA_CHECK(verifyConvertAngle(units, 1.0, 122.704220487));
     MEA_CHECK(verifyConvertAngle(units, 0.0, 180.0));
     MEA_CHECK(verifyConvertAngle(units, 3.141592653589793, 0.0));
@@ -224,7 +218,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 [[maybe_unused]] void UnitsTest::testRadianUnitsSupplemental() {
     RadianUnits units;
 
-    AngularUnits::setSupplementalAngle(true);
+    units.setSupplementalAngle(true);
     MEA_CHECK(verifyConvertAngle(units, 1.0, 2.141592653589793));
     MEA_CHECK(verifyConvertAngle(units, 0.0, 3.141592653589793));
     MEA_CHECK(verifyConvertAngle(units, 3.1415926535897939, 0.0));

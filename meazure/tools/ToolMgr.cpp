@@ -23,6 +23,7 @@
 #include "CursorTool.h"
 #include "GridTool.h"
 #include "LineTool.h"
+#include "OriginTool.h"
 #include "PointTool.h"
 #include "RadioTool.h"
 #include "RectangleTool.h"
@@ -45,6 +46,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     //
     auto* rulerTool = new RulerTool(screenInfoProvider, unitsProvider, this);
     auto* gridTool = new GridTool(screenInfoProvider, unitsProvider, this);
+    auto* originTool = new OriginTool(screenInfoProvider, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;
     m_tools[pointTool->getName()] = pointTool;
@@ -55,6 +57,7 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     m_tools[windowTool->getName()] = windowTool;
     m_tools[rulerTool->getName()] = rulerTool;
     m_tools[gridTool->getName()] = gridTool;
+    m_tools[originTool->getName()] = originTool;
 
     connect(cursorTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
     connect(cursorTool, SIGNAL(activePositionChanged(QPoint)), this, SIGNAL(activePositionChanged(QPoint)));
@@ -124,6 +127,10 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     });
 
     connect(gridTool, SIGNAL(toolEnabled(Tool&, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
+
+    connect(originTool, SIGNAL(toolEnabled(Tool &, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
+
+    connect(this, &ToolMgr::activePositionChanged, this, [this](QPoint pos) { m_activePosition = pos; });
 }
 
 void ToolMgr::saveProfile(Profile& profile) const {

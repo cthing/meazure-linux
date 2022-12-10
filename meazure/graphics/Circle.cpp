@@ -31,14 +31,12 @@ Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
         m_screenInfo(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_gap(gap),
+        m_pen(QBrush(lineColor), lineWidth),
         m_center(50, 50),
         m_perimeter(20, 20) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
-
-    m_pen.setColor(lineColor);
-    m_pen.setWidth(lineWidth);
 }
 
 void Circle::setColor(QRgb color) {

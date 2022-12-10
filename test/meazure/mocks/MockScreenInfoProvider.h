@@ -106,6 +106,10 @@ public:
         return Geometry::constrain(&m_rect, pt);
     }
 
+    [[nodiscard]] QImage grabScreen(int, int, int, int) const override {
+        return {};
+    }
+
 private:
     QRect m_rect;
     QPoint m_center;
