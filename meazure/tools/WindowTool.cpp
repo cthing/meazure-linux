@@ -77,36 +77,36 @@ void WindowTool::setPosition(const QPoint& position) {
         return;
     }
 
-    const QRect windowRect = m_windowFinder->find(position);
+    QRect windowRect = m_windowFinder->find(position);
     if (windowRect.isEmpty()) {
-        m_dataWindow->hide();
-        m_rectangle->hide();
-    } else {
-        const QPoint point1 = windowRect.topLeft();
-        const QPoint point2 = windowRect.bottomRight();
-
-        m_rectangle->setPosition(point1, point2);
-        m_rectangle->show();
-
-        const QPointF coord1 = getUnitsProvider().convertCoord(point1);
-        const QPointF coord2 = getUnitsProvider().convertCoord(point2);
-        const QSizeF wh = getUnitsProvider().getWidthHeight(point1, point2);
-        const double distance = Geometry::hypot(wh);
-        const double aspect = Geometry::aspectRatio(wh);
-        const double area = Geometry::area(wh);
-        const double angle = getUnitsProvider().convertAngle(Geometry::angle(coord1, coord2));
-
-        m_dataWindow->widthHeightChanged(wh);
-        m_dataWindow->moveNear(point1);
-        m_dataWindow->show();
-
-        emit activePositionChanged(point1);
-        emit xy1PositionChanged(coord1, point1);
-        emit xy2PositionChanged(coord2, point2);
-        emit widthHeightChanged(wh);
-        emit distanceChanged(distance);
-        emit areaChanged(area);
-        emit aspectChanged(aspect);
-        emit angleChanged(angle);
+        const int screenIdx = getScreenInfo().screenForPoint(position);
+        windowRect = getScreenInfo().getScreenRect(screenIdx);
     }
+
+    const QPoint point1 = windowRect.topLeft();
+    const QPoint point2 = windowRect.bottomRight();
+
+    m_rectangle->setPosition(point1, point2);
+    m_rectangle->show();
+
+    const QPointF coord1 = getUnitsProvider().convertCoord(point1);
+    const QPointF coord2 = getUnitsProvider().convertCoord(point2);
+    const QSizeF wh = getUnitsProvider().getWidthHeight(point1, point2);
+    const double distance = Geometry::hypot(wh);
+    const double aspect = Geometry::aspectRatio(wh);
+    const double area = Geometry::area(wh);
+    const double angle = getUnitsProvider().convertAngle(Geometry::angle(coord1, coord2));
+
+    m_dataWindow->widthHeightChanged(wh);
+    m_dataWindow->moveNear(point1);
+    m_dataWindow->show();
+
+    emit activePositionChanged(point1);
+    emit xy1PositionChanged(coord1, point1);
+    emit xy2PositionChanged(coord2, point2);
+    emit widthHeightChanged(wh);
+    emit distanceChanged(distance);
+    emit areaChanged(area);
+    emit aspectChanged(aspect);
+    emit angleChanged(angle);
 }
