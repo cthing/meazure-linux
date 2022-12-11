@@ -36,7 +36,7 @@ Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
         m_perimeter(20, 20) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
-    setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+    setWindowFlag(Qt::WindowTransparentForInput, true);
 }
 
 void Circle::setColor(QRgb color) {

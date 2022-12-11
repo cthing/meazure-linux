@@ -35,6 +35,9 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow();
 
+signals:
+    void alwaysVisibleChanged(bool alwaysVisible);
+
 private slots:
     void radioToolSelected(RadioTool& tool);
 
@@ -42,8 +45,11 @@ private slots:
 
     void adjustGrid();
 
+    void setAlwaysVisible(bool alwaysVisible);
+
 private:
     static constexpr int k_toolbarIconSize { 20 };
+    static constexpr bool k_defAlwaysVisible { true };
 
     /// Creates actions that are referenced in multiple places in the application.
     ///
@@ -94,6 +100,7 @@ private:
     QAction* m_supplementalAngleAction;
     QAction* m_setOriginAction;
     QAction* m_resetOriginAction;
+    QAction* m_alwaysVisibleAction;
 
     GridDialog* m_gridDialog;
 };

@@ -31,7 +31,7 @@ OriginMarker::OriginMarker(const ScreenInfoProvider& screenInfoProvider, const U
         m_pen(QBrush(lineColor), lineWidth) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
-    setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+    setWindowFlag(Qt::WindowTransparentForInput, true);
 }
 
 void OriginMarker::setColor(QRgb color) {

@@ -34,7 +34,7 @@ Grid::Grid(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
         m_gridRect(0, 0, 100, 100) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
-    setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+    setWindowFlag(Qt::WindowTransparentForInput, true);
 }
 
 void Grid::setColor(QRgb color) {

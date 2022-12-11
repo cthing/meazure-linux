@@ -36,7 +36,7 @@ Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &
         m_flip(flip) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
-    setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+    setWindowFlag(Qt::WindowTransparentForInput, true);
     setWindowOpacity(qAlpha(opacity) / 255.0);
 
     m_font.setLetterSpacing(QFont::PercentageSpacing, 120);

@@ -65,9 +65,11 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
 
     toolMgr.setEnabled(OriginTool::k_toolName, true);
 
-    setWindowFlags(windowFlags() & (~Qt::WindowMaximizeButtonHint));
+    setWindowFlag(Qt::WindowMaximizeButtonHint, false);
     setMaximumWidth(sizeHint().width());
     setMaximumHeight(sizeHint().height());
+
+    setAlwaysVisible(k_defAlwaysVisible);
 }
 
 void MainWindow::createCentralWidget() {
@@ -277,6 +279,11 @@ void MainWindow::createActions() {
     connect(m_resetOriginAction, &QAction::triggered, this, [&unitsMgr] {
         unitsMgr.setOrigin(QPoint(0, 0));
     });
+
+    m_alwaysVisibleAction = new QAction(tr("Always &Visible"), this);
+    m_alwaysVisibleAction->setCheckable(true);
+    connect(m_alwaysVisibleAction, &QAction::triggered, this, &MainWindow::setAlwaysVisible);
+    connect(this, &MainWindow::alwaysVisibleChanged, m_alwaysVisibleAction, &QAction::setChecked);
 }
 
 void MainWindow::createMenus() {
@@ -350,6 +357,10 @@ void MainWindow::createMenus() {
     viewMenu->addAction(m_supplementalAngleAction);
     viewMenu->addAction(m_setOriginAction);
     viewMenu->addAction(m_resetOriginAction);
+
+    viewMenu->addSeparator();
+
+    viewMenu->addAction(m_alwaysVisibleAction);
 }
 
 void MainWindow::createToolbar() {
@@ -395,4 +406,11 @@ void MainWindow::adjustGrid() {
         m_gridToolAction->trigger();
     }
     m_gridDialog->exec();
+}
+
+void MainWindow::setAlwaysVisible(bool alwaysVisible) {
+    setWindowFlag(Qt::WindowStaysOnTopHint, alwaysVisible);
+    show();
+
+    emit alwaysVisibleChanged(alwaysVisible);
 }

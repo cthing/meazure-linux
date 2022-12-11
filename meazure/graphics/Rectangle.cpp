@@ -35,7 +35,7 @@ Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         m_end(10, 10) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
-    setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+    setWindowFlag(Qt::WindowTransparentForInput, true);
 }
 
 void Rectangle::setColor(QRgb color) {

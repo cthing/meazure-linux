@@ -36,7 +36,7 @@ Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
         m_end(10, 10) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
-    setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+    setWindowFlag(Qt::WindowTransparentForInput, true);
 }
 
 void Line::setColor(QRgb color) {

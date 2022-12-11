@@ -28,7 +28,7 @@ static Atom MEA_GFX = None;
 
 Graphic::Graphic(QWidget *parent) : QWidget(parent) {
     if (parent == nullptr) {
-        setWindowFlags(Qt::X11BypassWindowManagerHint);
+        setWindowFlag(Qt::X11BypassWindowManagerHint, true);
         setAttribute(Qt::WA_QuitOnClose, false);
         setAttribute(Qt::WA_AlwaysShowToolTips, true);
 
