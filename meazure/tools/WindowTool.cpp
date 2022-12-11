@@ -19,6 +19,7 @@
 
 #include "WindowTool.h"
 #include <meazure/utils/Geometry.h>
+#include <meazure/utils/Cloaker.h>
 #include <meazure/graphics/Dimensions.h>
 
 WindowTool::WindowTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
@@ -52,6 +53,13 @@ void WindowTool::setEnabled(bool enable) {
         m_pointerTracker->stop();
         m_windowTracker->stop();
     }
+}
+
+QImage WindowTool::grabRegion() const {
+    const Cloaker cloak(m_rectangle, m_dataWindow);
+
+    const QRect regionRect = m_rectangle->geometry();
+    return getScreenInfo().grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
 void WindowTool::refresh() {

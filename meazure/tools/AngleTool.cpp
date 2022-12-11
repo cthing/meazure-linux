@@ -58,9 +58,6 @@ AngleTool::AngleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
 }
 
 AngleTool::~AngleTool() {
-    m_dataWin1->hide();
-    m_dataWin2->hide();
-    m_dataWinV->hide();
     setEnabled(false);
     delete m_dataWin1;
     delete m_dataWin2;
@@ -90,6 +87,9 @@ void AngleTool::setEnabled(bool enable) {
         m_line1->hide();
         m_line2->hide();
         m_lineB->hide();
+        m_dataWin1->hide();
+        m_dataWin2->hide();
+        m_dataWinV->hide();
     }
 }
 

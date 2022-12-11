@@ -36,7 +36,6 @@ PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
 }
 
 PointTool::~PointTool() {
-    m_dataWindow->hide();
     setEnabled(false);
     delete m_dataWindow;
     delete m_crosshair;
@@ -49,6 +48,7 @@ void PointTool::setEnabled(bool enable) {
         m_crosshair->show();
     } else {
         m_crosshair->hide();
+        m_dataWindow->hide();
     }
 }
 

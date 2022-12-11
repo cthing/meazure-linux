@@ -62,6 +62,8 @@ public:
         return tr("Shift locks to H or V, Ctrl moves line");
     }
 
+    [[nodiscard]] QImage grabRegion() const override;
+
     void setEnabled(bool enable) override;
 
     void saveProfile(Profile& profile) const override;

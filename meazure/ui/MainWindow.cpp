@@ -38,6 +38,7 @@
 #include <QToolBar>
 #include <QActionGroup>
 #include <QMenu>
+#include <QClipboard>
 #include <vector>
 
 
@@ -77,6 +78,12 @@ void MainWindow::createCentralWidget() {
 void MainWindow::createActions() {
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+
+    // Edit actions
+
+    m_copyRegionAction = new QAction(tr("Copy Region"), this);
+    m_copyRegionAction->setShortcut(QKeySequence("Ctrl+R"));
+    connect(m_copyRegionAction, &QAction::triggered, this, &MainWindow::copyRegion);
 
     // Tool actions
 
@@ -168,7 +175,7 @@ void MainWindow::createActions() {
         }
     });
 
-    m_gridAdjustAction = new QAction(tr("Screen &Grid Spacing..."));
+    m_gridAdjustAction = new QAction(tr("Screen &Grid Spacing..."), this);
     connect(m_gridAdjustAction, &QAction::triggered, this, &MainWindow::adjustGrid);
 
     // Units actions
@@ -250,7 +257,7 @@ void MainWindow::createActions() {
 
     // View actions
 
-    m_invertYAction = new QAction(tr("Invert &Y"));
+    m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
     connect(m_invertYAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setInvertY);
     connect(&unitsMgr, &UnitsMgr::invertYChanged, m_invertYAction, &QAction::setChecked);
@@ -260,13 +267,13 @@ void MainWindow::createActions() {
     connect(m_supplementalAngleAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setSupplementalAngle);
     connect(&unitsMgr, &UnitsMgr::supplementalAngleChanged, m_supplementalAngleAction, &QAction::setChecked);
 
-    m_setOriginAction = new QAction(tr("Set Origin"));
+    m_setOriginAction = new QAction(tr("Set Origin"), this);
     m_setOriginAction->setShortcut(QKeySequence("Ctrl+N"));
     connect(m_setOriginAction, &QAction::triggered, this, [&toolMgr, &unitsMgr] {
         unitsMgr.setOrigin(toolMgr.getActivePosition());
     });
 
-    m_resetOriginAction = new QAction(tr("Reset Origin"));
+    m_resetOriginAction = new QAction(tr("Reset Origin"), this);
     connect(m_resetOriginAction, &QAction::triggered, this, [&unitsMgr] {
         unitsMgr.setOrigin(QPoint(0, 0));
     });
@@ -290,6 +297,7 @@ void MainWindow::createMenus() {
     // Edit menu
 
     QMenu* editMenu = menuBar()->addMenu(tr("&Edit"));
+    editMenu->addAction(m_copyRegionAction);
     editMenu->addAction(mainView->getCopyColorAction());
 
     // Tools menu
@@ -366,7 +374,20 @@ void MainWindow::createDialogs() {
 }
 
 void MainWindow::radioToolSelected(RadioTool& tool) {
+    m_copyRegionAction->setEnabled(tool.canGrabRegion());
+
     statusBar()->showMessage(tool.getInstructions());
+}
+
+void MainWindow::copyRegion() {
+    RadioTool* radioTool = App::instance()->getToolMgr().getCurentRadioTool();
+    if (radioTool->canGrabRegion()) {
+        const QImage image = radioTool->grabRegion();
+        if (!image.isNull()) {
+            App::clipboard()->setImage(image);
+        }
+        radioTool->flash();
+    }
 }
 
 void MainWindow::adjustGrid() {

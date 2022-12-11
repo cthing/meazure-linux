@@ -25,6 +25,7 @@
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/graphics/CrossHair.h>
 #include <QObject>
+#include <QImage>
 
 
 class RadioTool : public Tool {
@@ -50,6 +51,24 @@ public:
 
     [[nodiscard]] bool isRadioTool() override {
         return true;
+    }
+
+    /// Indicates whether the tool can grab a rectangular region of the screen. Typically, any tool that provides
+    /// a position, width and height measurement, can grab the corresponding region of the screen.
+    ///
+    /// @return true if the tool can perform a grabRegion operation.
+    ///
+    [[nodiscard]] virtual bool canGrabRegion() const {
+        return isEnabled() && ((getTraits() & WHAvailable) != 0);
+    }
+
+    /// If the tool can grab a region of the screen, this method grabs that region into a pixmap.
+    ///
+    /// @return Image containing the contents of the tools region. If the tool cannot perform a grab, a null
+    ///     QImage is returned (i.e. isNull() is true).
+    ///
+    [[nodiscard]] virtual QImage grabRegion() const {
+        return {};
     }
 
     /// Visually flashes the tool. Typically, if a tool uses crosshairs, their borders are cycled a number of times

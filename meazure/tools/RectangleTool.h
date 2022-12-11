@@ -62,6 +62,8 @@ public:
         return tr("Ctrl moves rectangle, Ctrl+R captures region");
     }
 
+    [[nodiscard]] QImage grabRegion() const override;
+
     void setEnabled(bool enable) override;
 
     void saveProfile(Profile& profile) const override;

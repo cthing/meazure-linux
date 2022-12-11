@@ -58,6 +58,8 @@ public:
         return tr("Ctrl+R captures window");
     }
 
+    [[nodiscard]] QImage grabRegion() const override;
+
     void setEnabled(bool enable) override;
 
     void refresh() override;

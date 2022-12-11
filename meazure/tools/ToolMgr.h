@@ -71,7 +71,13 @@ public:
     /// @return The requested tool.
     /// @throws std::out_of_range if the requested tool is not found
     ///
-    Tool* getTool(const char* toolName) const;
+    [[nodiscard]] Tool* getTool(const char* toolName) const;
+
+    /// Obtains the current radio tool.
+    ///
+    /// @return Current radio tool.
+    ///
+    [[nodiscard]] RadioTool* getCurentRadioTool() const;
 
     [[nodiscard]] const QPoint& getActivePosition() const {
         return m_activePosition;

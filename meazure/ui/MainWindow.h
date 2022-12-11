@@ -38,6 +38,8 @@ public:
 private slots:
     void radioToolSelected(RadioTool& tool);
 
+    static void copyRegion();
+
     void adjustGrid();
 
 private:
@@ -62,6 +64,8 @@ private:
     /// Creates the application's main widget.
     ///
     void createCentralWidget();
+
+    QAction* m_copyRegionAction;
 
     QAction* m_cursorToolAction;
     QAction* m_pointToolAction;

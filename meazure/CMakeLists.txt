@@ -107,12 +107,15 @@ set(XML_SOURCES
 source_group(XML FILES ${XML_SOURCES})
 
 set(UTILS_SOURCES
+    utils/Cloaker.h
     utils/Geometry.h
     utils/GnomeUtils.cpp
     utils/GnomeUtils.h
     utils/MathUtils.h
     utils/StringUtils.cpp
     utils/StringUtils.h
+    utils/TimedEventLoop.cpp
+    utils/TimedEventLoop.h
     utils/XcbUtils.h
     utils/XlibUtils.h
     utils/XRecordUtils.h

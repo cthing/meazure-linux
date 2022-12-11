@@ -162,6 +162,10 @@ Tool* ToolMgr::getTool(const char *toolName) const {
     return m_tools.at(toolName);
 }
 
+RadioTool* ToolMgr::getCurentRadioTool() const {
+    return m_currentRadioTool;
+}
+
 void ToolMgr::selectRadioTool(const char *toolName) {
     Tool* tool = m_tools.at(toolName);
     if (tool->isRadioTool()) {

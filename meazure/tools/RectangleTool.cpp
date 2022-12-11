@@ -20,6 +20,7 @@
 #include "RectangleTool.h"
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/StringUtils.h>
+#include <meazure/utils/Cloaker.h>
 #include <QPointF>
 #include <QSizeF>
 
@@ -49,8 +50,6 @@ RectangleTool::RectangleTool(const ScreenInfoProvider& screenInfoProvider, const
 }
 
 RectangleTool::~RectangleTool() {
-    m_dataWin1->hide();
-    m_dataWin2->hide();
     setEnabled(false);
     delete m_dataWin1;
     delete m_dataWin2;
@@ -70,7 +69,16 @@ void RectangleTool::setEnabled(bool enable) {
         m_point1CH->hide();
         m_point2CH->hide();
         m_rectangle->hide();
+        m_dataWin1->hide();
+        m_dataWin2->hide();
     }
+}
+
+QImage RectangleTool::grabRegion() const {
+    const Cloaker cloak(m_point1CH, m_point2CH, m_rectangle, m_dataWin1, m_dataWin2);
+
+    const QRect regionRect = m_rectangle->geometry();
+    return getScreenInfo().grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
 void RectangleTool::saveProfile(Profile& profile) const {

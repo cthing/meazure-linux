@@ -20,6 +20,7 @@
 #include "CircleTool.h"
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/StringUtils.h>
+#include <meazure/utils/Cloaker.h>
 #include <QPointF>
 #include <QSizeF>
 
@@ -48,8 +49,6 @@ CircleTool::CircleTool(const ScreenInfoProvider& screenInfoProvider, const Units
 }
 
 CircleTool::~CircleTool() {
-    m_dataWinCenter->hide();
-    m_dataWinPerimeter->hide();
     setEnabled(false);
     delete m_dataWinCenter;
     delete m_dataWinPerimeter;
@@ -72,7 +71,16 @@ void CircleTool::setEnabled(bool enable) {
         m_perimeterCH->hide();
         m_circle->hide();
         m_line->hide();
+        m_dataWinCenter->hide();
+        m_dataWinPerimeter->hide();
     }
+}
+
+QImage CircleTool::grabRegion() const {
+    const Cloaker cloak(m_centerCH, m_perimeterCH, m_circle, m_line, m_dataWinCenter, m_dataWinPerimeter);
+
+    const QRect regionRect = m_circle->geometry();
+    return getScreenInfo().grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
 void CircleTool::saveProfile(Profile& profile) const {

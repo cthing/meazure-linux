@@ -20,6 +20,7 @@
 #include "LineTool.h"
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/StringUtils.h>
+#include <meazure/utils/Cloaker.h>
 #include <QPointF>
 #include <QSizeF>
 
@@ -47,8 +48,6 @@ LineTool::LineTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProv
 }
 
 LineTool::~LineTool() {
-    m_dataWin1->hide();
-    m_dataWin2->hide();
     setEnabled(false);
     delete m_dataWin1;
     delete m_dataWin2;
@@ -68,7 +67,16 @@ void LineTool::setEnabled(bool enable) {
         m_point1CH->hide();
         m_point2CH->hide();
         m_line->hide();
+        m_dataWin1->hide();
+        m_dataWin2->hide();
     }
+}
+
+QImage LineTool::grabRegion() const {
+    const Cloaker cloak(m_point1CH, m_point2CH, m_line, m_dataWin1, m_dataWin2);
+
+    const QRect regionRect(m_point1, m_point2);
+    return getScreenInfo().grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
 void LineTool::saveProfile(Profile& profile) const {
