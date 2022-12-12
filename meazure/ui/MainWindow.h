@@ -57,13 +57,31 @@ private slots:
     void adjustGrid();
 
     void setAlwaysVisible(bool alwaysVisible = k_defAlwaysVisible);
+
     void setToolBarVisible(bool visible = k_defToolBarVisible);
     void setToolDataSectionVisible(bool visible = k_defToolDataSectionVisible);
     void setScreenDataSectionVisible(bool visible = k_defScreenDataSectionVisible);
     void setMagnifierSectionVisible(bool visible = k_defMagnifierSectionVisible);
     void setStatusBarVisible(bool visible = k_defStatusBarVisible);
+    void setAllVisible(bool visible);
+
+    void updateCollapseAction();
 
 private:
+    struct SectionVisibility {
+        [[nodiscard]] bool canCollapse() const {
+            return m_toolBarVisible || m_toolDataSectionVisible || m_screenDataSectionVisible
+                    || m_magnifierSectionVisible || m_statusBarVisible;
+        }
+
+        bool m_toolBarVisible { k_defToolBarVisible };                      // NOLINT(misc-non-private-member-variables-in-classes)
+        bool m_toolDataSectionVisible { k_defToolDataSectionVisible };      // NOLINT(misc-non-private-member-variables-in-classes)
+        bool m_screenDataSectionVisible { k_defScreenDataSectionVisible };  // NOLINT(misc-non-private-member-variables-in-classes)
+        bool m_magnifierSectionVisible { k_defMagnifierSectionVisible };    // NOLINT(misc-non-private-member-variables-in-classes)
+        bool m_statusBarVisible { k_defStatusBarVisible };                  // NOLINT(misc-non-private-member-variables-in-classes)
+    };
+
+
     static constexpr int k_toolBarIconSize { 20 };
     static constexpr bool k_defAlwaysVisible { true };
     static constexpr bool k_defToolBarVisible { true };
@@ -123,6 +141,7 @@ private:
     QAction* m_degreeUnitsAction;
     QAction* m_radianUnitsAction;
 
+    QAction* m_collapseAction;
     QAction* m_toolBarVisibleAction;
     QAction* m_toolDataSectionVisibleAction;
     QAction* m_screenDataSectionVisibleAction;
@@ -136,9 +155,5 @@ private:
 
     GridDialog* m_gridDialog;
 
-    bool m_toolBarVisible { k_defToolBarVisible };
-    bool m_toolDataSectionVisible { k_defToolDataSectionVisible };
-    bool m_screenDataSectionVisible { k_defScreenDataSectionVisible };
-    bool m_magnifierSectionVisible { k_defMagnifierSectionVisible };
-    bool m_statusBarVisible { k_defStatusBarVisible };
+    SectionVisibility m_sectionVisibility;
 };

@@ -70,11 +70,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     m_mainView->setMinimumWidth(sizeHint().width());
 
     setAlwaysVisible();
-    setToolBarVisible();
-    setToolDataSectionVisible();
-    setScreenDataSectionVisible();
-    setMagnifierSectionVisible();
-    setStatusBarVisible();
+    setAllVisible(true);
 }
 
 void MainWindow::createCentralWidget() {
@@ -264,30 +260,41 @@ void MainWindow::createActions() {
 
     // View actions
 
+    m_collapseAction = new QAction(this);
+    m_collapseAction->setShortcut(QKeySequence("Ctrl+H"));
+    connect(m_collapseAction, &QAction::triggered, this, [this]() {
+        setAllVisible(!m_sectionVisibility.canCollapse());
+    });
+
     m_toolBarVisibleAction = new QAction(tr("&Tool Bar"), this);
     m_toolBarVisibleAction->setCheckable(true);
     connect(m_toolBarVisibleAction, &QAction::triggered, this, &MainWindow::setToolBarVisible);
     connect(this, &MainWindow::toolBarVisibilityChanged, m_toolBarVisibleAction, &QAction::setChecked);
+    connect(this, &MainWindow::toolBarVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_toolDataSectionVisibleAction = new QAction(tr("Tool &Info"), this);
     m_toolDataSectionVisibleAction->setCheckable(true);
     connect(m_toolDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setToolDataSectionVisible);
     connect(this, &MainWindow::toolDataSectionVisibilityChanged, m_toolDataSectionVisibleAction, &QAction::setChecked);
+    connect(this, &MainWindow::toolDataSectionVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_screenDataSectionVisibleAction = new QAction(tr("&Screen Info"), this);
     m_screenDataSectionVisibleAction->setCheckable(true);
     connect(m_screenDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setScreenDataSectionVisible);
     connect(this, &MainWindow::screenDataSectionVisibilityChanged, m_screenDataSectionVisibleAction, &QAction::setChecked);
+    connect(this, &MainWindow::screenDataSectionVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_magnifierSectionVisibleAction = new QAction(tr("&Magnifier"), this);
     m_magnifierSectionVisibleAction->setCheckable(true);
     connect(m_magnifierSectionVisibleAction, &QAction::triggered, this, &MainWindow::setMagnifierSectionVisible);
     connect(this, &MainWindow::magnifierSectionVisibilityChanged, m_magnifierSectionVisibleAction, &QAction::setChecked);
+    connect(this, &MainWindow::magnifierSectionVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_statusBarVisibleAction = new QAction(tr("Status &Bar"), this);
     m_statusBarVisibleAction->setCheckable(true);
     connect(m_statusBarVisibleAction, &QAction::triggered, this, &MainWindow::setStatusBarVisible);
     connect(this, &MainWindow::statusBarVisibilityChanged, m_statusBarVisibleAction, &QAction::setChecked);
+    connect(this, &MainWindow::statusBarVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
@@ -370,6 +377,10 @@ void MainWindow::createMenus() {
 
     QMenu* viewMenu = menuBar()->addMenu(tr("&View"));
 
+    viewMenu->addAction(m_collapseAction);
+
+    viewMenu->addSeparator();
+
     viewMenu->addAction(m_toolBarVisibleAction);
     viewMenu->addAction(m_toolDataSectionVisibleAction);
     viewMenu->addAction(m_screenDataSectionVisibleAction);
@@ -424,22 +435,22 @@ void MainWindow::createDialogs() {
 void MainWindow::saveProfile(Profile& profile) const {
     if (!profile.userInitiated()) {
         profile.writeBool("AlwaysVisible", isAlwaysVisible());
-        profile.writeBool("ExpandToolbar", m_toolBarVisible);
-        profile.writeBool("ExpandToolInfo", m_toolDataSectionVisible);
-        profile.writeBool("ExpandScreenInfo", m_screenDataSectionVisible);
-        profile.writeBool("ExpandMagnifier", m_magnifierSectionVisible);
-        profile.writeBool("ExpandStatusbar", m_statusBarVisible);
+        profile.writeBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible);
+        profile.writeBool("ExpandToolInfo", m_sectionVisibility.m_toolDataSectionVisible);
+        profile.writeBool("ExpandScreenInfo", m_sectionVisibility.m_screenDataSectionVisible);
+        profile.writeBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible);
+        profile.writeBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible);
     }
 }
 
 void MainWindow::loadProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         setAlwaysVisible(profile.readBool("AlwaysVisible", isAlwaysVisible()));
-        setToolBarVisible(profile.readBool("ExpandToolbar", m_toolBarVisible));
-        setToolDataSectionVisible(profile.readBool("ExpandToolInfo", m_toolDataSectionVisible));
-        setScreenDataSectionVisible(profile.readBool("ExpandScreenInfo", m_screenDataSectionVisible));
-        setMagnifierSectionVisible(profile.readBool("ExpandMagnifier", m_magnifierSectionVisible));
-        setStatusBarVisible(profile.readBool("ExpandStatusbar", m_statusBarVisible));
+        setToolBarVisible(profile.readBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible));
+        setToolDataSectionVisible(profile.readBool("ExpandToolInfo", m_sectionVisibility.m_toolDataSectionVisible));
+        setScreenDataSectionVisible(profile.readBool("ExpandScreenInfo", m_sectionVisibility.m_screenDataSectionVisible));
+        setMagnifierSectionVisible(profile.readBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible));
+        setStatusBarVisible(profile.readBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible));
     }
 }
 
@@ -479,36 +490,56 @@ bool MainWindow::isAlwaysVisible() const {
 }
 
 void MainWindow::setToolBarVisible(bool visible) {
-    m_toolBarVisible = visible;
+    m_sectionVisibility.m_toolBarVisible = visible;
     m_toolBar->setVisible(visible);
 
     emit toolBarVisibilityChanged(visible);
 }
 
 void MainWindow::setToolDataSectionVisible(bool visible) {
-    m_toolDataSectionVisible = visible;
+    m_sectionVisibility.m_toolDataSectionVisible = visible;
     m_mainView->getToolDataSection()->setVisible(visible);
 
     emit toolDataSectionVisibilityChanged(visible);
 }
 
 void MainWindow::setScreenDataSectionVisible(bool visible) {
-    m_screenDataSectionVisible = visible;
+    m_sectionVisibility.m_screenDataSectionVisible = visible;
     m_mainView->getScreenDataSection()->setVisible(visible);
 
     emit screenDataSectionVisibilityChanged(visible);
 }
 
 void MainWindow::setMagnifierSectionVisible(bool visible) {
-    m_magnifierSectionVisible = visible;
+    m_sectionVisibility.m_magnifierSectionVisible = visible;
     m_mainView->getMagnifierSection()->setVisible(visible);
 
     emit magnifierSectionVisibilityChanged(visible);
 }
 
 void MainWindow::setStatusBarVisible(bool visible) {
-    m_statusBarVisible = visible;
+    m_sectionVisibility.m_statusBarVisible = visible;
     statusBar()->setVisible(visible);
 
     emit statusBarVisibilityChanged(visible);
+}
+
+void MainWindow::setAllVisible(bool visible) {
+    if (visible) {
+        setToolBarVisible();
+        setToolDataSectionVisible();
+        setScreenDataSectionVisible();
+        setMagnifierSectionVisible();
+        setStatusBarVisible();
+    } else {
+        setToolBarVisible(false);
+        setToolDataSectionVisible(false);
+        setScreenDataSectionVisible(false);
+        setMagnifierSectionVisible(false);
+        setStatusBarVisible(false);
+    }
+}
+
+void MainWindow::updateCollapseAction() {
+    m_collapseAction->setText(m_sectionVisibility.canCollapse() ? tr("Collapse") : tr("Expand"));
 }
