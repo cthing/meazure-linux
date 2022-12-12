@@ -59,7 +59,7 @@ public:
     }
 
     [[nodiscard]] QString getInstructions() const override {
-        return tr("Ctrl moves rectangle, Ctrl+R captures region");
+        return tr("Ctrl moves rect, Ctrl+R captures region");
     }
 
     [[nodiscard]] QImage grabRegion() const override;
