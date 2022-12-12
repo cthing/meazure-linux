@@ -48,6 +48,7 @@ signals:
     void screenDataSectionVisibilityChanged(bool visible);
     void magnifierSectionVisibilityChanged(bool visible);
     void statusBarVisibilityChanged(bool visible);
+    void visibilityChanged();
 
 private slots:
     void radioToolSelected(RadioTool& tool);
@@ -64,8 +65,6 @@ private slots:
     void setMagnifierSectionVisible(bool visible = k_defMagnifierSectionVisible);
     void setStatusBarVisible(bool visible = k_defStatusBarVisible);
     void setAllVisible(bool visible);
-
-    void updateCollapseAction();
 
 private:
     struct SectionVisibility {

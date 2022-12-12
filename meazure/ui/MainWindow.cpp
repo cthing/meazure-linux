@@ -265,36 +265,34 @@ void MainWindow::createActions() {
     connect(m_collapseAction, &QAction::triggered, this, [this]() {
         setAllVisible(!m_sectionVisibility.canCollapse());
     });
+    connect(this, &MainWindow::visibilityChanged, this, [this]() {
+        m_collapseAction->setText(m_sectionVisibility.canCollapse() ? tr("Collapse") : tr("Expand"));
+    });
 
     m_toolBarVisibleAction = new QAction(tr("&Tool Bar"), this);
     m_toolBarVisibleAction->setCheckable(true);
     connect(m_toolBarVisibleAction, &QAction::triggered, this, &MainWindow::setToolBarVisible);
     connect(this, &MainWindow::toolBarVisibilityChanged, m_toolBarVisibleAction, &QAction::setChecked);
-    connect(this, &MainWindow::toolBarVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_toolDataSectionVisibleAction = new QAction(tr("Tool &Info"), this);
     m_toolDataSectionVisibleAction->setCheckable(true);
     connect(m_toolDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setToolDataSectionVisible);
     connect(this, &MainWindow::toolDataSectionVisibilityChanged, m_toolDataSectionVisibleAction, &QAction::setChecked);
-    connect(this, &MainWindow::toolDataSectionVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_screenDataSectionVisibleAction = new QAction(tr("&Screen Info"), this);
     m_screenDataSectionVisibleAction->setCheckable(true);
     connect(m_screenDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setScreenDataSectionVisible);
     connect(this, &MainWindow::screenDataSectionVisibilityChanged, m_screenDataSectionVisibleAction, &QAction::setChecked);
-    connect(this, &MainWindow::screenDataSectionVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_magnifierSectionVisibleAction = new QAction(tr("&Magnifier"), this);
     m_magnifierSectionVisibleAction->setCheckable(true);
     connect(m_magnifierSectionVisibleAction, &QAction::triggered, this, &MainWindow::setMagnifierSectionVisible);
     connect(this, &MainWindow::magnifierSectionVisibilityChanged, m_magnifierSectionVisibleAction, &QAction::setChecked);
-    connect(this, &MainWindow::magnifierSectionVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_statusBarVisibleAction = new QAction(tr("Status &Bar"), this);
     m_statusBarVisibleAction->setCheckable(true);
     connect(m_statusBarVisibleAction, &QAction::triggered, this, &MainWindow::setStatusBarVisible);
     connect(this, &MainWindow::statusBarVisibilityChanged, m_statusBarVisibleAction, &QAction::setChecked);
-    connect(this, &MainWindow::statusBarVisibilityChanged, this, &MainWindow::updateCollapseAction);
 
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
@@ -494,6 +492,7 @@ void MainWindow::setToolBarVisible(bool visible) {
     m_toolBar->setVisible(visible);
 
     emit toolBarVisibilityChanged(visible);
+    emit visibilityChanged();
 }
 
 void MainWindow::setToolDataSectionVisible(bool visible) {
@@ -501,6 +500,7 @@ void MainWindow::setToolDataSectionVisible(bool visible) {
     m_mainView->getToolDataSection()->setVisible(visible);
 
     emit toolDataSectionVisibilityChanged(visible);
+    emit visibilityChanged();
 }
 
 void MainWindow::setScreenDataSectionVisible(bool visible) {
@@ -508,6 +508,7 @@ void MainWindow::setScreenDataSectionVisible(bool visible) {
     m_mainView->getScreenDataSection()->setVisible(visible);
 
     emit screenDataSectionVisibilityChanged(visible);
+    emit visibilityChanged();
 }
 
 void MainWindow::setMagnifierSectionVisible(bool visible) {
@@ -515,6 +516,7 @@ void MainWindow::setMagnifierSectionVisible(bool visible) {
     m_mainView->getMagnifierSection()->setVisible(visible);
 
     emit magnifierSectionVisibilityChanged(visible);
+    emit visibilityChanged();
 }
 
 void MainWindow::setStatusBarVisible(bool visible) {
@@ -522,6 +524,7 @@ void MainWindow::setStatusBarVisible(bool visible) {
     statusBar()->setVisible(visible);
 
     emit statusBarVisibilityChanged(visible);
+    emit visibilityChanged();
 }
 
 void MainWindow::setAllVisible(bool visible) {
@@ -538,8 +541,4 @@ void MainWindow::setAllVisible(bool visible) {
         setMagnifierSectionVisible(false);
         setStatusBarVisible(false);
     }
-}
-
-void MainWindow::updateCollapseAction() {
-    m_collapseAction->setText(m_sectionVisibility.canCollapse() ? tr("Collapse") : tr("Expand"));
 }
