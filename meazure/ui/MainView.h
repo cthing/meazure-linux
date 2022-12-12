@@ -19,12 +19,12 @@
 
 #pragma once
 
+#include "ToolDataSection.h"
+#include "ScreenDataSection.h"
+#include "MagnifierSection.h"
 #include <QWidget>
 #include <QAction>
 #include <vector>
-
-
-class MagnifierSection;
 
 
 /// Contains the tool data, screen data and magnifier sections of the application.
@@ -43,6 +43,12 @@ public:
     [[nodiscard]] std::vector<QAction*> getColorFormatActions() const;
     [[nodiscard]] QAction* getCopyColorAction() const;
 
+    [[nodiscard]] ToolDataSection* getToolDataSection() const;
+    [[nodiscard]] ScreenDataSection* getScreenDataSection() const;
+    [[nodiscard]] MagnifierSection* getMagnifierSection() const;
+
 private:
+    ToolDataSection* m_toolDataSection;
+    ScreenDataSection* m_screenDataSection;
     MagnifierSection* m_magnifierSection;
 };

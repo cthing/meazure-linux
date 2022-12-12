@@ -19,11 +19,14 @@
 
 #pragma once
 
+#include "MainView.h"
+#include "GridDialog.h"
 #include <meazure/tools/RadioTool.h>
 #include <meazure/units/Units.h>
-#include "GridDialog.h"
+#include <meazure/profile/Profile.h>
 #include <QMainWindow>
 #include <QAction>
+#include <QToolBar>
 
 
 /// Top level user interface layout manager.
@@ -35,8 +38,16 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow();
 
+    void saveProfile(Profile& profile) const;
+    void loadProfile(Profile& profile);
+
 signals:
     void alwaysVisibleChanged(bool alwaysVisible);
+    void toolBarVisibilityChanged(bool visible);
+    void toolDataSectionVisibilityChanged(bool visible);
+    void screenDataSectionVisibilityChanged(bool visible);
+    void magnifierSectionVisibilityChanged(bool visible);
+    void statusBarVisibilityChanged(bool visible);
 
 private slots:
     void radioToolSelected(RadioTool& tool);
@@ -45,11 +56,21 @@ private slots:
 
     void adjustGrid();
 
-    void setAlwaysVisible(bool alwaysVisible);
+    void setAlwaysVisible(bool alwaysVisible = k_defAlwaysVisible);
+    void setToolBarVisible(bool visible = k_defToolBarVisible);
+    void setToolDataSectionVisible(bool visible = k_defToolDataSectionVisible);
+    void setScreenDataSectionVisible(bool visible = k_defScreenDataSectionVisible);
+    void setMagnifierSectionVisible(bool visible = k_defMagnifierSectionVisible);
+    void setStatusBarVisible(bool visible = k_defStatusBarVisible);
 
 private:
-    static constexpr int k_toolbarIconSize { 20 };
+    static constexpr int k_toolBarIconSize { 20 };
     static constexpr bool k_defAlwaysVisible { true };
+    static constexpr bool k_defToolBarVisible { true };
+    static constexpr bool k_defToolDataSectionVisible { true };
+    static constexpr bool k_defScreenDataSectionVisible { true };
+    static constexpr bool k_defMagnifierSectionVisible { true };
+    static constexpr bool k_defStatusBarVisible { true };
 
     /// Creates actions that are referenced in multiple places in the application.
     ///
@@ -61,7 +82,7 @@ private:
 
     /// Creates the application's toolbar.
     ///
-    void createToolbar();
+    void createToolBar();
 
     /// Creates application dialogs.
     ///
@@ -70,6 +91,12 @@ private:
     /// Creates the application's main widget.
     ///
     void createCentralWidget();
+
+    [[nodiscard]] bool isAlwaysVisible() const;
+
+    MainView* m_mainView;
+
+    QToolBar* m_toolBar;
 
     QAction* m_copyRegionAction;
 
@@ -96,6 +123,11 @@ private:
     QAction* m_degreeUnitsAction;
     QAction* m_radianUnitsAction;
 
+    QAction* m_toolBarVisibleAction;
+    QAction* m_toolDataSectionVisibleAction;
+    QAction* m_screenDataSectionVisibleAction;
+    QAction* m_magnifierSectionVisibleAction;
+    QAction* m_statusBarVisibleAction;
     QAction* m_invertYAction;
     QAction* m_supplementalAngleAction;
     QAction* m_setOriginAction;
@@ -103,4 +135,10 @@ private:
     QAction* m_alwaysVisibleAction;
 
     GridDialog* m_gridDialog;
+
+    bool m_toolBarVisible { k_defToolBarVisible };
+    bool m_toolDataSectionVisible { k_defToolDataSectionVisible };
+    bool m_screenDataSectionVisible { k_defScreenDataSectionVisible };
+    bool m_magnifierSectionVisible { k_defMagnifierSectionVisible };
+    bool m_statusBarVisible { k_defStatusBarVisible };
 };

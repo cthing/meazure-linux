@@ -18,7 +18,6 @@
  */
 
 #include "MainWindow.h"
-#include "MainView.h"
 #include <meazure/App.h>
 #include <meazure/tools/ToolMgr.h>
 #include <meazure/tools/CircleTool.h>
@@ -35,10 +34,10 @@
 #include <meazure/units/Units.h>
 #include <QMenuBar>
 #include <QStatusBar>
-#include <QToolBar>
 #include <QActionGroup>
 #include <QMenu>
 #include <QClipboard>
+#include <QLayout>
 #include <vector>
 
 
@@ -46,7 +45,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     createCentralWidget();
     createActions();
     createMenus();
-    createToolbar();
+    createToolBar();
     createDialogs();
 
     ToolMgr& toolMgr = App::instance()->getToolMgr();
@@ -66,15 +65,21 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     toolMgr.setEnabled(OriginTool::k_toolName, true);
 
     setWindowFlag(Qt::WindowMaximizeButtonHint, false);
-    setMaximumWidth(sizeHint().width());
-    setMaximumHeight(sizeHint().height());
 
-    setAlwaysVisible(k_defAlwaysVisible);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
+    m_mainView->setMinimumWidth(sizeHint().width());
+
+    setAlwaysVisible();
+    setToolBarVisible();
+    setToolDataSectionVisible();
+    setScreenDataSectionVisible();
+    setMagnifierSectionVisible();
+    setStatusBarVisible();
 }
 
 void MainWindow::createCentralWidget() {
-    QWidget* mainView = new MainView();
-    setCentralWidget(mainView);
+    m_mainView = new MainView();
+    setCentralWidget(m_mainView);
 }
 
 void MainWindow::createActions() {
@@ -83,7 +88,7 @@ void MainWindow::createActions() {
 
     // Edit actions
 
-    m_copyRegionAction = new QAction(tr("Copy Region"), this);
+    m_copyRegionAction = new QAction(tr("Copy &Region"), this);
     m_copyRegionAction->setShortcut(QKeySequence("Ctrl+R"));
     connect(m_copyRegionAction, &QAction::triggered, this, &MainWindow::copyRegion);
 
@@ -237,7 +242,7 @@ void MainWindow::createActions() {
     m_customUnitsAction = new QAction(tr("[custom]"), linearUnitsGroup);
     m_customUnitsAction->setCheckable(true);
 
-    m_defineCustomUnitsAction = new QAction(tr("Define custom..."), linearUnitsGroup);
+    m_defineCustomUnitsAction = new QAction(tr("Define C&ustom..."), linearUnitsGroup);
     m_defineCustomUnitsAction->setCheckable(true);
 
     auto* angularUnitsGroup = new QActionGroup(this);
@@ -259,6 +264,31 @@ void MainWindow::createActions() {
 
     // View actions
 
+    m_toolBarVisibleAction = new QAction(tr("&Tool Bar"), this);
+    m_toolBarVisibleAction->setCheckable(true);
+    connect(m_toolBarVisibleAction, &QAction::triggered, this, &MainWindow::setToolBarVisible);
+    connect(this, &MainWindow::toolBarVisibilityChanged, m_toolBarVisibleAction, &QAction::setChecked);
+
+    m_toolDataSectionVisibleAction = new QAction(tr("Tool &Info"), this);
+    m_toolDataSectionVisibleAction->setCheckable(true);
+    connect(m_toolDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setToolDataSectionVisible);
+    connect(this, &MainWindow::toolDataSectionVisibilityChanged, m_toolDataSectionVisibleAction, &QAction::setChecked);
+
+    m_screenDataSectionVisibleAction = new QAction(tr("&Screen Info"), this);
+    m_screenDataSectionVisibleAction->setCheckable(true);
+    connect(m_screenDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setScreenDataSectionVisible);
+    connect(this, &MainWindow::screenDataSectionVisibilityChanged, m_screenDataSectionVisibleAction, &QAction::setChecked);
+
+    m_magnifierSectionVisibleAction = new QAction(tr("&Magnifier"), this);
+    m_magnifierSectionVisibleAction->setCheckable(true);
+    connect(m_magnifierSectionVisibleAction, &QAction::triggered, this, &MainWindow::setMagnifierSectionVisible);
+    connect(this, &MainWindow::magnifierSectionVisibilityChanged, m_magnifierSectionVisibleAction, &QAction::setChecked);
+
+    m_statusBarVisibleAction = new QAction(tr("Status &Bar"), this);
+    m_statusBarVisibleAction->setCheckable(true);
+    connect(m_statusBarVisibleAction, &QAction::triggered, this, &MainWindow::setStatusBarVisible);
+    connect(this, &MainWindow::statusBarVisibilityChanged, m_statusBarVisibleAction, &QAction::setChecked);
+
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
     connect(m_invertYAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setInvertY);
@@ -269,13 +299,13 @@ void MainWindow::createActions() {
     connect(m_supplementalAngleAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setSupplementalAngle);
     connect(&unitsMgr, &UnitsMgr::supplementalAngleChanged, m_supplementalAngleAction, &QAction::setChecked);
 
-    m_setOriginAction = new QAction(tr("Set Origin"), this);
+    m_setOriginAction = new QAction(tr("Set &Origin"), this);
     m_setOriginAction->setShortcut(QKeySequence("Ctrl+N"));
     connect(m_setOriginAction, &QAction::triggered, this, [&toolMgr, &unitsMgr] {
         unitsMgr.setOrigin(toolMgr.getActivePosition());
     });
 
-    m_resetOriginAction = new QAction(tr("Reset Origin"), this);
+    m_resetOriginAction = new QAction(tr("&Reset Origin"), this);
     connect(m_resetOriginAction, &QAction::triggered, this, [&unitsMgr] {
         unitsMgr.setOrigin(QPoint(0, 0));
     });
@@ -287,8 +317,6 @@ void MainWindow::createActions() {
 }
 
 void MainWindow::createMenus() {
-    const MainView* mainView = dynamic_cast<MainView*>(centralWidget());
-
     // File menu
 
     QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
@@ -305,7 +333,7 @@ void MainWindow::createMenus() {
 
     QMenu* editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(m_copyRegionAction);
-    editMenu->addAction(mainView->getCopyColorAction());
+    editMenu->addAction(m_mainView->getCopyColorAction());
 
     // Tools menu
 
@@ -341,13 +369,22 @@ void MainWindow::createMenus() {
     // View menu
 
     QMenu* viewMenu = menuBar()->addMenu(tr("&View"));
-    viewMenu->addAction(mainView->getMagnifierZoomInAction());
-    viewMenu->addAction(mainView->getMagnifierZoomOutAction());
-    viewMenu->addAction(mainView->getMagnifierGridAction());
-    viewMenu->addAction(mainView->getMagnifierFreezeAction());
+
+    viewMenu->addAction(m_toolBarVisibleAction);
+    viewMenu->addAction(m_toolDataSectionVisibleAction);
+    viewMenu->addAction(m_screenDataSectionVisibleAction);
+    viewMenu->addAction(m_magnifierSectionVisibleAction);
+    viewMenu->addAction(m_statusBarVisibleAction);
+
+    viewMenu->addSeparator();
+
+    viewMenu->addAction(m_mainView->getMagnifierZoomInAction());
+    viewMenu->addAction(m_mainView->getMagnifierZoomOutAction());
+    viewMenu->addAction(m_mainView->getMagnifierGridAction());
+    viewMenu->addAction(m_mainView->getMagnifierFreezeAction());
 
     QMenu* colorMenu = viewMenu->addMenu("&Color Format");
-    for (QAction* colorFormat : mainView->getColorFormatActions()) {
+    for (QAction* colorFormat : m_mainView->getColorFormatActions()) {
         colorMenu->addAction(colorFormat);
     }
 
@@ -363,25 +400,47 @@ void MainWindow::createMenus() {
     viewMenu->addAction(m_alwaysVisibleAction);
 }
 
-void MainWindow::createToolbar() {
-    QToolBar* toolBar = addToolBar("");
-    toolBar->setIconSize(QSize(k_toolbarIconSize, k_toolbarIconSize));
-    toolBar->addAction(m_cursorToolAction);
-    toolBar->addAction(m_pointToolAction);
-    toolBar->addAction(m_lineToolAction);
-    toolBar->addAction(m_rectangleToolAction);
-    toolBar->addAction(m_circleToolAction);
-    toolBar->addAction(m_angleToolAction);
-    toolBar->addAction(m_windowToolAction);
-    toolBar->addSeparator();
-    toolBar->addAction(m_rulerToolAction);
-    toolBar->addAction(m_gridToolAction);
+void MainWindow::createToolBar() {
+    m_toolBar = addToolBar("");
+    m_toolBar->setIconSize(QSize(k_toolBarIconSize, k_toolBarIconSize));
+    m_toolBar->addAction(m_cursorToolAction);
+    m_toolBar->addAction(m_pointToolAction);
+    m_toolBar->addAction(m_lineToolAction);
+    m_toolBar->addAction(m_rectangleToolAction);
+    m_toolBar->addAction(m_circleToolAction);
+    m_toolBar->addAction(m_angleToolAction);
+    m_toolBar->addAction(m_windowToolAction);
+    m_toolBar->addSeparator();
+    m_toolBar->addAction(m_rulerToolAction);
+    m_toolBar->addAction(m_gridToolAction);
 }
 
 void MainWindow::createDialogs() {
     App* app = App::instance();
     auto* gridTool = dynamic_cast<GridTool*>(app->getToolMgr().getTool(GridTool::k_toolName));
     m_gridDialog = new GridDialog(gridTool, app->getScreenInfo(), app->getUnitsMgr(), this);
+}
+
+void MainWindow::saveProfile(Profile& profile) const {
+    if (!profile.userInitiated()) {
+        profile.writeBool("AlwaysVisible", isAlwaysVisible());
+        profile.writeBool("ExpandToolbar", m_toolBarVisible);
+        profile.writeBool("ExpandToolInfo", m_toolDataSectionVisible);
+        profile.writeBool("ExpandScreenInfo", m_screenDataSectionVisible);
+        profile.writeBool("ExpandMagnifier", m_magnifierSectionVisible);
+        profile.writeBool("ExpandStatusbar", m_statusBarVisible);
+    }
+}
+
+void MainWindow::loadProfile(Profile& profile) {
+    if (!profile.userInitiated()) {
+        setAlwaysVisible(profile.readBool("AlwaysVisible", isAlwaysVisible()));
+        setToolBarVisible(profile.readBool("ExpandToolbar", m_toolBarVisible));
+        setToolDataSectionVisible(profile.readBool("ExpandToolInfo", m_toolDataSectionVisible));
+        setScreenDataSectionVisible(profile.readBool("ExpandScreenInfo", m_screenDataSectionVisible));
+        setMagnifierSectionVisible(profile.readBool("ExpandMagnifier", m_magnifierSectionVisible));
+        setStatusBarVisible(profile.readBool("ExpandStatusbar", m_statusBarVisible));
+    }
 }
 
 void MainWindow::radioToolSelected(RadioTool& tool) {
@@ -413,4 +472,43 @@ void MainWindow::setAlwaysVisible(bool alwaysVisible) {
     show();
 
     emit alwaysVisibleChanged(alwaysVisible);
+}
+
+bool MainWindow::isAlwaysVisible() const {
+    return (windowFlags() & Qt::WindowStaysOnTopHint) != 0;
+}
+
+void MainWindow::setToolBarVisible(bool visible) {
+    m_toolBarVisible = visible;
+    m_toolBar->setVisible(visible);
+
+    emit toolBarVisibilityChanged(visible);
+}
+
+void MainWindow::setToolDataSectionVisible(bool visible) {
+    m_toolDataSectionVisible = visible;
+    m_mainView->getToolDataSection()->setVisible(visible);
+
+    emit toolDataSectionVisibilityChanged(visible);
+}
+
+void MainWindow::setScreenDataSectionVisible(bool visible) {
+    m_screenDataSectionVisible = visible;
+    m_mainView->getScreenDataSection()->setVisible(visible);
+
+    emit screenDataSectionVisibilityChanged(visible);
+}
+
+void MainWindow::setMagnifierSectionVisible(bool visible) {
+    m_magnifierSectionVisible = visible;
+    m_mainView->getMagnifierSection()->setVisible(visible);
+
+    emit magnifierSectionVisibilityChanged(visible);
+}
+
+void MainWindow::setStatusBarVisible(bool visible) {
+    m_statusBarVisible = visible;
+    statusBar()->setVisible(visible);
+
+    emit statusBarVisibilityChanged(visible);
 }

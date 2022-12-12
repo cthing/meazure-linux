@@ -18,24 +18,19 @@
  */
 
 #include "MainView.h"
-#include "ToolDataSection.h"
-#include "ScreenDataSection.h"
-#include "MagnifierSection.h"
 #include <QVBoxLayout>
 
 
-MainView::MainView() : m_magnifierSection(new MagnifierSection) {
+MainView::MainView() :
+        m_toolDataSection(new ToolDataSection()),
+        m_screenDataSection(new ScreenDataSection()),
+        m_magnifierSection(new MagnifierSection) {
     auto* layout = new QVBoxLayout();
-
-    auto* toolDataSection = new ToolDataSection();
-    layout->addWidget(toolDataSection);
-
-    auto* screenDataSection = new ScreenDataSection();
-    layout->addWidget(screenDataSection);
-
-    layout->addWidget(m_magnifierSection);
-
     setLayout(layout);
+
+    layout->addWidget(m_toolDataSection);
+    layout->addWidget(m_screenDataSection);
+    layout->addWidget(m_magnifierSection);
 }
 
 QAction* MainView::getMagnifierZoomInAction() const {
@@ -60,4 +55,16 @@ std::vector<QAction*> MainView::getColorFormatActions() const {
 
 QAction* MainView::getCopyColorAction() const {
     return m_magnifierSection->getCopyColorAction();
+}
+
+ToolDataSection* MainView::getToolDataSection() const {
+    return m_toolDataSection;
+}
+
+ScreenDataSection* MainView::getScreenDataSection() const {
+    return m_screenDataSection;
+}
+
+MagnifierSection* MainView::getMagnifierSection() const {
+    return m_magnifierSection;
 }
