@@ -51,6 +51,8 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     createDialogs();
     createKeyboardControl();
 
+    setStyleSheet("QStatusBar { border-top: 1px outset grey; }");
+
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
 
