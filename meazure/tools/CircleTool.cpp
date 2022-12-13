@@ -117,41 +117,49 @@ void CircleTool::loadProfile(Profile& profile) {
 }
 
 void CircleTool::setX1Position(double x) {
+    m_activePointId = k_perimeterId;
     m_perimeter.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_perimeterCH, x));
     setPosition();
 }
 
 void CircleTool::setY1Position(double y) {
+    m_activePointId = k_perimeterId;
     m_perimeter.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_perimeterCH, y));
     setPosition();
 }
 
 void CircleTool::setXVPosition(double x) {
+    m_activePointId = k_centerId;
     m_center.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_centerCH, x));
     setPosition();
 }
 
 void CircleTool::setYVPosition(double y) {
+    m_activePointId = k_centerId;
     m_center.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_centerCH, y));
     setPosition();
 }
 
 void CircleTool::stepX1Position(int numSteps) {
+    m_activePointId = k_perimeterId;
     m_perimeter.rx() += numSteps;
     setPosition();
 }
 
 void CircleTool::stepY1Position(int numSteps) {
+    m_activePointId = k_perimeterId;
     m_perimeter.ry() += numSteps;
     setPosition();
 }
 
 void CircleTool::stepXVPosition(int numSteps) {
+    m_activePointId = k_centerId;
     m_center.rx() += numSteps;
     setPosition();
 }
 
 void CircleTool::stepYVPosition(int numSteps) {
+    m_activePointId = k_centerId;
     m_center.ry() += numSteps;
     setPosition();
 }

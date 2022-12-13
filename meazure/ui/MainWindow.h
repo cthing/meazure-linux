@@ -109,6 +109,10 @@ private:
     ///
     void createCentralWidget();
 
+    /// Creates the keyboard crosshair control.
+    ///
+    void createKeyboardControl();
+
     [[nodiscard]] bool isAlwaysVisible() const;
 
     MainView* m_mainView;

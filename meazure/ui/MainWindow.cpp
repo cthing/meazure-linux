@@ -18,6 +18,7 @@
  */
 
 #include "MainWindow.h"
+#include "GlobalShortcuts.h"
 #include <meazure/App.h>
 #include <meazure/tools/ToolMgr.h>
 #include <meazure/tools/CircleTool.h>
@@ -38,6 +39,7 @@
 #include <QMenu>
 #include <QClipboard>
 #include <QLayout>
+#include <QCursor>
 #include <vector>
 
 
@@ -47,6 +49,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     createMenus();
     createToolBar();
     createDialogs();
+    createKeyboardControl();
 
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
@@ -428,6 +431,46 @@ void MainWindow::createDialogs() {
     App* app = App::instance();
     auto* gridTool = dynamic_cast<GridTool*>(app->getToolMgr().getTool(GridTool::k_toolName));
     m_gridDialog = new GridDialog(gridTool, app->getScreenInfo(), app->getUnitsMgr(), this);
+}
+
+void MainWindow::createKeyboardControl() {
+    ToolMgr& toolMgr = App::instance()->getToolMgr();
+    UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+
+    auto* globalShortcuts = new GlobalShortcuts(this);
+
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Up, this, [&toolMgr]() { toolMgr.stepY1Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Down, this, [&toolMgr]() { toolMgr.stepY1Position(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Left, this, [&toolMgr]() { toolMgr.stepX1Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Right, this, [&toolMgr]() { toolMgr.stepX1Position(1); });
+
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Up, this, [&toolMgr]() { toolMgr.stepY2Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Down, this, [&toolMgr]() { toolMgr.stepY2Position(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Left, this, [&toolMgr]() { toolMgr.stepX2Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Right, this, [&toolMgr]() { toolMgr.stepX2Position(1); });
+
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Up, this, [&toolMgr]() { toolMgr.stepYVPosition(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Down, this, [&toolMgr]() { toolMgr.stepYVPosition(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Left, this, [&toolMgr]() { toolMgr.stepXVPosition(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Right, this, [&toolMgr]() { toolMgr.stepXVPosition(1); });
+
+    connect(globalShortcuts, &GlobalShortcuts::ctrlShift1, this, [&toolMgr, &unitsMgr]() {
+        const QPointF coord = unitsMgr.convertCoord(QCursor::pos());
+        toolMgr.setX1Position(coord.x());
+        toolMgr.setY1Position(coord.y());
+    });
+    connect(globalShortcuts, &GlobalShortcuts::ctrlShift2, this, [&toolMgr, &unitsMgr]() {
+        const QPointF coord = unitsMgr.convertCoord(QCursor::pos());
+        toolMgr.setX2Position(coord.x());
+        toolMgr.setY2Position(coord.y());
+    });
+    connect(globalShortcuts, &GlobalShortcuts::ctrlShift3, this, [&toolMgr, &unitsMgr]() {
+        const QPointF coord = unitsMgr.convertCoord(QCursor::pos());
+        toolMgr.setXVPosition(coord.x());
+        toolMgr.setYVPosition(coord.y());
+    });
+
+    App::instance()->installEventFilter(globalShortcuts);
 }
 
 void MainWindow::saveProfile(Profile& profile) const {

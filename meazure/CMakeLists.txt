@@ -9,6 +9,8 @@ set(UI_SOURCES
     ui/ColorDisplay.h
     ui/DataField.cpp
     ui/DataField.h
+    ui/GlobalShortcuts.cpp
+    ui/GlobalShortcuts.h
     ui/GridDialog.cpp
     ui/GridDialog.h
     ui/Magnifier.cpp

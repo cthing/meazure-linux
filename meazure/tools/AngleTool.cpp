@@ -139,61 +139,73 @@ void AngleTool::loadProfile(Profile& profile) {
 }
 
 void AngleTool::setX1Position(double x) {
+    m_activePointId = k_point1Id;
     m_point1.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x));
     setPosition();
 }
 
 void AngleTool::setY1Position(double y) {
+    m_activePointId = k_point1Id;
     m_point1.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y));
     setPosition();
 }
 
 void AngleTool::setX2Position(double x) {
+    m_activePointId = k_point2Id;
     m_point2.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x));
     setPosition();
 }
 
 void AngleTool::setY2Position(double y) {
+    m_activePointId = k_point2Id;
     m_point2.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y));
     setPosition();
 }
 
 void AngleTool::setXVPosition(double x) {
+    m_activePointId = k_vertexId;
     m_vertex.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_vertexCH, x));
     setPosition();
 }
 
 void AngleTool::setYVPosition(double y) {
+    m_activePointId = k_vertexId;
     m_vertex.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_vertexCH, y));
     setPosition();
 }
 
 void AngleTool::stepX1Position(int numSteps) {
+    m_activePointId = k_point1Id;
     m_point1.rx() += numSteps;
     setPosition();
 }
 
 void AngleTool::stepY1Position(int numSteps) {
+    m_activePointId = k_point1Id;
     m_point1.ry() += numSteps;
     setPosition();
 }
 
 void AngleTool::stepX2Position(int numSteps) {
+    m_activePointId = k_point2Id;
     m_point2.rx() += numSteps;
     setPosition();
 }
 
 void AngleTool::stepY2Position(int numSteps) {
+    m_activePointId = k_point2Id;
     m_point2.ry() += numSteps;
     setPosition();
 }
 
 void AngleTool::stepXVPosition(int numSteps) {
+    m_activePointId = k_vertexId;
     m_vertex.rx() += numSteps;
     setPosition();
 }
 
 void AngleTool::stepYVPosition(int numSteps) {
+    m_activePointId = k_vertexId;
     m_vertex.ry() += numSteps;
     setPosition();
 }

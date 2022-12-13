@@ -113,41 +113,49 @@ void LineTool::loadProfile(Profile& profile) {
 }
 
 void LineTool::setX1Position(double x) {
+    m_activePointId = k_point1Id;
     m_point1.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x));
     setPosition();
 }
 
 void LineTool::setY1Position(double y) {
+    m_activePointId = k_point1Id;
     m_point1.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y));
     setPosition();
 }
 
 void LineTool::setX2Position(double x) {
+    m_activePointId = k_point2Id;
     m_point2.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x));
     setPosition();
 }
 
 void LineTool::setY2Position(double y) {
+    m_activePointId = k_point2Id;
     m_point2.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y));
     setPosition();
 }
 
 void LineTool::stepX1Position(int numSteps) {
+    m_activePointId = k_point1Id;
     m_point1.rx() += numSteps;
     setPosition();
 }
 
 void LineTool::stepY1Position(int numSteps) {
+    m_activePointId = k_point1Id;
     m_point1.ry() += numSteps;
     setPosition();
 }
 
 void LineTool::stepX2Position(int numSteps) {
+    m_activePointId = k_point2Id;
     m_point2.rx() += numSteps;
     setPosition();
 }
 
 void LineTool::stepY2Position(int numSteps) {
+    m_activePointId = k_point2Id;
     m_point2.ry() += numSteps;
     setPosition();
 }
