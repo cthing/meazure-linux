@@ -143,6 +143,7 @@ private:
     QAction* m_defineCustomUnitsAction;
     QAction* m_degreeUnitsAction;
     QAction* m_radianUnitsAction;
+    QAction* m_findCrosshairsAction;
 
     QAction* m_collapseAction;
     QAction* m_toolBarVisibleAction;

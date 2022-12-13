@@ -186,6 +186,15 @@ void MainWindow::createActions() {
     m_gridAdjustAction = new QAction(tr("Screen &Grid Spacing..."), this);
     connect(m_gridAdjustAction, &QAction::triggered, this, &MainWindow::adjustGrid);
 
+    m_findCrosshairsAction = new QAction(tr("&Find Crosshairs"), this);
+    m_findCrosshairsAction->setShortcut(QKeySequence("Ctrl+F"));
+    connect(m_findCrosshairsAction, &QAction::triggered, this, [&toolMgr]() {
+        toolMgr.flashTool();
+    });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_findCrosshairsAction->setEnabled(tool.hasCrosshairs());
+    });
+
     // Units actions
 
     auto* linearUnitsGroup = new QActionGroup(this);
@@ -359,6 +368,10 @@ void MainWindow::createMenus() {
     toolsMenu->addAction(m_rulerToolAction);
     toolsMenu->addAction(m_gridToolAction);
     toolsMenu->addAction(m_gridAdjustAction);
+
+    toolsMenu->addSeparator();
+
+    toolsMenu->addAction(m_findCrosshairsAction);
 
     // Units menu
 

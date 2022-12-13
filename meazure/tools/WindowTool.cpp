@@ -70,6 +70,10 @@ void WindowTool::strobe() {
     m_dataWindow->strobe();
 }
 
+bool WindowTool::hasCrosshairs() const {
+    return false;
+}
+
 void WindowTool::windowChanged(unsigned long, int16_t, int16_t, uint16_t, uint16_t) {
     m_windowFinder->refresh();
 }

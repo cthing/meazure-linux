@@ -84,6 +84,12 @@ public:
     ///
     virtual void strobe();
 
+    /// Indicates whether the derived tool uses crosshairs.
+    ///
+    /// @return This base class implementation always returns <b>true</b>.
+    ///
+    [[nodiscard]] virtual bool hasCrosshairs() const;
+
     /// Sets the radio tool's position 1 x coordinate.
     ///
     /// @param[in] x X coordinate in the current units, origin and y-axis direction.

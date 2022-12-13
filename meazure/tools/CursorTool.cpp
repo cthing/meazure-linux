@@ -53,6 +53,10 @@ void CursorTool::strobe() {
     m_dataWindow->strobe();
 }
 
+bool CursorTool::hasCrosshairs() const {
+    return false;
+}
+
 void CursorTool::pointerMotion(int16_t x, int16_t y) {
     emitMeasurement(QPoint(x, y));
 }

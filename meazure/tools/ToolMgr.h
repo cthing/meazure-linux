@@ -83,6 +83,24 @@ public:
         return m_activePosition;
     };
 
+    /// Causes the current radio tool to flash. Typically flashing a tool causes its crosshairs to cycle a number
+    /// of times between their normal visual state and a highlighted state.
+    ///
+    void flashTool() const { m_currentRadioTool->flash(); }
+
+    /// Causes the current radio tool to strobe. Typically strobing a tool causes its crosshairs to cycle once
+    /// between their normal visual state and a highlighted state.
+    ///
+    void strobeTool() const { m_currentRadioTool->strobe(); }
+
+    /// Indicates if the currently selected radio tool uses crosshairs.
+    ///
+    /// @return true if the currently selected radio tool uses crosshairs.
+    ///
+    [[nodiscard]] bool hasCrosshairs() const {
+        return m_currentRadioTool->hasCrosshairs();
+    }
+
 public slots:
     /// Causes the current tool to remeasure thereby emitting any measurement related signals. Typically, this method
     /// is called when the measurement units are changed or when the tool is first selected. Does nothing if the tool

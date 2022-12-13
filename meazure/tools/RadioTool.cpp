@@ -30,6 +30,10 @@ void RadioTool::flash() {
 void RadioTool::strobe() {
 }
 
+bool RadioTool::hasCrosshairs() const {
+    return true;
+}
+
 void RadioTool::setX1Position(double) {
 }
 

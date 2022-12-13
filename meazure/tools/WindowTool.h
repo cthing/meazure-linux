@@ -65,6 +65,8 @@ public:
     void refresh() override;
     void strobe() override;
 
+    [[nodiscard]] bool hasCrosshairs() const override;
+
 signals:
     void activePositionChanged(QPoint rawPos);
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
