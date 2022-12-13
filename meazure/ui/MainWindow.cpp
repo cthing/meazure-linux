@@ -353,6 +353,8 @@ void MainWindow::createMenus() {
     QMenu* editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(m_copyRegionAction);
     editMenu->addAction(m_mainView->getCopyColorAction());
+    editMenu->addSeparator();
+    editMenu->addAction(m_findCrosshairsAction);
 
     // Tools menu
 
@@ -368,10 +370,6 @@ void MainWindow::createMenus() {
     toolsMenu->addAction(m_rulerToolAction);
     toolsMenu->addAction(m_gridToolAction);
     toolsMenu->addAction(m_gridAdjustAction);
-
-    toolsMenu->addSeparator();
-
-    toolsMenu->addAction(m_findCrosshairsAction);
 
     // Units menu
 
@@ -392,19 +390,14 @@ void MainWindow::createMenus() {
     // View menu
 
     QMenu* viewMenu = menuBar()->addMenu(tr("&View"));
-
     viewMenu->addAction(m_collapseAction);
-
     viewMenu->addSeparator();
-
     viewMenu->addAction(m_toolBarVisibleAction);
     viewMenu->addAction(m_toolDataSectionVisibleAction);
     viewMenu->addAction(m_screenDataSectionVisibleAction);
     viewMenu->addAction(m_magnifierSectionVisibleAction);
     viewMenu->addAction(m_statusBarVisibleAction);
-
     viewMenu->addSeparator();
-
     viewMenu->addAction(m_mainView->getMagnifierZoomInAction());
     viewMenu->addAction(m_mainView->getMagnifierZoomOutAction());
     viewMenu->addAction(m_mainView->getMagnifierGridAction());
@@ -416,14 +409,11 @@ void MainWindow::createMenus() {
     }
 
     viewMenu->addSeparator();
-
     viewMenu->addAction(m_invertYAction);
     viewMenu->addAction(m_supplementalAngleAction);
     viewMenu->addAction(m_setOriginAction);
     viewMenu->addAction(m_resetOriginAction);
-
     viewMenu->addSeparator();
-
     viewMenu->addAction(m_alwaysVisibleAction);
 }
 
