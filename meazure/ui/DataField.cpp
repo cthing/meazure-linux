@@ -33,6 +33,7 @@ DataField::DataField(int charWidth, bool showButtons, bool readOnly, bool native
         m_charWidth(charWidth),
         m_defaultBackground(palette().color(QPalette::Base)),
         m_nativeStepHandling(nativeStepHandling) {
+    setAutoFillBackground(true);
     setButtonSymbols(showButtons ? UpDownArrows : NoButtons);
     setRangeQuietly(-std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
     setReadOnly(readOnly);
@@ -75,14 +76,21 @@ QSize DataField::sizeHint() const {
     return style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(w, h), this);
 }
 
-bool DataField::event(QEvent* ev)  {
+void DataField::changeEvent(QEvent* ev)  {
     if (ev->type() == QEvent::ReadOnlyChange) {
         QPalette palette;
         palette.setColor(QPalette::Base, isReadOnly() ? m_readOnlyBackground : m_defaultBackground);
         setPalette(palette);
+    } else if (ev->type() == QEvent::EnabledChange) {
+        QPalette palette;
+        palette.setColor(QPalette::Base, isEnabled() ? m_defaultBackground : m_readOnlyBackground);
+        setPalette(palette);
+        if (!isEnabled()) {
+            setValueQuietly(0);
+        }
     }
 
-    return QDoubleSpinBox::event(ev);
+    QDoubleSpinBox::changeEvent(ev);
 }
 
 void DataField::mousePressEvent(QMouseEvent *event) {

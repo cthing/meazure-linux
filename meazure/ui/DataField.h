@@ -86,7 +86,7 @@ signals:
     void stepRequested(int steps);
 
 protected:
-    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
     void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 

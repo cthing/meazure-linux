@@ -169,7 +169,9 @@ void ToolDataSection::radioToolSelected(RadioTool& tool) {
 
         label->setEnabled(enabled);
         field->setEnabled(enabled);
-        field->setReadOnly(readOnly);
+        if (enabled) {
+            field->setReadOnly(readOnly);
+        }
         if (units != nullptr) {
             units->setEnabled(enabled);
         }
