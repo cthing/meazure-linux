@@ -61,6 +61,12 @@ public:
     ///
     void setLineWidth(int width);
 
+    ///  Gap on the perimeter to accommodate a crosshair.
+    ///
+    /// @param[in] gap Gap on the perimeter, in inches
+    ///
+    void setGap(double gap);
+
     /// Sets the position of the circle.
     ///
     /// @param[in] centerPoint Location of the center of the circle, in pixels

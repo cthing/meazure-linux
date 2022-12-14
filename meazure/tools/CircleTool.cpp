@@ -76,6 +76,20 @@ void CircleTool::setEnabled(bool enable) {
     }
 }
 
+void CircleTool::setCrosshairsEnabled(bool enable) {
+    if (enable) {
+        m_circle->setGap(k_crosshairRadialOffset);
+        m_line->setOffset(k_crosshairOffset);
+        m_centerCH->show();
+        m_perimeterCH->show();
+    } else {
+        m_circle->setGap(0.0);
+        m_line->setOffset(0.0);
+        m_centerCH->hide();
+        m_perimeterCH->hide();
+    }
+}
+
 QImage CircleTool::grabRegion() const {
     const Cloaker cloak(m_centerCH, m_perimeterCH, m_circle, m_line, m_dataWinCenter, m_dataWinPerimeter);
 

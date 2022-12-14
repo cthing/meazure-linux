@@ -63,6 +63,14 @@ public:
     ///
     void setLineWidth(int width);
 
+    /// Distance to shrink rectangle from start and end points. The typical use for this parameter is in the
+    /// Rectangle tool. Offseting the rectangle end points allows the contents of the end points to be clear
+    /// for viewing and measuring.
+    ///
+    /// @param[in] offset Distance to shrink rectangle from start and end points, in inches
+    ///
+    void setOffset(double offset);
+
     /// Sets the position of the rectangle.
     ///
     /// @param[in] startPoint Location of the start of the rectangle, in pixels

@@ -52,6 +52,14 @@ void PointTool::setEnabled(bool enable) {
     }
 }
 
+void PointTool::setCrosshairsEnabled(bool enable) {
+    if (enable) {
+        m_crosshair->show();
+    } else {
+        m_crosshair->hide();
+    }
+}
+
 void PointTool::saveProfile(Profile& profile) const {
     // Save the position of the crosshair.
     //

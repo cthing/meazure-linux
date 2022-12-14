@@ -49,6 +49,11 @@ void Circle::setLineWidth(int width) {
     repaint();
 }
 
+void Circle::setGap(double gap) {
+    m_gap = gap;
+    repaint();
+}
+
 void Circle::setPosition(const QPoint& center, const QPoint& perimeter) {
     m_center = m_screenInfo.constrainPosition(center);
     m_perimeter = m_screenInfo.constrainPosition(perimeter);

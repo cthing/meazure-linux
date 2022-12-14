@@ -24,6 +24,9 @@ RadioTool::RadioTool(const ScreenInfoProvider& screenInfo, const UnitsProvider& 
         Tool(screenInfo, unitsProvider, parent) {
 }
 
+void RadioTool::setCrosshairsEnabled(bool) {
+}
+
 void RadioTool::flash() {
 }
 

@@ -120,6 +120,7 @@ private:
     QToolBar* m_toolBar;
 
     QAction* m_copyRegionAction;
+    QAction* m_findCrosshairsAction;
 
     QAction* m_cursorToolAction;
     QAction* m_pointToolAction;
@@ -143,7 +144,6 @@ private:
     QAction* m_defineCustomUnitsAction;
     QAction* m_degreeUnitsAction;
     QAction* m_radianUnitsAction;
-    QAction* m_findCrosshairsAction;
 
     QAction* m_collapseAction;
     QAction* m_toolBarVisibleAction;
@@ -151,6 +151,7 @@ private:
     QAction* m_screenDataSectionVisibleAction;
     QAction* m_magnifierSectionVisibleAction;
     QAction* m_statusBarVisibleAction;
+    QAction* m_hideCrosshairsAction;
     QAction* m_invertYAction;
     QAction* m_supplementalAngleAction;
     QAction* m_setOriginAction;

@@ -122,6 +122,12 @@ public slots:
     ///
     void setEnabled(const char* toolName, bool enable);
 
+    /// Sets whether the tool crosshairs are visible.
+    ///
+    /// @param[in] enable true to make the crosshairs visible
+    ///
+    void setCrosshairsEnabled(bool enable);
+
     /// Sets the current radio tool's position 1 x coordinate.
     ///
     /// @param[in] x X coordinate in the current units, origin and y-axis direction.
@@ -200,6 +206,7 @@ signals:
     void radioToolSelected(RadioTool& tool);
 
     void toolEnabled(Tool& tool, bool enabled);
+    void crosshairsEnabled(bool enabled);
 
     void activePositionChanged(QPoint rawPos);
 
@@ -221,6 +228,7 @@ private:
     ToolsMap m_tools;
     RadioTool* m_currentRadioTool { nullptr };
     QPoint m_activePosition;
+    bool m_crosshairsEnabled { true };
 
     friend class App;
 };

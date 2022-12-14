@@ -66,6 +66,8 @@ public:
 
     void setEnabled(bool enable) override;
 
+    void setCrosshairsEnabled(bool enable) override;
+
     void saveProfile(Profile& profile) const override;
     void loadProfile(Profile& profile) override;
 

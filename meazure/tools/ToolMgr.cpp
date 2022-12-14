@@ -139,6 +139,10 @@ void ToolMgr::saveProfile(Profile& profile) const {
     }
 
     profile.writeStr("CurrentRadioTool", m_currentRadioTool->getName());
+
+    if (!profile.userInitiated()) {
+        profile.writeBool("EnableCrosshairs", m_crosshairsEnabled);
+    }
 }
 
 void ToolMgr::loadProfile(Profile& profile) {
@@ -148,6 +152,10 @@ void ToolMgr::loadProfile(Profile& profile) {
 
     const QString currentRadioToolName = profile.readStr("CurrentRadioTool", m_currentRadioTool->getName());
     selectRadioTool(currentRadioToolName.toUtf8().constData());
+
+    if (!profile.userInitiated()) {
+        setCrosshairsEnabled(profile.readBool("EnableCrosshairs", m_crosshairsEnabled));
+    }
 }
 
 void ToolMgr::masterReset() {
@@ -175,9 +183,9 @@ void ToolMgr::selectRadioTool(const char *toolName) {
             }
         }
 
-        tool->setEnabled(true);
-
         m_currentRadioTool = dynamic_cast<RadioTool*>(tool);
+        m_currentRadioTool->setEnabled(true);
+        m_currentRadioTool->setCrosshairsEnabled(m_crosshairsEnabled);
         m_currentRadioTool->flash();
 
         emit radioToolSelected(*m_currentRadioTool);
@@ -193,6 +201,13 @@ void ToolMgr::setEnabled(const char *toolName, bool enable) {
     if (enable) {
         tool->refresh();
     }
+}
+
+void ToolMgr::setCrosshairsEnabled(bool enable) {
+    m_crosshairsEnabled = enable;
+    m_currentRadioTool->setCrosshairsEnabled(enable);
+
+    emit crosshairsEnabled(enable);
 }
 
 void ToolMgr::setX1Position(double x) {

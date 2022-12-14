@@ -74,6 +74,18 @@ void RectangleTool::setEnabled(bool enable) {
     }
 }
 
+void RectangleTool::setCrosshairsEnabled(bool enable) {
+    if (enable) {
+        m_rectangle->setOffset(k_crosshairOffset);
+        m_point1CH->show();
+        m_point2CH->show();
+    } else {
+        m_rectangle->setOffset(0.0);
+        m_point1CH->hide();
+        m_point2CH->hide();
+    }
+}
+
 QImage RectangleTool::grabRegion() const {
     const Cloaker cloak(m_point1CH, m_point2CH, m_rectangle, m_dataWin1, m_dataWin2);
 

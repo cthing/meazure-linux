@@ -68,6 +68,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     m_degreeUnitsAction->trigger();
 
     toolMgr.setEnabled(OriginTool::k_toolName, true);
+    toolMgr.setCrosshairsEnabled(true);
 
     setWindowFlag(Qt::WindowMaximizeButtonHint, false);
 
@@ -92,6 +93,15 @@ void MainWindow::createActions() {
     m_copyRegionAction = new QAction(tr("Copy &Region"), this);
     m_copyRegionAction->setShortcut(QKeySequence("Ctrl+R"));
     connect(m_copyRegionAction, &QAction::triggered, this, &MainWindow::copyRegion);
+
+    m_findCrosshairsAction = new QAction(tr("&Find Crosshairs"), this);
+    m_findCrosshairsAction->setShortcut(QKeySequence("Ctrl+F"));
+    connect(m_findCrosshairsAction, &QAction::triggered, this, [&toolMgr]() {
+        toolMgr.flashTool();
+    });
+    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+        m_findCrosshairsAction->setEnabled(tool.hasCrosshairs());
+    });
 
     // Tool actions
 
@@ -185,15 +195,6 @@ void MainWindow::createActions() {
 
     m_gridAdjustAction = new QAction(tr("Screen &Grid Spacing..."), this);
     connect(m_gridAdjustAction, &QAction::triggered, this, &MainWindow::adjustGrid);
-
-    m_findCrosshairsAction = new QAction(tr("&Find Crosshairs"), this);
-    m_findCrosshairsAction->setShortcut(QKeySequence("Ctrl+F"));
-    connect(m_findCrosshairsAction, &QAction::triggered, this, [&toolMgr]() {
-        toolMgr.flashTool();
-    });
-    connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
-        m_findCrosshairsAction->setEnabled(tool.hasCrosshairs());
-    });
 
     // Units actions
 
@@ -308,6 +309,16 @@ void MainWindow::createActions() {
     connect(m_statusBarVisibleAction, &QAction::triggered, this, &MainWindow::setStatusBarVisible);
     connect(this, &MainWindow::statusBarVisibilityChanged, m_statusBarVisibleAction, &QAction::setChecked);
 
+    m_hideCrosshairsAction = new QAction(tr("&Hide Crosshairs"), this);
+    m_hideCrosshairsAction->setShortcut(QKeySequence("Ctrl+B"));
+    m_hideCrosshairsAction->setCheckable(true);
+    connect(m_hideCrosshairsAction, &QAction::triggered, this, [&toolMgr](bool hide) {
+        toolMgr.setCrosshairsEnabled(!hide);
+    });
+    connect(&toolMgr, &ToolMgr::crosshairsEnabled, this, [this](bool enable) {
+        m_hideCrosshairsAction->setChecked(!enable);
+    });
+
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
     connect(m_invertYAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setInvertY);
@@ -397,6 +408,8 @@ void MainWindow::createMenus() {
     viewMenu->addAction(m_screenDataSectionVisibleAction);
     viewMenu->addAction(m_magnifierSectionVisibleAction);
     viewMenu->addAction(m_statusBarVisibleAction);
+    viewMenu->addSeparator();
+    viewMenu->addAction(m_hideCrosshairsAction);
     viewMenu->addSeparator();
     viewMenu->addAction(m_mainView->getMagnifierZoomInAction());
     viewMenu->addAction(m_mainView->getMagnifierZoomOutAction());

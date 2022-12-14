@@ -93,6 +93,24 @@ void AngleTool::setEnabled(bool enable) {
     }
 }
 
+void AngleTool::setCrosshairsEnabled(bool enable) {
+    if (enable) {
+        m_line1->setOffset(k_crosshairOffset);
+        m_line2->setOffset(k_crosshairOffset);
+        m_lineB->setOffset(k_crosshairOffset);
+        m_point1CH->show();
+        m_point2CH->show();
+        m_vertexCH->show();
+    } else {
+        m_line1->setOffset(0.0);
+        m_line2->setOffset(0.0);
+        m_lineB->setOffset(0.0);
+        m_point1CH->hide();
+        m_point2CH->hide();
+        m_vertexCH->hide();
+    }
+}
+
 void AngleTool::saveProfile(Profile& profile) const {
     // Save the position of point 1, point 2 and the vertex.
     //

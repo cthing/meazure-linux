@@ -63,6 +63,13 @@ public:
     ///
     void setLineWidth(int width);
 
+    /// Sets the distance to shrink the line from its start and end points. The typical use for this parameter is in
+    /// the Line tool. Shrinking the line allows the contents of the end points to be clear for viewing and measuring.
+    ///
+    /// @param[in] offset Distance to shrink line from its start and end points, in inches
+    ///
+    void setOffset(double offset);
+
     /// Sets the position of the line.
     ///
     /// @param[in] startPoint Location of the start of the line, in pixels

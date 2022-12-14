@@ -50,6 +50,11 @@ void Line::setLineWidth(int width) {
     repaint();
 }
 
+void Line::setOffset(double offset) {
+    m_offset = offset;
+    setPosition(m_start, m_end);
+}
+
 void Line::setPosition(const QPoint& start, const QPoint& end) {
     m_start = start;
     m_end = end;

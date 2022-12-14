@@ -72,6 +72,18 @@ void LineTool::setEnabled(bool enable) {
     }
 }
 
+void LineTool::setCrosshairsEnabled(bool enable) {
+    if (enable) {
+        m_line->setOffset(k_crosshairOffset);
+        m_point1CH->show();
+        m_point2CH->show();
+    } else {
+        m_line->setOffset(0.0);
+        m_point1CH->hide();
+        m_point2CH->hide();
+    }
+}
+
 QImage LineTool::grabRegion() const {
     const Cloaker cloak(m_point1CH, m_point2CH, m_line, m_dataWin1, m_dataWin2);
 

@@ -49,6 +49,11 @@ void Rectangle::setLineWidth(int width) {
     repaint();
 }
 
+void Rectangle::setOffset(double offset) {
+    m_offset = offset;
+    repaint();
+}
+
 void Rectangle::setPosition(const QPoint& start, const QPoint& end) {
     m_start = start;
     m_end = end;

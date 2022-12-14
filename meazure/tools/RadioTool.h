@@ -53,6 +53,12 @@ public:
         return true;
     }
 
+    /// Sets whether the tool crosshairs are visible.
+    ///
+    /// @param[in] enable true to make the crosshairs visible
+    ///
+    virtual void setCrosshairsEnabled(bool enable);
+
     /// Indicates whether the tool can grab a rectangular region of the screen. Typically, any tool that provides
     /// a position, width and height measurement, can grab the corresponding region of the screen.
     ///
