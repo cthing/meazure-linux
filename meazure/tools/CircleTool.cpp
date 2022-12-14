@@ -274,7 +274,7 @@ void CircleTool::moved(CrossHair&, int id, QPoint) {
     const QSizeF wh = QSizeF(diameter, diameter);
     const double aspect = Geometry::aspectRatio(wh);
     const double area = Geometry::area(radius);
-    const double angle = getUnitsProvider().convertAngle(Geometry::angle(coordPerimeter, coordCenter));
+    const double angle = getUnitsProvider().convertAngle(Geometry::angle(coordCenter, coordPerimeter));
 
     m_dataWinPerimeter->distanceChanged(radius);
     m_dataWinCenter->distanceChanged(radius);
