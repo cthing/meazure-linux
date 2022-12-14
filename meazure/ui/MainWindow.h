@@ -101,6 +101,10 @@ private:
     ///
     void createToolBar();
 
+    /// Configures the application's status bar.
+    ///
+    void createStatusBar();
+
     /// Creates application dialogs.
     ///
     void createDialogs();

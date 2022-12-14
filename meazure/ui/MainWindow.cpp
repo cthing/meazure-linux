@@ -45,13 +45,12 @@
 
 MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init)
     createCentralWidget();
+    createStatusBar();
     createActions();
     createMenus();
     createToolBar();
     createDialogs();
     createKeyboardControl();
-
-    setStyleSheet("QStatusBar { border-top: 1px outset grey; }");
 
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
@@ -82,6 +81,10 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
 void MainWindow::createCentralWidget() {
     m_mainView = new MainView();
     setCentralWidget(m_mainView);
+}
+
+void MainWindow::createStatusBar() {
+    statusBar()->setStyleSheet("QStatusBar { border-top: 1px outset grey; }");
 }
 
 void MainWindow::createActions() {
