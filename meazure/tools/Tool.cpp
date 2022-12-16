@@ -30,6 +30,10 @@ void Tool::setEnabled(bool enable) {
     emit toolEnabled(*this, enable);
 }
 
+void Tool::setDataWinEnabled(bool enable) {
+    m_dataWinEnabled = enable;
+}
+
 void Tool::saveProfile(Profile&) const {
 }
 

@@ -62,6 +62,8 @@ public:
 
     void setEnabled(bool enable) override;
 
+    void setDataWinEnabled(bool enable) override;
+
     void refresh() override;
     void strobe() override;
 

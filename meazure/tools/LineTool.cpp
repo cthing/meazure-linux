@@ -84,6 +84,15 @@ void LineTool::setCrosshairsEnabled(bool enable) {
     }
 }
 
+void LineTool::setDataWinEnabled(bool enable) {
+    RadioTool::setDataWinEnabled(enable);
+
+    if (!enable) {
+        m_dataWin1->hide();
+        m_dataWin2->hide();
+    }
+}
+
 QImage LineTool::grabRegion() const {
     const Cloaker cloak(m_point1CH, m_point2CH, m_line, m_dataWin1, m_dataWin2);
 
@@ -200,10 +209,12 @@ void LineTool::strobe() {
 }
 
 void LineTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
-    if (id == k_point1Id) {
-        m_dataWin1->show();
-    } else {
-        m_dataWin2->show();
+    if (isDataWinEnabled()) {
+        if (id == k_point1Id) {
+            m_dataWin1->show();
+        } else {
+            m_dataWin2->show();
+        }
     }
 }
 

@@ -90,6 +90,15 @@ void CircleTool::setCrosshairsEnabled(bool enable) {
     }
 }
 
+void CircleTool::setDataWinEnabled(bool enable) {
+    RadioTool::setDataWinEnabled(enable);
+
+    if (!enable) {
+        m_dataWinCenter->hide();
+        m_dataWinPerimeter->hide();
+    }
+}
+
 QImage CircleTool::grabRegion() const {
     const Cloaker cloak(m_centerCH, m_perimeterCH, m_circle, m_line, m_dataWinCenter, m_dataWinPerimeter);
 
@@ -207,10 +216,12 @@ void CircleTool::strobe() {
 }
 
 void CircleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
-    if (id == k_perimeterId) {
-        m_dataWinPerimeter->show();
-    } else {
-        m_dataWinCenter->show();
+    if (isDataWinEnabled()) {
+        if (id == k_perimeterId) {
+            m_dataWinPerimeter->show();
+        } else {
+            m_dataWinCenter->show();
+        }
     }
 }
 

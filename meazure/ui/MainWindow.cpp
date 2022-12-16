@@ -46,10 +46,10 @@
 MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init)
     createCentralWidget();
     createStatusBar();
+    createDialogs();
     createActions();
     createMenus();
     createToolBar();
-    createDialogs();
     createKeyboardControl();
 
     ToolMgr& toolMgr = App::instance()->getToolMgr();
@@ -105,6 +105,9 @@ void MainWindow::createActions() {
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_findCrosshairsAction->setEnabled(tool.hasCrosshairs());
     });
+
+    m_preferencesAction = new QAction(tr("Pre&ferences..."), this);
+    connect(m_preferencesAction, &QAction::triggered, m_prefsDialog, &PrefsDialog::exec);
 
     // Tool actions
 
@@ -322,6 +325,15 @@ void MainWindow::createActions() {
         m_hideCrosshairsAction->setChecked(!enable);
     });
 
+    m_hideDataWindowsAction = new QAction(tr("Hide &Popup Data Windows"), this);
+    m_hideDataWindowsAction->setCheckable(true);
+    connect(m_hideDataWindowsAction, &QAction::triggered, this, [&toolMgr](bool hide) {
+        toolMgr.setDataWinEnabled(!hide);
+    });
+    connect(&toolMgr, &ToolMgr::dataWinEnabled, this, [this](bool enable) {
+        m_hideDataWindowsAction->setChecked(!enable);
+    });
+
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
     connect(m_invertYAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setInvertY);
@@ -369,6 +381,8 @@ void MainWindow::createMenus() {
     editMenu->addAction(m_mainView->getCopyColorAction());
     editMenu->addSeparator();
     editMenu->addAction(m_findCrosshairsAction);
+    editMenu->addSeparator();
+    editMenu->addAction(m_preferencesAction);
 
     // Tools menu
 
@@ -413,6 +427,7 @@ void MainWindow::createMenus() {
     viewMenu->addAction(m_statusBarVisibleAction);
     viewMenu->addSeparator();
     viewMenu->addAction(m_hideCrosshairsAction);
+    viewMenu->addAction(m_hideDataWindowsAction);
     viewMenu->addSeparator();
     viewMenu->addAction(m_mainView->getMagnifierZoomInAction());
     viewMenu->addAction(m_mainView->getMagnifierZoomOutAction());
@@ -450,8 +465,11 @@ void MainWindow::createToolBar() {
 
 void MainWindow::createDialogs() {
     App* app = App::instance();
+
     auto* gridTool = dynamic_cast<GridTool*>(app->getToolMgr().getTool(GridTool::k_toolName));
     m_gridDialog = new GridDialog(gridTool, app->getScreenInfo(), app->getUnitsMgr(), this);
+
+    m_prefsDialog = new PrefsDialog(this);
 }
 
 void MainWindow::createKeyboardControl() {

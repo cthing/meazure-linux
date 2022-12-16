@@ -38,9 +38,19 @@ void CursorTool::setEnabled(bool enable) {
 
     if (enable) {
         m_pointerTracker->start();
-        m_dataWindow->show();
+        if (isDataWinEnabled()) {
+            m_dataWindow->show();
+        }
     } else {
         m_pointerTracker->stop();
+        m_dataWindow->hide();
+    }
+}
+
+void CursorTool::setDataWinEnabled(bool enable) {
+    RadioTool::setDataWinEnabled(enable);
+
+    if (!enable) {
         m_dataWindow->hide();
     }
 }

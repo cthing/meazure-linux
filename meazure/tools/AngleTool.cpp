@@ -111,6 +111,16 @@ void AngleTool::setCrosshairsEnabled(bool enable) {
     }
 }
 
+void AngleTool::setDataWinEnabled(bool enable) {
+    RadioTool::setDataWinEnabled(enable);
+
+    if (!enable) {
+        m_dataWin1->hide();
+        m_dataWin2->hide();
+        m_dataWinV->hide();
+    }
+}
+
 void AngleTool::saveProfile(Profile& profile) const {
     // Save the position of point 1, point 2 and the vertex.
     //
@@ -303,12 +313,14 @@ void AngleTool::strobe() {
 }
 
 void AngleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
-    if (id == k_point1Id) {
-        m_dataWin1->show();
-    } else if (id == k_point2Id) {
-        m_dataWin2->show();
-    } else {
-        m_dataWinV->show();
+    if (isDataWinEnabled()) {
+        if (id == k_point1Id) {
+            m_dataWin1->show();
+        } else if (id == k_point2Id) {
+            m_dataWin2->show();
+        } else {
+            m_dataWinV->show();
+        }
     }
 }
 

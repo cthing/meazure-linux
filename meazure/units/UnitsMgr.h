@@ -58,7 +58,7 @@ public:
     ///
     void loadProfile(Profile& profile);
 
-    /// Called when the master application reset is initiated. The units manager is reset to its default state.
+    /// Called when the master application reset is initiated. The units manager is setToDefaultValue to its default state.
     ///
     void masterReset();
 

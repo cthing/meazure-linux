@@ -74,6 +74,20 @@ public:
         return m_enabled;
     }
 
+    /// Sets whether the tool data windows can be shown.
+    ///
+    /// @param[in] enable true to allow the data windows to be shown
+    ///
+    virtual void setDataWinEnabled(bool enable);
+
+    /// Indicates whether the tool data windows will be shown.
+    ///
+    /// @return true if the data windows will be shown.
+    ///
+    [[nodiscard]] bool isDataWinEnabled() const {
+        return m_dataWinEnabled;
+    }
+
     /// Persists the state of the tool to the specified profile object. This base class implementation does nothing.
     ///
     /// @param[in] profile The destination for the state information, which is typically a FileProfile or
@@ -114,4 +128,5 @@ private:
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
     bool m_enabled { false };
+    bool m_dataWinEnabled { true };
 };

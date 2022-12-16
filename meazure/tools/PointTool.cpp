@@ -60,6 +60,14 @@ void PointTool::setCrosshairsEnabled(bool enable) {
     }
 }
 
+void PointTool::setDataWinEnabled(bool enable) {
+    RadioTool::setDataWinEnabled(enable);
+
+    if (!enable) {
+        m_dataWindow->hide();
+    }
+}
+
 void PointTool::saveProfile(Profile& profile) const {
     // Save the position of the crosshair.
     //
@@ -126,7 +134,9 @@ void PointTool::strobe() {
 }
 
 void PointTool::entered(CrossHair&, int, QPoint, Qt::KeyboardModifiers) {
-    m_dataWindow->show();
+    if (isDataWinEnabled()) {
+        m_dataWindow->show();
+    }
 }
 
 void PointTool::departed(CrossHair&, int) {

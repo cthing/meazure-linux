@@ -142,6 +142,7 @@ void ToolMgr::saveProfile(Profile& profile) const {
 
     if (!profile.userInitiated()) {
         profile.writeBool("EnableCrosshairs", m_crosshairsEnabled);
+        profile.writeBool("ShowDataWin", m_dataWinEnabled);
     }
 }
 
@@ -155,6 +156,7 @@ void ToolMgr::loadProfile(Profile& profile) {
 
     if (!profile.userInitiated()) {
         setCrosshairsEnabled(profile.readBool("EnableCrosshairs", m_crosshairsEnabled));
+        setDataWinEnabled(profile.readBool("ShowDataWin", m_dataWinEnabled));
     }
 }
 
@@ -208,6 +210,16 @@ void ToolMgr::setCrosshairsEnabled(bool enable) {
     m_currentRadioTool->setCrosshairsEnabled(enable);
 
     emit crosshairsEnabled(enable);
+}
+
+void ToolMgr::setDataWinEnabled(bool enable) {
+    m_dataWinEnabled = enable;
+
+    for (const auto& toolEntry : m_tools) {
+        toolEntry.second->setDataWinEnabled(enable);
+    }
+
+    emit dataWinEnabled(enable);
 }
 
 void ToolMgr::setX1Position(double x) {

@@ -86,6 +86,15 @@ void RectangleTool::setCrosshairsEnabled(bool enable) {
     }
 }
 
+void RectangleTool::setDataWinEnabled(bool enable) {
+    RadioTool::setDataWinEnabled(enable);
+
+    if (!enable) {
+        m_dataWin1->hide();
+        m_dataWin2->hide();
+    }
+}
+
 QImage RectangleTool::grabRegion() const {
     const Cloaker cloak(m_point1CH, m_point2CH, m_rectangle, m_dataWin1, m_dataWin2);
 
@@ -205,10 +214,12 @@ void RectangleTool::strobe() {
 }
 
 void RectangleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
-    if (id == k_point1Id) {
-        m_dataWin1->show();
-    } else {
-        m_dataWin2->show();
+    if (isDataWinEnabled()) {
+        if (id == k_point1Id) {
+            m_dataWin1->show();
+        } else {
+            m_dataWin2->show();
+        }
     }
 }
 

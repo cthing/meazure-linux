@@ -24,6 +24,7 @@
 #include <meazure/tools/RadioTool.h>
 #include <meazure/units/Units.h>
 #include <meazure/profile/Profile.h>
+#include <meazure/prefs/ui/PrefsDialog.h>
 #include <QMainWindow>
 #include <QAction>
 #include <QToolBar>
@@ -125,6 +126,7 @@ private:
 
     QAction* m_copyRegionAction;
     QAction* m_findCrosshairsAction;
+    QAction* m_preferencesAction;
 
     QAction* m_cursorToolAction;
     QAction* m_pointToolAction;
@@ -156,6 +158,7 @@ private:
     QAction* m_magnifierSectionVisibleAction;
     QAction* m_statusBarVisibleAction;
     QAction* m_hideCrosshairsAction;
+    QAction* m_hideDataWindowsAction;
     QAction* m_invertYAction;
     QAction* m_supplementalAngleAction;
     QAction* m_setOriginAction;
@@ -163,6 +166,7 @@ private:
     QAction* m_alwaysVisibleAction;
 
     GridDialog* m_gridDialog;
+    PrefsDialog* m_prefsDialog;
 
     SectionVisibility m_sectionVisibility;
 };

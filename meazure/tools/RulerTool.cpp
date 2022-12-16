@@ -66,8 +66,8 @@ RulerTool::~RulerTool() {
     delete m_vLengthHandle;
     delete m_moveHandle;
     delete m_rotateHandle;
-    delete m_hLengthDataWin,
-    delete m_vLengthDataWin,
+    delete m_hLengthDataWin;
+    delete m_vLengthDataWin;
     delete m_moveDataWin;
     delete m_rotateDataWin;
 }
@@ -89,6 +89,17 @@ void RulerTool::setEnabled(bool enable) {
         m_vLengthHandle->hide();
         m_moveHandle->hide();
         m_rotateHandle->hide();
+    }
+}
+
+void RulerTool::setDataWinEnabled(bool enable) {
+    Tool::setDataWinEnabled(enable);
+
+    if (!enable) {
+        m_hLengthDataWin->hide();
+        m_vLengthDataWin->hide();
+        m_moveDataWin->hide();
+        m_rotateDataWin->hide();
     }
 }
 
@@ -206,22 +217,24 @@ void RulerTool::setIndicator(int indicatorIdx, QPoint pos) {
 }
 
 void RulerTool::handleEntered(Handle&, int id, QPoint center, Qt::KeyboardModifiers) {
-    switch (id) {
-        case k_hLengthId:
-            m_hLengthDataWin->show();
-            break;
-        case k_vLengthId:
-            m_vLengthDataWin->show();
-            break;
-        case k_moveId:
-            m_moveAnchorPoint = center;
-            m_moveDataWin->show();
-            break;
-        case k_rotateId:
-            m_rotateDataWin->show();
-            break;
-        default:
-            break;
+    if (isDataWinEnabled()) {
+        switch (id) {
+            case k_hLengthId:
+                m_hLengthDataWin->show();
+                break;
+            case k_vLengthId:
+                m_vLengthDataWin->show();
+                break;
+            case k_moveId:
+                m_moveAnchorPoint = center;
+                m_moveDataWin->show();
+                break;
+            case k_rotateId:
+                m_rotateDataWin->show();
+                break;
+            default:
+                break;
+        }
     }
 }
 

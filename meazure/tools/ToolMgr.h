@@ -128,6 +128,12 @@ public slots:
     ///
     void setCrosshairsEnabled(bool enable);
 
+    /// Sets whether the tool data windows will be shown.
+    ///
+    /// @param[in] enable true to allow the tool data windows to be shown
+    ///
+    void setDataWinEnabled(bool enable);
+
     /// Sets the current radio tool's position 1 x coordinate.
     ///
     /// @param[in] x X coordinate in the current units, origin and y-axis direction.
@@ -207,6 +213,7 @@ signals:
 
     void toolEnabled(Tool& tool, bool enabled);
     void crosshairsEnabled(bool enabled);
+    void dataWinEnabled(bool enabled);
 
     void activePositionChanged(QPoint rawPos);
 
@@ -229,6 +236,7 @@ private:
     RadioTool* m_currentRadioTool { nullptr };
     QPoint m_activePosition;
     bool m_crosshairsEnabled { true };
+    bool m_dataWinEnabled { true };
 
     friend class App;
 };

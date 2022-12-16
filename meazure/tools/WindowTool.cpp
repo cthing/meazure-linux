@@ -55,6 +55,14 @@ void WindowTool::setEnabled(bool enable) {
     }
 }
 
+void WindowTool::setDataWinEnabled(bool enable) {
+    RadioTool::setDataWinEnabled(enable);
+
+    if (!enable) {
+        m_dataWindow->hide();
+    }
+}
+
 QImage WindowTool::grabRegion() const {
     const Cloaker cloak(m_rectangle, m_dataWindow);
 
@@ -111,7 +119,9 @@ void WindowTool::setPosition(const QPoint& position) {
 
     m_dataWindow->widthHeightChanged(wh);
     m_dataWindow->moveNear(point1);
-    m_dataWindow->show();
+    if (isDataWinEnabled()) {
+        m_dataWindow->show();
+    }
 
     emit activePositionChanged(point1);
     emit xy1PositionChanged(coord1, point1);
