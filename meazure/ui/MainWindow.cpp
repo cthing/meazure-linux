@@ -334,6 +334,17 @@ void MainWindow::createActions() {
         m_hideDataWindowsAction->setChecked(!enable);
     });
 
+    m_hideOriginToolAction = new QAction(tr("Hide &Origin Marker"), this);
+    m_hideOriginToolAction->setCheckable(true);
+    connect(m_hideOriginToolAction, &QAction::triggered, this, [&toolMgr](bool hide) {
+        toolMgr.setEnabled(OriginTool::k_toolName, !hide);
+    });
+    connect(&toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
+        if (tool.getName() == OriginTool::k_toolName) {
+            m_hideOriginToolAction->setChecked(!enabled);
+        }
+    });
+
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
     connect(m_invertYAction, &QAction::triggered, &unitsMgr, &UnitsMgr::setInvertY);
@@ -428,6 +439,7 @@ void MainWindow::createMenus() {
     viewMenu->addSeparator();
     viewMenu->addAction(m_hideCrosshairsAction);
     viewMenu->addAction(m_hideDataWindowsAction);
+    viewMenu->addAction(m_hideOriginToolAction);
     viewMenu->addSeparator();
     viewMenu->addAction(m_mainView->getMagnifierZoomInAction());
     viewMenu->addAction(m_mainView->getMagnifierZoomOutAction());

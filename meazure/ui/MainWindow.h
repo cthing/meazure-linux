@@ -159,6 +159,7 @@ private:
     QAction* m_statusBarVisibleAction;
     QAction* m_hideCrosshairsAction;
     QAction* m_hideDataWindowsAction;
+    QAction* m_hideOriginToolAction;
     QAction* m_invertYAction;
     QAction* m_supplementalAngleAction;
     QAction* m_setOriginAction;
