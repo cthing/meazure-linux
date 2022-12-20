@@ -64,6 +64,7 @@ private slots:
     [[maybe_unused]] void testMatchExtendedColor();
     [[maybe_unused]] void testColorItem();
     [[maybe_unused]] void testOpacity();
+    [[maybe_unused]] void testOpacityConversion();
 
 private:
     constexpr double roundf(double value) { return std::round(value * 10000.0) / 10000.0; }
@@ -538,6 +539,19 @@ private:
     QCOMPARE(Colors::getAlpha(Colors::LineFore), 25);
 }
 
+[[maybe_unused]] void ColorsTest::testOpacityConversion() {
+    QCOMPARE(Colors::opacityToFraction(qRgba(0, 0, 0, 0)), 0.0);
+    QCOMPARE(Colors::opacityToFraction(qRgba(0, 0, 0, 255)), 1.0);
+    QCOMPARE(Colors::opacityToFraction(qRgba(0, 0, 0, 128)), 0.501960784314);
+
+    QCOMPARE(Colors::opacityToPercent(qRgba(0, 0, 0, 0)), 0);
+    QCOMPARE(Colors::opacityToPercent(qRgba(0, 0, 0, 255)), 100);
+    QCOMPARE(Colors::opacityToPercent(qRgba(0, 0, 0, 128)), 50);
+
+    QCOMPARE(Colors::opacityFromPercent(0), qRgba(0, 0, 0, 0));
+    QCOMPARE(Colors::opacityFromPercent(100), qRgba(0, 0, 0, 255));
+    QCOMPARE(Colors::opacityFromPercent(50), qRgba(0, 0, 0, 128));
+}
 
 QTEST_MAIN(ColorsTest)
 

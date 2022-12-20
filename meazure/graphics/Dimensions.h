@@ -42,15 +42,21 @@ namespace Dimensions {
     ///
     void loadProfile(Profile& profile);
 
+    /// Sets the width for lines used by tools and the grid.
+    ///
+    /// @param[in] width Width for lines, in pixels
+    ///
+    void setLineWidth(int width);
+
     /// Obtains the width for lines used by tools and the grid.
     ///
     /// @return Width for lines, in pixels.
     ///
     int getLineWidth();
 
-    /// Sets the width for lines used by tools and the grid.
+    /// Obtains the default with for lines used by tools and the grid.
     ///
-    /// @param[in] width Width for lines, in pixels
+    /// @return Default width for lines, in pixels.
     ///
-    void setLineWidth(int width);
+    int getDefaultLineWidth();
 }

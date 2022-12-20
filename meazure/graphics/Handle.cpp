@@ -48,7 +48,7 @@ Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
 
     m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
 
-    setWindowOpacity(qAlpha(opacity) / 255.0);
+    setWindowOpacity(Colors::opacityToFraction(opacity));
 
     if (!tooltip.isEmpty()) {
         setToolTip(tooltip);
@@ -68,8 +68,8 @@ void Handle::setColors(QRgb background, QRgb hilite, QRgb border) {
     repaint();
 }
 
-void Handle::setOpacity(int opacity) {
-    setWindowOpacity(opacity / 255.0);
+void Handle::setOpacity(int opacityPercent) {
+    setWindowOpacity(opacityPercent / 100.0);
 }
 
 void Handle::setPosition(const QPoint &center) {

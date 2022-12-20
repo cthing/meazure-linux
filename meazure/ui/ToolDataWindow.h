@@ -56,9 +56,9 @@ public:
 
     /// Sets the data window opacity.
     ///
-    /// @param[in] opacity Opacity of the data window ranging from 0 (transparent) to 255 (opaque)
+    /// @param[in] opacityPercent Opacity of the data window ranging from 0 (transparent) to 100 (opaque)
     ///
-    void setOpacity(int opacity);
+    void setOpacity(int opacityPercent);
 
     /// Moves the data window near the specified target rectangle. The data window will be positioned such that it
     /// never covers the target rectangle and is fully visible on the screen.

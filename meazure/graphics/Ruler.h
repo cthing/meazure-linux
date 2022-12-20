@@ -54,7 +54,7 @@ public:
 
     void setColors(QRgb background, QRgb border);
 
-    void setOpacity(int opacity);
+    void setOpacity(int opacityPercent);
 
     void setPosition(const QPoint& origin, int length, int angle);
 

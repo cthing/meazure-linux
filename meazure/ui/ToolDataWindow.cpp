@@ -20,6 +20,7 @@
 #include "ToolDataWindow.h"
 #include <meazure/units/Units.h>
 #include <QGridLayout>
+#include <QGraphicsOpacityEffect>
 
 
 ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -39,10 +40,18 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
     m_backgroundColor = palette().color(QPalette::ToolTipBase);
     m_textColor = palette().color(QPalette::ToolTipText);
 
+    setAutoFillBackground(true);
     setFrameStyle(Box | Plain);
     setLineWidth(1);
     setColors();
-    setWindowOpacity(qAlpha(opacity) / 255.0);
+
+    if (parent == nullptr) {
+        setWindowOpacity(Colors::opacityToFraction(opacity));
+    } else {
+        auto* effect = new QGraphicsOpacityEffect();
+        effect->setOpacity(Colors::opacityToFraction(opacity));
+        setGraphicsEffect(effect);
+    }
 
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
@@ -82,8 +91,13 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
     setLayout(layout);
 }
 
-void ToolDataWindow::setOpacity(int opacity) {
-    setWindowOpacity(opacity / 255.0);
+void ToolDataWindow::setOpacity(int opacityPercent) {
+    if (parent() == nullptr) {
+        setWindowOpacity(opacityPercent / 100.0);
+    } else {
+        auto* effect = dynamic_cast<QGraphicsOpacityEffect*>(graphicsEffect());
+        effect->setOpacity(opacityPercent / 100.0);
+    }
 }
 
 void ToolDataWindow::moveNear(const QRect& target) {

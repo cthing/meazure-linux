@@ -63,9 +63,11 @@ MagnifierControls::MagnifierControls(Magnifier* magnifier) {
 
     connect(magnifier, &Magnifier::zoomChanged, this, [this, zoom, factorLabel](int zoomIndex) {
         const QSignalBlocker blocker(this);
-        zoom->setValue(zoomIndex);
-
         const QString zoomFactor = QString("%1X").arg(Magnifier::getZoomFactors()[zoomIndex]);
+
+        zoom->setValue(zoomIndex);
+        zoom->setToolTip(zoomFactor);
+
         factorLabel->setText(zoomFactor);
     });
 }

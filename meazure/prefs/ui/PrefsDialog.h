@@ -17,38 +17,25 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Dimensions.h"
+#pragma once
+
+#include "PrefsPage.h"
+#include <QDialog>
+#include <QWidget>
+#include <QShowEvent>
 
 
-static constexpr int k_defaultLineWidth { 1 };     ///< Pixels
+/// Application preferences.
+///
+class PrefsDialog : public QDialog {
 
-static int lineWidth = k_defaultLineWidth;
+public:
+    explicit PrefsDialog(QWidget* parent);
 
+protected:
+    void showEvent(QShowEvent* event) override;
 
-void Dimensions::reset() {
-    lineWidth = k_defaultLineWidth;
-}
-
-void Dimensions::saveProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        profile.writeInt("LineWidth", lineWidth);
-    }
-}
-
-void Dimensions::loadProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        lineWidth = profile.readInt("LineWidth", k_defaultLineWidth);
-    }
-}
-
-void Dimensions::setLineWidth(int width) {
-    lineWidth = width;
-}
-
-int Dimensions::getLineWidth() {
-    return lineWidth;
-}
-
-int Dimensions::getDefaultLineWidth() {
-    return k_defaultLineWidth;
-}
+private:
+    PrefsPage* m_toolPage;
+    PrefsPage* m_rulerPage;
+};

@@ -210,6 +210,33 @@ namespace Colors {
     ///
     QRgb getDefault(Item item);
 
+    /// Converts the specified opacity from a packed color value to a fraction.
+    ///
+    /// @param opacity Opacity as a package color value
+    /// @return Opacity as a fraction between 0.0 and 1.0 inclusive.
+    ///
+    constexpr double opacityToFraction(QRgb opacity) {
+        return qAlpha(opacity) / 255.0;
+    }
+
+    /// Converts the specified opacity from a packed color value to a percentage.
+    ///
+    /// @param opacity Opacity as a package color value
+    /// @return Opacity as a percentage between 0 and 100 inclusive.
+    ///
+    constexpr int opacityToPercent(QRgb opacity) {
+        return qRound(100.0 * opacityToFraction(opacity));
+    }
+
+    /// Converts the specified opacity as a percentage to a packed color value.
+    ///
+    /// @param opacityPercent Opacity as a percentage between 0 and 100 inclusive
+    /// @return Opacity as a packed color value.
+    ///
+    constexpr QRgb opacityFromPercent(int opacityPercent) {
+        return qRgba(0, 0, 0, qRound(255.0 * opacityPercent / 100.0));
+    }
+
     /// Performs linear interpolation between the specified RGB color. The interpolation is performed in HSL space,
     /// which provides a more visually appealing result. The result of the interpolation is converted back to RGB.
     ///

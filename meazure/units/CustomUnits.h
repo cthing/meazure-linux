@@ -72,7 +72,7 @@ public:
     ///
     void loadProfile(Profile& profile) override;
 
-    /// Called when the master reset is initiated. Resets the custom units to its default state.
+    /// Called when the master setToDefaultValue is initiated. Resets the custom units to its default state.
     ///
     void masterReset() override;
 

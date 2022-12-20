@@ -33,6 +33,24 @@ set(UI_SOURCES
     )
 source_group(UI FILES ${UI_SOURCES})
 
+set(PREFS_SOURCES
+    prefs/ui/CheckerBoard.cpp
+    prefs/ui/CheckerBoard.h
+    prefs/ui/PrefsDialog.cpp
+    prefs/ui/PrefsDialog.h
+    prefs/ui/PrefsPage.h
+    prefs/ui/RulerPrefsPage.cpp
+    prefs/ui/RulerPrefsPage.h
+    prefs/ui/ToolPrefsPage.cpp
+    prefs/ui/ToolPrefsPage.h
+    prefs/models/Preference.h
+    prefs/models/RulerPrefsModel.cpp
+    prefs/models/RulerPrefsModel.h
+    prefs/models/ToolPrefsModel.cpp
+    prefs/models/ToolPrefsModel.h
+    )
+source_group(PREFS FILES ${PREFS_SOURCES})
+
 set(GRAPHICS_SOURCES
     graphics/Circle.cpp
     graphics/Circle.h
@@ -153,6 +171,7 @@ source_group(UNITS FILES ${UNITS_SOURCES})
 set(MEAZURE_SOURCES
     ${TOP_SOURCES}
     ${UI_SOURCES}
+    ${PREFS_SOURCES}
     ${GRAPHICS_SOURCES}
     ${TOOLS_SOURCES}
     ${PROFILE_SOURCES}

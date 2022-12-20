@@ -37,7 +37,7 @@ Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlag(Qt::WindowTransparentForInput, true);
-    setWindowOpacity(qAlpha(opacity) / 255.0);
+    setWindowOpacity(Colors::opacityToFraction(opacity));
 
     m_font.setLetterSpacing(QFont::PercentageSpacing, 120);
 }
@@ -49,8 +49,8 @@ void Ruler::setColors(QRgb background, QRgb border) {
     repaint();
 }
 
-void Ruler::setOpacity(int opacity) {
-    setWindowOpacity(opacity / 255.0);
+void Ruler::setOpacity(int opacityPercent) {
+    setWindowOpacity(opacityPercent / 100.0);
 }
 
 void Ruler::setPosition(const QPoint& origin, int length, int angle) {

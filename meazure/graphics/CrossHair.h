@@ -79,9 +79,9 @@ public:
 
     /// Sets the crosshair opacity.
     ///
-    /// @param[in] opacity Opacity of the crosshair ranging from 0 (transparent) to 255 (opaque)
+    /// @param[in] opacityPercent Opacity of the crosshair ranging from 0 (transparent) to 100 (opaque)
     ///
-    void setOpacity(int opacity);
+    void setOpacity(int opacityPercent);
 
     /// Sets the position of the crosshair. Emits the moved signal.
     ///

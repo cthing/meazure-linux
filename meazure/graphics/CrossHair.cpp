@@ -25,6 +25,7 @@
 #include <QPainterPath>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QGraphicsOpacityEffect>
 
 
 CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
@@ -51,7 +52,13 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
     m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
     m_crossHair = generateCrossHair(screenRes, actualSize);
 
-    setWindowOpacity(qAlpha(opacity) / 255.0);
+    if (parent == nullptr) {
+        setWindowOpacity(Colors::opacityToFraction(opacity));
+    } else {
+        auto* effect = new QGraphicsOpacityEffect();
+        effect->setOpacity(Colors::opacityToFraction(opacity));
+        setGraphicsEffect(effect);
+    }
 
     if (!tooltip.isEmpty()) {
         setToolTip(tooltip);
@@ -71,8 +78,13 @@ void CrossHair::setColors(QRgb background, QRgb hilite, QRgb border) {
     repaint();
 }
 
-void CrossHair::setOpacity(int opacity) {
-    setWindowOpacity(opacity / 255.0);
+void CrossHair::setOpacity(int opacityPercent) {
+    if (parent() == nullptr) {
+        setWindowOpacity(opacityPercent / 100.0);
+    } else {
+        auto* effect = dynamic_cast<QGraphicsOpacityEffect*>(graphicsEffect());
+        effect->setOpacity(opacityPercent / 100.0);
+    }
 }
 
 void CrossHair::setPosition(const QPoint &center) {
