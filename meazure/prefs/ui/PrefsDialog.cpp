@@ -50,6 +50,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent) {
     layout->addWidget(tabs);
     layout->addWidget(buttonBox);
 
+    layout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(layout);
 }
 
