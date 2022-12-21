@@ -29,15 +29,15 @@
 
 
 CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb hiliteColor,
+                     QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb highlightColor,
                      QRgb borderColor, QRgb opacity) :
         Graphic(parent),
         m_screenProvider(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_id(id),
         m_backgroundBrush(backgroundColor),
-        m_hiliteBrush(hiliteColor),
-        m_hilitePen(QBrush(hiliteColor), k_outlineWidth),
+        m_highlightBrush(highlightColor),
+        m_highlightPen(QBrush(highlightColor), k_outlineWidth),
         m_borderPen(QBrush(borderColor), k_outlineWidth) {
 
     const QPoint screenCenter = m_screenProvider.getCenter();
@@ -74,13 +74,13 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
 void CrossHair::colorChanged(Colors::Item item, QRgb color) {
     switch (item) {
         case Colors::CrossHairBack:
-            setColors(color, Colors::get(Colors::CrossHairHilite), Colors::get(Colors::CrossHairBorder));
+            setColors(color, Colors::get(Colors::CrossHairHighlight), Colors::get(Colors::CrossHairBorder));
             break;
-        case Colors::CrossHairHilite:
+        case Colors::CrossHairHighlight:
             setColors(Colors::get(Colors::CrossHairBack), color, Colors::get(Colors::CrossHairBorder));
             break;
         case Colors::CrossHairBorder:
-            setColors(Colors::get(Colors::CrossHairBack), Colors::get(Colors::CrossHairHilite), color);
+            setColors(Colors::get(Colors::CrossHairBack), Colors::get(Colors::CrossHairHighlight), color);
             break;
         case Colors::CrossHairOpacity:
             setOpacity(Colors::opacityToPercent(color));
@@ -90,10 +90,10 @@ void CrossHair::colorChanged(Colors::Item item, QRgb color) {
     }
 }
 
-void CrossHair::setColors(QRgb background, QRgb hilite, QRgb border) {
+void CrossHair::setColors(QRgb background, QRgb highlight, QRgb border) {
     m_backgroundBrush.setColor(background);
-    m_hiliteBrush.setColor(hilite);
-    m_hilitePen.setColor(hilite);
+    m_highlightBrush.setColor(highlight);
+    m_highlightPen.setColor(highlight);
     m_borderPen.setColor(border);
 
     repaint();
@@ -115,7 +115,7 @@ void CrossHair::setPosition(const QPoint &center) {
 }
 
 void CrossHair::flash(int flashCount) {
-    m_hilite = false;
+    m_highlight = false;
     m_flashCountDown = flashCount;
     m_flashTimer.start();
 }
@@ -128,9 +128,9 @@ void CrossHair::flashHandler() {
     m_flashCountDown--;
     if (m_flashCountDown < 0) {
         m_flashTimer.stop();
-        m_hilite = false;
+        m_highlight = false;
     } else {
-        m_hilite = !m_hilite;
+        m_highlight = !m_highlight;
     }
 
     repaint();
@@ -139,9 +139,9 @@ void CrossHair::flashHandler() {
 void CrossHair::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
-    painter.fillRect(rect(), m_pointerOver ? m_hiliteBrush : m_backgroundBrush);
+    painter.fillRect(rect(), m_pointerOver ? m_highlightBrush : m_backgroundBrush);
 
-    const QPen& outlinePen = m_hilite ? m_hilitePen : m_borderPen;
+    const QPen& outlinePen = m_highlight ? m_highlightPen : m_borderPen;
     painter.strokePath(m_crossHair, outlinePen);
 }
 

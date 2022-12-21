@@ -50,14 +50,14 @@ public:
     /// @param[in] tooltip Tooltip shown when hovering over the crosshair
     /// @param[in] id Caller defined identifier for the crosshair
     /// @param[in] backgroundColor Crosshair background color
-    /// @param[in] hiliteColor Crosshair hilite color shown when the pointer is over the crosshair and during flashing
+    /// @param[in] highlightColor Highlight color shown when the pointer is over the crosshair and during flashing
     /// @param[in] borderColor Crosshair border color
     /// @param[in] opacity Crosshair opacity
     ///
     explicit CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                        QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
                        QRgb backgroundColor = Colors::get(Colors::CrossHairBack),
-                       QRgb hiliteColor = Colors::get(Colors::CrossHairHilite),
+                       QRgb highlightColor = Colors::get(Colors::CrossHairHighlight),
                        QRgb borderColor = Colors::get(Colors::CrossHairBorder),
                        QRgb opacity = Colors::get(Colors::CrossHairOpacity));
 
@@ -72,10 +72,10 @@ public:
     /// Sets the crosshair colors.
     ///
     /// @param[in] background Crosshair background color
-    /// @param[in] hilite Crosshair hilite color shown when the pointer is over the crosshair and during flashing
+    /// @param[in] highlight Highlight color shown when the pointer is over the crosshair and during flashing
     /// @param[in] border Crosshair border color
     ///
-    void setColors(QRgb background, QRgb hilite, QRgb border);
+    void setColors(QRgb background, QRgb highlight, QRgb border);
 
     /// Sets the crosshair opacity.
     ///
@@ -89,14 +89,14 @@ public:
     ///
     void setPosition(const QPoint& center);
 
-    /// Visually flashes the crosshair by cycling its background between normal and hilite colors the specified
+    /// Visually flashes the crosshair by cycling its background between normal and highlight colors the specified
     /// number of times.
     ///
     /// @param[in] flashCount Number of times to cycle the crosshair background.
     ///
     void flash(int flashCount = k_defaultFlashCount);
 
-    /// Visually flashes the crosshair by cycling its background between normal and hilite colors once.
+    /// Visually flashes the crosshair by cycling its background between normal and highlight colors once.
     ///
     void strobe();
 
@@ -197,12 +197,12 @@ private:
     const UnitsProvider& m_unitsProvider;
     int m_id;
     QBrush m_backgroundBrush;
-    QBrush m_hiliteBrush;
-    QPen m_hilitePen;
+    QBrush m_highlightBrush;
+    QPen m_highlightPen;
     QPen m_borderPen;
     QPainterPath m_crossHair;
     bool m_pointerOver { false };
-    bool m_hilite { false };
+    bool m_highlight { false };
     QPoint m_centerPosition;
     QPoint m_initialGrabPosition;
     QTimer m_flashTimer;

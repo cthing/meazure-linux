@@ -78,13 +78,13 @@ public:
     }
 
     /// Visually flashes the tool. Typically, if a tool uses crosshairs, their borders are cycled a number of times
-    /// between their hilite color and their normal color. Flashing the tool helps the user find it on the
+    /// between their highlight color and their normal color. Flashing the tool helps the user find it on the
     /// screen. This base class implementation does nothing.
     ///
     virtual void flash();
 
     /// Visually strobes the tool. Typically, if a tool uses crosshairs, their borders are cycled once between a
-    /// hilite color and their normal. In addition, if the tool has a data window attached to the crosshairs, their
+    /// highlight color and their normal. In addition, if the tool has a data window attached to the crosshairs, their
     /// text is flashed. Examples of when strobing the tool is done is to visually confirm region capture and position
     /// recording. This base class implementation does nothing.
     ///

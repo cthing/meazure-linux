@@ -24,15 +24,15 @@
 
 
 Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-               QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb hiliteColor,
+               QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb highlightColor,
                QRgb borderColor, QRgb opacity) :
         Graphic(parent),
         m_screenProvider(screenInfoProvider),
         m_unitsProvider(unitsProvider),
         m_id(id),
         m_backgroundBrush(backgroundColor),
-        m_hiliteBrush(hiliteColor),
-        m_hilitePen(QBrush(hiliteColor), k_outlineWidth),
+        m_highlightBrush(highlightColor),
+        m_highlightPen(QBrush(highlightColor), k_outlineWidth),
         m_borderPen(QBrush(borderColor), k_outlineWidth) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -59,10 +59,10 @@ Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
     connect(&m_flashTimer, &QTimer::timeout, this, &Handle::flashHandler);
 }
 
-void Handle::setColors(QRgb background, QRgb hilite, QRgb border) {
+void Handle::setColors(QRgb background, QRgb highlight, QRgb border) {
     m_backgroundBrush.setColor(background);
-    m_hiliteBrush.setColor(hilite);
-    m_hilitePen.setColor(hilite);
+    m_highlightBrush.setColor(highlight);
+    m_highlightPen.setColor(highlight);
     m_borderPen.setColor(border);
 
     repaint();
@@ -79,7 +79,7 @@ void Handle::setPosition(const QPoint &center) {
 }
 
 void Handle::flash(int flashCount) {
-    m_hilite = false;
+    m_highlight = false;
     m_flashCountDown = flashCount;
     m_flashTimer.start();
 }
@@ -92,9 +92,9 @@ void Handle::flashHandler() {
     m_flashCountDown--;
     if (m_flashCountDown < 0) {
         m_flashTimer.stop();
-        m_hilite = false;
+        m_highlight = false;
     } else {
-        m_hilite = !m_hilite;
+        m_highlight = !m_highlight;
     }
 
     repaint();
@@ -102,8 +102,8 @@ void Handle::flashHandler() {
 
 void Handle::paintEvent(QPaintEvent*) {
     QPainter painter(this);
-    painter.setPen(m_hilite ? m_hilitePen : m_borderPen);
-    painter.setBrush(m_pointerOver ? m_hiliteBrush : m_backgroundBrush);
+    painter.setPen(m_highlight ? m_highlightPen : m_borderPen);
+    painter.setBrush(m_pointerOver ? m_highlightBrush : m_backgroundBrush);
     painter.drawEllipse(1, 1, width() - 2, height() - 2);
 }
 

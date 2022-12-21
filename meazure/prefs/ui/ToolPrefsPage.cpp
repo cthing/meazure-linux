@@ -66,12 +66,12 @@ void ToolPrefsPage::createUI() {
     m_normalCrosshair2 = new CrossHair(screenInfo, unitsMgr, this, "Normal", -1,
                                        m_model->m_crosshairBackColor->getValue(),
                                        m_model->m_crosshairBackColor->getValue());
-    m_hiliteCrosshair1 = new CrossHair(screenInfo, unitsMgr, this, "Highlight", -1,
-                                       m_model->m_crosshairHiliteColor->getValue(),
-                                       m_model->m_crosshairHiliteColor->getValue());
-    m_hiliteCrosshair2 = new CrossHair(screenInfo, unitsMgr, this, "Highlight", -1,
-                                       m_model->m_crosshairHiliteColor->getValue(),
-                                       m_model->m_crosshairHiliteColor->getValue());
+    m_highlightCrosshair1 = new CrossHair(screenInfo, unitsMgr, this, "Highlight", -1,
+                                          m_model->m_crosshairHighlightColor->getValue(),
+                                          m_model->m_crosshairHighlightColor->getValue());
+    m_highlightCrosshair2 = new CrossHair(screenInfo, unitsMgr, this, "Highlight", -1,
+                                          m_model->m_crosshairHighlightColor->getValue(),
+                                          m_model->m_crosshairHighlightColor->getValue());
     m_dataWindow1 = new ToolDataWindow(screenInfo, unitsMgr, XY1ReadOnly, this);
     m_dataWindow1->xy1PositionChanged(QPointF(100, 200), QPoint(100, 200));
     m_dataWindow2 = new ToolDataWindow(screenInfo, unitsMgr, XY1ReadOnly, this);
@@ -138,13 +138,13 @@ void ToolPrefsPage::createUI() {
 
     auto* crosshairsLayoutLight = new QVBoxLayout();
     crosshairsLayoutLight->addWidget(m_normalCrosshair1, k_stretch0, Qt::AlignHCenter);
-    crosshairsLayoutLight->addWidget(m_hiliteCrosshair1, k_stretch0, Qt::AlignHCenter);
+    crosshairsLayoutLight->addWidget(m_highlightCrosshair1, k_stretch0, Qt::AlignHCenter);
     crosshairsLayoutLight->addWidget(m_dataWindow1, k_stretch0, Qt::AlignHCenter);
     checkerBoardLight->setLayout(crosshairsLayoutLight);
 
     auto* crosshairsLayoutDark = new QVBoxLayout();
     crosshairsLayoutDark->addWidget(m_normalCrosshair2, k_stretch0, Qt::AlignHCenter);
-    crosshairsLayoutDark->addWidget(m_hiliteCrosshair2, k_stretch0, Qt::AlignHCenter);
+    crosshairsLayoutDark->addWidget(m_highlightCrosshair2, k_stretch0, Qt::AlignHCenter);
     crosshairsLayoutDark->addWidget(m_dataWindow2, k_stretch0, Qt::AlignHCenter);
     checkerBoardDark->setLayout(crosshairsLayoutDark);
 
@@ -195,19 +195,19 @@ void ToolPrefsPage::configure() {
     });
 
     connect(m_highlightColorButton, &QPushButton::clicked, this, [this]() {
-        const QColor color = QColorDialog::getColor(m_model->m_crosshairHiliteColor->getValue(), this,
+        const QColor color = QColorDialog::getColor(m_model->m_crosshairHighlightColor->getValue(), this,
                                                     tr("Crosshair Highlight"));
         if (color.isValid()) {
-            m_model->m_crosshairHiliteColor->setValue(color.rgb());
+            m_model->m_crosshairHighlightColor->setValue(color.rgb());
         }
     });
     connect(m_highlightDefaultButton, &QPushButton::clicked, this, [this]() {
-        m_model->m_crosshairHiliteColor->restore();
+        m_model->m_crosshairHighlightColor->restore();
     });
-    connect(m_model->m_crosshairHiliteColor, &PreferenceBase::valueChanged, this, [this](QVariant value) { // NOLINT(performance-unnecessary-value-param)
+    connect(m_model->m_crosshairHighlightColor, &PreferenceBase::valueChanged, this, [this](QVariant value) { // NOLINT(performance-unnecessary-value-param)
         const QRgb highlightColor = value.value<QRgb>();
-        m_hiliteCrosshair1->setColors(highlightColor, highlightColor, *m_model->m_crosshairBorderColor);
-        m_hiliteCrosshair2->setColors(highlightColor, highlightColor, *m_model->m_crosshairBorderColor);
+        m_highlightCrosshair1->setColors(highlightColor, highlightColor, *m_model->m_crosshairBorderColor);
+        m_highlightCrosshair2->setColors(highlightColor, highlightColor, *m_model->m_crosshairBorderColor);
     });
 
     connect(m_borderColorButton, &QPushButton::clicked, this, [this]() {
@@ -224,8 +224,8 @@ void ToolPrefsPage::configure() {
         const QRgb borderColor = value.value<QRgb>();
         m_normalCrosshair1->setColors(*m_model->m_crosshairBackColor, *m_model->m_crosshairBackColor, borderColor);
         m_normalCrosshair2->setColors(*m_model->m_crosshairBackColor, *m_model->m_crosshairBackColor, borderColor);
-        m_hiliteCrosshair1->setColors(*m_model->m_crosshairHiliteColor, *m_model->m_crosshairHiliteColor, borderColor);
-        m_hiliteCrosshair2->setColors(*m_model->m_crosshairHiliteColor, *m_model->m_crosshairHiliteColor, borderColor);
+        m_highlightCrosshair1->setColors(*m_model->m_crosshairHighlightColor, *m_model->m_crosshairHighlightColor, borderColor);
+        m_highlightCrosshair2->setColors(*m_model->m_crosshairHighlightColor, *m_model->m_crosshairHighlightColor, borderColor);
     });
 
     // Opacity
@@ -250,8 +250,8 @@ void ToolPrefsPage::configure() {
 
         m_normalCrosshair1->setOpacity(opacity);
         m_normalCrosshair2->setOpacity(opacity);
-        m_hiliteCrosshair1->setOpacity(opacity);
-        m_hiliteCrosshair2->setOpacity(opacity);
+        m_highlightCrosshair1->setOpacity(opacity);
+        m_highlightCrosshair2->setOpacity(opacity);
         m_dataWindow1->setOpacity(opacity);
         m_dataWindow2->setOpacity(opacity);
     });

@@ -66,8 +66,8 @@ private:
     ToolPrefsModel* m_model;
     CrossHair* m_normalCrosshair1;
     CrossHair* m_normalCrosshair2;
-    CrossHair* m_hiliteCrosshair1;
-    CrossHair* m_hiliteCrosshair2;
+    CrossHair* m_highlightCrosshair1;
+    CrossHair* m_highlightCrosshair2;
     ToolDataWindow* m_dataWindow1;
     ToolDataWindow* m_dataWindow2;
     Line* m_line1;
