@@ -78,6 +78,7 @@ protected:
 
 private slots:
     void flashHandler();
+    void colorChanged(Colors::Item item, QRgb color);
 
 private:
     static constexpr double k_size { 0.125 };       // Inches

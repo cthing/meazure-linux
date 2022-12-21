@@ -54,9 +54,30 @@ Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
         setToolTip(tooltip);
     }
 
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Handle::colorChanged);
+
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
     connect(&m_flashTimer, &QTimer::timeout, this, &Handle::flashHandler);
+}
+
+void Handle::colorChanged(Colors::Item item, QRgb color) {
+    switch (item) {
+        case Colors::CrossHairBack:
+            setColors(color, Colors::get(Colors::CrossHairHighlight), Colors::get(Colors::CrossHairBorder));
+            break;
+        case Colors::CrossHairHighlight:
+            setColors(Colors::get(Colors::CrossHairBack), color, Colors::get(Colors::CrossHairBorder));
+            break;
+        case Colors::CrossHairBorder:
+            setColors(Colors::get(Colors::CrossHairBack), Colors::get(Colors::CrossHairHighlight), color);
+            break;
+        case Colors::CrossHairOpacity:
+            setOpacity(Colors::opacityToPercent(color));
+            break;
+        default:
+            break;
+    }
 }
 
 void Handle::setColors(QRgb background, QRgb highlight, QRgb border) {
