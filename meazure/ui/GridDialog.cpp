@@ -129,6 +129,7 @@ void GridDialog::createUI() {
 
     layout->addWidget(buttonBox, k_row7, k_col0, k_rowspan1, k_colspan5);
 
+    layout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(layout);
 }
 
