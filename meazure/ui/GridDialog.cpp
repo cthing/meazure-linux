@@ -20,6 +20,7 @@
 #include "GridDialog.h"
 #include "DataField.h"
 #include <meazure/graphics/Grid.h>
+#include <meazure/utils/LayoutUtils.h>
 #include <QLabel>
 #include <QGridLayout>
 #include <QDialogButtonBox>
@@ -53,6 +54,8 @@ GridDialog::GridDialog(GridTool* gridTool, const ScreenInfoProvider& screenInfoP
 }
 
 void GridDialog::createUI() {
+    using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
+
     auto* spacingLabel = new QLabel(tr("<b>Grid Spacing</b>"));
 
     auto* horizontalLabel = new QLabel(tr("H:"));
@@ -100,31 +103,31 @@ void GridDialog::createUI() {
 
     auto* layout = new QGridLayout();
 
-    layout->addWidget(spacingLabel, 0, 0, 1, 5, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(spacingLabel, k_row0, k_col0, k_rowspan1, k_colspan5, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(horizontalLabel, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_hSpacingField, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(verticalLabel, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(spacingUnitsLayout, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(horizontalLabel,    k_row1, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_hSpacingField,    k_row1, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(verticalLabel,      k_row1, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(spacingUnitsLayout, k_row1, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(m_linkSpacingCheck, 2, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_linkSpacingCheck, k_row2, k_col1, k_rowspan1, k_colspan4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(orientationLabel, 3, 0, 1, 5, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(orientationLabel, k_row3, k_col0, k_rowspan1, k_colspan5, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(xPositionLabel, 4, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_xPositionField, 4, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(yPositionLabel, 4, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(xyLayout, 4, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(xPositionLabel,   k_row4, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_xPositionField, k_row4, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(yPositionLabel,   k_row4, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(xyLayout,         k_row4, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(widthLabel, 5, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_widthField, 5, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(heightLabel, 5, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(whLayout, 5, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(widthLabel,   k_row5, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_widthField, k_row5, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(heightLabel,  k_row5, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(whLayout,     k_row5, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(angleLabel, 6, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(angleLayout, 6, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(angleLabel,  k_row6, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(angleLayout, k_row6, k_col1, k_rowspan1, k_colspan4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(buttonBox, 7, 0, 1, 5);
+    layout->addWidget(buttonBox, k_row7, k_col0, k_rowspan1, k_colspan5);
 
     setLayout(layout);
 }

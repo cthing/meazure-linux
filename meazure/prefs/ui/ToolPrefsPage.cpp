@@ -23,6 +23,7 @@
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/environment/ScreenInfo.h>
 #include <meazure/tools/RadioToolTraits.h>
+#include <meazure/utils/LayoutUtils.h>
 #include <QGridLayout>
 #include <QLabel>
 #include <QToolTip>
@@ -37,6 +38,8 @@ ToolPrefsPage::ToolPrefsPage() : m_model(new ToolPrefsModel(this)) {    // NOLIN
 }
 
 void ToolPrefsPage::createUI() {
+    using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
+
     const ScreenInfo& screenInfo = App::instance()->getScreenInfo();
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
 
@@ -113,59 +116,59 @@ void ToolPrefsPage::createUI() {
 
     layout->setContentsMargins(k_contentMargin);
 
-    layout->addWidget(crosshairLabel, 0, 0, 1, 5, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_backColorButton, 1, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_backDefaultButton, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_highlightColorButton, 2, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_highlightDefaultButton, 2, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_borderColorButton, 3, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_borderDefaultButton, 3, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(crosshairLabel,           k_row0, k_col0, k_rowspan1, k_colspan5, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_backColorButton,        k_row1, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_backDefaultButton,      k_row1, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_highlightColorButton,   k_row2, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_highlightDefaultButton, k_row2, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_borderColorButton,      k_row3, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_borderDefaultButton,    k_row3, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
 
     auto* opacityLayout = new QHBoxLayout();
     opacityLayout->addWidget(opacityLabel);
     opacityLayout->addWidget(minOpacityLabel);
     opacityLayout->addWidget(m_opacitySlider);
     opacityLayout->addWidget(maxOpacityLabel);
-    layout->addLayout(opacityLayout, 4, 0, 1, 2);
+    layout->addLayout(opacityLayout, k_row4, k_col0, k_rowspan1, k_colspan2);
 
     layout->setColumnMinimumWidth(2, k_verticalSpacer);
 
-    layout->addWidget(checkerBoardLight, 1, 3, 4, 1);
-    layout->addWidget(checkerBoardDark, 1, 4, 4, 1);
+    layout->addWidget(checkerBoardLight, k_row1, k_col3, k_rowspan4, k_colspan1);
+    layout->addWidget(checkerBoardDark,  k_row1, k_col4, k_rowspan4, k_colspan1);
 
     auto* crosshairsLayoutLight = new QVBoxLayout();
-    crosshairsLayoutLight->addWidget(m_normalCrosshair1, 0, Qt::AlignHCenter);
-    crosshairsLayoutLight->addWidget(m_hiliteCrosshair1, 0, Qt::AlignHCenter);
-    crosshairsLayoutLight->addWidget(m_dataWindow1, 0, Qt::AlignHCenter);
+    crosshairsLayoutLight->addWidget(m_normalCrosshair1, k_stretch0, Qt::AlignHCenter);
+    crosshairsLayoutLight->addWidget(m_hiliteCrosshair1, k_stretch0, Qt::AlignHCenter);
+    crosshairsLayoutLight->addWidget(m_dataWindow1, k_stretch0, Qt::AlignHCenter);
     checkerBoardLight->setLayout(crosshairsLayoutLight);
 
     auto* crosshairsLayoutDark = new QVBoxLayout();
-    crosshairsLayoutDark->addWidget(m_normalCrosshair2, 0, Qt::AlignHCenter);
-    crosshairsLayoutDark->addWidget(m_hiliteCrosshair2, 0, Qt::AlignHCenter);
-    crosshairsLayoutDark->addWidget(m_dataWindow2, 0, Qt::AlignHCenter);
+    crosshairsLayoutDark->addWidget(m_normalCrosshair2, k_stretch0, Qt::AlignHCenter);
+    crosshairsLayoutDark->addWidget(m_hiliteCrosshair2, k_stretch0, Qt::AlignHCenter);
+    crosshairsLayoutDark->addWidget(m_dataWindow2, k_stretch0, Qt::AlignHCenter);
     checkerBoardDark->setLayout(crosshairsLayoutDark);
 
     layout->setRowMinimumHeight(5, k_hoirzontalSpacer);
 
-    layout->addWidget(linesLabel, 6, 0, 1, 5, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_lineColorButton, 7, 0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_lineDefaultButton, 7, 1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(linesLabel,          k_row6, k_col0, k_rowspan1, k_colspan5, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_lineColorButton,   k_row7, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_lineDefaultButton, k_row7, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
 
     auto* lineLayoutLight = new QVBoxLayout();
     lineSampleLight->setLayout(lineLayoutLight);
     lineLayoutLight->addWidget(m_line1);
-    layout->addWidget(lineSampleLight, 7, 3, 2, 1);
+    layout->addWidget(lineSampleLight, k_row7, k_col3, k_rowspan2, k_colspan1);
 
     auto* lineLayoutDark = new QVBoxLayout();
     lineSampleDark->setLayout(lineLayoutDark);
     lineLayoutDark->addWidget(m_line2);
-    layout->addWidget(lineSampleDark, 7, 4, 2, 1);
+    layout->addWidget(lineSampleDark, k_row7, k_col4, k_rowspan2, k_colspan1);
 
     auto* lineThkLayout = new QHBoxLayout();
     lineThkLayout->addWidget(lineThkLabel);
     lineThkLayout->addWidget(m_lineThkSpin);
-    lineThkLayout->addWidget(lineThkUnitsLabel, 1);
-    layout->addLayout(lineThkLayout, 8, 0, 1, 2);
+    lineThkLayout->addWidget(lineThkUnitsLabel, k_stretch1);
+    layout->addLayout(lineThkLayout, k_row8, k_col0, k_rowspan1, k_colspan2);
 }
 
 void ToolPrefsPage::configure() {

@@ -131,6 +131,7 @@ set(UTILS_SOURCES
     utils/Geometry.h
     utils/GnomeUtils.cpp
     utils/GnomeUtils.h
+    utils/LayoutUtils.h
     utils/MathUtils.h
     utils/StringUtils.cpp
     utils/StringUtils.h

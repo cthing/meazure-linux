@@ -19,6 +19,7 @@
 
 #include "ScreenDataSection.h"
 #include <meazure/tools/ToolMgr.h>
+#include <meazure/utils/LayoutUtils.h>
 #include <meazure/App.h>
 #include <QGridLayout>
 #include <QPushButton>
@@ -39,6 +40,8 @@ ScreenDataSection::ScreenDataSection() : // NOLINT(cppcoreguidelines-pro-type-me
 }
 
 void ScreenDataSection::createFields() {
+    using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
+
     auto* screenLabel = new QLabel(tr("Screen:"));
     m_screenName = new QLabel();
 
@@ -68,18 +71,18 @@ void ScreenDataSection::createFields() {
     ryLayout->addWidget(m_ryUnits);
 
     auto* layout = new QGridLayout();
-    layout->addWidget(screenLabel, 0, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_screenName, 0, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(screenLabel,  k_row0, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_screenName, k_row0, k_col1, k_rowspan1, k_colspan4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(wLabel, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_wField, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(hLabel, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(hLayout, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(wLabel,   k_row1, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_wField, k_row1, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(hLabel,   k_row1, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(hLayout,  k_row1, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(rxLabel, 2, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_rxField, 2, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(ryLabel, 2, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(ryLayout, 2, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(rxLabel,   k_row2, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_rxField, k_row2, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(ryLabel,   k_row2, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(ryLayout,  k_row2, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
     setLayout(layout);
 }

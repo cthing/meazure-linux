@@ -22,6 +22,7 @@
 #include <meazure/tools/RadioToolTraits.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
+#include <meazure/utils/LayoutUtils.h>
 #include <meazure/App.h>
 #include <QGridLayout>
 
@@ -60,6 +61,8 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
 }
 
 void ToolDataSection::createFields() {
+    using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
+
     m_x1Label = new QLabel(tr("X1:"));
     m_x1Field = new DataField(k_fieldShortWidth, true, false, false);
 
@@ -125,36 +128,36 @@ void ToolDataSection::createFields() {
     arLayout->addWidget(m_arUnits);
 
     auto* layout = new QGridLayout();
-    layout->addWidget(m_x1Label, 0, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_x1Field, 0, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_y1Label, 0, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(y1Layout, 0, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_x1Label, k_row0, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_x1Field, k_row0, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_y1Label, k_row0, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(y1Layout,  k_row0, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(m_x2Label, 1, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_x2Field, 1, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_y2Label, 1, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(y2Layout, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_x2Label, k_row1, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_x2Field, k_row1, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_y2Label, k_row1, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(y2Layout,  k_row1, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(m_xvLabel, 2, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_xvField, 2, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_yvLabel, 2, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(yvLayout, 2, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_xvLabel, k_row2, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_xvField, k_row2, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_yvLabel, k_row2, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(yvLayout,  k_row2, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(m_wLabel, 3, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_wField, 3, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_hLabel, 3, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(hLayout, 3, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_wLabel, k_row3, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_wField, k_row3, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_hLabel, k_row3, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(hLayout,  k_row3, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(m_dLabel, 4, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(dLayout, 4, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_aLabel, 4, 3, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(aLayout, 4, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_dLabel, k_row4, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(dLayout,  k_row4, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_aLabel, k_row4, k_col3, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(aLayout,  k_row4, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(m_asLabel, 5, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addWidget(m_asField, 5, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_asLabel, k_row5, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addWidget(m_asField, k_row5, k_col1, k_rowspan1, k_colspan4, Qt::AlignLeft | Qt::AlignVCenter);
 
-    layout->addWidget(m_arLabel, 6, 0, Qt::AlignRight | Qt::AlignVCenter);
-    layout->addLayout(arLayout, 6, 1, 1, 4, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_arLabel, k_row6, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+    layout->addLayout(arLayout,  k_row6, k_col1, k_rowspan1, k_colspan4, Qt::AlignLeft | Qt::AlignVCenter);
 
     setLayout(layout);
 }

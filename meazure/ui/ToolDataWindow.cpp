@@ -19,6 +19,7 @@
 
 #include "ToolDataWindow.h"
 #include <meazure/units/Units.h>
+#include <meazure/utils/LayoutUtils.h>
 #include <QGridLayout>
 #include <QGraphicsOpacityEffect>
 
@@ -28,6 +29,8 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
         QFrame(parent),
         m_screenInfo(screenInfoProvider),
         m_units(unitsProvider) {
+    using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
+
     constexpr int k_margin = 4;           // Pixels
     constexpr int k_verticalSpace = 2;    // Pixels
     constexpr int k_horizontalSpace = 3;  // Pixels
@@ -71,8 +74,8 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
         if (present) {
             auto *label = new QLabel(labelStr);
             valueLabel = new QLabel();
-            layout->addWidget(label, row, 0, Qt::AlignRight | Qt::AlignVCenter);
-            layout->addWidget(valueLabel, row, 1, Qt::AlignRight | Qt::AlignVCenter);
+            layout->addWidget(label, row, k_col0, Qt::AlignRight | Qt::AlignVCenter);
+            layout->addWidget(valueLabel, row, k_col1, Qt::AlignRight | Qt::AlignVCenter);
             row++;
         }
     };
