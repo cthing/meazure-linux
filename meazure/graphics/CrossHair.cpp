@@ -64,9 +64,30 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         setToolTip(tooltip);
     }
 
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &CrossHair::colorChanged);
+
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
     connect(&m_flashTimer, &QTimer::timeout, this, &CrossHair::flashHandler);
+}
+
+void CrossHair::colorChanged(Colors::Item item, QRgb color) {
+    switch (item) {
+        case Colors::CrossHairBack:
+            setColors(color, Colors::get(Colors::CrossHairHilite), Colors::get(Colors::CrossHairBorder));
+            break;
+        case Colors::CrossHairHilite:
+            setColors(Colors::get(Colors::CrossHairBack), color, Colors::get(Colors::CrossHairBorder));
+            break;
+        case Colors::CrossHairBorder:
+            setColors(Colors::get(Colors::CrossHairBack), Colors::get(Colors::CrossHairHilite), color);
+            break;
+        case Colors::CrossHairOpacity:
+            setOpacity(Colors::opacityToPercent(color));
+            break;
+        default:
+            break;
+    }
 }
 
 void CrossHair::setColors(QRgb background, QRgb hilite, QRgb border) {

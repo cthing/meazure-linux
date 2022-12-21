@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QString>
 
 
 /// Base class for preferences pages.
@@ -29,5 +30,13 @@ class PrefsPage : public QWidget {
     Q_OBJECT
 
 public:
-    virtual void update() = 0;
+    virtual QString getName() = 0;
+
+    virtual void initialize() = 0;
+    virtual void apply() = 0;
+
+    [[nodiscard]] virtual bool isDirty() const = 0;
+
+signals:
+    void dirtyChanged(bool dirty);
 };

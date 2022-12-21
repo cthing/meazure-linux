@@ -30,4 +30,9 @@ class RulerPrefsModel : public QObject {
 
 public:
     explicit RulerPrefsModel(QObject* parent);
+
+    [[nodiscard]] bool isDirty() const;
+
+signals:
+    void dirtyChanged(bool dirty);
 };

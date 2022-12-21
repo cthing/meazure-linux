@@ -22,3 +22,7 @@
 
 RulerPrefsModel::RulerPrefsModel(QObject* parent) : QObject(parent) {
 }
+
+bool RulerPrefsModel::isDirty() const { // NOLINT(readability-convert-member-functions-to-static)
+    return false;
+}

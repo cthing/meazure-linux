@@ -32,14 +32,15 @@ Q_OBJECT
 
 private slots:
     [[maybe_unused]] void testConstruction();
-    [[maybe_unused]] void testUpdate();
+    [[maybe_unused]] void testInitialize();
     [[maybe_unused]] void testSetValue();
-    [[maybe_unused]] void testReset();
-    [[maybe_unused]] void testSignalOnUpdate();
-    [[maybe_unused]] void testSignalOnSet();
-    [[maybe_unused]] void testSignalOnSetToDefault();
-    [[maybe_unused]] void testNoSignalOnSet();
-    [[maybe_unused]] void testNoSignalOnSetToDefault();
+    [[maybe_unused]] void testRestore();
+    [[maybe_unused]] void testSignalOnInitialize();
+    [[maybe_unused]] void testSignalOnSetValue();
+    [[maybe_unused]] void testSignalOnRestore();
+    [[maybe_unused]] void testNoSignalOnSetValue();
+    [[maybe_unused]] void testNoSignalOnRestore();
+    [[maybe_unused]] void testSignalOnDirty();
 };
 
 
@@ -51,12 +52,17 @@ private slots:
     QVERIFY(!pref.isDirty());
 }
 
-[[maybe_unused]] void PreferenceTest::testUpdate() {
-    Preference<int> pref1(10);
-    pref1.update(12);
-    QVERIFY(!pref1.isDirty());
-    QCOMPARE(pref1.getValue(), 12);
-    QCOMPARE(pref1, 12);
+[[maybe_unused]] void PreferenceTest::testInitialize() {
+    Preference<int> pref(10);
+    pref.initialize(12);
+    QVERIFY(!pref.isDirty());
+    QCOMPARE(pref.getValue(), 12);
+    QCOMPARE(pref, 12);
+
+    pref.setValue(17);
+    QVERIFY(pref.isDirty());
+    pref.initialize(15);
+    QVERIFY(!pref.isDirty());
 }
 
 [[maybe_unused]] void PreferenceTest::testSetValue() {
@@ -67,7 +73,7 @@ private slots:
     QVERIFY(pref1.isDirty());
 
     Preference<int> pref2(10);
-    pref2.update(12);
+    pref2.initialize(12);
     QVERIFY(!pref2.isDirty());
     pref2.setValue(12);
     QCOMPARE(pref2.getValue(), 12);
@@ -75,31 +81,31 @@ private slots:
     QVERIFY(!pref2.isDirty());
 }
 
-[[maybe_unused]] void PreferenceTest::testReset() {
+[[maybe_unused]] void PreferenceTest::testRestore() {
     Preference<int> pref1(10);
-    pref1.update(12);
+    pref1.initialize(12);
     QVERIFY(!pref1.isDirty());
-    pref1.setToDefaultValue();
+    pref1.restore();
     QCOMPARE(pref1.getValue(), 10);
     QCOMPARE(pref1, 10);
     QVERIFY(pref1.isDirty());
 
     Preference<int> pref2(10);
-    pref2.update(10);
+    pref2.initialize(10);
     QVERIFY(!pref2.isDirty());
-    pref2.setToDefaultValue();
+    pref2.restore();
     QCOMPARE(pref2.getValue(), 10);
     QCOMPARE(pref2, 10);
     QVERIFY(!pref2.isDirty());
 }
 
-[[maybe_unused]] void PreferenceTest::testSignalOnUpdate() {
+[[maybe_unused]] void PreferenceTest::testSignalOnInitialize() {
     Preference<int> pref(10);
 
     const QSignalSpy preferenceSpy(&pref, SIGNAL(valueChanged(QVariant)));
     QVERIFY(preferenceSpy.isValid());
 
-    pref.update(15);
+    pref.initialize(15);
 
     QCOMPARE(preferenceSpy.size(), 1);
     QList<QVariant> arguments = preferenceSpy[0];
@@ -107,7 +113,7 @@ private slots:
     QCOMPARE(arguments[0].toInt(), 15);
 }
 
-[[maybe_unused]] void PreferenceTest::testSignalOnSet() {
+[[maybe_unused]] void PreferenceTest::testSignalOnSetValue() {
     Preference<int> pref(10);
 
     const QSignalSpy preferenceSpy(&pref, SIGNAL(valueChanged(QVariant)));
@@ -121,14 +127,14 @@ private slots:
     QCOMPARE(arguments[0].toInt(), 15);
 }
 
-[[maybe_unused]] void PreferenceTest::testSignalOnSetToDefault() {
+[[maybe_unused]] void PreferenceTest::testSignalOnRestore() {
     Preference<int> pref(10);
-    pref.update(12);
+    pref.initialize(12);
 
     const QSignalSpy preferenceSpy(&pref, SIGNAL(valueChanged(QVariant)));
     QVERIFY(preferenceSpy.isValid());
 
-    pref.setToDefaultValue();
+    pref.restore();
 
     QCOMPARE(preferenceSpy.size(), 1);
     QList<QVariant> arguments = preferenceSpy[0];
@@ -136,9 +142,9 @@ private slots:
     QCOMPARE(arguments[0].toInt(), 10);
 }
 
-[[maybe_unused]] void PreferenceTest::testNoSignalOnSet() {
+[[maybe_unused]] void PreferenceTest::testNoSignalOnSetValue() {
     Preference<int> pref(10);
-    pref.update(12);
+    pref.initialize(12);
 
     const QSignalSpy preferenceSpy(&pref, SIGNAL(valueChanged(QVariant)));
     QVERIFY(preferenceSpy.isValid());
@@ -148,15 +154,47 @@ private slots:
     QVERIFY(preferenceSpy.isEmpty());
 }
 
-[[maybe_unused]] void PreferenceTest::testNoSignalOnSetToDefault() {
+[[maybe_unused]] void PreferenceTest::testNoSignalOnRestore() {
     Preference<int> pref(10);
 
     const QSignalSpy preferenceSpy(&pref, SIGNAL(valueChanged(QVariant)));
     QVERIFY(preferenceSpy.isValid());
 
-    pref.setToDefaultValue();
+    pref.restore();
 
     QVERIFY(preferenceSpy.isEmpty());
+}
+
+[[maybe_unused]] void PreferenceTest::testSignalOnDirty() {
+    Preference<int> pref(10);
+
+    QSignalSpy preferenceSpy(&pref, SIGNAL(dirtyChanged(bool)));
+    QVERIFY(preferenceSpy.isValid());
+
+    pref.initialize(12);
+
+    QCOMPARE(preferenceSpy.size(), 1);
+    QList<QVariant> arguments = preferenceSpy[0];
+    QCOMPARE(arguments.size(), 1);
+    QCOMPARE(arguments[0].toBool(), false);
+
+    preferenceSpy.clear();
+
+    pref.setValue(29);
+
+    QCOMPARE(preferenceSpy.size(), 1);
+    arguments = preferenceSpy[0];
+    QCOMPARE(arguments.size(), 1);
+    QCOMPARE(arguments[0].toBool(), true);
+
+    preferenceSpy.clear();
+
+    pref.clearDirty();
+
+    QCOMPARE(preferenceSpy.size(), 1);
+    arguments = preferenceSpy[0];
+    QCOMPARE(arguments.size(), 1);
+    QCOMPARE(arguments[0].toBool(), false);
 }
 
 

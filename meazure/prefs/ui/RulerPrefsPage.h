@@ -20,6 +20,7 @@
 #pragma once
 
 #include "PrefsPage.h"
+#include <meazure/prefs/models/RulerPrefsModel.h>
 #include <QWidget>
 
 
@@ -28,5 +29,20 @@
 class RulerPrefsPage : public PrefsPage {
 
 public:
-    void update() override;
+    RulerPrefsPage();
+
+    QString getName() override {
+        return tr("Rulers");
+    };
+
+    void initialize() override;
+    void apply() override;
+
+    [[nodiscard]] bool isDirty() const override;
+
+private:
+    void createUI();
+    void configure();
+
+    RulerPrefsModel* m_model;
 };

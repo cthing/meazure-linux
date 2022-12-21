@@ -60,12 +60,6 @@ public:
     ///
     void setColor(QRgb color);
 
-    /// Sets the line width.
-    ///
-    /// @param[in] width Line width, in pixels
-    ///
-    void setLineWidth(int width);
-
     /// Sets the position of the upper left corner of the grid, its width, height, and rotation angle. The width and
     /// height of the grid are independent of rotation (i.e. it is not the width and height of the bounding rectangle).
     ///
@@ -95,8 +89,18 @@ public:
     ///
     void setUnits(LinearUnitsId units);
 
+public slots:
+    /// Sets the line width.
+    ///
+    /// @param[in] width Line width, in pixels
+    ///
+    void setLineWidth(int width);
+
 protected:
     void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void colorChanged(Colors::Item item, QRgb color);
 
 private:
     const ScreenInfoProvider& m_screenInfo;

@@ -132,6 +132,7 @@ private slots:
     /// Called to cycle the data window text between its normal color and the window background color.
     ///
     void flashHandler();
+    void colorChanged(Colors::Item item, QRgb color);
 
 private:
     static constexpr QMargins k_targetMargins { 5, 5, 5, 5 };

@@ -22,11 +22,14 @@
 #include "PrefsPage.h"
 #include <meazure/prefs/models/ToolPrefsModel.h>
 #include <meazure/graphics/CrossHair.h>
+#include <meazure/graphics/Line.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QWidget>
 #include <QMargins>
 #include <QSlider>
 #include <QSpinBox>
+#include <QPushButton>
+#include <QSize>
 
 
 /// Tool preferences user interface.
@@ -36,11 +39,22 @@ class ToolPrefsPage : public PrefsPage {
 public:
     ToolPrefsPage();
 
+    QString getName() override {
+        return tr("Tools");
+    };
+
+    void initialize() override;
+    void apply() override;
+
+    [[nodiscard]] bool isDirty() const override;
+
 private:
     static constexpr int k_buttonWidth { 130 };                     // Width of buttons, pixels
     static constexpr QMargins k_contentMargin { 10, 10, 10, 10 };   // Page margin, pixels
     static constexpr int k_verticalSpacer { 10 };                   // Spacing column, pixels
     static constexpr int k_hoirzontalSpacer { 10 };                 // Spacing row, pixels
+    static constexpr QSize k_lineSampleSize { 80, 50 };             // Size of line sample, pixels
+    static constexpr int k_lineSampleMargin { 5 };                  // Margin for line sample, pixels
     static constexpr int k_minOpacity { 20 };                       // Minimum allowed opacity, percent
     static constexpr int k_maxOpacity { 100 };                      // Maximum allowed opacity, percent
     static constexpr int k_minLineThk { 1 };                        // Minimum line thickness, pixels
@@ -48,7 +62,6 @@ private:
 
     void createUI();
     void configure();
-    void update() override;
 
     ToolPrefsModel* m_model;
     CrossHair* m_normalCrosshair1;
@@ -57,6 +70,16 @@ private:
     CrossHair* m_hiliteCrosshair2;
     ToolDataWindow* m_dataWindow1;
     ToolDataWindow* m_dataWindow2;
+    Line* m_line1;
+    Line* m_line2;
+    QPushButton* m_backColorButton;
+    QPushButton* m_backDefaultButton;
+    QPushButton* m_highlightColorButton;
+    QPushButton* m_highlightDefaultButton;
+    QPushButton* m_borderColorButton;
+    QPushButton* m_borderDefaultButton;
+    QPushButton* m_lineColorButton;
+    QPushButton* m_lineDefaultButton;
     QSlider* m_opacitySlider;
     QSpinBox* m_lineThkSpin;
 };

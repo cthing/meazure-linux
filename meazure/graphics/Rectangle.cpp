@@ -36,6 +36,16 @@ Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlag(Qt::WindowTransparentForInput, true);
+
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Rectangle::colorChanged);
+    connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this,
+            &Rectangle::setLineWidth);
+}
+
+void Rectangle::colorChanged(Colors::Item item, QRgb color) {
+    if (item == Colors::LineFore) {
+        setColor(color);
+    }
 }
 
 void Rectangle::setColor(QRgb color) {
@@ -46,7 +56,7 @@ void Rectangle::setColor(QRgb color) {
 void Rectangle::setLineWidth(int width) {
     m_pen.setWidth(width);
     m_lineWidth = width;
-    repaint();
+    setPosition(m_start, m_end);
 }
 
 void Rectangle::setOffset(double offset) {

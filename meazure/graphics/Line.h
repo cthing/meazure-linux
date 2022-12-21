@@ -57,12 +57,6 @@ public:
     ///
     void setColor(QRgb color);
 
-    /// Sets the line width.
-    ///
-    /// @param[in] width Line width, in pixels
-    ///
-    void setLineWidth(int width);
-
     /// Sets the distance to shrink the line from its start and end points. The typical use for this parameter is in
     /// the Line tool. Shrinking the line allows the contents of the end points to be clear for viewing and measuring.
     ///
@@ -77,8 +71,18 @@ public:
     ///
     void setPosition(const QPoint& startPoint, const QPoint& endPoint);
 
+public slots:
+    /// Sets the line width.
+    ///
+    /// @param[in] width Line width, in pixels
+    ///
+    void setLineWidth(int width);
+
 protected:
     void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void colorChanged(Colors::Item item, QRgb color);
 
 private:
     const ScreenInfoProvider& m_screenInfo;

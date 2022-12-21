@@ -20,11 +20,25 @@
 #pragma once
 
 #include <meazure/profile/Profile.h>
+#include <QObject>
 
 
 /// Configurable common dimensions used by various graphical elements.
 ///
 namespace Dimensions {
+
+    class ChangeNotifier : public QObject {
+        Q_OBJECT
+    signals:
+        void lineWidthChanged(int width);
+    };
+
+
+    /// Obtains the notifier that will emit a signal when a dimension changes.
+    ///
+    /// @return Notifier that emits a signal when a dimension changes.
+    ///
+    ChangeNotifier* getChangeNotifier();
 
     /// Resets all dimensions to their default values.
     ///

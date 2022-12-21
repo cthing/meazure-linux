@@ -25,6 +25,12 @@ static constexpr int k_defaultLineWidth { 1 };     ///< Pixels
 static int lineWidth = k_defaultLineWidth;
 
 
+Dimensions::ChangeNotifier* Dimensions::getChangeNotifier() {
+    static Dimensions::ChangeNotifier changeNotifier;
+
+    return &changeNotifier;
+}
+
 void Dimensions::reset() {
     lineWidth = k_defaultLineWidth;
 }
@@ -43,6 +49,7 @@ void Dimensions::loadProfile(Profile& profile) {
 
 void Dimensions::setLineWidth(int width) {
     lineWidth = width;
+    emit getChangeNotifier()->lineWidthChanged(width);
 }
 
 int Dimensions::getLineWidth() {

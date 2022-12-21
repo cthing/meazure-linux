@@ -20,6 +20,26 @@
 #include "RulerPrefsPage.h"
 
 
-void RulerPrefsPage::update() {
+RulerPrefsPage::RulerPrefsPage() : m_model(new RulerPrefsModel(this)) {
+    createUI();
+    configure();
+}
 
+void RulerPrefsPage::createUI() {
+}
+
+void RulerPrefsPage::configure() {
+    // Signals
+
+    connect(m_model, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
+}
+
+void RulerPrefsPage::initialize() {
+}
+
+void RulerPrefsPage::apply() {
+}
+
+[[nodiscard]] bool RulerPrefsPage::isDirty() const {
+    return m_model->isDirty();
 }

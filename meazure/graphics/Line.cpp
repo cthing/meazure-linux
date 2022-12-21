@@ -37,6 +37,15 @@ Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlag(Qt::WindowTransparentForInput, true);
+
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Line::colorChanged);
+    connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Line::setLineWidth);
+}
+
+void Line::colorChanged(Colors::Item item, QRgb color) {
+    if (item == Colors::LineFore) {
+        setColor(color);
+    }
 }
 
 void Line::setColor(QRgb color) {
@@ -47,7 +56,7 @@ void Line::setColor(QRgb color) {
 void Line::setLineWidth(int width) {
     m_pen.setWidth(width);
     m_lineWidth = width;
-    repaint();
+    setPosition(m_start, m_end);
 }
 
 void Line::setOffset(double offset) {

@@ -37,6 +37,15 @@ Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlag(Qt::WindowTransparentForInput, true);
+
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Circle::colorChanged);
+    connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Circle::setLineWidth);
+}
+
+void Circle::colorChanged(Colors::Item item, QRgb color) {
+    if (item == Colors::LineFore) {
+        setColor(color);
+    }
 }
 
 void Circle::setColor(QRgb color) {
@@ -73,8 +82,11 @@ void Circle::paintEvent(QPaintEvent*) {
     const double halfGapAngle = qRadiansToDegrees(gap.width()/m_radius);
     const double startAngle = 360.0 - qRadiansToDegrees(Geometry::angle(m_center, m_perimeter)) + halfGapAngle;
     const double spanAngle = 360.0 - 2.0 * halfGapAngle;
+    const double halfPenWidth = m_pen.width() / 2.0;
 
-    const QRectF winRect(rect());
+    QRectF winRect(rect());
+    winRect.adjust(halfPenWidth, halfPenWidth, -halfPenWidth, -halfPenWidth);
+
     QPainterPath path;
     path.arcMoveTo(winRect, startAngle);
     path.arcTo(winRect, startAngle, spanAngle);

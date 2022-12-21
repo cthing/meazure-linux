@@ -21,6 +21,7 @@
 
 #include <QString>
 #include <QRgb>
+#include <QObject>
 #include <array>
 #include <meazure/profile/Profile.h>
 
@@ -137,6 +138,19 @@ namespace Colors {
     template<std::size_t SIZE>
     using ColorTable = std::array<Colors::ColorTableEntry, SIZE>;
 
+
+    class ChangeNotifier : public QObject {
+        Q_OBJECT
+    signals:
+        void colorChanged(Colors::Item item, QRgb color);
+    };
+
+
+    /// Obtains the notifier that will emit a color changed signal when any of the colors are changed.
+    ///
+    /// @return Notifier that emits the colorChanged signal when any color or opacity is changed.
+    ///
+    ChangeNotifier* getChangeNotifier();
 
     /// Resets all colors to their default values.
     ///

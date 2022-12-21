@@ -23,28 +23,53 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
+#include <algorithm>
 
 
-PrefsDialog::PrefsDialog(QWidget *parent) :
-        QDialog(parent),
-        m_toolPage(new ToolPrefsPage()),
-        m_rulerPage(new RulerPrefsPage()) {
+PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent) {
     setWindowTitle(tr("Preferences"));
 
-    auto* tabs = new QTabWidget();
-    tabs->addTab(m_toolPage, tr("Tools"));
-    tabs->addTab(m_rulerPage, tr("Rulers"));
+    auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &PrefsDialog::accept);
+    connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &PrefsDialog::apply);
 
-    auto* buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
+    m_prefsPages.push_back(new ToolPrefsPage());
+    m_prefsPages.push_back(new RulerPrefsPage());
+
+    auto* tabs = new QTabWidget();
+    for (PrefsPage* page : m_prefsPages) {
+        tabs->addTab(page, page->getName());
+
+        connect(page, &PrefsPage::dirtyChanged, this, [this, buttonBox](bool) {
+            buttonBox->button(QDialogButtonBox::Apply)->setEnabled(isDirty());
+        });
+    }
 
     auto* layout = new QVBoxLayout();
     layout->addWidget(tabs);
-    layout->addWidget(buttons);
+    layout->addWidget(buttonBox);
 
     setLayout(layout);
 }
 
 void PrefsDialog::showEvent(QShowEvent*) {
-    m_toolPage->update();
-    m_rulerPage->update();
+    for (PrefsPage* page : m_prefsPages) {
+        page->initialize();
+    }
+}
+
+bool PrefsDialog::isDirty() const {
+    return std::any_of(m_prefsPages.begin(), m_prefsPages.end(), [](PrefsPage* page) { return page->isDirty(); });
+}
+
+void PrefsDialog::apply() {
+    for (PrefsPage* page : m_prefsPages) {
+        page->apply();
+    }
+}
+
+void PrefsDialog::accept() {
+    apply();
+    QDialog::accept();
 }

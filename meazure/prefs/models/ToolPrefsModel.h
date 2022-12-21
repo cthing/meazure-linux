@@ -33,7 +33,11 @@ class ToolPrefsModel : public QObject {
 public:
     explicit ToolPrefsModel(QObject* parent);
 
-    void update();
+    void initialize();
+
+    void apply() const;
+
+    [[nodiscard]] bool isDirty() const;
 
     Preference<QRgb>* m_lineForeColor;          // NOLINT(misc-non-private-member-variables-in-classes)
     Preference<QRgb>* m_crosshairBackColor;     // NOLINT(misc-non-private-member-variables-in-classes)
@@ -41,4 +45,7 @@ public:
     Preference<QRgb>* m_crosshairHiliteColor;   // NOLINT(misc-non-private-member-variables-in-classes)
     Preference<int>* m_crosshairOpacity;       // NOLINT(misc-non-private-member-variables-in-classes)
     Preference<int>* m_lineWidth;               // NOLINT(misc-non-private-member-variables-in-classes)
+
+signals:
+    void dirtyChanged(bool dirty);
 };

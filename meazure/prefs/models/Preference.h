@@ -31,8 +31,27 @@ public:
     explicit PreferenceBase(QObject* parent) : QObject(parent) {
     }
 
+    [[nodiscard]] bool isDirty() const {
+        return m_dirty;
+    }
+
+    void clearDirty() {
+        m_dirty = false;
+        emit dirtyChanged(m_dirty);
+    }
+
 signals:
     void valueChanged(QVariant newValue);
+    void dirtyChanged(bool dirty);
+
+protected:
+    void markDirty() {
+        m_dirty = true;
+        emit dirtyChanged(m_dirty);
+    }
+
+private:
+    bool m_dirty { false };
 };
 
 
@@ -48,15 +67,17 @@ public:
             m_value(defaultValue) {
     }
 
-    void update(T value) {
+    void initialize(T value) {
         m_value = value;
+        clearDirty();
         emit valueChanged(m_value);
     }
 
     void setValue(T value) {
         if (m_value != value) {
-            m_dirty = true;
-            update(value);
+            m_value = value;
+            markDirty();
+            emit valueChanged(m_value);
         }
     }
 
@@ -68,7 +89,7 @@ public:
         return m_value;
     }
 
-    void setToDefaultValue() {
+    void restore() {
         setValue(m_defaultValue);
     }
 
@@ -76,16 +97,7 @@ public:
         return m_defaultValue;
     }
 
-    [[nodiscard]] bool isDirty() const {
-        return m_dirty;
-    }
-
-    void clearDirty() {
-        m_dirty = false;
-    }
-
 private:
     T m_defaultValue;
     T m_value;
-    bool m_dirty { false };
 };

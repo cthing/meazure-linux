@@ -23,6 +23,7 @@
 #include <QDialog>
 #include <QWidget>
 #include <QShowEvent>
+#include <vector>
 
 
 /// Application preferences.
@@ -35,7 +36,12 @@ public:
 protected:
     void showEvent(QShowEvent* event) override;
 
+private slots:
+    void apply();
+    void accept() override;
+
 private:
-    PrefsPage* m_toolPage;
-    PrefsPage* m_rulerPage;
+    [[nodiscard]] bool isDirty() const;
+
+    std::vector<PrefsPage*> m_prefsPages;
 };

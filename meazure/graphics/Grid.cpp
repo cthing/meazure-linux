@@ -35,6 +35,15 @@ Grid::Grid(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlag(Qt::WindowTransparentForInput, true);
+
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Grid::colorChanged);
+    connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Grid::setLineWidth);
+}
+
+void Grid::colorChanged(Colors::Item item, QRgb color) {
+    if (item == Colors::LineFore) {
+        setColor(color);
+    }
 }
 
 void Grid::setColor(QRgb color) {

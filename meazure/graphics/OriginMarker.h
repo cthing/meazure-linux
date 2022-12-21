@@ -47,12 +47,6 @@ public:
     ///
     void setColor(QRgb color);
 
-    /// Sets the line width.
-    ///
-    /// @param[in] width Line width, in pixels
-    ///
-    void setLineWidth(int width);
-
     /// Sets the position of the marker.
     ///
     /// @param[in] origin Location of the origin of the marker, in pixels
@@ -60,8 +54,18 @@ public:
     ///
     void setPosition(const QPoint& origin, bool inverted);
 
+public slots:
+    /// Sets the line width.
+    ///
+    /// @param[in] width Line width, in pixels
+    ///
+    void setLineWidth(int width);
+
 protected:
     void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void colorChanged(Colors::Item item, QRgb color);
 
 private:
     static constexpr double k_axesLength { 0.25 };      ///< Length of each axis line, inches

@@ -53,6 +53,8 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
         setGraphicsEffect(effect);
     }
 
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &ToolDataWindow::colorChanged);
+
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
     connect(&m_flashTimer, &QTimer::timeout, this, &ToolDataWindow::flashHandler);
@@ -89,6 +91,12 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
     configure(AreaAvailable, tr("Ar:"), m_arValue);
 
     setLayout(layout);
+}
+
+void ToolDataWindow::colorChanged(Colors::Item item, QRgb color) {
+    if (item == Colors::CrossHairOpacity) {
+        setOpacity(Colors::opacityToPercent(color));
+    }
 }
 
 void ToolDataWindow::setOpacity(int opacityPercent) {

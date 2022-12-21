@@ -32,6 +32,16 @@ OriginMarker::OriginMarker(const ScreenInfoProvider& screenInfoProvider, const U
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlag(Qt::WindowTransparentForInput, true);
+
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &OriginMarker::colorChanged);
+    connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this,
+            &OriginMarker::setLineWidth);
+}
+
+void OriginMarker::colorChanged(Colors::Item item, QRgb color) {
+    if (item == Colors::LineFore) {
+        setColor(color);
+    }
 }
 
 void OriginMarker::setColor(QRgb color) {

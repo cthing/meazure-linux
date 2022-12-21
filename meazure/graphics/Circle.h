@@ -55,12 +55,6 @@ public:
     ///
     void setColor(QRgb color);
 
-    /// Sets the line width.
-    ///
-    /// @param[in] width Line width, in pixels
-    ///
-    void setLineWidth(int width);
-
     ///  Gap on the perimeter to accommodate a crosshair.
     ///
     /// @param[in] gap Gap on the perimeter, in inches
@@ -74,8 +68,18 @@ public:
     ///
     void setPosition(const QPoint& centerPoint, const QPoint& perimeterPoint);
 
+public slots:
+    /// Sets the line width.
+    ///
+    /// @param[in] width Line width, in pixels
+    ///
+    void setLineWidth(int width);
+
 protected:
     void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void colorChanged(Colors::Item item, QRgb color);
 
 private:
     const ScreenInfoProvider& m_screenInfo;

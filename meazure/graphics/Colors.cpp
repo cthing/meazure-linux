@@ -208,6 +208,12 @@ static ExtendedColorTable extendedWebColors = { {
 } };
 
 
+Colors::ChangeNotifier* Colors::getChangeNotifier() {
+    static Colors::ChangeNotifier colorChangeNotifier;
+
+    return &colorChangeNotifier;
+}
+
 void Colors::reset() {
     colors = defaultColors;
 }
@@ -240,6 +246,7 @@ void Colors::loadProfile(Profile& profile) {
 
 void Colors::set(Item item, QRgb color) {
     colors[item] = color;
+    emit getChangeNotifier()->colorChanged(item, color);
 }
 
 void Colors::setAlpha(Item item, int opacity) {
