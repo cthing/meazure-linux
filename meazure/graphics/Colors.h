@@ -117,10 +117,10 @@ namespace Colors {
     ///
     enum Item {
         LineFore,           ///< Line foreground color.
-        CrossHairBack,      ///< Crosshair background color.
-        CrossHairBorder,    ///< Crosshair edge color.
-        CrossHairHighlight,    ///< Crosshair highlight color.
-        CrossHairOpacity,   ///< Opacity of the crosshair.
+        CrosshairBack,      ///< Crosshair background color.
+        CrosshairBorder,    ///< Crosshair edge color.
+        CrosshairHighlight,    ///< Crosshair highlight color.
+        CrosshairOpacity,   ///< Opacity of the crosshair.
         RulerBack,          ///< Ruler background color.
         RulerBorder,        ///< Ruler edge and tick mark color.
         RulerOpacity        ///< Ruler opacity.

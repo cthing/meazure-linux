@@ -56,8 +56,8 @@ set(GRAPHICS_SOURCES
     graphics/Circle.h
     graphics/Colors.cpp
     graphics/Colors.h
-    graphics/CrossHair.cpp
-    graphics/CrossHair.h
+    graphics/Crosshair.cpp
+    graphics/Crosshair.h
     graphics/Dimensions.cpp
     graphics/Dimensions.h
     graphics/Graphic.cpp

@@ -40,10 +40,10 @@ class Handle : public Graphic {
 public:
     explicit Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                     QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
-                    QRgb backgroundColor = Colors::get(Colors::CrossHairBack),
-                    QRgb highlightColor = Colors::get(Colors::CrossHairHighlight),
-                    QRgb borderColor = Colors::get(Colors::CrossHairBorder),
-                    QRgb opacity = Colors::get(Colors::CrossHairOpacity));
+                    QRgb backgroundColor = Colors::get(Colors::CrosshairBack),
+                    QRgb highlightColor = Colors::get(Colors::CrosshairHighlight),
+                    QRgb borderColor = Colors::get(Colors::CrosshairBorder),
+                    QRgb opacity = Colors::get(Colors::CrosshairOpacity));
 
     void setColors(QRgb background, QRgb highlight, QRgb border);
 

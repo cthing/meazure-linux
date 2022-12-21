@@ -17,7 +17,7 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CrossHair.h"
+#include "Crosshair.h"
 #include "Colors.h"
 #include "Plotter.h"
 #include <meazure/utils/MathUtils.h>
@@ -28,7 +28,7 @@
 #include <QGraphicsOpacityEffect>
 
 
-CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+Crosshair::Crosshair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                      QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb highlightColor,
                      QRgb borderColor, QRgb opacity) :
         Graphic(parent),
@@ -50,7 +50,7 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
     setFixedSize(actualSize);
 
     m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
-    m_crossHair = generateCrossHair(screenRes, actualSize);
+    m_crosshair = generateCrosshair(screenRes, actualSize);
 
     if (parent == nullptr) {
         setWindowOpacity(Colors::opacityToFraction(opacity));
@@ -64,25 +64,25 @@ CrossHair::CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         setToolTip(tooltip);
     }
 
-    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &CrossHair::colorChanged);
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Crosshair::colorChanged);
 
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
-    connect(&m_flashTimer, &QTimer::timeout, this, &CrossHair::flashHandler);
+    connect(&m_flashTimer, &QTimer::timeout, this, &Crosshair::flashHandler);
 }
 
-void CrossHair::colorChanged(Colors::Item item, QRgb color) {
+void Crosshair::colorChanged(Colors::Item item, QRgb color) {
     switch (item) {
-        case Colors::CrossHairBack:
-            setColors(color, Colors::get(Colors::CrossHairHighlight), Colors::get(Colors::CrossHairBorder));
+        case Colors::CrosshairBack:
+            setColors(color, Colors::get(Colors::CrosshairHighlight), Colors::get(Colors::CrosshairBorder));
             break;
-        case Colors::CrossHairHighlight:
-            setColors(Colors::get(Colors::CrossHairBack), color, Colors::get(Colors::CrossHairBorder));
+        case Colors::CrosshairHighlight:
+            setColors(Colors::get(Colors::CrosshairBack), color, Colors::get(Colors::CrosshairBorder));
             break;
-        case Colors::CrossHairBorder:
-            setColors(Colors::get(Colors::CrossHairBack), Colors::get(Colors::CrossHairHighlight), color);
+        case Colors::CrosshairBorder:
+            setColors(Colors::get(Colors::CrosshairBack), Colors::get(Colors::CrosshairHighlight), color);
             break;
-        case Colors::CrossHairOpacity:
+        case Colors::CrosshairOpacity:
             setOpacity(Colors::opacityToPercent(color));
             break;
         default:
@@ -90,7 +90,7 @@ void CrossHair::colorChanged(Colors::Item item, QRgb color) {
     }
 }
 
-void CrossHair::setColors(QRgb background, QRgb highlight, QRgb border) {
+void Crosshair::setColors(QRgb background, QRgb highlight, QRgb border) {
     m_backgroundBrush.setColor(background);
     m_highlightBrush.setColor(highlight);
     m_highlightPen.setColor(highlight);
@@ -99,7 +99,7 @@ void CrossHair::setColors(QRgb background, QRgb highlight, QRgb border) {
     repaint();
 }
 
-void CrossHair::setOpacity(int opacityPercent) {
+void Crosshair::setOpacity(int opacityPercent) {
     if (parent() == nullptr) {
         setWindowOpacity(opacityPercent / 100.0);
     } else {
@@ -108,23 +108,23 @@ void CrossHair::setOpacity(int opacityPercent) {
     }
 }
 
-void CrossHair::setPosition(const QPoint &center) {
+void Crosshair::setPosition(const QPoint &center) {
     const QPoint topLeft = center - m_centerPosition;
     move(topLeft);
     emit moved(*this, m_id, center);
 }
 
-void CrossHair::flash(int flashCount) {
+void Crosshair::flash(int flashCount) {
     m_highlight = false;
     m_flashCountDown = flashCount;
     m_flashTimer.start();
 }
 
-void CrossHair::strobe() {
+void Crosshair::strobe() {
     flash(k_strobeCount);
 }
 
-void CrossHair::flashHandler() {
+void Crosshair::flashHandler() {
     m_flashCountDown--;
     if (m_flashCountDown < 0) {
         m_flashTimer.stop();
@@ -136,21 +136,21 @@ void CrossHair::flashHandler() {
     repaint();
 }
 
-void CrossHair::paintEvent(QPaintEvent*) {
+void Crosshair::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
     painter.fillRect(rect(), m_pointerOver ? m_highlightBrush : m_backgroundBrush);
 
     const QPen& outlinePen = m_highlight ? m_highlightPen : m_borderPen;
-    painter.strokePath(m_crossHair, outlinePen);
+    painter.strokePath(m_crosshair, outlinePen);
 }
 
-void CrossHair::resizeEvent(QResizeEvent*) {
-    const QRegion maskedRegion(m_crossHair.toFillPolygon().toPolygon());
+void Crosshair::resizeEvent(QResizeEvent*) {
+    const QRegion maskedRegion(m_crosshair.toFillPolygon().toPolygon());
     setMask(maskedRegion);
 }
 
-void CrossHair::enterEvent(QEnterEvent* event) {
+void Crosshair::enterEvent(QEnterEvent* event) {
     m_pointerOver = true;
 
     repaint();
@@ -159,7 +159,7 @@ void CrossHair::enterEvent(QEnterEvent* event) {
     emit entered(*this, m_id, center, event->modifiers());
 }
 
-void CrossHair::leaveEvent(QEvent*) {
+void Crosshair::leaveEvent(QEvent*) {
     m_pointerOver = false;
 
     repaint();
@@ -167,30 +167,30 @@ void CrossHair::leaveEvent(QEvent*) {
     emit departed(*this, m_id);
 }
 
-void CrossHair::mousePressEvent(QMouseEvent* event) {
+void Crosshair::mousePressEvent(QMouseEvent* event) {
     m_initialGrabPosition = event->position().toPoint();
 
     const QPoint center = findCenter(event->position().toPoint());
     emit selected(*this, m_id, center, event->modifiers());
 }
 
-void CrossHair::mouseReleaseEvent(QMouseEvent *event) {
+void Crosshair::mouseReleaseEvent(QMouseEvent *event) {
     const QPoint center = findCenter(event->position().toPoint());
     emit deselected(*this, m_id, center, event->modifiers());
 }
 
-void CrossHair::mouseMoveEvent(QMouseEvent* event) {
+void Crosshair::mouseMoveEvent(QMouseEvent* event) {
     const QPoint center = findCenter(event->position().toPoint());
     emit dragged(*this, m_id, center, event->modifiers());
 }
 
-QPoint CrossHair::findCenter(const QPoint& point) const {
+QPoint Crosshair::findCenter(const QPoint& point) const {
     const QPoint center(point - (m_initialGrabPosition - m_centerPosition));
     const QPoint globalCenter(mapToGlobal(center));
     return m_screenProvider.constrainPosition(globalCenter);
 }
 
-QPainterPath CrossHair::generateCrossHair(const QSizeF& screenRes, const QSize& size) const {
+QPainterPath Crosshair::generateCrosshair(const QSizeF& screenRes, const QSize& size) const {
     QSize actualPetalWidth = m_unitsProvider.convertToPixels(InchesId, screenRes, k_petalWidth, k_petalWidthMin);
     actualPetalWidth.rwidth() = MathUtils::makeOddUp(actualPetalWidth.width());       // Must be odd
     actualPetalWidth.rheight() = MathUtils::makeOddUp(actualPetalWidth.height());

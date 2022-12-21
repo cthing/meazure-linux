@@ -60,16 +60,16 @@ void ToolPrefsPage::createUI() {
     auto* minOpacityLabel = new QLabel(tr("%1%").arg(k_minOpacity));
     auto* maxOpacityLabel = new QLabel(tr("%1%").arg(k_maxOpacity));
     m_opacitySlider = new QSlider(Qt::Horizontal);
-    m_normalCrosshair1 = new CrossHair(screenInfo, unitsMgr, this, "Normal", -1,
+    m_normalCrosshair1 = new Crosshair(screenInfo, unitsMgr, this, "Normal", -1,
                                        m_model->m_crosshairBackColor->getValue(),
                                        m_model->m_crosshairBackColor->getValue());
-    m_normalCrosshair2 = new CrossHair(screenInfo, unitsMgr, this, "Normal", -1,
+    m_normalCrosshair2 = new Crosshair(screenInfo, unitsMgr, this, "Normal", -1,
                                        m_model->m_crosshairBackColor->getValue(),
                                        m_model->m_crosshairBackColor->getValue());
-    m_highlightCrosshair1 = new CrossHair(screenInfo, unitsMgr, this, "Highlight", -1,
+    m_highlightCrosshair1 = new Crosshair(screenInfo, unitsMgr, this, "Highlight", -1,
                                           m_model->m_crosshairHighlightColor->getValue(),
                                           m_model->m_crosshairHighlightColor->getValue());
-    m_highlightCrosshair2 = new CrossHair(screenInfo, unitsMgr, this, "Highlight", -1,
+    m_highlightCrosshair2 = new Crosshair(screenInfo, unitsMgr, this, "Highlight", -1,
                                           m_model->m_crosshairHighlightColor->getValue(),
                                           m_model->m_crosshairHighlightColor->getValue());
     m_dataWindow1 = new ToolDataWindow(screenInfo, unitsMgr, XY1ReadOnly, this);

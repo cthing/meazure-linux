@@ -21,7 +21,7 @@
 
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
-#include <meazure/graphics/CrossHair.h>
+#include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
@@ -98,10 +98,10 @@ signals:
     void angleChanged(double angle);
 
 private slots:
-    void entered(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
-    void departed(CrossHair& crosshair, int id);
-    void dragged(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
-    void moved(CrossHair& crosshair, int id, QPoint center);
+    void entered(Crosshair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void departed(Crosshair& crosshair, int id);
+    void dragged(Crosshair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void moved(Crosshair& crosshair, int id, QPoint center);
 
 private:
     static constexpr RadioToolTraits k_traits { XY1ReadWrite | XY2ReadWrite | XYVReadWrite | AngleReadOnly };
@@ -121,9 +121,9 @@ private:
     QPoint m_point2;                     ///< Location of the line 2 end point
     QPoint m_vertexAnchor;               ///< Location for vertical / horizontal lock when Shift is held while dragging
     int m_activePointId { k_point1Id};   ///< ID of point being changed
-    CrossHair* m_vertexCH;               ///< Crosshair for the line 1 / line 2 intersection point
-    CrossHair* m_point1CH;               ///< Crosshair for the line 1 end point
-    CrossHair* m_point2CH;               ///< Crosshair for the line 2 end point
+    Crosshair* m_vertexCH;               ///< Crosshair for the line 1 / line 2 intersection point
+    Crosshair* m_point1CH;               ///< Crosshair for the line 1 end point
+    Crosshair* m_point2CH;               ///< Crosshair for the line 2 end point
     Line* m_lineB;                       ///< Line forming the angle bisector
     Line* m_line1;                       ///< Line from vertex to point 1
     Line* m_line2;                       ///< Line from vertex to point 2

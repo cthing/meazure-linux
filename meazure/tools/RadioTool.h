@@ -23,7 +23,7 @@
 #include "RadioToolTraits.h"
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/environment/ScreenInfoProvider.h>
-#include <meazure/graphics/CrossHair.h>
+#include <meazure/graphics/Crosshair.h>
 #include <QObject>
 #include <QImage>
 
@@ -173,5 +173,5 @@ protected:
     /// When drawing lines to crosshairs, this offset will ensure that there is a bit of a margin
     /// around the crosshair such that the line will come close to but not touch the crosshair.
     ///
-    static constexpr double k_crosshairOffset { CrossHair::getDefaultSize() / 2.0 + 0.07 };
+    static constexpr double k_crosshairOffset { Crosshair::getDefaultSize() / 2.0 + 0.07 };
 };

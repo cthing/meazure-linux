@@ -97,7 +97,7 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, con
 }
 
 void ToolDataWindow::colorChanged(Colors::Item item, QRgb color) {
-    if (item == Colors::CrossHairOpacity) {
+    if (item == Colors::CrosshairOpacity) {
         setOpacity(Colors::opacityToPercent(color));
     }
 }

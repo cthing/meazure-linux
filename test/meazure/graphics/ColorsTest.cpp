@@ -533,7 +533,7 @@ private:
 }
 
 [[maybe_unused]] void ColorsTest::testOpacity() {
-    QCOMPARE(Colors::getAlpha(Colors::CrossHairOpacity), 0xE5);
+    QCOMPARE(Colors::getAlpha(Colors::CrosshairOpacity), 0xE5);
 
     Colors::setAlpha(Colors::LineFore, 25);
     QCOMPARE(Colors::getAlpha(Colors::LineFore), 25);

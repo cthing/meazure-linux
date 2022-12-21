@@ -52,7 +52,7 @@ public:
     ///
     explicit ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                             RadioToolTraits traits, QWidget* parent = nullptr,
-                            QRgb opacity = Colors::get(Colors::CrossHairOpacity));
+                            QRgb opacity = Colors::get(Colors::CrosshairOpacity));
 
     /// Sets the data window opacity.
     ///

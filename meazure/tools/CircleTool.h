@@ -21,7 +21,7 @@
 
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
-#include <meazure/graphics/CrossHair.h>
+#include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
 #include <meazure/graphics/Circle.h>
 #include <meazure/environment/ScreenInfoProvider.h>
@@ -99,15 +99,15 @@ signals:
     void areaChanged(double area);
 
 private slots:
-    void entered(CrossHair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
-    void departed(CrossHair& crosshair, int id);
-    void dragged(CrossHair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
-    void moved(CrossHair& crosshair, int id, QPoint crosshairCenter);
+    void entered(Crosshair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
+    void departed(Crosshair& crosshair, int id);
+    void dragged(Crosshair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
+    void moved(Crosshair& crosshair, int id, QPoint crosshairCenter);
 
 private:
     /// Similar to k_crosshairOffset but for use with the perimeter crosshair to provide a bit more spacing.
     ///
-    static constexpr double k_crosshairRadialOffset { CrossHair::getDefaultSize() / 2.0 + 0.08 };
+    static constexpr double k_crosshairRadialOffset {Crosshair::getDefaultSize() / 2.0 + 0.08 };
     static constexpr RadioToolTraits k_traits { XY1ReadWrite | XYVReadWrite | WHReadOnly | DistReadOnly |
                                                 AngleReadOnly | AspectReadOnly | AreaReadOnly };
     static constexpr int k_perimeterId { 1 };   ///< ID for the perimeter crosshair
@@ -121,8 +121,8 @@ private:
     QPoint m_center;                         ///< Location of the center of the circle
     QPoint m_perimeter;                      ///< A point on the perimeter of the circle
     int m_activePointId { k_perimeterId };   ///< ID of point being changed
-    CrossHair* m_centerCH;                   ///< Crosshair for the center point
-    CrossHair* m_perimeterCH;                ///< Crosshair for the perimeter point
+    Crosshair* m_centerCH;                   ///< Crosshair for the center point
+    Crosshair* m_perimeterCH;                ///< Crosshair for the perimeter point
     Circle* m_circle;                        ///< Circle graphic object
     Line* m_line;                            ///< Radial line
     ToolDataWindow* m_dataWinCenter;         ///< Data window tooltip for the center point

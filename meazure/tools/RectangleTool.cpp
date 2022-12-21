@@ -31,22 +31,22 @@ RectangleTool::RectangleTool(const ScreenInfoProvider& screenInfoProvider, const
         m_point2(screenInfoProvider.getCenter() + QPoint(30, 30)),
         m_anchorPoint1(m_point1),
         m_anchorPoint2(m_point2),
-        m_point1CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
-        m_point2CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
+        m_point1CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
+        m_point2CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
         m_rectangle(new Rectangle(screenInfoProvider, unitsProvider, k_crosshairOffset)),
         m_dataWin1(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly | DistReadOnly)),
         m_dataWin2(new ToolDataWindow(screenInfoProvider, unitsProvider, XY2ReadOnly | DistReadOnly)) {
-    connect(m_point1CH, &CrossHair::entered, this, &RectangleTool::entered);
-    connect(m_point2CH, &CrossHair::entered, this, &RectangleTool::entered);
+    connect(m_point1CH, &Crosshair::entered, this, &RectangleTool::entered);
+    connect(m_point2CH, &Crosshair::entered, this, &RectangleTool::entered);
 
-    connect(m_point1CH, &CrossHair::departed, this, &RectangleTool::departed);
-    connect(m_point2CH, &CrossHair::departed, this, &RectangleTool::departed);
+    connect(m_point1CH, &Crosshair::departed, this, &RectangleTool::departed);
+    connect(m_point2CH, &Crosshair::departed, this, &RectangleTool::departed);
 
-    connect(m_point1CH, &CrossHair::dragged, this, &RectangleTool::dragged);
-    connect(m_point2CH, &CrossHair::dragged, this, &RectangleTool::dragged);
+    connect(m_point1CH, &Crosshair::dragged, this, &RectangleTool::dragged);
+    connect(m_point2CH, &Crosshair::dragged, this, &RectangleTool::dragged);
 
-    connect(m_point1CH, &CrossHair::moved, this, &RectangleTool::moved);
-    connect(m_point2CH, &CrossHair::moved, this, &RectangleTool::moved);
+    connect(m_point1CH, &Crosshair::moved, this, &RectangleTool::moved);
+    connect(m_point2CH, &Crosshair::moved, this, &RectangleTool::moved);
 }
 
 RectangleTool::~RectangleTool() {
@@ -213,7 +213,7 @@ void RectangleTool::strobe() {
     m_dataWin2->strobe();
 }
 
-void RectangleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
+void RectangleTool::entered(Crosshair&, int id, QPoint, Qt::KeyboardModifiers) {
     if (isDataWinEnabled()) {
         if (id == k_point1Id) {
             m_dataWin1->show();
@@ -223,7 +223,7 @@ void RectangleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
     }
 }
 
-void RectangleTool::departed(CrossHair&, int id) {
+void RectangleTool::departed(Crosshair&, int id) {
     if (id == k_point1Id) {
         m_dataWin1->hide();
     } else {
@@ -231,7 +231,7 @@ void RectangleTool::departed(CrossHair&, int id) {
     }
 }
 
-void RectangleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
+void RectangleTool::dragged(Crosshair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
     m_activePointId = id;
 
     // Ctrl+drag moves all the crosshairs as a single unit
@@ -272,7 +272,7 @@ void RectangleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::Keyb
     setPosition();
 }
 
-void RectangleTool::moved(CrossHair&, int id, QPoint) {
+void RectangleTool::moved(Crosshair&, int id, QPoint) {
     if (!isEnabled()) {
         return;
     }

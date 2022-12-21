@@ -21,7 +21,7 @@
 
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
-#include <meazure/graphics/CrossHair.h>
+#include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsProvider.h>
@@ -98,10 +98,10 @@ signals:
     void areaChanged(double area);
 
 private slots:
-    void entered(CrossHair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
-    void departed(CrossHair& crosshair, int id);
-    void dragged(CrossHair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
-    void moved(CrossHair& crosshair, int id, QPoint crosshairCenter);
+    void entered(Crosshair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
+    void departed(Crosshair& crosshair, int id);
+    void dragged(Crosshair& crosshair, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers);
+    void moved(Crosshair& crosshair, int id, QPoint crosshairCenter);
 
 private:
     static constexpr RadioToolTraits k_traits { XY1ReadWrite | XY2ReadWrite | WHReadOnly | DistReadOnly |
@@ -117,8 +117,8 @@ private:
     QPoint m_point1;                     ///< Location of one end point of the line
     QPoint m_point2;                     ///< Location of one end point of the line
     int m_activePointId { k_point1Id};   ///< ID of point being changed
-    CrossHair* m_point1CH;               ///< Crosshair for point 1
-    CrossHair* m_point2CH;               ///< Crosshair for point 2
+    Crosshair* m_point1CH;               ///< Crosshair for point 1
+    Crosshair* m_point2CH;               ///< Crosshair for point 2
     Line* m_line;                        ///< Line connecting point 1 and point 2
     ToolDataWindow* m_dataWin1;          ///< Data window tooltip for point 1
     ToolDataWindow* m_dataWin2;          ///< Data window tooltip for point 2

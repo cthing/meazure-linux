@@ -29,23 +29,23 @@ CircleTool::CircleTool(const ScreenInfoProvider& screenInfoProvider, const Units
         RadioTool(screenInfoProvider, unitsProvider, parent),
         m_center(screenInfoProvider.getCenter()),
         m_perimeter(screenInfoProvider.getCenter() + QPoint(30, 30)),
-        m_centerCH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Vertex"), k_centerId)),
-        m_perimeterCH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_perimeterId)),
+        m_centerCH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Vertex"), k_centerId)),
+        m_perimeterCH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_perimeterId)),
         m_circle(new Circle(screenInfoProvider, unitsProvider, k_crosshairRadialOffset)),
         m_line(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
         m_dataWinCenter(new ToolDataWindow(screenInfoProvider, unitsProvider, XYVReadOnly | DistReadOnly)),
         m_dataWinPerimeter(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly | DistReadOnly)) {
-    connect(m_centerCH, &CrossHair::entered, this, &CircleTool::entered);
-    connect(m_perimeterCH, &CrossHair::entered, this, &CircleTool::entered);
+    connect(m_centerCH, &Crosshair::entered, this, &CircleTool::entered);
+    connect(m_perimeterCH, &Crosshair::entered, this, &CircleTool::entered);
 
-    connect(m_centerCH, &CrossHair::departed, this, &CircleTool::departed);
-    connect(m_perimeterCH, &CrossHair::departed, this, &CircleTool::departed);
+    connect(m_centerCH, &Crosshair::departed, this, &CircleTool::departed);
+    connect(m_perimeterCH, &Crosshair::departed, this, &CircleTool::departed);
 
-    connect(m_centerCH, &CrossHair::dragged, this, &CircleTool::dragged);
-    connect(m_perimeterCH, &CrossHair::dragged, this, &CircleTool::dragged);
+    connect(m_centerCH, &Crosshair::dragged, this, &CircleTool::dragged);
+    connect(m_perimeterCH, &Crosshair::dragged, this, &CircleTool::dragged);
 
-    connect(m_centerCH, &CrossHair::moved, this, &CircleTool::moved);
-    connect(m_perimeterCH, &CrossHair::moved, this, &CircleTool::moved);
+    connect(m_centerCH, &Crosshair::moved, this, &CircleTool::moved);
+    connect(m_perimeterCH, &Crosshair::moved, this, &CircleTool::moved);
 }
 
 CircleTool::~CircleTool() {
@@ -215,7 +215,7 @@ void CircleTool::strobe() {
     m_dataWinCenter->strobe();
 }
 
-void CircleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
+void CircleTool::entered(Crosshair&, int id, QPoint, Qt::KeyboardModifiers) {
     if (isDataWinEnabled()) {
         if (id == k_perimeterId) {
             m_dataWinPerimeter->show();
@@ -225,7 +225,7 @@ void CircleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
     }
 }
 
-void CircleTool::departed(CrossHair&, int id) {
+void CircleTool::departed(Crosshair&, int id) {
     if (id == k_perimeterId) {
         m_dataWinPerimeter->hide();
     } else {
@@ -233,7 +233,7 @@ void CircleTool::departed(CrossHair&, int id) {
     }
 }
 
-void CircleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
+void CircleTool::dragged(Crosshair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
     m_activePointId = id;
 
     // Ctrl+drag moves all the crosshairs as a single unit
@@ -273,7 +273,7 @@ void CircleTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::Keyboar
     setPosition();
 }
 
-void CircleTool::moved(CrossHair&, int id, QPoint) {
+void CircleTool::moved(Crosshair&, int id, QPoint) {
     if (!isEnabled()) {
         return;
     }

@@ -29,22 +29,22 @@ LineTool::LineTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProv
         RadioTool(screenInfoProvider, unitsProvider, parent),
         m_point1(screenInfoProvider.getCenter() - QPoint(30, 30)),
         m_point2(screenInfoProvider.getCenter() + QPoint(30, 30)),
-        m_point1CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
-        m_point2CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
+        m_point1CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
+        m_point2CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
         m_line(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
         m_dataWin1(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly | DistReadOnly)),
         m_dataWin2(new ToolDataWindow(screenInfoProvider, unitsProvider, XY2ReadOnly | DistReadOnly)) {
-    connect(m_point1CH, &CrossHair::entered, this, &LineTool::entered);
-    connect(m_point2CH, &CrossHair::entered, this, &LineTool::entered);
+    connect(m_point1CH, &Crosshair::entered, this, &LineTool::entered);
+    connect(m_point2CH, &Crosshair::entered, this, &LineTool::entered);
 
-    connect(m_point1CH, &CrossHair::departed, this, &LineTool::departed);
-    connect(m_point2CH, &CrossHair::departed, this, &LineTool::departed);
+    connect(m_point1CH, &Crosshair::departed, this, &LineTool::departed);
+    connect(m_point2CH, &Crosshair::departed, this, &LineTool::departed);
 
-    connect(m_point1CH, &CrossHair::dragged, this, &LineTool::dragged);
-    connect(m_point2CH, &CrossHair::dragged, this, &LineTool::dragged);
+    connect(m_point1CH, &Crosshair::dragged, this, &LineTool::dragged);
+    connect(m_point2CH, &Crosshair::dragged, this, &LineTool::dragged);
 
-    connect(m_point1CH, &CrossHair::moved, this, &LineTool::moved);
-    connect(m_point2CH, &CrossHair::moved, this, &LineTool::moved);
+    connect(m_point1CH, &Crosshair::moved, this, &LineTool::moved);
+    connect(m_point2CH, &Crosshair::moved, this, &LineTool::moved);
 }
 
 LineTool::~LineTool() {
@@ -208,7 +208,7 @@ void LineTool::strobe() {
     m_dataWin2->strobe();
 }
 
-void LineTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
+void LineTool::entered(Crosshair&, int id, QPoint, Qt::KeyboardModifiers) {
     if (isDataWinEnabled()) {
         if (id == k_point1Id) {
             m_dataWin1->show();
@@ -218,7 +218,7 @@ void LineTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
     }
 }
 
-void LineTool::departed(CrossHair&, int id) {
+void LineTool::departed(Crosshair&, int id) {
     if (id == k_point1Id) {
         m_dataWin1->hide();
     } else {
@@ -226,7 +226,7 @@ void LineTool::departed(CrossHair&, int id) {
     }
 }
 
-void LineTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
+void LineTool::dragged(Crosshair&, int id, QPoint crosshairCenter, Qt::KeyboardModifiers keyboardModifiers) {
     m_activePointId = id;
 
     // Ctrl+drag moves all the crosshairs as a single unit
@@ -266,7 +266,7 @@ void LineTool::dragged(CrossHair&, int id, QPoint crosshairCenter, Qt::KeyboardM
     setPosition();
 }
 
-void LineTool::moved(CrossHair&, int id, QPoint) {
+void LineTool::moved(Crosshair&, int id, QPoint) {
     if (!isEnabled()) {
         return;
     }

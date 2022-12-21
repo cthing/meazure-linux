@@ -63,16 +63,16 @@ Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
 
 void Handle::colorChanged(Colors::Item item, QRgb color) {
     switch (item) {
-        case Colors::CrossHairBack:
-            setColors(color, Colors::get(Colors::CrossHairHighlight), Colors::get(Colors::CrossHairBorder));
+        case Colors::CrosshairBack:
+            setColors(color, Colors::get(Colors::CrosshairHighlight), Colors::get(Colors::CrosshairBorder));
             break;
-        case Colors::CrossHairHighlight:
-            setColors(Colors::get(Colors::CrossHairBack), color, Colors::get(Colors::CrossHairBorder));
+        case Colors::CrosshairHighlight:
+            setColors(Colors::get(Colors::CrosshairBack), color, Colors::get(Colors::CrosshairBorder));
             break;
-        case Colors::CrossHairBorder:
-            setColors(Colors::get(Colors::CrossHairBack), Colors::get(Colors::CrossHairHighlight), color);
+        case Colors::CrosshairBorder:
+            setColors(Colors::get(Colors::CrosshairBack), Colors::get(Colors::CrosshairHighlight), color);
             break;
-        case Colors::CrossHairOpacity:
+        case Colors::CrosshairOpacity:
             setOpacity(Colors::opacityToPercent(color));
             break;
         default:

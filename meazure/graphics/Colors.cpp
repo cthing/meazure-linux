@@ -29,10 +29,10 @@ using ColorMap = std::map<Colors::Item, QRgb>;        ///< Maps items to their c
 
 static ColorMap const defaultColors = {
         { Colors::LineFore,           qRgb(0xFF, 0, 0) },
-        { Colors::CrossHairBack,      qRgb(0xFF, 0, 0) },
-        { Colors::CrossHairBorder,    qRgb(0x50, 0x50, 0x50) },
-        { Colors::CrossHairHighlight, qRgb(0xFF, 0xFF, 0) },
-        { Colors::CrossHairOpacity,   qRgba(0, 0, 0, 0xE5) },
+        { Colors::CrosshairBack,      qRgb(0xFF, 0, 0) },
+        { Colors::CrosshairBorder,    qRgb(0x50, 0x50, 0x50) },
+        { Colors::CrosshairHighlight, qRgb(0xFF, 0xFF, 0) },
+        { Colors::CrosshairOpacity,   qRgba(0, 0, 0, 0xE5) },
         { Colors::RulerBack,          qRgb(0xFF, 0xFF, 0xFF) },
         { Colors::RulerBorder,        qRgb(0, 0, 0) },
         { Colors::RulerOpacity,       qRgba(0, 0, 0, 0xE5) }
@@ -221,10 +221,10 @@ void Colors::reset() {
 void Colors::saveProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         profile.writeUInt("LineFore", colors[LineFore]);
-        profile.writeUInt("CrossHairBack", colors[CrossHairBack]);
-        profile.writeUInt("CrossHairBorder", colors[CrossHairBorder]);
-        profile.writeUInt("CrossHairHilite", colors[CrossHairHighlight]);
-        profile.writeUInt("CrossHairOpacity", colors[CrossHairOpacity]);
+        profile.writeUInt("CrossHairBack", colors[CrosshairBack]);
+        profile.writeUInt("CrossHairBorder", colors[CrosshairBorder]);
+        profile.writeUInt("CrossHairHilite", colors[CrosshairHighlight]);
+        profile.writeUInt("CrossHairOpacity", colors[CrosshairOpacity]);
         profile.writeUInt("RulerBack", colors[RulerBack]);
         profile.writeUInt("RulerBorder", colors[RulerBorder]);
         profile.writeUInt("RulerOpacity", colors[RulerOpacity]);
@@ -234,10 +234,10 @@ void Colors::saveProfile(Profile& profile) {
 void Colors::loadProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         colors[LineFore] = profile.readUInt("LineFore", defaultColors.at(LineFore));
-        colors[CrossHairBack] = profile.readUInt("CrossHairBack", defaultColors.at(CrossHairBack));
-        colors[CrossHairBorder] = profile.readUInt("CrossHairBorder", defaultColors.at(CrossHairBorder));
-        colors[CrossHairHighlight] = profile.readUInt("CrossHairHilite", defaultColors.at(CrossHairHighlight));
-        colors[CrossHairOpacity] = profile.readUInt("CrossHairOpacity", defaultColors.at(CrossHairOpacity));
+        colors[CrosshairBack] = profile.readUInt("CrossHairBack", defaultColors.at(CrosshairBack));
+        colors[CrosshairBorder] = profile.readUInt("CrossHairBorder", defaultColors.at(CrosshairBorder));
+        colors[CrosshairHighlight] = profile.readUInt("CrossHairHilite", defaultColors.at(CrosshairHighlight));
+        colors[CrosshairOpacity] = profile.readUInt("CrossHairOpacity", defaultColors.at(CrosshairOpacity));
         colors[RulerBack] = profile.readUInt("RulerBack", defaultColors.at(RulerBack));
         colors[RulerBorder] = profile.readUInt("RulerBorder", defaultColors.at(RulerBorder));
         colors[RulerOpacity] = profile.readUInt("RulerOpacity", defaultColors.at(RulerOpacity));

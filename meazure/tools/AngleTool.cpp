@@ -31,30 +31,30 @@ AngleTool::AngleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         m_point1(screenInfoProvider.getCenter() + QPoint(80, -50)),
         m_point2(screenInfoProvider.getCenter() + QPoint(80, 50)),
         m_vertexAnchor(screenInfoProvider.getCenter()),
-        m_vertexCH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Vertex"), k_vertexId)),
-        m_point1CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
-        m_point2CH(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
+        m_vertexCH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Vertex"), k_vertexId)),
+        m_point1CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
+        m_point2CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
         m_lineB(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
         m_line1(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
         m_line2(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
         m_dataWinV(new ToolDataWindow(screenInfoProvider, unitsProvider, XYVReadOnly | AngleReadOnly)),
         m_dataWin1(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly | AngleReadOnly)),
         m_dataWin2(new ToolDataWindow(screenInfoProvider, unitsProvider, XY2ReadOnly | AngleReadOnly)) {
-    connect(m_point1CH, &CrossHair::entered, this, &AngleTool::entered);
-    connect(m_point2CH, &CrossHair::entered, this, &AngleTool::entered);
-    connect(m_vertexCH, &CrossHair::entered, this, &AngleTool::entered);
+    connect(m_point1CH, &Crosshair::entered, this, &AngleTool::entered);
+    connect(m_point2CH, &Crosshair::entered, this, &AngleTool::entered);
+    connect(m_vertexCH, &Crosshair::entered, this, &AngleTool::entered);
 
-    connect(m_point1CH, &CrossHair::departed, this, &AngleTool::departed);
-    connect(m_point2CH, &CrossHair::departed, this, &AngleTool::departed);
-    connect(m_vertexCH, &CrossHair::departed, this, &AngleTool::departed);
+    connect(m_point1CH, &Crosshair::departed, this, &AngleTool::departed);
+    connect(m_point2CH, &Crosshair::departed, this, &AngleTool::departed);
+    connect(m_vertexCH, &Crosshair::departed, this, &AngleTool::departed);
 
-    connect(m_point1CH, &CrossHair::dragged, this, &AngleTool::dragged);
-    connect(m_point2CH, &CrossHair::dragged, this, &AngleTool::dragged);
-    connect(m_vertexCH, &CrossHair::dragged, this, &AngleTool::dragged);
+    connect(m_point1CH, &Crosshair::dragged, this, &AngleTool::dragged);
+    connect(m_point2CH, &Crosshair::dragged, this, &AngleTool::dragged);
+    connect(m_vertexCH, &Crosshair::dragged, this, &AngleTool::dragged);
 
-    connect(m_point1CH, &CrossHair::moved, this, &AngleTool::moved);
-    connect(m_point2CH, &CrossHair::moved, this, &AngleTool::moved);
-    connect(m_vertexCH, &CrossHair::moved, this, &AngleTool::moved);
+    connect(m_point1CH, &Crosshair::moved, this, &AngleTool::moved);
+    connect(m_point2CH, &Crosshair::moved, this, &AngleTool::moved);
+    connect(m_vertexCH, &Crosshair::moved, this, &AngleTool::moved);
 }
 
 AngleTool::~AngleTool() {
@@ -312,7 +312,7 @@ void AngleTool::strobe() {
     m_dataWinV->strobe();
 }
 
-void AngleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
+void AngleTool::entered(Crosshair&, int id, QPoint, Qt::KeyboardModifiers) {
     if (isDataWinEnabled()) {
         if (id == k_point1Id) {
             m_dataWin1->show();
@@ -324,7 +324,7 @@ void AngleTool::entered(CrossHair&, int id, QPoint, Qt::KeyboardModifiers) {
     }
 }
 
-void AngleTool::departed(CrossHair&, int id) {
+void AngleTool::departed(Crosshair&, int id) {
     if (id == k_point1Id) {
         m_dataWin1->hide();
     } else if (id == k_point2Id) {
@@ -334,7 +334,7 @@ void AngleTool::departed(CrossHair&, int id) {
     }
 }
 
-void AngleTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
+void AngleTool::dragged(Crosshair&, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
     m_activePointId = id;
 
     // Ctrl + drag moves the all the crosshairs as a single unit.
@@ -414,7 +414,7 @@ void AngleTool::dragged(CrossHair&, int id, QPoint center, Qt::KeyboardModifiers
     setPosition();
 }
 
-void AngleTool::moved(CrossHair&, int id, QPoint) {
+void AngleTool::moved(Crosshair&, int id, QPoint) {
     if (!isEnabled()) {
         return;
     }

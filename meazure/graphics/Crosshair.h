@@ -37,7 +37,7 @@
 /// of the measurement tools to identify their measurement points and to allow the user to perform measurements
 /// by dragging the crosshairs using the pointer.
 ///
-class CrossHair : public Graphic {
+class Crosshair : public Graphic {
 
     Q_OBJECT
 
@@ -54,12 +54,12 @@ public:
     /// @param[in] borderColor Crosshair border color
     /// @param[in] opacity Crosshair opacity
     ///
-    explicit CrossHair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+    explicit Crosshair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                        QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
-                       QRgb backgroundColor = Colors::get(Colors::CrossHairBack),
-                       QRgb highlightColor = Colors::get(Colors::CrossHairHighlight),
-                       QRgb borderColor = Colors::get(Colors::CrossHairBorder),
-                       QRgb opacity = Colors::get(Colors::CrossHairOpacity));
+                       QRgb backgroundColor = Colors::get(Colors::CrosshairBack),
+                       QRgb highlightColor = Colors::get(Colors::CrosshairHighlight),
+                       QRgb borderColor = Colors::get(Colors::CrosshairBorder),
+                       QRgb opacity = Colors::get(Colors::CrosshairOpacity));
 
     /// Provides the default size for the crosshair, in inches.
     ///
@@ -107,7 +107,7 @@ signals:
     /// @param[in] id User provided identifier for the crosshair
     /// @param[in] center New center of the crosshair in global pixel coordinates
     ///
-    void moved(CrossHair& crosshair, int id, QPoint center);
+    void moved(Crosshair& crosshair, int id, QPoint center);
 
     /// Emitted when the pointer has moved into the crosshair.
     ///
@@ -116,14 +116,14 @@ signals:
     /// @param[in] center Center position of the crosshair in global pixel coordinates
     /// @param[in] keyboardModifiers Keyboard modifiers in effect when the pointer entered the crosshair
     ///
-    void entered(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void entered(Crosshair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
 
     /// Emitted when the pointer has moved out of the crosshair.
     ///
     /// @param[in] crosshair Crosshair that has been exited
     /// @param[in] id User provided identifier for the crosshair
     ///
-    void departed(CrossHair& crosshair, int id);
+    void departed(Crosshair& crosshair, int id);
 
     /// Emitted when the mouse selected button is pressed while over the crosshair.
     ///
@@ -132,7 +132,7 @@ signals:
     /// @param[in] center Center position of the crosshair in global pixel coordinates
     /// @param[in] keyboardModifiers Keyboard modifiers in effect when the crosshair is selected
     ///
-    void selected(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void selected(Crosshair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
 
     /// Emitted when the mouse selected button is released while over the crosshair.
     ///
@@ -141,7 +141,7 @@ signals:
     /// @param[in] center Center position of the crosshair in global pixel coordinates
     /// @param[in] keyboardModifiers Keyboard modifiers in effect when the crosshair is deselected
     ///
-    void deselected(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void deselected(Crosshair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
 
     /// Emitted when the pointer is dragged over the crosshair while it is selected (i.e. pointer grabbed). Note
     /// that this signal only indicates a motion of the pointer over the crosshair, not an actual movement of the
@@ -152,7 +152,7 @@ signals:
     /// @param[in] center Center position of the crosshair if it had been moved to the dragged position
     /// @param[in] keyboardModifiers Keyboard modifiers in effect during the drag
     ///
-    void dragged(CrossHair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
+    void dragged(Crosshair& crosshair, int id, QPoint center, Qt::KeyboardModifiers keyboardModifiers);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -191,7 +191,7 @@ private:
     /// @param size Size of the crosshair in pixels
     /// @return Path defining the shape of the crosshair
     ///
-    [[nodiscard]] QPainterPath generateCrossHair(const QSizeF& screenRes, const QSize& size) const;
+    [[nodiscard]] QPainterPath generateCrosshair(const QSizeF& screenRes, const QSize& size) const;
 
     const ScreenInfoProvider& m_screenProvider;
     const UnitsProvider& m_unitsProvider;
@@ -200,7 +200,7 @@ private:
     QBrush m_highlightBrush;
     QPen m_highlightPen;
     QPen m_borderPen;
-    QPainterPath m_crossHair;
+    QPainterPath m_crosshair;
     bool m_pointerOver { false };
     bool m_highlight { false };
     QPoint m_centerPosition;

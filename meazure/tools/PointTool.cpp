@@ -27,12 +27,12 @@ PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
         RadioTool(screenInfoProvider, unitsProvider, parent),
         m_center(screenInfoProvider.getCenter()),
         m_anchorPoint(m_center),
-        m_crosshair(new CrossHair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"))),
+        m_crosshair(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"))),
         m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
-    connect(m_crosshair, &CrossHair::entered, this, &PointTool::entered);
-    connect(m_crosshair, &CrossHair::departed, this, &PointTool::departed);
-    connect(m_crosshair, &CrossHair::dragged, this, &PointTool::dragged);
-    connect(m_crosshair, &CrossHair::moved, this, &PointTool::moved);
+    connect(m_crosshair, &Crosshair::entered, this, &PointTool::entered);
+    connect(m_crosshair, &Crosshair::departed, this, &PointTool::departed);
+    connect(m_crosshair, &Crosshair::dragged, this, &PointTool::dragged);
+    connect(m_crosshair, &Crosshair::moved, this, &PointTool::moved);
 }
 
 PointTool::~PointTool() {
@@ -133,17 +133,17 @@ void PointTool::strobe() {
     m_dataWindow->strobe();
 }
 
-void PointTool::entered(CrossHair&, int, QPoint, Qt::KeyboardModifiers) {
+void PointTool::entered(Crosshair&, int, QPoint, Qt::KeyboardModifiers) {
     if (isDataWinEnabled()) {
         m_dataWindow->show();
     }
 }
 
-void PointTool::departed(CrossHair&, int) {
+void PointTool::departed(Crosshair&, int) {
     m_dataWindow->hide();
 }
 
-void PointTool::dragged(CrossHair&, int, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
+void PointTool::dragged(Crosshair&, int, QPoint center, Qt::KeyboardModifiers keyboardModifiers) {
     m_center = center;
 
     // Shift + drag locks the movement of the crosshair to vertical or horizontal.
@@ -160,7 +160,7 @@ void PointTool::dragged(CrossHair&, int, QPoint center, Qt::KeyboardModifiers ke
     setPosition();
 }
 
-void PointTool::moved(CrossHair&, int, QPoint center) {
+void PointTool::moved(Crosshair&, int, QPoint center) {
     if (isEnabled()) {
         const QPointF coord = getUnitsProvider().convertCoord(center);
 

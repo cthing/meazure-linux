@@ -21,7 +21,7 @@
 
 #include "PrefsPage.h"
 #include <meazure/prefs/models/ToolPrefsModel.h>
-#include <meazure/graphics/CrossHair.h>
+#include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QWidget>
@@ -64,10 +64,10 @@ private:
     void configure();
 
     ToolPrefsModel* m_model;
-    CrossHair* m_normalCrosshair1;
-    CrossHair* m_normalCrosshair2;
-    CrossHair* m_highlightCrosshair1;
-    CrossHair* m_highlightCrosshair2;
+    Crosshair* m_normalCrosshair1;
+    Crosshair* m_normalCrosshair2;
+    Crosshair* m_highlightCrosshair1;
+    Crosshair* m_highlightCrosshair2;
     ToolDataWindow* m_dataWindow1;
     ToolDataWindow* m_dataWindow2;
     Line* m_line1;

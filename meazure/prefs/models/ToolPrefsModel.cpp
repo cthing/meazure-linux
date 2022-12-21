@@ -25,10 +25,10 @@
 ToolPrefsModel::ToolPrefsModel(QObject* parent) :
         QObject(parent),
         m_lineForeColor(new Preference(Colors::getDefault(Colors::LineFore), this)),
-        m_crosshairBackColor(new Preference(Colors::getDefault(Colors::CrossHairBack), this)),
-        m_crosshairBorderColor(new Preference(Colors::getDefault(Colors::CrossHairBorder), this)),
-        m_crosshairHighlightColor(new Preference(Colors::getDefault(Colors::CrossHairHighlight), this)),
-        m_crosshairOpacity(new Preference(Colors::opacityToPercent(Colors::getDefault(Colors::CrossHairOpacity)), this)),
+        m_crosshairBackColor(new Preference(Colors::getDefault(Colors::CrosshairBack), this)),
+        m_crosshairBorderColor(new Preference(Colors::getDefault(Colors::CrosshairBorder), this)),
+        m_crosshairHighlightColor(new Preference(Colors::getDefault(Colors::CrosshairHighlight), this)),
+        m_crosshairOpacity(new Preference(Colors::opacityToPercent(Colors::getDefault(Colors::CrosshairOpacity)), this)),
         m_lineWidth(new Preference(Dimensions::getDefaultLineWidth(), this)) {
     connect(m_lineForeColor, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
     connect(m_crosshairBackColor, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
@@ -40,10 +40,10 @@ ToolPrefsModel::ToolPrefsModel(QObject* parent) :
 
 void ToolPrefsModel::initialize() {     // NOLINT(readability-make-member-function-const)
     m_lineForeColor->initialize(Colors::get(Colors::LineFore));
-    m_crosshairBackColor->initialize(Colors::get(Colors::CrossHairBack));
-    m_crosshairBorderColor->initialize(Colors::get(Colors::CrossHairBorder));
-    m_crosshairHighlightColor->initialize(Colors::get(Colors::CrossHairHighlight));
-    m_crosshairOpacity->initialize(Colors::opacityToPercent(Colors::get(Colors::CrossHairOpacity)));
+    m_crosshairBackColor->initialize(Colors::get(Colors::CrosshairBack));
+    m_crosshairBorderColor->initialize(Colors::get(Colors::CrosshairBorder));
+    m_crosshairHighlightColor->initialize(Colors::get(Colors::CrosshairHighlight));
+    m_crosshairOpacity->initialize(Colors::opacityToPercent(Colors::get(Colors::CrosshairOpacity)));
     m_lineWidth->initialize(Dimensions::getLineWidth());
 }
 
@@ -53,19 +53,19 @@ void ToolPrefsModel::apply() const {
         m_lineForeColor->clearDirty();
     }
     if (m_crosshairBackColor->isDirty()) {
-        Colors::set(Colors::CrossHairBack, *m_crosshairBackColor);
+        Colors::set(Colors::CrosshairBack, *m_crosshairBackColor);
         m_crosshairBackColor->clearDirty();
     }
     if (m_crosshairBorderColor->isDirty()) {
-        Colors::set(Colors::CrossHairBorder, *m_crosshairBorderColor);
+        Colors::set(Colors::CrosshairBorder, *m_crosshairBorderColor);
         m_crosshairBorderColor->clearDirty();
     }
     if (m_crosshairHighlightColor->isDirty()) {
-        Colors::set(Colors::CrossHairHighlight, *m_crosshairHighlightColor);
+        Colors::set(Colors::CrosshairHighlight, *m_crosshairHighlightColor);
         m_crosshairHighlightColor->clearDirty();
     }
     if (m_crosshairOpacity->isDirty()) {
-        Colors::set(Colors::CrossHairOpacity, Colors::opacityFromPercent(*m_crosshairOpacity));
+        Colors::set(Colors::CrosshairOpacity, Colors::opacityFromPercent(*m_crosshairOpacity));
         m_crosshairOpacity->clearDirty();
     }
     if (m_lineWidth->isDirty()) {
