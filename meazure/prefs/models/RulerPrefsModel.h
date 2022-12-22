@@ -19,7 +19,9 @@
 
 #pragma once
 
+#include "Preference.h"
 #include <QObject>
+#include <QColor>
 
 
 /// Ruler preferences model.
@@ -31,7 +33,15 @@ class RulerPrefsModel : public QObject {
 public:
     explicit RulerPrefsModel(QObject* parent);
 
+    void initialize();
+
+    void apply() const;
+
     [[nodiscard]] bool isDirty() const;
+
+    Preference<QRgb>* m_rulerBackColor;         // NOLINT(misc-non-private-member-variables-in-classes)
+    Preference<QRgb>* m_rulerBorderColor;       // NOLINT(misc-non-private-member-variables-in-classes)
+    Preference<int>* m_rulerOpacity;            // NOLINT(misc-non-private-member-variables-in-classes)
 
 signals:
     void dirtyChanged(bool dirty);

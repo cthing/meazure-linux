@@ -18,11 +18,42 @@
  */
 
 #include "RulerPrefsModel.h"
+#include <meazure/graphics/Colors.h>
 
 
-RulerPrefsModel::RulerPrefsModel(QObject* parent) : QObject(parent) {
+RulerPrefsModel::RulerPrefsModel(QObject* parent) :
+        QObject(parent),
+        m_rulerBackColor(new Preference(Colors::getDefault(Colors::RulerBack), this)),
+        m_rulerBorderColor(new Preference(Colors::getDefault(Colors::RulerBorder), this)),
+        m_rulerOpacity(new Preference(Colors::opacityToPercent(Colors::getDefault(Colors::RulerOpacity)), this)) {
+    connect(m_rulerBackColor, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
+    connect(m_rulerBorderColor, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
+    connect(m_rulerOpacity, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
+}
+
+void RulerPrefsModel::initialize() {     // NOLINT(readability-make-member-function-const)
+    m_rulerBackColor->initialize(Colors::get(Colors::RulerBack));
+    m_rulerBorderColor->initialize(Colors::get(Colors::RulerBorder));
+    m_rulerOpacity->initialize(Colors::opacityToPercent(Colors::get(Colors::RulerOpacity)));
+}
+
+void RulerPrefsModel::apply() const {
+    if (m_rulerBackColor->isDirty()) {
+        Colors::set(Colors::RulerBack, *m_rulerBackColor);
+        m_rulerBackColor->clearDirty();
+    }
+    if (m_rulerBorderColor->isDirty()) {
+        Colors::set(Colors::RulerBorder, *m_rulerBorderColor);
+        m_rulerBorderColor->clearDirty();
+    }
+    if (m_rulerOpacity->isDirty()) {
+        Colors::set(Colors::RulerOpacity, Colors::opacityFromPercent(*m_rulerOpacity));
+        m_rulerOpacity->clearDirty();
+    }
 }
 
 bool RulerPrefsModel::isDirty() const { // NOLINT(readability-convert-member-functions-to-static)
-    return false;
+    return m_rulerBackColor->isDirty()
+        || m_rulerBorderColor->isDirty()
+        || m_rulerOpacity->isDirty();
 }

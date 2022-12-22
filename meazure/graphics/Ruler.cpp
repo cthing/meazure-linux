@@ -21,6 +21,7 @@
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/MathUtils.h>
 #include <QPainter>
+#include <QGraphicsOpacityEffect>
 #include <utility>
 
 
@@ -37,9 +38,34 @@ Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlag(Qt::WindowTransparentForInput, true);
-    setWindowOpacity(Colors::opacityToFraction(opacity));
+
+    if (parent == nullptr) {
+        setWindowOpacity(Colors::opacityToFraction(opacity));
+    } else {
+        auto* effect = new QGraphicsOpacityEffect();
+        effect->setOpacity(Colors::opacityToFraction(opacity));
+        setGraphicsEffect(effect);
+    }
+
+    connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Ruler::colorChanged);
 
     m_font.setLetterSpacing(QFont::PercentageSpacing, 120);
+}
+
+void Ruler::colorChanged(Colors::Item item, QRgb color) {
+    switch (item) {
+        case Colors::RulerBack:
+            setColors(color, Colors::get(Colors::RulerBorder));
+            break;
+        case Colors::RulerBorder:
+            setColors(Colors::get(Colors::RulerBack), color);
+            break;
+        case Colors::RulerOpacity:
+            setOpacity(Colors::opacityToPercent(color));
+            break;
+        default:
+            break;
+    }
 }
 
 void Ruler::setColors(QRgb background, QRgb border) {
@@ -50,7 +76,12 @@ void Ruler::setColors(QRgb background, QRgb border) {
 }
 
 void Ruler::setOpacity(int opacityPercent) {
-    setWindowOpacity(opacityPercent / 100.0);
+    if (parent() == nullptr) {
+        setWindowOpacity(opacityPercent / 100.0);
+    } else {
+        auto* effect = dynamic_cast<QGraphicsOpacityEffect*>(graphicsEffect());
+        effect->setOpacity(opacityPercent / 100.0);
+    }
 }
 
 void Ruler::setPosition(const QPoint& origin, int length, int angle) {

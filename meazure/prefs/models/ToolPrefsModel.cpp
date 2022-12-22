@@ -76,9 +76,9 @@ void ToolPrefsModel::apply() const {
 
 bool ToolPrefsModel::isDirty() const {
     return m_lineForeColor->isDirty()
-           || m_crosshairBackColor->isDirty()
-           || m_crosshairBorderColor->isDirty()
-           || m_crosshairHighlightColor->isDirty()
-           || m_crosshairOpacity->isDirty()
+        || m_crosshairBackColor->isDirty()
+        || m_crosshairBorderColor->isDirty()
+        || m_crosshairHighlightColor->isDirty()
+        || m_crosshairOpacity->isDirty()
         || m_lineWidth->isDirty();
 }

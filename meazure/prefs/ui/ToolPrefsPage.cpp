@@ -131,7 +131,7 @@ void ToolPrefsPage::createUI() {
     opacityLayout->addWidget(maxOpacityLabel);
     layout->addLayout(opacityLayout, k_row4, k_col0, k_rowspan1, k_colspan2);
 
-    layout->setColumnMinimumWidth(2, k_verticalSpacer);
+    layout->setColumnMinimumWidth(k_col2, k_verticalSpacer);
 
     layout->addWidget(checkerBoardLight, k_row1, k_col3, k_rowspan4, k_colspan1);
     layout->addWidget(checkerBoardDark,  k_row1, k_col4, k_rowspan4, k_colspan1);
@@ -148,7 +148,7 @@ void ToolPrefsPage::createUI() {
     crosshairsLayoutDark->addWidget(m_dataWindow2, k_stretch0, Qt::AlignHCenter);
     checkerBoardDark->setLayout(crosshairsLayoutDark);
 
-    layout->setRowMinimumHeight(5, k_hoirzontalSpacer);
+    layout->setRowMinimumHeight(k_row5, k_hoirzontalSpacer);
 
     layout->addWidget(linesLabel,          k_row6, k_col0, k_rowspan1, k_colspan5, Qt::AlignLeft | Qt::AlignVCenter);
     layout->addWidget(m_lineColorButton,   k_row7, k_col0, Qt::AlignLeft | Qt::AlignVCenter);

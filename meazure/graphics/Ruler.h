@@ -65,6 +65,9 @@ public:
 protected:
     void paintEvent(QPaintEvent* event) override;
 
+private slots:
+    void colorChanged(Colors::Item item, QRgb color);
+
 private:
     static constexpr double k_lineWidth { 1.0 };          ///< Ruler border and line width
     static constexpr double k_majorTickHeight { 0.125 };  ///< Height of major tick marks, inches
