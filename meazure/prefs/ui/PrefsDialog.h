@@ -20,9 +20,11 @@
 #pragma once
 
 #include "PrefsPage.h"
+#include "PrefsPageId.h"
 #include <QDialog>
 #include <QWidget>
 #include <QShowEvent>
+#include <QTabWidget>
 #include <vector>
 
 
@@ -32,6 +34,10 @@ class PrefsDialog : public QDialog {
 
 public:
     explicit PrefsDialog(QWidget* parent);
+
+public slots:
+    int execPage(PrefsPageId pageId);
+    void selectPage(PrefsPageId pageId);
 
 protected:
     void showEvent(QShowEvent* event) override;
@@ -43,5 +49,6 @@ private slots:
 private:
     [[nodiscard]] bool isDirty() const;
 
+    QTabWidget* m_tabs;
     std::vector<PrefsPage*> m_prefsPages;
 };

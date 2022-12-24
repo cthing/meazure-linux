@@ -332,6 +332,8 @@ signals:
 
     void originChanged(QPoint origin);
 
+    void customUnitsChanged(const CustomUnits* customUnits);
+
 private:
     /// Ruler tick increments. The order of magnitude of these values is adjusted based on the units.
     static constexpr double k_tickIncrements[] {10.0, 25.0, 50.0, 75.0, 100.0 };

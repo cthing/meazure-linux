@@ -20,13 +20,15 @@
 #include "PrefsDialog.h"
 #include "ToolPrefsPage.h"
 #include "RulerPrefsPage.h"
+#include "UnitsPrefsPage.h"
+#include "PrecisionPrefsPage.h"
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 #include <algorithm>
 
 
-PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent) {
+PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent), m_tabs(new QTabWidget()) {
     setWindowTitle(tr("Preferences"));
 
     auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
@@ -36,22 +38,38 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent) {
 
     m_prefsPages.push_back(new ToolPrefsPage());
     m_prefsPages.push_back(new RulerPrefsPage());
+    m_prefsPages.push_back(new PrecisionPrefsPage());
+    m_prefsPages.push_back(new UnitsPrefsPage());
 
-    auto* tabs = new QTabWidget();
     for (PrefsPage* page : m_prefsPages) {
-        tabs->addTab(page, page->getName());
+        m_tabs->addTab(page, page->getName());
 
         connect(page, &PrefsPage::dirtyChanged, this, [this, buttonBox](bool) {
             buttonBox->button(QDialogButtonBox::Apply)->setEnabled(isDirty());
         });
+        connect(page, &PrefsPage::pageRequested, this, &PrefsDialog::selectPage);
     }
 
     auto* layout = new QVBoxLayout();
-    layout->addWidget(tabs);
+    layout->addWidget(m_tabs);
     layout->addWidget(buttonBox);
 
     layout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(layout);
+}
+
+int PrefsDialog::execPage(PrefsPageId pageId) {
+    selectPage(pageId);
+    return exec();
+}
+
+void PrefsDialog::selectPage(PrefsPageId pageId) {
+    for (PrefsPage* page : m_prefsPages) {
+        if (page->getId() == pageId) {
+            m_tabs->setCurrentWidget(page);
+            return;
+        }
+    }
 }
 
 void PrefsDialog::showEvent(QShowEvent*) {

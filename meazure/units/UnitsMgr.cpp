@@ -47,6 +47,9 @@ UnitsMgr::UnitsMgr(const ScreenInfoProvider& screenInfoProvider) :
 
     m_angularUnitsMap[m_degreeUnits.getUnitsId()] = &m_degreeUnits;
     m_angularUnitsMap[m_radianUnits.getUnitsId()] = &m_radianUnits;
+
+    connect(&m_customUnits, SIGNAL(customUnitsChanged(const CustomUnits*)),
+            this, SIGNAL(customUnitsChanged(const CustomUnits*)));
 }
 
 void UnitsMgr::saveProfile(Profile& profile) const {

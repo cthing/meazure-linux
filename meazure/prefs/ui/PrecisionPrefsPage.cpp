@@ -17,29 +17,20 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "PrefsPageId.h"
-#include <QWidget>
-#include <QString>
+#include "PrecisionPrefsPage.h"
 
 
-/// Base class for preferences pages.
-///
-class PrefsPage : public QWidget {
+PrecisionPrefsPage::PrecisionPrefsPage() : m_model(new PrecisionPrefsModel(this)) {
+}
 
-    Q_OBJECT
+void PrecisionPrefsPage::initialize() {
+    m_model->initialize();
+}
 
-public:
-    virtual PrefsPageId getId() = 0;
-    virtual QString getName() = 0;
+void PrecisionPrefsPage::apply() {
+    m_model->apply();
+}
 
-    virtual void initialize() = 0;
-    virtual void apply() = 0;
-
-    [[nodiscard]] virtual bool isDirty() const = 0;
-
-signals:
-    void dirtyChanged(bool dirty);
-    void pageRequested(PrefsPageId pageId);
-};
+[[nodiscard]] bool PrecisionPrefsPage::isDirty() const {
+    return m_model->isDirty();
+}

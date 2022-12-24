@@ -25,14 +25,15 @@
 #include <QGridLayout>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QStandardItemModel>
 #include <cmath>
 
 GridDialog::GridDialog(GridTool* gridTool, const ScreenInfoProvider& screenInfoProvider,  // NOLINT(cppcoreguidelines-pro-type-member-init)
-                       const UnitsProvider& unitsProvider, QWidget *parent) :
+                       const UnitsMgr& unitsMgr, QWidget *parent) :
         QDialog(parent),
         m_gridTool(gridTool),
         m_screenInfo(screenInfoProvider),
-        m_unitsProvider(unitsProvider) {
+        m_unitsMgr(unitsMgr) {
     setWindowTitle(tr("Grid Adjust"));
 
     createUI();
@@ -134,18 +135,17 @@ void GridDialog::createUI() {
 }
 
 void GridDialog::configureSpacingUI() {
-    m_spacingUnitsCombo->addItem(m_unitsProvider.getLinearUnits(PixelsId)->getLengthLabel(), PixelsId);
-    m_spacingUnitsCombo->addItem(m_unitsProvider.getLinearUnits(TwipsId)->getLengthLabel(), TwipsId);
-    m_spacingUnitsCombo->addItem(m_unitsProvider.getLinearUnits(PointsId)->getLengthLabel(), PointsId);
-    m_spacingUnitsCombo->addItem(m_unitsProvider.getLinearUnits(PicasId)->getLengthLabel(), PicasId);
-    m_spacingUnitsCombo->addItem(m_unitsProvider.getLinearUnits(InchesId)->getLengthLabel(), InchesId);
-    m_spacingUnitsCombo->addItem(m_unitsProvider.getLinearUnits(CentimetersId)->getLengthLabel(), CentimetersId);
-    m_spacingUnitsCombo->addItem(m_unitsProvider.getLinearUnits(MillimetersId)->getLengthLabel(), MillimetersId);
+    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(PixelsId)->getLengthLabel(), PixelsId);
+    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(TwipsId)->getLengthLabel(), TwipsId);
+    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(PointsId)->getLengthLabel(), PointsId);
+    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(PicasId)->getLengthLabel(), PicasId);
+    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(InchesId)->getLengthLabel(), InchesId);
+    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(CentimetersId)->getLengthLabel(), CentimetersId);
+    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(MillimetersId)->getLengthLabel(), MillimetersId);
+    m_spacingUnitsCombo->addItem("", CustomId);
 
-    const CustomUnits* customUnits = m_unitsProvider.getCustomUnits();
-    if (customUnits->haveCustomUnits()) {
-        m_spacingUnitsCombo->addItem(customUnits->getLengthLabel(), CustomId);
-    }
+    customUnitsChanged(m_unitsMgr.getCustomUnits());
+    connect(&m_unitsMgr, &UnitsMgr::customUnitsChanged, this, &GridDialog::customUnitsChanged);
 }
 
 void GridDialog::configureOrientationUI() {
@@ -184,8 +184,8 @@ void GridDialog::unitsSelected(int index) {
     const LinearUnitsId requestedUnitsId = static_cast<LinearUnitsId>(m_spacingUnitsCombo->itemData(index).toUInt());
     const LinearUnitsId existingUnitsId = m_gridTool->getSpacingUnits();
 
-    const LinearUnits* requestedUnits = m_unitsProvider.getLinearUnits(requestedUnitsId);
-    const LinearUnits* existingUnits = m_unitsProvider.getLinearUnits(existingUnitsId);
+    const LinearUnits* requestedUnits = m_unitsMgr.getLinearUnits(requestedUnitsId);
+    const LinearUnits* existingUnits = m_unitsMgr.getLinearUnits(existingUnitsId);
 
     const QSizeF res = m_screenInfo.getScreenRes(0);
     const int hspacePixels = existingUnits->convertToPixels(res, m_gridTool->getHorizontalSpacing(), 1).width();
@@ -204,7 +204,7 @@ void GridDialog::spacingChanged(double hspace, double vspace, bool linkSpacing, 
     if (idx != -1) {
         m_spacingUnitsCombo->setCurrentIndex(idx);
     }
-    const LinearUnits* units = m_unitsProvider.getLinearUnits(unitsId);
+    const LinearUnits* units = m_unitsMgr.getLinearUnits(unitsId);
     const int widthPrecision = units->getDisplayPrecision(Width);
     if (m_hSpacingField->decimals() != widthPrecision) {
         m_hSpacingField->setDecimalsQuietly(widthPrecision);
@@ -247,6 +247,23 @@ void GridDialog::spacingChanged(double hspace, double vspace, bool linkSpacing, 
 void GridDialog::linkSpacing(bool link) {
     m_vSpacingField->setReadOnly(link);
     m_gridTool->setLinkedSpacing(link);
+}
+
+void GridDialog::customUnitsChanged(const CustomUnits* customUnits) {
+    const int customItemIdx = m_spacingUnitsCombo->findData(CustomId);
+
+    if (customItemIdx >= 0) {
+        auto* model = dynamic_cast<QStandardItemModel*>(m_spacingUnitsCombo->model());
+        const bool defined = customUnits->haveCustomUnits();
+
+        m_spacingUnitsCombo->setItemText(customItemIdx, defined ? customUnits->getLengthLabel() : tr("[custom]"));
+        model->item(customItemIdx)->setEnabled(defined);
+
+        if (!defined && (m_spacingUnitsCombo->currentIndex() == customItemIdx)) {
+            const int pixelItemIdx = m_spacingUnitsCombo->findData(PixelsId);
+            unitsSelected(pixelItemIdx);
+        }
+    }
 }
 
 void GridDialog::saveState() {

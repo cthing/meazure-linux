@@ -33,6 +33,7 @@
 #include <meazure/tools/WindowTool.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
+#include <meazure/prefs/ui/PrefsPageId.h>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QActionGroup>
@@ -76,6 +77,8 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
 
     setAlwaysVisible();
     setAllVisible(true);
+
+    customUnitsChanged(unitsMgr.getCustomUnits());
 }
 
 void MainWindow::createCentralWidget() {
@@ -256,11 +259,14 @@ void MainWindow::createActions() {
         m_millimeterUnitsAction->setChecked(id == MillimetersId);
     });
 
-    m_customUnitsAction = new QAction(tr("[custom]"), linearUnitsGroup);
+    m_customUnitsAction = new QAction("", linearUnitsGroup);
     m_customUnitsAction->setCheckable(true);
+    connect(&unitsMgr, &UnitsMgr::customUnitsChanged, this, &MainWindow::customUnitsChanged);
 
-    m_defineCustomUnitsAction = new QAction(tr("Define C&ustom..."), linearUnitsGroup);
-    m_defineCustomUnitsAction->setCheckable(true);
+    m_defineCustomUnitsAction = new QAction(tr("Define C&ustom..."), this);
+    connect(m_defineCustomUnitsAction, &QAction::triggered, this, [this]() {
+        m_prefsDialog->execPage(PrefsPageId::UnitsPage);
+    });
 
     auto* angularUnitsGroup = new QActionGroup(this);
     angularUnitsGroup->setExclusive(true);
@@ -634,5 +640,15 @@ void MainWindow::setAllVisible(bool visible) {
         setScreenDataSectionVisible(false);
         setMagnifierSectionVisible(false);
         setStatusBarVisible(false);
+    }
+}
+
+void MainWindow::customUnitsChanged(const CustomUnits* customUnits) {
+    const bool defined = customUnits->haveCustomUnits();
+    m_customUnitsAction->setEnabled(defined);
+    m_customUnitsAction->setText(defined ? customUnits->getName() : tr("[custom]"));
+
+    if (!defined && m_customUnitsAction->isChecked()) {
+        App::instance()->getUnitsMgr().setLinearUnits(PixelsId);
     }
 }

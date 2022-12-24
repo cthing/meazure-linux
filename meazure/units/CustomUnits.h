@@ -43,8 +43,8 @@ public:
     };
 
 
-    static constexpr double k_defScaleFactor {1.0 };               ///< Default scale factor.
-    static constexpr ScaleBasis k_defScaleBasis {PixelBasis };     ///< Default basis for the custom units.
+    static constexpr double k_defScaleFactor { 1.0 };             ///< Default scale factor.
+    static constexpr ScaleBasis k_defScaleBasis { PixelBasis };   ///< Default basis for the custom units.
 
 
     /// Constructs custom units.
@@ -95,7 +95,9 @@ public:
     ///
     /// @return Name for the units.
     ///
-    [[nodiscard]] QString getName() const { return m_name; }
+    [[nodiscard]] QString getName() const {
+        return m_name;
+    }
 
     /// Sets a name for the custom units. The name is displayed on the units menu and in other places.
     ///
@@ -107,7 +109,9 @@ public:
     ///
     /// @return Abbreviation for the units.
     ///
-    [[nodiscard]] QString getAbbrev() const { return m_abbrev; }
+    [[nodiscard]] QString getAbbrev() const {
+        return m_abbrev;
+    }
 
     /// Sets an abbreviation for the custom units. The abbreviation is displayed by the data display and in
     /// other places.
@@ -122,7 +126,9 @@ public:
     ///
     /// @return Custom units conversion basis.
     ///
-    [[nodiscard]] ScaleBasis getScaleBasis() const { return m_scaleBasis; }
+    [[nodiscard]] ScaleBasis getScaleBasis() const {
+        return m_scaleBasis;
+    }
 
     /// Returns the scale basis as an identifying string (e.g. "px").
     ///
@@ -134,7 +140,7 @@ public:
     ///
     /// @param[in] scaleBasis Conversion basis.
     ///
-    void setScaleBasis(ScaleBasis scaleBasis) { m_scaleBasis = scaleBasis; }
+    void setScaleBasis(ScaleBasis scaleBasis);
 
     /// Sets the conversion basis using a string identifier.
     ///
@@ -146,13 +152,15 @@ public:
     ///
     /// @return Conversion factor from the conversion basis to the custom units.
     ///
-    [[nodiscard]] double getScaleFactor() const { return m_scaleFactor; }
+    [[nodiscard]] double getScaleFactor() const {
+        return m_scaleFactor;
+    }
 
     /// Sets the conversion factor for the custom units.
     ///
     /// @param[in] scaleFactor Conversion factor from the conversion basis to the custom units.
     ///
-    void setScaleFactor(double scaleFactor) { m_scaleFactor = scaleFactor; }
+    void setScaleFactor(double scaleFactor);
 
     /// Returns the X and Y factors to convert from pixels to the custom units. In other words, multiplying the values
     /// returned from this method by pixels results in a value expressed in the custom units.
@@ -164,13 +172,11 @@ public:
     [[nodiscard]] QSizeF fromPixels(const QSizeF& res) const override;
 
 signals:
-    /// Emitted when either the name and/or the abbreviation for the custom units is changed.
+    /// Emitted when the custom units definition is changed (e.g. name, abbreviation, scale factor).
     ///
-    /// @param[in] unitsId Identifier for the custom units
-    /// @param[in] name Name for the custom units
-    /// @param[in] abbrev Abbreviation for the custom units
+    /// @param[in] customUnits Changed custom units
     ///
-    void labelChanged(LinearUnitsId unitsId, const QString& name, const QString& abbrev);
+    void customUnitsChanged(const CustomUnits* customUnits);
 
 private:
     QString m_name;                     ///< Name for the custom units.

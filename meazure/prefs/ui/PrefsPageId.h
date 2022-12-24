@@ -19,27 +19,10 @@
 
 #pragma once
 
-#include "PrefsPageId.h"
-#include <QWidget>
-#include <QString>
 
-
-/// Base class for preferences pages.
-///
-class PrefsPage : public QWidget {
-
-    Q_OBJECT
-
-public:
-    virtual PrefsPageId getId() = 0;
-    virtual QString getName() = 0;
-
-    virtual void initialize() = 0;
-    virtual void apply() = 0;
-
-    [[nodiscard]] virtual bool isDirty() const = 0;
-
-signals:
-    void dirtyChanged(bool dirty);
-    void pageRequested(PrefsPageId pageId);
+enum class PrefsPageId {
+    ToolPage,
+    RulerPage,
+    UnitsPage,
+    PrecisionPage,
 };

@@ -19,27 +19,25 @@
 
 #pragma once
 
-#include "PrefsPageId.h"
-#include <QWidget>
-#include <QString>
+#include <QObject>
 
 
-/// Base class for preferences pages.
+/// Model for measurement units display precisions. Each measurement unit has associated with it a set of display
+/// precisions, one for each measurement type (e.g. width, height, x, y).
 ///
-class PrefsPage : public QWidget {
+class PrecisionPrefsModel : public QObject {
 
     Q_OBJECT
 
 public:
-    virtual PrefsPageId getId() = 0;
-    virtual QString getName() = 0;
+    explicit PrecisionPrefsModel(QObject* parent);
 
-    virtual void initialize() = 0;
-    virtual void apply() = 0;
+    void initialize();
 
-    [[nodiscard]] virtual bool isDirty() const = 0;
+    void apply() const;
+
+    [[nodiscard]] bool isDirty() const;
 
 signals:
     void dirtyChanged(bool dirty);
-    void pageRequested(PrefsPageId pageId);
 };

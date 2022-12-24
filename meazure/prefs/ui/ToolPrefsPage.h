@@ -20,6 +20,7 @@
 #pragma once
 
 #include "PrefsPage.h"
+#include "PrefsPageId.h"
 #include <meazure/prefs/models/ToolPrefsModel.h>
 #include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
@@ -38,6 +39,10 @@ class ToolPrefsPage : public PrefsPage {
 
 public:
     ToolPrefsPage();
+
+    PrefsPageId getId() override {
+        return PrefsPageId::ToolPage;
+    }
 
     QString getName() override {
         return tr("Tools");

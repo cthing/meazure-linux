@@ -52,6 +52,8 @@ void CustomUnits::loadProfile(Profile& profile) {
     setScaleFactor(profile.readDbl("CustomScaleFactor", m_scaleFactor));
 
     loadPrecision(profile);
+
+    emit customUnitsChanged(this);
 }
 
 void CustomUnits::masterReset() {
@@ -61,6 +63,8 @@ void CustomUnits::masterReset() {
     setAbbrev("");
     setScaleFactor(k_defScaleFactor);
     setScaleBasis(k_defScaleBasis);
+
+    emit customUnitsChanged(this);
 }
 
 bool CustomUnits::isResRequired() const {
@@ -92,13 +96,13 @@ QSizeF CustomUnits::fromPixels(const QSizeF& res) const {
 void CustomUnits::setName(const QString& name) {
     m_name = name.trimmed();
 
-    emit labelChanged(CustomId, m_name, m_abbrev);
+    emit customUnitsChanged(this);
 }
 
 void CustomUnits::setAbbrev(const QString& abbrev) {
     m_abbrev = abbrev.trimmed();
 
-    emit labelChanged(CustomId, m_name, m_abbrev);
+    emit customUnitsChanged(this);
 }
 
 QString CustomUnits::getLengthLabel() const {
@@ -126,4 +130,16 @@ void CustomUnits::setScaleBasis(const QString& scaleBasisStr) {
     } else if (scaleBasisStr == "cm") {
         setScaleBasis(CentimeterBasis);
     }
+}
+
+void CustomUnits::setScaleBasis(ScaleBasis scaleBasis) {
+    m_scaleBasis = scaleBasis;
+
+    emit customUnitsChanged(this);
+}
+
+void CustomUnits::setScaleFactor(double scaleFactor) {
+    m_scaleFactor = scaleFactor;
+
+    emit customUnitsChanged(this);
 }

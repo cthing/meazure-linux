@@ -20,6 +20,7 @@
 #pragma once
 
 #include "PrefsPage.h"
+#include "PrefsPageId.h"
 #include <meazure/prefs/models/RulerPrefsModel.h>
 #include <meazure/graphics/Ruler.h>
 #include <QWidget>
@@ -33,6 +34,10 @@ class RulerPrefsPage : public PrefsPage {
 
 public:
     RulerPrefsPage();
+
+    PrefsPageId getId() override {
+        return PrefsPageId::RulerPage;
+    }
 
     QString getName() override {
         return tr("Rulers");

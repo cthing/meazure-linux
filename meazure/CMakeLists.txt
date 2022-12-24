@@ -36,6 +36,8 @@ source_group(UI FILES ${UI_SOURCES})
 set(PREFS_SOURCES
     prefs/ui/CheckerBoard.cpp
     prefs/ui/CheckerBoard.h
+    prefs/ui/PrecisionPrefsPage.cpp
+    prefs/ui/PrecisionPrefsPage.h
     prefs/ui/PrefsDialog.cpp
     prefs/ui/PrefsDialog.h
     prefs/ui/PrefsPage.h
@@ -43,11 +45,17 @@ set(PREFS_SOURCES
     prefs/ui/RulerPrefsPage.h
     prefs/ui/ToolPrefsPage.cpp
     prefs/ui/ToolPrefsPage.h
+    prefs/ui/UnitsPrefsPage.cpp
+    prefs/ui/UnitsPrefsPage.h
+    prefs/models/PrecisionPrefsModel.cpp
+    prefs/models/PrecisionPrefsModel.h
     prefs/models/Preference.h
     prefs/models/RulerPrefsModel.cpp
     prefs/models/RulerPrefsModel.h
     prefs/models/ToolPrefsModel.cpp
     prefs/models/ToolPrefsModel.h
+    prefs/models/UnitsPrefsModel.cpp
+    prefs/models/UnitsPrefsModel.h
     )
 source_group(PREFS FILES ${PREFS_SOURCES})
 

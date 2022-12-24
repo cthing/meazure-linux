@@ -23,6 +23,7 @@
 #include "GridDialog.h"
 #include <meazure/tools/RadioTool.h>
 #include <meazure/units/Units.h>
+#include <meazure/units/CustomUnits.h>
 #include <meazure/profile/Profile.h>
 #include <meazure/prefs/ui/PrefsDialog.h>
 #include <QMainWindow>
@@ -66,6 +67,8 @@ private slots:
     void setMagnifierSectionVisible(bool visible = k_defMagnifierSectionVisible);
     void setStatusBarVisible(bool visible = k_defStatusBarVisible);
     void setAllVisible(bool visible);
+
+    void customUnitsChanged(const CustomUnits* customUnits);
 
 private:
     struct SectionVisibility {

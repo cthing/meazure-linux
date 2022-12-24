@@ -21,9 +21,10 @@
 
 #include "DataField.h"
 #include <meazure/units/Units.h>
-#include <meazure/units/UnitsProvider.h>
+#include <meazure/units/UnitsMgr.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/tools/GridTool.h>
+#include <meazure/units/CustomUnits.h>
 #include <QDialog>
 #include <QComboBox>
 #include <QCheckBox>
@@ -37,7 +38,7 @@ class GridDialog : public QDialog {
 
 public:
     explicit GridDialog(GridTool* gridTool, const ScreenInfoProvider& screenInfoProvider,
-                        const UnitsProvider& unitsProvider, QWidget* parent);
+                        const UnitsMgr& unitsMgr, QWidget* parent);
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -48,6 +49,7 @@ private slots:
     void spacingChanged(double hspace, double vspace, bool linkSpacing, LinearUnitsId units);
     void reset();
     void reject() override;
+    void customUnitsChanged(const CustomUnits* customUnits);
 
 private:
     static constexpr int k_fieldShortWidth { 7 };   // Characters
@@ -61,7 +63,7 @@ private:
 
     GridTool* m_gridTool;
     const ScreenInfoProvider& m_screenInfo;
-    const UnitsProvider& m_unitsProvider;
+    const UnitsMgr& m_unitsMgr;
     DataField* m_hSpacingField;
     DataField* m_vSpacingField;
     QComboBox* m_spacingUnitsCombo;

@@ -19,27 +19,32 @@
 
 #pragma once
 
+#include "PrefsPage.h"
 #include "PrefsPageId.h"
-#include <QWidget>
-#include <QString>
+#include <meazure/prefs/models/PrecisionPrefsModel.h>
 
 
-/// Base class for preferences pages.
+/// User interface for measurement units display precisions. Each measurement unit has associated with it a set of
+/// display precisions, one for each measurement type (e.g. width, height, x, y).
 ///
-class PrefsPage : public QWidget {
-
-    Q_OBJECT
+class PrecisionPrefsPage : public PrefsPage {
 
 public:
-    virtual PrefsPageId getId() = 0;
-    virtual QString getName() = 0;
+    PrecisionPrefsPage();
 
-    virtual void initialize() = 0;
-    virtual void apply() = 0;
+    PrefsPageId getId() override {
+        return PrefsPageId::PrecisionPage;
+    }
 
-    [[nodiscard]] virtual bool isDirty() const = 0;
+    QString getName() override {
+        return tr("Precision");
+    }
 
-signals:
-    void dirtyChanged(bool dirty);
-    void pageRequested(PrefsPageId pageId);
+    void initialize() override;
+    void apply() override;
+
+    [[nodiscard]] bool isDirty() const override;
+
+private:
+    PrecisionPrefsModel* m_model;
 };
