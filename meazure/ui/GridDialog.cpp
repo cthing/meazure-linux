@@ -18,7 +18,6 @@
  */
 
 #include "GridDialog.h"
-#include "DataField.h"
 #include <meazure/graphics/Grid.h>
 #include <meazure/utils/LayoutUtils.h>
 #include <QLabel>
@@ -42,16 +41,16 @@ GridDialog::GridDialog(GridTool* gridTool, const ScreenInfoProvider& screenInfoP
 
     connect(m_gridTool, &GridTool::spacingChanged, this, &GridDialog::spacingChanged);
 
-    connect(m_hSpacingField, &DataField::valueChanged, m_gridTool, &GridTool::setHorizontalSpacing);
-    connect(m_vSpacingField, &DataField::valueChanged, m_gridTool, &GridTool::setVerticalSpacing);
+    connect(m_hSpacingField, &DoubleDataField::valueChanged, m_gridTool, &GridTool::setHorizontalSpacing);
+    connect(m_vSpacingField, &DoubleDataField::valueChanged, m_gridTool, &GridTool::setVerticalSpacing);
     connect(m_linkSpacingCheck, &QCheckBox::clicked, this, &GridDialog::linkSpacing);
     connect(m_spacingUnitsCombo, &QComboBox::activated, this, &GridDialog::unitsSelected);
 
-    connect(m_xPositionField, &DataField::valueChanged, m_gridTool, &GridTool::setXPosition);
-    connect(m_yPositionField, &DataField::valueChanged, m_gridTool, &GridTool::setYPosition);
-    connect(m_widthField, &DataField::valueChanged, m_gridTool, &GridTool::setWidth);
-    connect(m_heightField, &DataField::valueChanged, m_gridTool, &GridTool::setHeight);
-    connect(m_angleField, &DataField::valueChanged, m_gridTool, &GridTool::setAngle);
+    connect(m_xPositionField, &DoubleDataField::valueChanged, m_gridTool, &GridTool::setXPosition);
+    connect(m_yPositionField, &DoubleDataField::valueChanged, m_gridTool, &GridTool::setYPosition);
+    connect(m_widthField, &DoubleDataField::valueChanged, m_gridTool, &GridTool::setWidth);
+    connect(m_heightField, &DoubleDataField::valueChanged, m_gridTool, &GridTool::setHeight);
+    connect(m_angleField, &DoubleDataField::valueChanged, m_gridTool, &GridTool::setAngle);
 }
 
 void GridDialog::createUI() {
@@ -60,9 +59,9 @@ void GridDialog::createUI() {
     auto* spacingLabel = new QLabel(tr("<b>Grid Spacing</b>"));
 
     auto* horizontalLabel = new QLabel(tr("H:"));
-    m_hSpacingField = new DataField(k_fieldShortWidth, true);
+    m_hSpacingField = new DoubleDataField(k_fieldShortWidth, true);
     auto* verticalLabel = new QLabel(tr("V:"));
-    m_vSpacingField = new DataField(k_fieldShortWidth, true);
+    m_vSpacingField = new DoubleDataField(k_fieldShortWidth, true);
     m_spacingUnitsCombo = new QComboBox();
     auto* spacingUnitsLayout = new QHBoxLayout();
     spacingUnitsLayout->addWidget(m_vSpacingField);
@@ -73,25 +72,25 @@ void GridDialog::createUI() {
     auto* orientationLabel = new QLabel(tr("<b>Grid Orientation</b>"));
 
     auto* xPositionLabel = new QLabel(tr("X:"));
-    m_xPositionField = new DataField(k_fieldShortWidth, true);
+    m_xPositionField = new DoubleDataField(k_fieldShortWidth, true);
     auto* yPositionLabel = new QLabel(tr("Y:"));
-    m_yPositionField = new DataField(k_fieldShortWidth, true);
+    m_yPositionField = new DoubleDataField(k_fieldShortWidth, true);
     auto* positionUnitsLabel = new QLabel(tr("px"));
     auto* xyLayout = new QHBoxLayout();
     xyLayout->addWidget(m_yPositionField);
     xyLayout->addWidget(positionUnitsLabel);
 
     auto* widthLabel = new QLabel(tr("W:"));
-    m_widthField = new DataField(k_fieldShortWidth, true);
+    m_widthField = new DoubleDataField(k_fieldShortWidth, true);
     auto* heightLabel = new QLabel(tr("H:"));
-    m_heightField = new DataField(k_fieldShortWidth, true);
+    m_heightField = new DoubleDataField(k_fieldShortWidth, true);
     auto* whUnitsLabel = new QLabel(tr("px"));
     auto* whLayout = new QHBoxLayout();
     whLayout->addWidget(m_heightField);
     whLayout->addWidget(whUnitsLabel);
 
     auto* angleLabel = new QLabel(tr("A:"));
-    m_angleField = new DataField(k_fieldShortWidth, true);
+    m_angleField = new DoubleDataField(k_fieldShortWidth, true);
     auto* angleUnitLabel = new QLabel(tr("deg"));
     auto* angleLayout = new QHBoxLayout();
     angleLayout->addWidget(m_angleField);

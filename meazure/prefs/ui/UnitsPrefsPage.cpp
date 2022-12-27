@@ -43,7 +43,7 @@ void UnitsPrefsPage::createUI() {
     auto* abbrevInstr = new QLabel(tr("(%1 character limit)").arg(k_maxAbbrevLength));
 
     auto* settingInstr = new QLabel(tr("Set a resolution dependent or independent scale factor:"));
-    m_factorField = new DataField(k_factorWidth, false);
+    m_factorField = new DoubleDataField(k_factorWidth, false);
     m_basisCombo = new QComboBox();
     m_factorLabel = new QLabel();
 
@@ -129,7 +129,7 @@ void UnitsPrefsPage::configure() {
     m_factorField->setRange(k_minFactor, std::numeric_limits<float>::max());
     m_factorField->setDecimals(std::numeric_limits<float>::digits10);
     m_factorField->setSingleStep(0);
-    connect(m_factorField, &DataField::valueChanged, this, [this](double value) {
+    connect(m_factorField, &DoubleDataField::valueChanged, this, [this](double value) {
         m_model->m_scaleFactor->setValue(value);
     });
     connect(m_model->m_scaleFactor, &PreferenceBase::valueChanged, this, [this](QVariant value) { // NOLINT(performance-unnecessary-value-param)

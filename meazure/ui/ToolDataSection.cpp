@@ -41,19 +41,19 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
     connect(&toolMgr, &ToolMgr::aspectChanged, this, &ToolDataSection::aspectChanged);
     connect(&toolMgr, &ToolMgr::areaChanged, this, &ToolDataSection::areaChanged);
 
-    connect(m_x1Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setX1Position);
-    connect(m_y1Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setY1Position);
-    connect(m_x2Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setX2Position);
-    connect(m_y2Field, &DataField::valueChanged, &toolMgr, &ToolMgr::setY2Position);
-    connect(m_xvField, &DataField::valueChanged, &toolMgr, &ToolMgr::setXVPosition);
-    connect(m_yvField, &DataField::valueChanged, &toolMgr, &ToolMgr::setYVPosition);
+    connect(m_x1Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setX1Position);
+    connect(m_y1Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setY1Position);
+    connect(m_x2Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setX2Position);
+    connect(m_y2Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setY2Position);
+    connect(m_xvField, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setXVPosition);
+    connect(m_yvField, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setYVPosition);
 
-    connect(m_x1Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepX1Position);
-    connect(m_y1Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepY1Position);
-    connect(m_x2Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepX2Position);
-    connect(m_y2Field, &DataField::stepRequested, &toolMgr, &ToolMgr::stepY2Position);
-    connect(m_xvField, &DataField::stepRequested, &toolMgr, &ToolMgr::stepXVPosition);
-    connect(m_yvField, &DataField::stepRequested, &toolMgr, &ToolMgr::stepYVPosition);
+    connect(m_x1Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepX1Position);
+    connect(m_y1Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepY1Position);
+    connect(m_x2Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepX2Position);
+    connect(m_y2Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepY2Position);
+    connect(m_xvField, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepXVPosition);
+    connect(m_yvField, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepYVPosition);
 
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
@@ -64,64 +64,64 @@ void ToolDataSection::createFields() {
     using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
 
     m_x1Label = new QLabel(tr("X1:"));
-    m_x1Field = new DataField(k_fieldShortWidth, true, false, false);
+    m_x1Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
 
     m_y1Label = new QLabel(tr("Y1:"));
-    m_y1Field = new DataField(k_fieldShortWidth, true, false, false);
+    m_y1Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
     m_y1Units = new QLabel();
     auto* y1Layout = new QHBoxLayout();
     y1Layout->addWidget(m_y1Field);
     y1Layout->addWidget(m_y1Units);
 
     m_x2Label = new QLabel(tr("X2:"));
-    m_x2Field = new DataField(k_fieldShortWidth, true, false, false);
+    m_x2Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
 
     m_y2Label = new QLabel(tr("Y2:"));
-    m_y2Field = new DataField(k_fieldShortWidth, true, false, false);
+    m_y2Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
     m_y2Units = new QLabel();
     auto* y2Layout = new QHBoxLayout();
     y2Layout->addWidget(m_y2Field);
     y2Layout->addWidget(m_y2Units);
 
     m_xvLabel = new QLabel(tr("XV:"));
-    m_xvField = new DataField(k_fieldShortWidth, true, false, false);
+    m_xvField = new DoubleDataField(k_fieldShortWidth, true, false, false);
 
     m_yvLabel = new QLabel(tr("YV:"));
-    m_yvField = new DataField(k_fieldShortWidth, true, false, false);
+    m_yvField = new DoubleDataField(k_fieldShortWidth, true, false, false);
     m_yvUnits = new QLabel();
     auto* yvLayout = new QHBoxLayout();
     yvLayout->addWidget(m_yvField);
     yvLayout->addWidget(m_yvUnits);
 
     m_wLabel = new QLabel(tr("W:"));
-    m_wField = new DataField(k_fieldShortWidth, false);
+    m_wField = new DoubleDataField(k_fieldShortWidth, false);
 
     m_hLabel = new QLabel(tr("H:"));
-    m_hField = new DataField(k_fieldShortWidth, false);
+    m_hField = new DoubleDataField(k_fieldShortWidth, false);
     m_hUnits = new QLabel();
     auto* hLayout = new QHBoxLayout();
     hLayout->addWidget(m_hField);
     hLayout->addWidget(m_hUnits);
 
     m_dLabel = new QLabel(tr("D:"));
-    m_dField = new DataField(k_fieldShortWidth, false);
+    m_dField = new DoubleDataField(k_fieldShortWidth, false);
     m_dUnits = new QLabel();
     auto* dLayout = new QHBoxLayout();
     dLayout->addWidget(m_dField);
     dLayout->addWidget(m_dUnits);
 
     m_aLabel = new QLabel(tr("A:"));
-    m_aField = new DataField(k_fieldShortWidth, false);
+    m_aField = new DoubleDataField(k_fieldShortWidth, false);
     m_aUnits = new QLabel();
     auto* aLayout = new QHBoxLayout();
     aLayout->addWidget(m_aField);
     aLayout->addWidget(m_aUnits);
 
     m_asLabel = new QLabel(tr("As:"));
-    m_asField = new DataField(k_fieldLongWidth, false);
+    m_asField = new DoubleDataField(k_fieldLongWidth, false);
 
     m_arLabel = new QLabel(tr("Ar:"));
-    m_arField = new DataField(k_fieldLongWidth, false);
+    m_arField = new DoubleDataField(k_fieldLongWidth, false);
     m_arUnits = new QLabel();
     auto* arLayout = new QHBoxLayout();
     arLayout->addWidget(m_arField);
@@ -166,7 +166,7 @@ void ToolDataSection::radioToolSelected(RadioTool& tool) {
     const RadioToolTraits traits = tool.getTraits();
 
     auto configure = [&traits](RadioToolTrait availableTrait, RadioToolTrait readOnlyTrait, QLabel* label,
-            DataField* field, QLabel* units = nullptr) {
+                               DoubleDataField* field, QLabel* units = nullptr) {
         const bool enabled = ((traits & availableTrait) != 0);
         const bool readOnly = ((traits & readOnlyTrait) != 0);
 

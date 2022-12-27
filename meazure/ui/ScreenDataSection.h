@@ -22,7 +22,7 @@
 #include <meazure/units/Units.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/environment/ScreenInfoProvider.h>
-#include "DataField.h"
+#include "fields/DoubleDataField.h"
 #include <QGroupBox>
 #include <QLabel>
 #include <QPointF>
@@ -54,10 +54,10 @@ private:
     const ScreenInfoProvider& m_screenInfo;
     const UnitsMgr& m_unitsMgr;
     int m_currentScreenIdx { -1 };
-    DataField* m_wField;
-    DataField* m_hField;
-    DataField* m_rxField;
-    DataField* m_ryField;
+    DoubleDataField* m_wField;
+    DoubleDataField* m_hField;
+    DoubleDataField* m_rxField;
+    DoubleDataField* m_ryField;
     QLabel* m_screenName;
     QLabel* m_hUnits;
     QLabel* m_ryUnits;

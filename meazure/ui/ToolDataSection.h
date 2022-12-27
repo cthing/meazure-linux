@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "DataField.h"
+#include "fields/DoubleDataField.h"
 #include <meazure/tools/RadioTool.h>
 #include <meazure/units/Units.h>
 #include <QGroupBox>
@@ -122,18 +122,18 @@ private:
     QLabel* m_aLabel;
     QLabel* m_asLabel;
     QLabel* m_arLabel;
-    DataField* m_x1Field;
-    DataField* m_y1Field;
-    DataField* m_x2Field;
-    DataField* m_y2Field;
-    DataField* m_xvField;
-    DataField* m_yvField;
-    DataField* m_wField;
-    DataField* m_hField;
-    DataField* m_dField;
-    DataField* m_aField;
-    DataField* m_asField;
-    DataField* m_arField;
+    DoubleDataField* m_x1Field;
+    DoubleDataField* m_y1Field;
+    DoubleDataField* m_x2Field;
+    DoubleDataField* m_y2Field;
+    DoubleDataField* m_xvField;
+    DoubleDataField* m_yvField;
+    DoubleDataField* m_wField;
+    DoubleDataField* m_hField;
+    DoubleDataField* m_dField;
+    DoubleDataField* m_aField;
+    DoubleDataField* m_asField;
+    DoubleDataField* m_arField;
     QLabel* m_y1Units;
     QLabel* m_y2Units;
     QLabel* m_yvUnits;

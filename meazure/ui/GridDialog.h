@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "DataField.h"
+#include "fields/DoubleDataField.h"
 #include <meazure/units/Units.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/environment/ScreenInfoProvider.h>
@@ -64,15 +64,15 @@ private:
     GridTool* m_gridTool;
     const ScreenInfoProvider& m_screenInfo;
     const UnitsMgr& m_unitsMgr;
-    DataField* m_hSpacingField;
-    DataField* m_vSpacingField;
+    DoubleDataField* m_hSpacingField;
+    DoubleDataField* m_vSpacingField;
     QComboBox* m_spacingUnitsCombo;
     QCheckBox* m_linkSpacingCheck;
-    DataField* m_xPositionField;
-    DataField* m_yPositionField;
-    DataField* m_widthField;
-    DataField* m_heightField;
-    DataField* m_angleField;
+    DoubleDataField* m_xPositionField;
+    DoubleDataField* m_yPositionField;
+    DoubleDataField* m_widthField;
+    DoubleDataField* m_heightField;
+    DoubleDataField* m_angleField;
 
     int m_origX;
     int m_origY;

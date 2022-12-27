@@ -46,10 +46,10 @@ void ScreenDataSection::createFields() {
     m_screenName = new QLabel();
 
     auto* wLabel = new QLabel(tr("W:"));
-    m_wField = new DataField(k_fieldWidth, false, true);
+    m_wField = new DoubleDataField(k_fieldWidth, false, true);
 
     auto* hLabel = new QLabel(tr("H:"));
-    m_hField = new DataField(k_fieldWidth, false, true);
+    m_hField = new DoubleDataField(k_fieldWidth, false, true);
     m_hUnits = new QLabel();
     auto* hLayout = new QHBoxLayout();
     hLayout->addWidget(m_hField);
@@ -61,10 +61,10 @@ void ScreenDataSection::createFields() {
     hLayout->addWidget(calButton);
 
     auto* rxLabel = new QLabel(tr("Rx:"));
-    m_rxField = new DataField(k_fieldWidth, false, true);
+    m_rxField = new DoubleDataField(k_fieldWidth, false, true);
 
     auto* ryLabel = new QLabel(tr("Ry:"));
-    m_ryField = new DataField(k_fieldWidth, false, true);
+    m_ryField = new DoubleDataField(k_fieldWidth, false, true);
     m_ryUnits = new QLabel();
     auto* ryLayout = new QHBoxLayout();
     ryLayout->addWidget(m_ryField);

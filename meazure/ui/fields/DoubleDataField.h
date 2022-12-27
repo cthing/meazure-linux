@@ -19,13 +19,13 @@
 
 #pragma once
 
+#include "AbstractDataField.h"
 #include <QDoubleSpinBox>
-#include <QSize>
 
 
-/// Text field for presenting a measurement value.
+/// Text field for presenting a floating point measurement value.
 ///
-class DataField : public QDoubleSpinBox {
+class DoubleDataField : public AbstractDataField<QDoubleSpinBox, double> {
 
     Q_OBJECT
 
@@ -39,41 +39,14 @@ public:
     ///     arrow buttons and arrow keys
     /// @param[in] parent Parent for the widget
     ///
-    DataField(int charWidth, bool showButtons, bool readOnly = false, bool nativeStepHandling = true,
-              QWidget *parent = nullptr);
-
-    /// Calculates the size of the field based on the desired character width.
-    ///
-    [[nodiscard]] QSize sizeHint() const override;
-
-    /// Calculates the minimum size of the field based on the desired character width.
-    ///
-    [[nodiscard]] QSize minimumSizeHint() const override;
-
-    /// Sets the value in the spin box without emitting any signals.
-    ///
-    /// @param[in] value Spin box value
-    ///
-    void setValueQuietly(double value);
+    DoubleDataField(int charWidth, bool showButtons, bool readOnly = false, bool nativeStepHandling = true,
+                    QWidget *parent = nullptr);
 
     /// Sets the numerical precision for the spin box value without emitting any signals.
     ///
     /// @param[in] precision Spin box numerical precision
     ///
     void setDecimalsQuietly(int precision);
-
-    /// Sets the minimum and maximum values for the field without emitting any signals.
-    ///
-    /// @param[in] minimum Minimum field value
-    /// @param[in] maximum Maximum field value
-    ///
-    void setRangeQuietly(double minimum, double maximum);
-
-    /// Sets the minimum value for the field without emitting any signals.
-    ///
-    /// @param[in] minimum Minimum field value
-    ///
-    void setMinimumQuietly(double minimum);
 
 signals:
     /// Emitted to indicate that the user has either pressed an up/down arrow button, up/down arrow key, or page
@@ -85,18 +58,6 @@ signals:
     ///
     void stepRequested(int steps);
 
-protected:
-    void changeEvent(QEvent *e) override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
-
 private:
-    static constexpr int k_cursorBlinkingSpace { 2 };
-
-    void emitSteps(int numSteps);
-
-    int m_charWidth;
-    QColor m_defaultBackground;
-    QColor m_readOnlyBackground { 240, 240, 240 };
-    bool m_nativeStepHandling;
+    void emitSteps(int numSteps) override;
 };

@@ -22,7 +22,7 @@
 #include "PrefsPage.h"
 #include "PrefsPageId.h"
 #include <meazure/prefs/models/UnitsPrefsModel.h>
-#include <meazure/ui/DataField.h>
+#include <meazure/ui/fields/DoubleDataField.h>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QLabel>
@@ -70,7 +70,7 @@ private:
     UnitsPrefsModel* m_model;
     QLineEdit* m_nameField;
     QLineEdit* m_abbrevField;
-    DataField* m_factorField;
+    DoubleDataField* m_factorField;
     QComboBox* m_basisCombo;
     QLabel* m_factorLabel;
     QPushButton* m_clearButton;
