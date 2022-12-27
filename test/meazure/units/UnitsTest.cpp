@@ -417,26 +417,18 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     CustomUnits units(screenProvider);
 
-    const QSignalSpy unitsSpy(&units, SIGNAL(labelChanged(LinearUnitsId, const QString&, const QString&)));
+    const QSignalSpy unitsSpy(&units, SIGNAL(customUnitsChanged()));
     QVERIFY(unitsSpy.isValid());
 
     QVERIFY(!units.haveCustomUnits());
 
     units.setName("Abcd");
     QCOMPARE(unitsSpy.size(), 1);
-    QList<QVariant> arguments = unitsSpy[0];
-    QCOMPARE(arguments.size(), 3);
-    QCOMPARE(arguments[0].toInt(), 7);
-    QCOMPARE(arguments[1].toString(), "Abcd");
-    QCOMPARE(arguments[2].toString(), "");
+    QVERIFY(unitsSpy[0].isEmpty());
 
     units.setAbbrev("ab");
     QCOMPARE(unitsSpy.size(), 2);
-    arguments = unitsSpy[1];
-    QCOMPARE(arguments.size(), 3);
-    QCOMPARE(arguments[0].toInt(), 7);
-    QCOMPARE(arguments[1].toString(), "Abcd");
-    QCOMPARE(arguments[2].toString(), "ab");
+    QVERIFY(unitsSpy[1].isEmpty());
 
     QVERIFY(units.haveCustomUnits());
     QCOMPARE(units.getName(), "Abcd");

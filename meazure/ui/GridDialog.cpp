@@ -144,7 +144,7 @@ void GridDialog::configureSpacingUI() {
     m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(MillimetersId)->getLengthLabel(), MillimetersId);
     m_spacingUnitsCombo->addItem("", CustomId);
 
-    customUnitsChanged(m_unitsMgr.getCustomUnits());
+    customUnitsChanged();
     connect(&m_unitsMgr, &UnitsMgr::customUnitsChanged, this, &GridDialog::customUnitsChanged);
 }
 
@@ -249,7 +249,8 @@ void GridDialog::linkSpacing(bool link) {
     m_gridTool->setLinkedSpacing(link);
 }
 
-void GridDialog::customUnitsChanged(const CustomUnits* customUnits) {
+void GridDialog::customUnitsChanged() {
+    const CustomUnits* customUnits = m_unitsMgr.getCustomUnits();
     const int customItemIdx = m_spacingUnitsCombo->findData(CustomId);
 
     if (customItemIdx >= 0) {

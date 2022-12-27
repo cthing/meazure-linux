@@ -174,9 +174,7 @@ public:
 signals:
     /// Emitted when the custom units definition is changed (e.g. name, abbreviation, scale factor).
     ///
-    /// @param[in] customUnits Changed custom units
-    ///
-    void customUnitsChanged(const CustomUnits* customUnits);
+    void customUnitsChanged();
 
 private:
     QString m_name;                     ///< Name for the custom units.

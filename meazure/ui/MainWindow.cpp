@@ -78,7 +78,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     setAlwaysVisible();
     setAllVisible(true);
 
-    customUnitsChanged(unitsMgr.getCustomUnits());
+    customUnitsChanged();
 }
 
 void MainWindow::createCentralWidget() {
@@ -643,7 +643,8 @@ void MainWindow::setAllVisible(bool visible) {
     }
 }
 
-void MainWindow::customUnitsChanged(const CustomUnits* customUnits) {
+void MainWindow::customUnitsChanged() {
+    const CustomUnits* customUnits = App::instance()->getUnitsMgr().getCustomUnits();
     const bool defined = customUnits->haveCustomUnits();
     m_customUnitsAction->setEnabled(defined);
     m_customUnitsAction->setText(defined ? customUnits->getName() : tr("[custom]"));

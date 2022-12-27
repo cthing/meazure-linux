@@ -49,7 +49,7 @@ private slots:
     void spacingChanged(double hspace, double vspace, bool linkSpacing, LinearUnitsId units);
     void reset();
     void reject() override;
-    void customUnitsChanged(const CustomUnits* customUnits);
+    void customUnitsChanged();
 
 private:
     static constexpr int k_fieldShortWidth { 7 };   // Characters

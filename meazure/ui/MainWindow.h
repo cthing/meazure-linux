@@ -68,7 +68,7 @@ private slots:
     void setStatusBarVisible(bool visible = k_defStatusBarVisible);
     void setAllVisible(bool visible);
 
-    void customUnitsChanged(const CustomUnits* customUnits);
+    void customUnitsChanged();
 
 private:
     struct SectionVisibility {
