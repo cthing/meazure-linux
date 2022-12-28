@@ -19,7 +19,11 @@
 
 #pragma once
 
+#include "Preference.h"
+#include <meazure/units/Units.h>
 #include <QObject>
+#include <map>
+#include <vector>
 
 
 /// Model for measurement units display precisions. Each measurement unit has associated with it a set of display
@@ -30,6 +34,9 @@ class PrecisionPrefsModel : public QObject {
     Q_OBJECT
 
 public:
+    using LinearPrecisions = std::map<LinearUnitsId, Preference<Units::DisplayPrecisions>*>;
+    using AngularPrecisions = std::map<AngularUnitsId, Preference<Units::DisplayPrecisions>*>;
+
     explicit PrecisionPrefsModel(QObject* parent);
 
     void initialize();
@@ -37,6 +44,12 @@ public:
     void apply() const;
 
     [[nodiscard]] bool isDirty() const;
+
+    void setPrecision(LinearUnitsId unitsId, LinearMeasurementId measurementId, int precision);
+    void setPrecision(AngularUnitsId unitsId, AngularMeasurementId measurementId, int precision);
+
+    LinearPrecisions m_linearPrecisions;            // NOLINT(misc-non-private-member-variables-in-classes)
+    AngularPrecisions m_angularPrecisions;          // NOLINT(misc-non-private-member-variables-in-classes)
 
 signals:
     void dirtyChanged(bool dirty);

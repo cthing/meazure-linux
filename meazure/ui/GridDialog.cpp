@@ -134,14 +134,9 @@ void GridDialog::createUI() {
 }
 
 void GridDialog::configureSpacingUI() {
-    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(PixelsId)->getLengthLabel(), PixelsId);
-    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(TwipsId)->getLengthLabel(), TwipsId);
-    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(PointsId)->getLengthLabel(), PointsId);
-    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(PicasId)->getLengthLabel(), PicasId);
-    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(InchesId)->getLengthLabel(), InchesId);
-    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(CentimetersId)->getLengthLabel(), CentimetersId);
-    m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(MillimetersId)->getLengthLabel(), MillimetersId);
-    m_spacingUnitsCombo->addItem("", CustomId);
+    for (const LinearUnitsId unitsId : LinearUnitsIdIter()) {
+        m_spacingUnitsCombo->addItem(m_unitsMgr.getLinearUnits(unitsId)->getLengthLabel(), unitsId);
+    }
 
     customUnitsChanged();
     connect(&m_unitsMgr, &UnitsMgr::customUnitsChanged, this, &GridDialog::customUnitsChanged);

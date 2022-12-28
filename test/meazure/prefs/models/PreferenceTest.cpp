@@ -21,6 +21,7 @@
 #include <QtPlugin>
 #include <QSignalSpy>
 #include <meazure/prefs/models/Preference.h>
+#include <vector>
 
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
@@ -35,6 +36,7 @@ private slots:
     [[maybe_unused]] void testInitialize();
     [[maybe_unused]] void testSetValue();
     [[maybe_unused]] void testRestore();
+    [[maybe_unused]] void testCollection();
     [[maybe_unused]] void testSignalOnInitialize();
     [[maybe_unused]] void testSignalOnSetValue();
     [[maybe_unused]] void testSignalOnRestore();
@@ -97,6 +99,24 @@ private slots:
     QCOMPARE(pref2.getValue(), 10);
     QCOMPARE(pref2, 10);
     QVERIFY(!pref2.isDirty());
+}
+
+[[maybe_unused]] void PreferenceTest::testCollection() {
+    const std::vector<int> defaultNumbers { 1, 2, 3, 4 ,5 };
+    Preference<std::vector<int>> pref(defaultNumbers);
+    QCOMPARE(pref.getValue(), defaultNumbers);
+    QCOMPARE(pref.getDefaultValue(), defaultNumbers);
+    QVERIFY(!pref.isDirty());
+
+    const std::vector<int> initNumbers { 17, 16, 15 };
+    pref.initialize(initNumbers);
+    QVERIFY(!pref.isDirty());
+    QCOMPARE(pref.getValue(), initNumbers);
+
+    const std::vector<int> numbers { 21, 6, 5 };
+    pref.setValue(numbers);
+    QVERIFY(pref.isDirty());
+    QCOMPARE(pref.getValue(), numbers);
 }
 
 [[maybe_unused]] void PreferenceTest::testSignalOnInitialize() {

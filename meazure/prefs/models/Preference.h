@@ -70,14 +70,14 @@ public:
     void initialize(T value) {
         m_value = value;
         clearDirty();
-        emit valueChanged(m_value);
+        emit valueChanged(QVariant::fromValue<T>(m_value));
     }
 
     void setValue(T value) {
         if (m_value != value) {
             m_value = value;
             markDirty();
-            emit valueChanged(m_value);
+            emit valueChanged(QVariant::fromValue<T>(m_value));
         }
     }
 

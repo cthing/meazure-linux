@@ -455,8 +455,7 @@ namespace Geometry {
     /// Creates a transform that performs a rotation by the specified angle around the specified point.
     ///
     /// @param angle Rotation angle in degrees
-    /// @param xc X coordinate of the center of rotation
-    /// @param yc Y coordinate of the center of rotation
+    /// @param center Coordinate of the center of rotation
     /// @return Transform representing the rotation
     ///
     inline QTransform rotateAround(double angle, QPoint center) {

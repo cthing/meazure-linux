@@ -39,7 +39,7 @@ public:
     ScreenDataSection();
 
 private slots:
-    void linearUnitsChanged(LinearUnitsId unitsId);
+    void linearUnitsChanged();
     void update(QPointF coord, QPoint rawPos);
 
 private:

@@ -44,31 +44,30 @@ private slots:
 
     /// Called when the linear units have changed.
     ///
-    /// @param[in] unitsId Identifier of the newly selected units
-    ///
-    void linearUnitsChanged(LinearUnitsId unitsId);
+    void linearUnitsChanged();
 
     /// Called when the angular units have changed.
     ///
-    /// @param[in] unitsId Identifier of the newly selected units
-    ///
-    void angularUnitsChanged(AngularUnitsId unitsId);
+    void angularUnitsChanged();
 
     /// Called when a tool's position 1 has changed.
     ///
     /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
+    /// @param[in] rawPos Screen position in pixels
     ///
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when a tool's position 2 has changed.
     ///
     /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
+    /// @param[in] rawPos Screen position in pixels
     ///
     void xy2PositionChanged(QPointF coord, QPoint rawPos);
 
     /// Called when a tool's vertex position has changed.
     ///
     /// @param[in] coord Coordinates for the position in the current units, origin and y-axis direction
+    /// @param[in] rawPos Screen position in pixels
     ///
     void xyvPositionChanged(QPointF coord, QPoint rawPos);
 

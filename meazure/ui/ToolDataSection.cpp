@@ -57,7 +57,9 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
 
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
+    connect(&unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::linearUnitsChanged);
     connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, &ToolDataSection::angularUnitsChanged);
+    connect(&unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::angularUnitsChanged);
 }
 
 void ToolDataSection::createFields() {
@@ -198,7 +200,7 @@ void ToolDataSection::radioToolSelected(RadioTool& tool) {
     configure(AspectAvailable, AspectReadOnly, m_asLabel, m_asField);
 }
 
-void ToolDataSection::linearUnitsChanged(LinearUnitsId) {
+void ToolDataSection::linearUnitsChanged() {
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     const LinearUnits* linearUnits = unitsMgr.getLinearUnits();
 
@@ -223,7 +225,7 @@ void ToolDataSection::linearUnitsChanged(LinearUnitsId) {
     m_arField->setDecimals(linearUnits->getDisplayPrecision(Area));
 }
 
-void ToolDataSection::angularUnitsChanged(AngularUnitsId) {
+void ToolDataSection::angularUnitsChanged() {
     const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     const AngularUnits* angularUnits = unitsMgr.getAngularUnits();
 

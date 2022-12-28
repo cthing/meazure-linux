@@ -21,6 +21,7 @@
 
 #include <meazure/profile/Profile.h>
 #include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/utils/EnumIterator.h>
 #include <vector>
 #include <QString>
 #include <QPoint>
@@ -29,6 +30,7 @@
 #include <QSizeF>
 #include <QWidget>
 #include <limits>
+#include <array>
 
 
 /// Identifiers for linear measurement units.
@@ -44,6 +46,7 @@ enum LinearUnitsId {
     CustomId = 7            ///< User defined units
 };
 
+using LinearUnitsIdIter = EnumIterator<LinearUnitsId, PixelsId, CustomId>;
 
 /// Identifiers for angular measurement units.
 ///
@@ -51,6 +54,8 @@ enum AngularUnitsId {
     DegreesId = 0,          ///< Angles reported in degrees.
     RadiansId = 1           ///< Angles reported in radians.
 };
+
+using AngularUnitsIdIter = EnumIterator<AngularUnitsId, DegreesId, RadiansId>;
 
 
 /// Types of linear measurements.
@@ -65,7 +70,6 @@ enum LinearMeasurementId {
     ResX = 6,       ///< Screen resolution in the X direction
     ResY = 7        ///< Screen resolution in the Y direction
 };
-
 
 /// Types of angular measurements.
 ///

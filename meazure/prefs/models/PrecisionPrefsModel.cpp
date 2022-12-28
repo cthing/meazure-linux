@@ -18,20 +18,67 @@
  */
 
 #include "PrecisionPrefsModel.h"
+#include <meazure/App.h>
+#include <algorithm>
 
 
-PrecisionPrefsModel::PrecisionPrefsModel(QObject *parent) :
-        QObject(parent) {
+PrecisionPrefsModel::PrecisionPrefsModel(QObject *parent) : QObject(parent) {
+    const UnitsMgr& mgr = App::instance()->getUnitsMgr();
+
+    for (const LinearUnitsId unitsId : LinearUnitsIdIter()) {
+        auto* pref = new Preference(mgr.getLinearDefaultPrecisions(unitsId));
+        m_linearPrecisions[unitsId] = pref;
+        connect(pref, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
+    }
+    for (const AngularUnitsId unitsId : AngularUnitsIdIter()) {
+        auto* pref = new Preference(mgr.getAngularDefaultPrecisions(unitsId));
+        m_angularPrecisions[unitsId] = pref;
+        connect(pref, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
+    }
 }
 
 void PrecisionPrefsModel::initialize() {
+    const UnitsMgr& mgr = App::instance()->getUnitsMgr();
 
+    for (const auto& entry : m_linearPrecisions) {
+        entry.second->initialize(mgr.getLinearDisplayPrecisions(entry.first));
+    }
+    for (const auto& entry : m_angularPrecisions) {
+        entry.second->initialize(mgr.getAngularDisplayPrecisions(entry.first));
+    }
 }
 
 void PrecisionPrefsModel::apply() const {
+    UnitsMgr& mgr = App::instance()->getUnitsMgr();
 
+    for (const auto& entry : m_linearPrecisions) {
+        if (entry.second->isDirty()) {
+            mgr.setLinearDisplayPrecisions(entry.first, entry.second->getValue());
+        }
+    }
+    for (const auto& entry : m_angularPrecisions) {
+        if (entry.second->isDirty()) {
+            mgr.setAngularDisplayPrecisions(entry.first, entry.second->getValue());
+        }
+    }
 }
 
-bool PrecisionPrefsModel::isDirty() const { // NOLINT(readability-convert-member-functions-to-static)
-    return false;
+bool PrecisionPrefsModel::isDirty() const {
+    return std::any_of(m_linearPrecisions.begin(), m_linearPrecisions.end(), [](const auto& entry) {
+        return entry.second->isDirty();
+    }) || std::any_of(m_angularPrecisions.begin(), m_angularPrecisions.end(), [](const auto& entry) {
+        return entry.second->isDirty();
+    });
+}
+
+void PrecisionPrefsModel::setPrecision(LinearUnitsId unitsId, LinearMeasurementId measurementId, int precision) {
+    Units::DisplayPrecisions precisions = m_linearPrecisions.at(unitsId)->getValue();
+    precisions.at(measurementId) = precision;
+    m_linearPrecisions.at(unitsId)->setValue(precisions);
+}
+
+void PrecisionPrefsModel::setPrecision(AngularUnitsId unitsId, AngularMeasurementId measurementId, int precision) {
+    Units::DisplayPrecisions precisions = m_angularPrecisions.at(unitsId)->getValue();
+    precisions.at(measurementId) = precision;
+    m_angularPrecisions.at(unitsId)->setValue(precisions);
 }

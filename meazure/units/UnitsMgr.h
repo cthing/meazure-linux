@@ -164,6 +164,7 @@ public:
     ///
     void setLinearDisplayPrecisions(LinearUnitsId unitsId, const Units::DisplayPrecisions& precisions) {
         m_linearUnitsMap.at(unitsId)->setDisplayPrecisions(precisions);
+        emit precisionsChanged();
     }
 
     /// Returns the array of decimal places currently set for each linear measurement type in the specified units.
@@ -193,6 +194,7 @@ public:
     ///
     void setAngularDisplayPrecisions(AngularUnitsId unitsId, const Units::DisplayPrecisions& precisions) {
         m_angularUnitsMap.at(unitsId)->setDisplayPrecisions(precisions);
+        emit precisionsChanged();
     }
 
     /// Returns the array of decimal places currently set for the specified angular measurement units.
@@ -333,6 +335,8 @@ signals:
     void originChanged(QPoint origin);
 
     void customUnitsChanged();
+
+    void precisionsChanged();
 
 private:
     /// Ruler tick increments. The order of magnitude of these values is adjusted based on the units.

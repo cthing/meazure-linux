@@ -139,6 +139,7 @@ source_group(XML FILES ${XML_SOURCES})
 
 set(UTILS_SOURCES
     utils/Cloaker.h
+    utils/EnumIterator.h
     utils/Geometry.h
     utils/GnomeUtils.cpp
     utils/GnomeUtils.h

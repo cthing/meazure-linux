@@ -37,6 +37,7 @@ ScreenDataSection::ScreenDataSection() : // NOLINT(cppcoreguidelines-pro-type-me
     connect(&toolMgr, &ToolMgr::xyvPositionChanged, this, &ScreenDataSection::update);
 
     connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ScreenDataSection::linearUnitsChanged);
+    connect(&m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ScreenDataSection::linearUnitsChanged);
 }
 
 void ScreenDataSection::createFields() {
@@ -116,7 +117,7 @@ void ScreenDataSection::refresh() {
     m_ryField->setValue(convertedRes.height());
 }
 
-void ScreenDataSection::linearUnitsChanged(LinearUnitsId) {
+void ScreenDataSection::linearUnitsChanged() {
     const LinearUnits* linearUnits = m_unitsMgr.getLinearUnits();
 
     m_hUnits->setText(linearUnits->getLengthLabel());

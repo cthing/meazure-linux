@@ -37,6 +37,7 @@ class UnitsTest : public QObject {
 Q_OBJECT
 
 private slots:
+    [[maybe_unused]] void testUnitsIdIterators();
     [[maybe_unused]] void testSupplementalProperty();
     [[maybe_unused]] void testDegreeUnits();
     [[maybe_unused]] void testDegreeUnitsSupplemental();
@@ -166,6 +167,30 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 
 //=========================================================================
+
+[[maybe_unused]] void UnitsTest::testUnitsIdIterators() {
+    LinearUnitsIdIter liter;
+    QCOMPARE(*liter, PixelsId);
+    liter++;
+    QCOMPARE(*liter, PointsId);
+    liter++;
+    QCOMPARE(*liter, TwipsId);
+    liter++;
+    QCOMPARE(*liter, InchesId);
+    liter++;
+    QCOMPARE(*liter, CentimetersId);
+    liter++;
+    QCOMPARE(*liter, MillimetersId);
+    liter++;
+    QCOMPARE(*liter, PicasId);
+    liter++;
+    QCOMPARE(*liter, CustomId);
+
+    AngularUnitsIdIter aiter;
+    QCOMPARE(*aiter, DegreesId);
+    aiter++;
+    QCOMPARE(*aiter, RadiansId);
+}
 
 [[maybe_unused]] void UnitsTest::testSupplementalProperty() {
     DegreeUnits units;

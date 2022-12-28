@@ -24,6 +24,7 @@ macro(ADD_MEAZURE_TEST runner srcdir)
 endmacro()
 
 ADD_MEAZURE_TEST(ColorsTest graphics)
+ADD_MEAZURE_TEST(EnumIteratorTest utils)
 ADD_MEAZURE_TEST(FileProfileTest profile)
 ADD_MEAZURE_TEST(GeometryTest utils)
 ADD_MEAZURE_TEST(MathUtilsTest utils)
