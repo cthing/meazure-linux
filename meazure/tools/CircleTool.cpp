@@ -103,17 +103,17 @@ QImage CircleTool::grabRegion() const {
     const Cloaker cloak(m_centerCH, m_perimeterCH, m_circle, m_line, m_dataWinCenter, m_dataWinPerimeter);
 
     const QRect regionRect = m_circle->geometry();
-    return getScreenInfo().grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
+    return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
 void CircleTool::saveProfile(Profile& profile) const {
     // Save the position of each end point.
     //
-    const QPointF posCenter = getUnitsProvider().convertPos(m_center);
+    const QPointF posCenter = m_unitsProvider.convertPos(m_center);
     profile.writeStr("CircleXV", StringUtils::dblToStr(posCenter.x()));
     profile.writeStr("CircleYV", StringUtils::dblToStr(posCenter.y()));
 
-    const QPointF posPerimeter = getUnitsProvider().convertPos(m_perimeter);
+    const QPointF posPerimeter = m_unitsProvider.convertPos(m_perimeter);
     profile.writeStr("CircleX1", StringUtils::dblToStr(posPerimeter.x()));
     profile.writeStr("CircleY1", StringUtils::dblToStr(posPerimeter.y()));
 }
@@ -121,45 +121,45 @@ void CircleTool::saveProfile(Profile& profile) const {
 void CircleTool::loadProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
-    const QPointF defaultCenter = getUnitsProvider().convertPos(m_center);
-    const QPointF defaultPerimeter = getUnitsProvider().convertPos(m_perimeter);
+    const QPointF defaultCenter = m_unitsProvider.convertPos(m_center);
+    const QPointF defaultPerimeter = m_unitsProvider.convertPos(m_perimeter);
 
     // Load the end point positions.
     //
     QPointF posPerimeter;
     posPerimeter.rx() = profile.readDbl("CircleX1", defaultCenter.x());
     posPerimeter.ry() = profile.readDbl("CircleY1", defaultCenter.y());
-    m_perimeter = getUnitsProvider().unconvertPos(posPerimeter);
+    m_perimeter = m_unitsProvider.unconvertPos(posPerimeter);
 
     QPointF posCenter;
     posCenter.rx() = profile.readDbl("CircleXV", defaultPerimeter.x());
     posCenter.ry() = profile.readDbl("CircleYV", defaultPerimeter.y());
-    m_center = getUnitsProvider().unconvertPos(posCenter);
+    m_center = m_unitsProvider.unconvertPos(posCenter);
 
     setPosition();
 }
 
 void CircleTool::setX1Position(double x) {
     m_activePointId = k_perimeterId;
-    m_perimeter.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_perimeterCH, x));
+    m_perimeter.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_perimeterCH, x));
     setPosition();
 }
 
 void CircleTool::setY1Position(double y) {
     m_activePointId = k_perimeterId;
-    m_perimeter.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_perimeterCH, y));
+    m_perimeter.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_perimeterCH, y));
     setPosition();
 }
 
 void CircleTool::setXVPosition(double x) {
     m_activePointId = k_centerId;
-    m_center.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_centerCH, x));
+    m_center.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_centerCH, x));
     setPosition();
 }
 
 void CircleTool::setYVPosition(double y) {
     m_activePointId = k_centerId;
-    m_center.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_centerCH, y));
+    m_center.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_centerCH, y));
     setPosition();
 }
 
@@ -188,8 +188,8 @@ void CircleTool::stepYVPosition(int numSteps) {
 }
 
 void CircleTool::setPosition() {
-    m_perimeter = getScreenInfo().constrainPosition(m_perimeter);
-    m_center = getScreenInfo().constrainPosition(m_center);
+    m_perimeter = m_screenInfo.constrainPosition(m_perimeter);
+    m_center = m_screenInfo.constrainPosition(m_center);
 
     m_perimeterCH->setPosition(m_perimeter);
     m_centerCH->setPosition(m_center);
@@ -250,7 +250,7 @@ void CircleTool::dragged(Crosshair&, int id, QPoint crosshairCenter, Qt::Keyboar
             followingPos = m_center + movingDelta;
         }
 
-        movingDelta -= followingPos - getScreenInfo().constrainPosition(followingPos);
+        movingDelta -= followingPos - m_screenInfo.constrainPosition(followingPos);
         m_center += movingDelta;
         m_perimeter += movingDelta;
     } else {
@@ -278,14 +278,14 @@ void CircleTool::moved(Crosshair&, int id, QPoint) {
         return;
     }
 
-    const QPointF coordPerimeter = getUnitsProvider().convertCoord(m_perimeter);
-    const QPointF coordCenter = getUnitsProvider().convertCoord(m_center);
+    const QPointF coordPerimeter = m_unitsProvider.convertCoord(m_perimeter);
+    const QPointF coordCenter = m_unitsProvider.convertCoord(m_center);
     const double radius = Geometry::hypot(coordPerimeter, coordCenter);
     const double diameter = 2.0 * radius;
     const QSizeF wh = QSizeF(diameter, diameter);
     const double aspect = Geometry::aspectRatio(wh);
     const double area = Geometry::area(radius);
-    const double angle = getUnitsProvider().convertAngle(Geometry::angle(coordCenter, coordPerimeter));
+    const double angle = m_unitsProvider.convertAngle(Geometry::angle(coordCenter, coordPerimeter));
 
     m_dataWinPerimeter->distanceChanged(radius);
     m_dataWinCenter->distanceChanged(radius);

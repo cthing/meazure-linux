@@ -21,7 +21,7 @@
 
 #include "Tool.h"
 #include "RadioTool.h"
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/profile/Profile.h>
 #include <QObject>
@@ -230,7 +230,7 @@ private:
     using ToolsMap = std::map<QString, Tool*>;   ///< Maps a tool name to the tool object.
 
 
-    explicit ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider);
+    explicit ToolMgr(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider);
 
     ToolsMap m_tools;
     RadioTool* m_currentRadioTool { nullptr };

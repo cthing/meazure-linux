@@ -103,8 +103,6 @@ private slots:
     void colorChanged(Colors::Item item, QRgb color);
 
 private:
-    const ScreenInfoProvider& m_screenInfo;
-    const UnitsProvider& m_unitsProvider;
     QPen m_pen;
     QRect m_gridRect;                       ///< Grid rectangle positioned for rotation, in pixels
     QTransform m_gridTransform;             ///< Rotational transform for the grid

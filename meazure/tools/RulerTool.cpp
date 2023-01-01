@@ -187,7 +187,7 @@ bool RulerTool::setPosition() {
     }
 
     const QRect boundingRect = constructBoundingRect();
-    return getScreenInfo().getAvailableVirtualRect().contains(boundingRect);
+    return m_screenInfo.getAvailableVirtualRect().contains(boundingRect);
 }
 
 QRect RulerTool::constructBoundingRect() {
@@ -344,10 +344,10 @@ void RulerTool::moved(Handle&, int id, QPoint) {
             m_vLengthDataWin->distanceChanged(m_vLength);
             break;
         case k_moveId:
-            m_moveDataWin->xyvPositionChanged(getUnitsProvider().convertCoord(m_origin), m_origin);
+            m_moveDataWin->xyvPositionChanged(m_unitsProvider.convertCoord(m_origin), m_origin);
             break;
         case k_rotateId:
-            m_rotateDataWin->angleChanged(getUnitsProvider().convertAngle(qDegreesToRadians(m_angle)));
+            m_rotateDataWin->angleChanged(m_unitsProvider.convertAngle(qDegreesToRadians(m_angle)));
             break;
         default:
             break;

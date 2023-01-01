@@ -26,9 +26,7 @@
 Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb highlightColor,
                QRgb borderColor, QRgb opacity) :
-        Graphic(parent),
-        m_screenProvider(screenInfoProvider),
-        m_unitsProvider(unitsProvider),
+        Graphic(screenInfoProvider, unitsProvider, parent),
         m_id(id),
         m_backgroundBrush(backgroundColor),
         m_highlightBrush(highlightColor),
@@ -37,16 +35,7 @@ Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    const QPoint screenCenter = m_screenProvider.getCenter();
-    const int screenIndex = m_screenProvider.screenForPoint(screenCenter);
-    const QSizeF screenRes = m_screenProvider.getScreenRes(screenIndex);
-
-    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, k_size, k_sizeMin);
-    actualSize.rwidth() = MathUtils::makeOddUp(actualSize.width());       // Must be odd
-    actualSize.rheight() = MathUtils::makeOddUp(actualSize.height());
-    setFixedSize(actualSize);
-
-    m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
+    init();
 
     setWindowOpacity(Colors::opacityToFraction(opacity));
 
@@ -59,6 +48,20 @@ Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
     connect(&m_flashTimer, &QTimer::timeout, this, &Handle::flashHandler);
+}
+
+void Handle::init() {
+
+    const QPoint screenCenter = m_screenInfo.getCenter();
+    const int screenIndex = m_screenInfo.screenForPoint(screenCenter);
+    const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+
+    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, k_size, k_sizeMin);
+    actualSize.rwidth() = MathUtils::makeOddUp(actualSize.width());       // Must be odd
+    actualSize.rheight() = MathUtils::makeOddUp(actualSize.height());
+    setFixedSize(actualSize);
+
+    m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
 }
 
 void Handle::colorChanged(Colors::Item item, QRgb color) {
@@ -165,5 +168,5 @@ void Handle::mouseMoveEvent(QMouseEvent* event) {
 QPoint Handle::findCenter(const QPoint& point) const {
     const QPoint center(point - (m_initialGrabPosition - m_centerPosition));
     const QPoint globalCenter(mapToGlobal(center));
-    return m_screenProvider.constrainPosition(globalCenter);
+    return m_screenInfo.constrainPosition(globalCenter);
 }

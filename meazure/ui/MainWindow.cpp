@@ -45,9 +45,9 @@
 
 
 MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init)
+    createDialogs();
     createCentralWidget();
     createStatusBar();
-    createDialogs();
     createActions();
     createMenus();
     createToolBar();
@@ -82,7 +82,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
 }
 
 void MainWindow::createCentralWidget() {
-    m_mainView = new MainView();
+    m_mainView = new MainView(m_prefsDialog);
     setCentralWidget(m_mainView);
 }
 

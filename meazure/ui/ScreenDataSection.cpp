@@ -22,11 +22,10 @@
 #include <meazure/utils/LayoutUtils.h>
 #include <meazure/App.h>
 #include <QGridLayout>
-#include <QPushButton>
 #include <QIcon>
 
 
-ScreenDataSection::ScreenDataSection() : // NOLINT(cppcoreguidelines-pro-type-member-init)
+ScreenDataSection::ScreenDataSection(PrefsDialog* prefsDialog) : // NOLINT(cppcoreguidelines-pro-type-member-init)
         m_screenInfo(App::instance()->getScreenInfo()),
         m_unitsMgr(App::instance()->getUnitsMgr()) {
     createFields();
@@ -38,6 +37,15 @@ ScreenDataSection::ScreenDataSection() : // NOLINT(cppcoreguidelines-pro-type-me
 
     connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ScreenDataSection::linearUnitsChanged);
     connect(&m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ScreenDataSection::linearUnitsChanged);
+
+    connect(m_calButton, &QPushButton::clicked, this, [prefsDialog]() {
+        prefsDialog->execPage(PrefsPageId::CalibrationPage);
+    });
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        m_calButton->setVisible(m_screenInfo.isCalibrationRequired());
+
+        refresh();
+    });
 }
 
 void ScreenDataSection::createFields() {
@@ -56,10 +64,10 @@ void ScreenDataSection::createFields() {
     hLayout->addWidget(m_hField);
     hLayout->addWidget(m_hUnits);
 
-    auto* calButton = new QPushButton(QIcon(":/images/CalWarning.svg"), "");
-    calButton->setToolTip(tr("Calibrate screen resolution"));
-    hLayout->addSpacing(10);
-    hLayout->addWidget(calButton);
+    m_calButton = new QPushButton(QIcon(":/images/CalWarning.svg"), "");
+    m_calButton->setToolTip(tr("Calibrate screen resolution"));
+    hLayout->addSpacing(15);
+    hLayout->addWidget(m_calButton);
 
     auto* rxLabel = new QLabel(tr("Rx:"));
     m_rxField = new DoubleDataField(k_fieldWidth, false, true);
@@ -84,6 +92,8 @@ void ScreenDataSection::createFields() {
     layout->addWidget(m_rxField, k_row2, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
     layout->addWidget(ryLabel,   k_row2, k_col3, Qt::AlignRight | Qt::AlignVCenter);
     layout->addLayout(ryLayout,  k_row2, k_col4, Qt::AlignLeft | Qt::AlignVCenter);
+
+    layout->setColumnStretch(k_col4, k_stretch1);
 
     setLayout(layout);
 }

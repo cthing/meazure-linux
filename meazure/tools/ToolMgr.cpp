@@ -31,22 +31,22 @@
 #include "RulerTool.h"
 
 
-ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider) {
+ToolMgr::ToolMgr(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider) {
     // Radio tools
     //
-    auto* cursorTool = new CursorTool(screenInfoProvider, unitsProvider, this);
-    auto* pointTool = new PointTool(screenInfoProvider, unitsProvider, this);
-    auto* lineTool = new LineTool(screenInfoProvider, unitsProvider, this);
-    auto* rectangleTool = new RectangleTool(screenInfoProvider, unitsProvider, this);
-    auto* circleTool = new CircleTool(screenInfoProvider, unitsProvider, this);
-    auto* angleTool = new AngleTool(screenInfoProvider, unitsProvider, this);
-    auto* windowTool = new WindowTool(screenInfoProvider, unitsProvider, this);
+    auto* cursorTool = new CursorTool(screenInfo, unitsProvider, this);
+    auto* pointTool = new PointTool(screenInfo, unitsProvider, this);
+    auto* lineTool = new LineTool(screenInfo, unitsProvider, this);
+    auto* rectangleTool = new RectangleTool(screenInfo, unitsProvider, this);
+    auto* circleTool = new CircleTool(screenInfo, unitsProvider, this);
+    auto* angleTool = new AngleTool(screenInfo, unitsProvider, this);
+    auto* windowTool = new WindowTool(screenInfo, unitsProvider, this);
 
     // Non-radio tools
     //
-    auto* rulerTool = new RulerTool(screenInfoProvider, unitsProvider, this);
-    auto* gridTool = new GridTool(screenInfoProvider, unitsProvider, this);
-    auto* originTool = new OriginTool(screenInfoProvider, unitsProvider, this);
+    auto* rulerTool = new RulerTool(screenInfo, unitsProvider, this);
+    auto* gridTool = new GridTool(screenInfo, unitsProvider, this);
+    auto* originTool = new OriginTool(screenInfo, unitsProvider, this);
 
     m_tools[cursorTool->getName()] = cursorTool;
     m_tools[pointTool->getName()] = pointTool;
@@ -131,6 +131,8 @@ ToolMgr::ToolMgr(const ScreenInfoProvider& screenInfoProvider, const UnitsProvid
     connect(originTool, SIGNAL(toolEnabled(Tool &, bool)), this, SIGNAL(toolEnabled(Tool&, bool)));
 
     connect(this, &ToolMgr::activePositionChanged, this, [this](QPoint pos) { m_activePosition = pos; });
+
+    connect(&screenInfo, &ScreenInfo::resolutionChanged, this, &ToolMgr::refresh);
 }
 
 void ToolMgr::saveProfile(Profile& profile) const {

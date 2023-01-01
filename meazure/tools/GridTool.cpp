@@ -34,7 +34,7 @@ GridTool::~GridTool() {
 }
 
 void GridTool::init() {
-    const QRect screenRect = getScreenInfo().getVirtualRect();
+    const QRect screenRect = m_screenInfo.getVirtualRect();
     m_x = screenRect.left();
     m_y = screenRect.top();
     m_width = screenRect.width();
@@ -66,7 +66,7 @@ void GridTool::saveProfile(Profile& profile) const {
     profile.writeDbl("ScrnGridSpaceX", m_hSpacing);
     profile.writeDbl("ScrnGridSpaceY", m_vSpacing);
     profile.writeBool("ScrnGridLinked", m_linkedSpacing);
-    profile.writeStr("ScrnGridUnits", getUnitsProvider().getLinearUnits(m_units)->getUnitsStr());
+    profile.writeStr("ScrnGridUnits", m_unitsProvider.getLinearUnits(m_units)->getUnitsStr());
 }
 
 void GridTool::loadProfile(Profile& profile) {
@@ -79,8 +79,8 @@ void GridTool::loadProfile(Profile& profile) {
     m_vSpacing = profile.readDbl("ScrnGridSpaceY", m_vSpacing);
     m_linkedSpacing = profile.readBool("ScrnGridLinked", m_linkedSpacing);
 
-    const QString defaultUnits = getUnitsProvider().getLinearUnits(PixelsId)->getUnitsStr();
-    m_units = getUnitsProvider().getLinearUnits(profile.readStr("ScrnGridUnits", defaultUnits))->getUnitsId();
+    const QString defaultUnits = m_unitsProvider.getLinearUnits(PixelsId)->getUnitsStr();
+    m_units = m_unitsProvider.getLinearUnits(profile.readStr("ScrnGridUnits", defaultUnits))->getUnitsId();
 
     refresh();
     setEnabled(profile.readBool("ScrnGrid", false));

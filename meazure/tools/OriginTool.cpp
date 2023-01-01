@@ -52,11 +52,11 @@ void OriginTool::loadProfile(Profile& profile) {
 }
 
 void OriginTool::setPosition() {
-    QPoint origin = getUnitsProvider().getOrigin();
-    const bool inverted = getUnitsProvider().isInvertY();
+    QPoint origin = m_unitsProvider.getOrigin();
+    const bool inverted = m_unitsProvider.isInvertY();
 
     if (inverted && (origin.x() == 0) && (origin.y() == 0)) {
-        origin.ry() = getScreenInfo().getVirtualRect().height() - 1;
+        origin.ry() = m_screenInfo.getVirtualRect().height() - 1;
     }
 
     m_marker->setPosition(origin, inverted);

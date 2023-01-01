@@ -305,9 +305,11 @@ QSizeF ScreenInfo::getScreenRes(int screenIndex) const {
     return isValidScreen(screenIndex) ? m_screens[screenIndex]->getRes() : QSizeF(0.0, 0.0);
 }
 
-void ScreenInfo::setScreenRes(int screenIndex, bool useManualRes, const QSizeF* manualRes) const {
+void ScreenInfo::setScreenRes(int screenIndex, bool useManualRes, const QSizeF* manualRes) {
     if (isValidScreen(screenIndex)) {
         m_screens[screenIndex]->setScreenRes(useManualRes, manualRes);
+
+        emit resolutionChanged();
     }
 }
 

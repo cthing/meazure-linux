@@ -20,6 +20,8 @@
 #pragma once
 
 #include <QWidget>
+#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/units/UnitsProvider.h>
 
 
 /// Base class for all graphic elements. Classes derived from this base class are used by the measurement tools
@@ -30,9 +32,14 @@ class Graphic : public QWidget {
     Q_OBJECT
 
 public:
-    explicit Graphic(QWidget* parent);
+    explicit Graphic(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+                     QWidget* parent);
 
     static bool isGraphicWindow(unsigned long windowId);
 
     bool event(QEvent* ev) override;
+
+protected:
+    const ScreenInfoProvider& m_screenInfo;
+    const UnitsProvider& m_unitsProvider;
 };

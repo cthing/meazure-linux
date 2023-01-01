@@ -177,6 +177,8 @@ private:
     static constexpr int k_defaultFlashCount { 9 };
     static constexpr int k_strobeCount { 1 };
 
+    void init();
+
     /// Determines the center point of the crosshair relative to the specified point.
     ///
     /// @param point  [in] Current location of the pointer, in pixels, relative to the widget.
@@ -193,8 +195,6 @@ private:
     ///
     [[nodiscard]] QPainterPath generateCrosshair(const QSizeF& screenRes, const QSize& size) const;
 
-    const ScreenInfoProvider& m_screenProvider;
-    const UnitsProvider& m_unitsProvider;
     int m_id;
     QBrush m_backgroundBrush;
     QBrush m_highlightBrush;

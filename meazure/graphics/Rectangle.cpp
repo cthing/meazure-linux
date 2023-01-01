@@ -25,9 +25,7 @@
 
 Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double offset,
                      QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(parent),
-        m_screenInfo(screenInfoProvider),
-        m_unitsProvider(unitsProvider),
+        Graphic(screenInfoProvider, unitsProvider, parent),
         m_offset(offset),
         m_lineWidth(lineWidth),
         m_pen(QBrush(lineColor), lineWidth),

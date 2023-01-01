@@ -71,7 +71,7 @@ void PointTool::setDataWinEnabled(bool enable) {
 void PointTool::saveProfile(Profile& profile) const {
     // Save the position of the crosshair.
     //
-    const QPointF pos = getUnitsProvider().convertPos(m_center);
+    const QPointF pos = m_unitsProvider.convertPos(m_center);
     profile.writeStr("PointX1", StringUtils::dblToStr(pos.x()));
     profile.writeStr("PointY1", StringUtils::dblToStr(pos.y()));
 }
@@ -80,26 +80,26 @@ void PointTool::loadProfile(Profile& profile) {
     // Use the current position as the default value for those position components that are not
     // specified in the profile.
     //
-    const QPointF defaultPos = getUnitsProvider().convertPos(m_center);
+    const QPointF defaultPos = m_unitsProvider.convertPos(m_center);
 
     // Load the crosshair position.
     //
     QPointF pos;
     pos.rx() = profile.readDbl("PointX1", defaultPos.x());
     pos.ry() = profile.readDbl("PointY1", defaultPos.y());
-    m_center = getUnitsProvider().unconvertPos(pos);
+    m_center = m_unitsProvider.unconvertPos(pos);
     m_anchorPoint = m_center;
 
     setPosition();
 }
 
 void PointTool::setX1Position(double x) {
-    m_center.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_crosshair, x));
+    m_center.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_crosshair, x));
     setPosition();
 }
 
 void PointTool::setY1Position(double y) {
-    m_center.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_crosshair, y));
+    m_center.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_crosshair, y));
     setPosition();
 }
 
@@ -114,7 +114,7 @@ void PointTool::stepY1Position(int numSteps) {
 }
 
 void PointTool::setPosition() {
-    m_center = getScreenInfo().constrainPosition(m_center);
+    m_center = m_screenInfo.constrainPosition(m_center);
     m_crosshair->setPosition(m_center);
 }
 
@@ -162,7 +162,7 @@ void PointTool::dragged(Crosshair&, int, QPoint center, Qt::KeyboardModifiers ke
 
 void PointTool::moved(Crosshair&, int, QPoint center) {
     if (isEnabled()) {
-        const QPointF coord = getUnitsProvider().convertCoord(center);
+        const QPointF coord = m_unitsProvider.convertCoord(center);
 
         m_dataWindow->xy1PositionChanged(coord, center);
         m_dataWindow->moveNear(m_crosshair->geometry());

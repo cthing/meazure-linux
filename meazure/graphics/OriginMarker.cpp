@@ -25,9 +25,7 @@
 
 OriginMarker::OriginMarker(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
                             QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(parent),
-        m_screenInfo(screenInfoProvider),
-        m_unitsProvider(unitsProvider),
+        Graphic(screenInfoProvider, unitsProvider, parent),
         m_pen(QBrush(lineColor), lineWidth) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);

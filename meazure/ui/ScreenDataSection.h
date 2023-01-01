@@ -21,12 +21,14 @@
 
 #include <meazure/units/Units.h>
 #include <meazure/units/UnitsMgr.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/prefs/ui/PrefsDialog.h>
 #include "fields/DoubleDataField.h"
 #include <QGroupBox>
 #include <QLabel>
 #include <QPointF>
 #include <QPoint>
+#include <QPushButton>
 
 
 /// Presents the display screen information.
@@ -36,7 +38,7 @@ class ScreenDataSection : public QGroupBox {
     Q_OBJECT
 
 public:
-    ScreenDataSection();
+    explicit ScreenDataSection(PrefsDialog* prefsDialog);
 
 private slots:
     void linearUnitsChanged();
@@ -51,13 +53,14 @@ private:
 
     void refresh();
 
-    const ScreenInfoProvider& m_screenInfo;
+    const ScreenInfo& m_screenInfo;
     const UnitsMgr& m_unitsMgr;
     int m_currentScreenIdx { -1 };
     DoubleDataField* m_wField;
     DoubleDataField* m_hField;
     DoubleDataField* m_rxField;
     DoubleDataField* m_ryField;
+    QPushButton* m_calButton;
     QLabel* m_screenName;
     QLabel* m_hUnits;
     QLabel* m_ryUnits;

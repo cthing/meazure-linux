@@ -97,17 +97,17 @@ QImage LineTool::grabRegion() const {
     const Cloaker cloak(m_point1CH, m_point2CH, m_line, m_dataWin1, m_dataWin2);
 
     const QRect regionRect(m_point1, m_point2);
-    return getScreenInfo().grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
+    return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
 void LineTool::saveProfile(Profile& profile) const {
     // Save the position of each end point.
     //
-    const QPointF pos1 = getUnitsProvider().convertPos(m_point1);
+    const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
     profile.writeStr("LineX1", StringUtils::dblToStr(pos1.x()));
     profile.writeStr("LineY1", StringUtils::dblToStr(pos1.y()));
 
-    const QPointF pos2 = getUnitsProvider().convertPos(m_point2);
+    const QPointF pos2 = m_unitsProvider.convertPos(m_point2);
     profile.writeStr("LineX2", StringUtils::dblToStr(pos2.x()));
     profile.writeStr("LineY2", StringUtils::dblToStr(pos2.y()));
 }
@@ -115,45 +115,45 @@ void LineTool::saveProfile(Profile& profile) const {
 void LineTool::loadProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
-    const QPointF defaultPos1 = getUnitsProvider().convertPos(m_point1);
-    const QPointF defaultPos2 = getUnitsProvider().convertPos(m_point2);
+    const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);
+    const QPointF defaultPos2 = m_unitsProvider.convertPos(m_point2);
 
     // Load the end point positions.
     //
     QPointF pos1;
     pos1.rx() = profile.readDbl("LineX1", defaultPos1.x());
     pos1.ry() = profile.readDbl("LineY1", defaultPos1.y());
-    m_point1 = getUnitsProvider().unconvertPos(pos1);
+    m_point1 = m_unitsProvider.unconvertPos(pos1);
 
     QPointF pos2;
     pos2.rx() = profile.readDbl("LineX2", defaultPos2.x());
     pos2.ry() = profile.readDbl("LineY2", defaultPos2.y());
-    m_point2 = getUnitsProvider().unconvertPos(pos2);
+    m_point2 = m_unitsProvider.unconvertPos(pos2);
 
     setPosition();
 }
 
 void LineTool::setX1Position(double x) {
     m_activePointId = k_point1Id;
-    m_point1.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x));
+    m_point1.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point1CH, x));
     setPosition();
 }
 
 void LineTool::setY1Position(double y) {
     m_activePointId = k_point1Id;
-    m_point1.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y));
+    m_point1.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_point1CH, y));
     setPosition();
 }
 
 void LineTool::setX2Position(double x) {
     m_activePointId = k_point2Id;
-    m_point2.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x));
+    m_point2.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point2CH, x));
     setPosition();
 }
 
 void LineTool::setY2Position(double y) {
     m_activePointId = k_point2Id;
-    m_point2.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y));
+    m_point2.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_point2CH, y));
     setPosition();
 }
 
@@ -182,8 +182,8 @@ void LineTool::stepY2Position(int numSteps) {
 }
 
 void LineTool::setPosition() {
-    m_point1 = getScreenInfo().constrainPosition(m_point1);
-    m_point2 = getScreenInfo().constrainPosition(m_point2);
+    m_point1 = m_screenInfo.constrainPosition(m_point1);
+    m_point2 = m_screenInfo.constrainPosition(m_point2);
 
     m_point1CH->setPosition(m_point1);
     m_point2CH->setPosition(m_point2);
@@ -243,7 +243,7 @@ void LineTool::dragged(Crosshair&, int id, QPoint crosshairCenter, Qt::KeyboardM
             followingPos = m_point1 + movingDelta;
         }
 
-        movingDelta -= followingPos - getScreenInfo().constrainPosition(followingPos);
+        movingDelta -= followingPos - m_screenInfo.constrainPosition(followingPos);
         m_point1 += movingDelta;
         m_point2 += movingDelta;
     } else {
@@ -271,13 +271,13 @@ void LineTool::moved(Crosshair&, int id, QPoint) {
         return;
     }
 
-    const QPointF coord1 = getUnitsProvider().convertCoord(m_point1);
-    const QPointF coord2 = getUnitsProvider().convertCoord(m_point2);
-    const QSizeF wh = getUnitsProvider().getWidthHeight(m_point1, m_point2);
+    const QPointF coord1 = m_unitsProvider.convertCoord(m_point1);
+    const QPointF coord2 = m_unitsProvider.convertCoord(m_point2);
+    const QSizeF wh = m_unitsProvider.getWidthHeight(m_point1, m_point2);
     const double distance = Geometry::hypot(wh);
     const double aspect = Geometry::aspectRatio(wh);
     const double area = Geometry::area(wh);
-    const double angle = getUnitsProvider().convertAngle(Geometry::angle(coord1, coord2));
+    const double angle = m_unitsProvider.convertAngle(Geometry::angle(coord1, coord2));
 
     m_dataWin1->distanceChanged(distance);
     m_dataWin2->distanceChanged(distance);

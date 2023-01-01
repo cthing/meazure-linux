@@ -82,8 +82,6 @@ private:
     int convertToPixels(LinearUnitsId unitsId, const QSizeF& res, double angleFrac, double value, int minValue);
     int convertToPixels(const QSizeF& res, double angleFrac, double value, int minValue);
 
-    const ScreenInfoProvider& m_screenInfo;             ///< Display screen information
-    const UnitsProvider& m_unitsProvider;               ///< Measurement units
     QBrush m_backgroundBrush;                           ///< Ruler background brush
     QPen m_linePen;                                     ///< Ruler border, lines and label drawing pen
     QFont m_font;                                       ///< Ruler label font

@@ -124,15 +124,15 @@ void AngleTool::setDataWinEnabled(bool enable) {
 void AngleTool::saveProfile(Profile& profile) const {
     // Save the position of point 1, point 2 and the vertex.
     //
-    const QPointF pos1 = getUnitsProvider().convertPos(m_point1);
+    const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
     profile.writeStr("AngleX1", StringUtils::dblToStr(pos1.x()));
     profile.writeStr("AngleY1", StringUtils::dblToStr(pos1.y()));
 
-    const QPointF pos2 = getUnitsProvider().convertPos(m_point2);
+    const QPointF pos2 = m_unitsProvider.convertPos(m_point2);
     profile.writeStr("AngleX2", StringUtils::dblToStr(pos2.x()));
     profile.writeStr("AngleY2", StringUtils::dblToStr(pos2.y()));
 
-    const QPointF posV = getUnitsProvider().convertPos(m_vertex);
+    const QPointF posV = m_unitsProvider.convertPos(m_vertex);
     profile.writeStr("AngleXV", StringUtils::dblToStr(posV.x()));
     profile.writeStr("AngleYV", StringUtils::dblToStr(posV.y()));
 }
@@ -140,26 +140,26 @@ void AngleTool::saveProfile(Profile& profile) const {
 void AngleTool::loadProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
-    const QPointF defaultPos1 = getUnitsProvider().convertPos(m_point1);
-    const QPointF defaultPos2 = getUnitsProvider().convertPos(m_point2);
-    const QPointF defaultPosV = getUnitsProvider().convertPos(m_vertex);
+    const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);
+    const QPointF defaultPos2 = m_unitsProvider.convertPos(m_point2);
+    const QPointF defaultPosV = m_unitsProvider.convertPos(m_vertex);
 
     // Load the position of point 1, point 2 and the vertex.
     //
     QPointF pos1;
     pos1.rx() = profile.readDbl("AngleX1", defaultPos1.x());
     pos1.ry() = profile.readDbl("AngleY1", defaultPos1.y());
-    m_point1 = getUnitsProvider().unconvertPos(pos1);
+    m_point1 = m_unitsProvider.unconvertPos(pos1);
 
     QPointF pos2;
     pos2.rx() = profile.readDbl("AngleX2", defaultPos2.x());
     pos2.ry() = profile.readDbl("AngleY2", defaultPos2.y());
-    m_point2 = getUnitsProvider().unconvertPos(pos2);
+    m_point2 = m_unitsProvider.unconvertPos(pos2);
 
     QPointF posV;
     posV.rx() = profile.readDbl("AngleXV", defaultPosV.x());
     posV.ry() = profile.readDbl("AngleYV", defaultPosV.y());
-    m_vertex = getUnitsProvider().unconvertPos(posV);
+    m_vertex = m_unitsProvider.unconvertPos(posV);
 
     m_vertexAnchor = m_vertex;
 
@@ -168,37 +168,37 @@ void AngleTool::loadProfile(Profile& profile) {
 
 void AngleTool::setX1Position(double x) {
     m_activePointId = k_point1Id;
-    m_point1.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point1CH, x));
+    m_point1.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point1CH, x));
     setPosition();
 }
 
 void AngleTool::setY1Position(double y) {
     m_activePointId = k_point1Id;
-    m_point1.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point1CH, y));
+    m_point1.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_point1CH, y));
     setPosition();
 }
 
 void AngleTool::setX2Position(double x) {
     m_activePointId = k_point2Id;
-    m_point2.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_point2CH, x));
+    m_point2.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point2CH, x));
     setPosition();
 }
 
 void AngleTool::setY2Position(double y) {
     m_activePointId = k_point2Id;
-    m_point2.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_point2CH, y));
+    m_point2.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_point2CH, y));
     setPosition();
 }
 
 void AngleTool::setXVPosition(double x) {
     m_activePointId = k_vertexId;
-    m_vertex.rx() = qRound(getUnitsProvider().unconvertCoord(ConvertX, m_vertexCH, x));
+    m_vertex.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_vertexCH, x));
     setPosition();
 }
 
 void AngleTool::setYVPosition(double y) {
     m_activePointId = k_vertexId;
-    m_vertex.ry() = qRound(getUnitsProvider().unconvertCoord(ConvertY, m_vertexCH, y));
+    m_vertex.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_vertexCH, y));
     setPosition();
 }
 
@@ -239,9 +239,9 @@ void AngleTool::stepYVPosition(int numSteps) {
 }
 
 void AngleTool::setPosition() {
-    m_point1 = getScreenInfo().constrainPosition(m_point1);
-    m_point2 = getScreenInfo().constrainPosition(m_point2);
-    m_vertex = getScreenInfo().constrainPosition(m_vertex);
+    m_point1 = m_screenInfo.constrainPosition(m_point1);
+    m_point2 = m_screenInfo.constrainPosition(m_point2);
+    m_vertex = m_screenInfo.constrainPosition(m_vertex);
 
     m_point1CH->setPosition(m_point1);
     m_point2CH->setPosition(m_point2);
@@ -255,9 +255,9 @@ void AngleTool::setPosition() {
 void AngleTool::setBisectorPosition() {
     // Angles are calculated based on the converted positions so that screen resolutions are taken into account.
     //
-    const QPointF coord1 = getUnitsProvider().convertCoord(m_point1);
-    const QPointF coord2 = getUnitsProvider().convertCoord(m_point2);
-    const QPointF coordV = getUnitsProvider().convertCoord(m_vertex);
+    const QPointF coord1 = m_unitsProvider.convertCoord(m_point1);
+    const QPointF coord2 = m_unitsProvider.convertCoord(m_point2);
+    const QPointF coordV = m_unitsProvider.convertCoord(m_vertex);
 
     // The bisector angle is the average of the angle made by each line relative to the x-axis.
     //
@@ -265,7 +265,7 @@ void AngleTool::setBisectorPosition() {
     //
     double alphaB = (Geometry::angle(coordV, coord1) + Geometry::angle(coordV, coord2)) / 2.0;
 
-    if (getUnitsProvider().isInvertY()) {
+    if (m_unitsProvider.isInvertY()) {
         alphaB = -alphaB;
     }
 
@@ -273,7 +273,7 @@ void AngleTool::setBisectorPosition() {
     //
     QPoint pointB(m_vertex.x() + static_cast<int>(k_lengthB * std::cos(alphaB)),
                   m_vertex.y() + static_cast<int>(k_lengthB * std::sin(alphaB)));
-    const QPointF pB = getUnitsProvider().convertCoord(pointB);
+    const QPointF pB = m_unitsProvider.convertCoord(pointB);
 
     const bool angleSign = Geometry::angle(coordV, coord1, coord2) >= 0.0;
     const bool bisectorSign = Geometry::angle(coordV, coord1, pB) >= 0.0;
@@ -358,8 +358,8 @@ void AngleTool::dragged(Crosshair&, int id, QPoint center, Qt::KeyboardModifiers
             followingPos2 = m_point2 + movingDelta;
         }
 
-        const QPoint d1 = followingPos1 - getScreenInfo().constrainPosition(followingPos1);
-        const QPoint d2 = followingPos2 - getScreenInfo().constrainPosition(followingPos2);
+        const QPoint d1 = followingPos1 - m_screenInfo.constrainPosition(followingPos1);
+        const QPoint d2 = followingPos2 - m_screenInfo.constrainPosition(followingPos2);
 
         QPoint d;
         d.rx() = (std::abs(d1.x()) < std::abs(d2.x())) ? d2.x() : d1.x();
@@ -419,10 +419,10 @@ void AngleTool::moved(Crosshair&, int id, QPoint) {
         return;
     }
 
-    const QPointF coord1 = getUnitsProvider().convertCoord(m_point1);
-    const QPointF coord2 = getUnitsProvider().convertCoord(m_point2);
-    const QPointF coordV = getUnitsProvider().convertCoord(m_vertex);
-    const double angle = getUnitsProvider().convertAngle(Geometry::angle(coordV, coord1, coord2));
+    const QPointF coord1 = m_unitsProvider.convertCoord(m_point1);
+    const QPointF coord2 = m_unitsProvider.convertCoord(m_point2);
+    const QPointF coordV = m_unitsProvider.convertCoord(m_vertex);
+    const double angle = m_unitsProvider.convertAngle(Geometry::angle(coordV, coord1, coord2));
 
     m_dataWin1->angleChanged(angle);
     m_dataWin2->angleChanged(angle);

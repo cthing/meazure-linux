@@ -21,6 +21,7 @@
 
 #include "ScreenInfoProvider.h"
 #include <meazure/profile/Profile.h>
+#include <QObject>
 #include <QList>
 #include <QScreen>
 #include <vector>
@@ -29,7 +30,9 @@
 class App;
 
 
-class ScreenInfo : public ScreenInfoProvider {
+class ScreenInfo : public QObject, public ScreenInfoProvider {
+
+    Q_OBJECT
 
 public:
     static constexpr bool k_defUseManualRes {false };  ///< Use manual resolution by default.
@@ -85,7 +88,7 @@ public:
     /// @param[in] useManualRes true if the resolution is manually calibrated.
     /// @param[in] manualRes Manually calibrated screen resolution, in pixels.
     ///
-    void setScreenRes(int screenIndex, bool useManualRes, const QSizeF* manualRes = nullptr) const;
+    void setScreenRes(int screenIndex, bool useManualRes, const QSizeF* manualRes = nullptr);
 
     [[nodiscard]] bool isManualRes(int screenIndex) const override;
 
@@ -117,6 +120,9 @@ public:
     [[nodiscard]] QPoint constrainPosition(const QPoint& point) const override;
 
     [[nodiscard]] QImage grabScreen(int x, int y, int width, int height) const override;
+
+signals:
+    void resolutionChanged();
 
 private:
     class Screen;

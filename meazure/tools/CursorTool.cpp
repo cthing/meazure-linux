@@ -72,15 +72,15 @@ void CursorTool::pointerMotion(int16_t x, int16_t y) {
 }
 
 void CursorTool::placeDataWin(const QPoint &position) {
-    const int screenIndex = getScreenInfo().screenForPoint(position);
-    const QSize cursorSize = getScreenInfo().getCursorSize(screenIndex);
+    const int screenIndex = m_screenInfo.screenForPoint(position);
+    const QSize cursorSize = m_screenInfo.getCursorSize(screenIndex);
     const QRect targetRect(position, cursorSize);
     m_dataWindow->moveNear(targetRect);
 }
 
 void CursorTool::emitMeasurement(QPoint position) {
     if (isEnabled()) {
-        const QPointF coord = getUnitsProvider().convertCoord(position);
+        const QPointF coord = m_unitsProvider.convertCoord(position);
 
         m_dataWindow->xy1PositionChanged(coord, position);
         placeDataWin(position);

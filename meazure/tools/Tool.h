@@ -116,17 +116,10 @@ signals:
     void toolEnabled(Tool& tool, bool enabled);
 
 protected:
-    [[nodiscard]] const ScreenInfoProvider& getScreenInfo() const {
-        return m_screenInfo;
-    }
-
-    [[nodiscard]] const UnitsProvider& getUnitsProvider() const {
-        return m_unitsProvider;
-    }
-
-private:
     const ScreenInfoProvider& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
+
+private:
     bool m_enabled { false };
     bool m_dataWinEnabled { true };
 };

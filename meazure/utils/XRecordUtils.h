@@ -132,7 +132,7 @@ namespace XRecord {
                 m_dataDisplay(dataDisplay),
                 m_context(XRecordCreateContext(controlDisplay, flags, &clientSpec, numClients, &ranges, numRanges)) {
             if (m_context == 0) {
-                qFatal("Could not create XRecord context");
+                qFatal("Could not init XRecord context");
             }
         }
 

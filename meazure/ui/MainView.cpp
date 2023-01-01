@@ -21,9 +21,9 @@
 #include <QVBoxLayout>
 
 
-MainView::MainView() :
+MainView::MainView(PrefsDialog* prefsDialog) :
         m_toolDataSection(new ToolDataSection()),
-        m_screenDataSection(new ScreenDataSection()),
+        m_screenDataSection(new ScreenDataSection(prefsDialog)),
         m_magnifierSection(new MagnifierSection) {
     auto* layout = new QVBoxLayout();
     setLayout(layout);

@@ -87,10 +87,10 @@ private:
     static constexpr int k_defaultFlashCount { 9 };
     static constexpr int k_strobeCount { 1 };
 
+    void init();
+
     [[nodiscard]] QPoint findCenter(const QPoint& point) const;
 
-    const ScreenInfoProvider& m_screenProvider;
-    const UnitsProvider& m_unitsProvider;
     int m_id;
     QBrush m_backgroundBrush;
     QBrush m_highlightBrush;

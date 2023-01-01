@@ -82,8 +82,6 @@ private slots:
     void colorChanged(Colors::Item item, QRgb color);
 
 private:
-    const ScreenInfoProvider& m_screenInfo;
-    const UnitsProvider& m_unitsProvider;
     double m_gap;
     QPen m_pen;
     QPoint m_center;

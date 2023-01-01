@@ -27,9 +27,7 @@
 
 Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &unitsProvider, bool flip,
              QWidget* parent, QRgb backgroundColor, QRgb borderColor, QRgb opacity) :
-        Graphic(parent),
-        m_screenInfo(screenInfoProvider),
-        m_unitsProvider(unitsProvider),
+        Graphic(screenInfoProvider, unitsProvider, parent),
         m_backgroundBrush(backgroundColor),
         m_linePen(QBrush(borderColor), k_lineWidth),
         m_font("FreeSans", 10),

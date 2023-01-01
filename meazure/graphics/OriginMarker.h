@@ -71,8 +71,6 @@ private:
     static constexpr double k_axesLength { 0.25 };      ///< Length of each axis line, inches
     static constexpr int k_axesLengthMin { 10 };        ///< Minimum length of each axis line, pixels
 
-    const ScreenInfoProvider& m_screenInfo;
-    const UnitsProvider& m_unitsProvider;
     QPen m_pen;
     QPoint m_origin { 0, 0 };
     bool m_inverted { false };

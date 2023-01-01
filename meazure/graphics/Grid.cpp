@@ -27,9 +27,7 @@
 
 Grid::Grid(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
            QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(parent),
-        m_screenInfo(screenInfoProvider),
-        m_unitsProvider(unitsProvider),
+        Graphic(screenInfoProvider, unitsProvider, parent),
         m_pen(QBrush(lineColor), lineWidth),
         m_gridRect(0, 0, 100, 100) {
     setAttribute(Qt::WA_NoSystemBackground);

@@ -27,9 +27,7 @@
 
 Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double gap,
                QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(parent),
-        m_screenInfo(screenInfoProvider),
-        m_unitsProvider(unitsProvider),
+        Graphic(screenInfoProvider, unitsProvider, parent),
         m_gap(gap),
         m_pen(QBrush(lineColor), lineWidth),
         m_center(50, 50),
