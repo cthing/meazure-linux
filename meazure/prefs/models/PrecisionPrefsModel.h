@@ -48,8 +48,8 @@ public:
     void setPrecision(LinearUnitsId unitsId, LinearMeasurementId measurementId, int precision);
     void setPrecision(AngularUnitsId unitsId, AngularMeasurementId measurementId, int precision);
 
-    LinearPrecisions m_linearPrecisions;            // NOLINT(misc-non-private-member-variables-in-classes)
-    AngularPrecisions m_angularPrecisions;          // NOLINT(misc-non-private-member-variables-in-classes)
+    LinearPrecisions m_linearPrecisions;
+    AngularPrecisions m_angularPrecisions;
 
 signals:
     void dirtyChanged(bool dirty);

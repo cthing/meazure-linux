@@ -49,6 +49,7 @@ public:
     }
 
     [[nodiscard]] const ScreenInfo& getScreenInfo() const { return m_screenInfo; }
+    [[nodiscard]] ScreenInfo& getScreenInfo() { return m_screenInfo; }
     [[nodiscard]] UnitsMgr& getUnitsMgr() { return m_unitsMgr; }
     [[nodiscard]] ToolMgr& getToolMgr() { return m_toolMgr; }
 

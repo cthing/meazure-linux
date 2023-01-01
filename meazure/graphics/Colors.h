@@ -34,9 +34,9 @@ namespace Colors {
     /// Represents a color in the Cyan-Magenta-Yellow color space.
     ///
     struct CMY {
-        int cyan;               // NOLINT(misc-non-private-member-variables-in-classes)
-        int magenta;            // NOLINT(misc-non-private-member-variables-in-classes)
-        int yellow;             // NOLINT(misc-non-private-member-variables-in-classes)
+        int cyan;
+        int magenta;
+        int yellow;
 
         constexpr CMY() : cyan(0), magenta(0), yellow(0) {}
         constexpr CMY(int c, int m, int y) : cyan(c), magenta(m), yellow(y) {}
@@ -46,10 +46,10 @@ namespace Colors {
     /// the black component.
     ///
     struct CMYK {
-        int cyan;               // NOLINT(misc-non-private-member-variables-in-classes)
-        int magenta;            // NOLINT(misc-non-private-member-variables-in-classes)
-        int yellow;             // NOLINT(misc-non-private-member-variables-in-classes)
-        int black;              // NOLINT(misc-non-private-member-variables-in-classes)
+        int cyan;
+        int magenta;
+        int yellow;
+        int black;
 
         constexpr CMYK() : cyan(0), magenta(0), yellow(0), black(0) {}
         constexpr CMYK(int c, int m, int y, int k) : cyan(c), magenta(m), yellow(y), black(k) {}
@@ -58,9 +58,9 @@ namespace Colors {
     /// Represents a color in the Hue (H), Saturation (S), and Lightness (L) color space.
     ///
     struct HSL {
-        int hue;                // NOLINT(misc-non-private-member-variables-in-classes)
-        int saturation;         // NOLINT(misc-non-private-member-variables-in-classes)
-        int lightness;          // NOLINT(misc-non-private-member-variables-in-classes)
+        int hue;
+        int saturation;
+        int lightness;
 
         constexpr HSL() : hue(0), saturation(0), lightness(0) {}
         constexpr HSL(int h, int s, int l) : hue(h), saturation(s), lightness(l) {}
@@ -70,9 +70,9 @@ namespace Colors {
     /// space. See https://en.wikipedia.org/wiki/YCbCr for more information.
     ///
     struct YCbCr {
-        int y;                  // NOLINT(misc-non-private-member-variables-in-classes)
-        int cb;                 // NOLINT(misc-non-private-member-variables-in-classes)
-        int cr;                 // NOLINT(misc-non-private-member-variables-in-classes)
+        int y;
+        int cb;
+        int cr;
 
         constexpr YCbCr() : y(0), cb(0), cr(0) {}
         constexpr YCbCr(int luma, int blueChroma, int redChroma) : y(luma), cb(blueChroma), cr(redChroma) {}
@@ -81,9 +81,9 @@ namespace Colors {
     /// Represents a color in the Luminance (Y), In-phase (I) and Quadrature (Q) chrominance color space.
     ///
     struct YIQ {
-        int y;                  // NOLINT(misc-non-private-member-variables-in-classes)
-        int i;                  // NOLINT(misc-non-private-member-variables-in-classes)
-        int q;                  // NOLINT(misc-non-private-member-variables-in-classes)
+        int y;
+        int i;
+        int q;
 
         constexpr YIQ() : y(0), i(0), q(0) {}
         constexpr YIQ(int luma, int inphase, int quadrature) : y(luma), i(inphase), q(quadrature) {}
@@ -92,9 +92,9 @@ namespace Colors {
     /// the blue-related (Z) and the RGB mixed (X).
     ///
     struct XYZ {
-        double x;               // NOLINT(misc-non-private-member-variables-in-classes)
-        double y;               // NOLINT(misc-non-private-member-variables-in-classes)
-        double z;               // NOLINT(misc-non-private-member-variables-in-classes)
+        double x;
+        double y;
+        double z;
 
         constexpr XYZ() : x(0.0), y(0.0), z(0.0) {}
         constexpr XYZ(double xin, double yin, double zin) : x(xin), y(yin), z(zin) {}
@@ -104,9 +104,9 @@ namespace Colors {
     /// chroma (a*) and the blue yellow axis chroma (b*).
     ///
     struct Lab {
-        double l;               // NOLINT(misc-non-private-member-variables-in-classes)
-        double a;               // NOLINT(misc-non-private-member-variables-in-classes)
-        double b;               // NOLINT(misc-non-private-member-variables-in-classes)
+        double l;
+        double a;
+        double b;
 
         constexpr Lab() : l(0.0), a(0.0), b(0.0) {}
         constexpr Lab(double lstar, double astar, double bstar) : l(lstar), a(astar), b(bstar) {}

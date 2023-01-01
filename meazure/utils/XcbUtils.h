@@ -98,10 +98,10 @@ namespace Xcb {
         }
 
 
-        xcb_connection_t* m_connection;     // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes)
-        COOKIE m_cookie;                    // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes)
-        ReplyFunc m_replyFunc;              // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes)
-        ReplyPtr m_reply;                   // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes)
+        xcb_connection_t* m_connection;
+        COOKIE m_cookie;
+        ReplyFunc m_replyFunc;
+        ReplyPtr m_reply;
     };
 
 

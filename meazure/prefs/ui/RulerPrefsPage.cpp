@@ -154,7 +154,7 @@ void RulerPrefsPage::configure() {
         m_model->m_rulerOpacity->setValue(value);
     });
     connect(m_model->m_rulerOpacity, &PreferenceBase::valueChanged, this, [this](QVariant value) { // NOLINT(performance-unnecessary-value-param)
-        const QSignalBlocker blocker(this);
+        const QSignalBlocker blocker(m_opacitySlider);
         const int opacity = value.value<int>();
 
         m_opacitySlider->setValue(opacity);

@@ -22,6 +22,7 @@
 #include "RulerPrefsPage.h"
 #include "UnitsPrefsPage.h"
 #include "PrecisionPrefsPage.h"
+#include "CalibrationPrefsPage.h"
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -36,6 +37,7 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent), m_tabs(new QTabWidg
     connect(buttonBox, &QDialogButtonBox::accepted, this, &PrefsDialog::accept);
     connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &PrefsDialog::apply);
 
+    m_prefsPages.push_back(new CalibrationPrefsPage());
     m_prefsPages.push_back(new ToolPrefsPage());
     m_prefsPages.push_back(new RulerPrefsPage());
     m_prefsPages.push_back(new PrecisionPrefsPage());

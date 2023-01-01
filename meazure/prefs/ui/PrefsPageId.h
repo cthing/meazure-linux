@@ -21,6 +21,7 @@
 
 
 enum class PrefsPageId {
+    CalibrationPage,
     ToolPage,
     RulerPage,
     UnitsPage,

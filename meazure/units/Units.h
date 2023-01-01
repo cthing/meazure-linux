@@ -687,6 +687,8 @@ protected:
 class PointUnits : public LinearUnits {
 
 public:
+    static constexpr double k_ptPerIn { 72.0 };
+
     /// Constructs point units.
     ///
     /// @param[in] screenInfoProvider Information about display screens
@@ -718,6 +720,8 @@ public:
 class PicaUnits : public LinearUnits {
 
 public:
+    static constexpr double k_pcPerIn { 6.0 };
+
     /// Constructs pica units.
     ///
     /// @param[in] screenInfoProvider Information about display screens
@@ -749,6 +753,8 @@ public:
 class TwipUnits : public LinearUnits {
 
 public:
+    static constexpr double k_tpPerIn { 1440.0 };
+
     /// Constructs twips units.
     ///
     /// @param[in] screenInfoProvider Screen information provider
@@ -811,6 +817,8 @@ public:
 class CentimeterUnits : public LinearUnits {
 
 public:
+    static constexpr double k_cmPerIn { 2.54 };
+
     /// Constructs centimeter units.
     ///
     /// @param[in] screenInfoProvider Screen information provider
@@ -842,6 +850,8 @@ public:
 class MillimeterUnits : public LinearUnits {
 
 public:
+    static constexpr double k_mmPerIn { 25.4 };
+
     /// Constructs millimeter units.
     ///
     /// @param[in] screenInfoProvider Screen information provider

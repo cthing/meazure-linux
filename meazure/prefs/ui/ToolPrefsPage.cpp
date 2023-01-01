@@ -86,7 +86,7 @@ void ToolPrefsPage::createUI() {
     m_lineDefaultButton = new QPushButton(tr("Default"));
     m_lineDefaultButton->setFixedWidth(k_buttonWidth);
     auto* lineThkLabel = new QLabel(tr("Line Thickness:"));
-    m_lineThkSpin = new QSpinBox();
+    m_lineThkSpin = new IntegerDataField(2, true);
     auto* lineThkUnitsLabel = new QLabel(tr("px"));
 
     auto* lineSampleLight = new QFrame();
@@ -242,7 +242,7 @@ void ToolPrefsPage::configure() {
         m_model->m_crosshairOpacity->setValue(value);
     });
     connect(m_model->m_crosshairOpacity, &PreferenceBase::valueChanged, this, [this](QVariant value) { // NOLINT(performance-unnecessary-value-param)
-        const QSignalBlocker blocker(this);
+        const QSignalBlocker blocker(m_opacitySlider);
         const int opacity = value.value<int>();
 
         m_opacitySlider->setValue(opacity);
@@ -283,6 +283,7 @@ void ToolPrefsPage::configure() {
     });
     connect(m_model->m_lineWidth, &PreferenceBase::valueChanged, this, [this](QVariant value) { // NOLINT(performance-unnecessary-value-param)
         const int thk = value.value<int>();
+        m_lineThkSpin->setValueQuietly(thk);
         m_line1->setLineWidth(thk);
         m_line2->setLineWidth(thk);
     });

@@ -37,6 +37,10 @@ set(UI_SOURCES
 source_group(UI FILES ${UI_SOURCES})
 
 set(PREFS_SOURCES
+    prefs/ui/CalibrationPrefsPage.cpp
+    prefs/ui/CalibrationPrefsPage.h
+    prefs/ui/Caliper.cpp
+    prefs/ui/Caliper.h
     prefs/ui/CheckerBoard.cpp
     prefs/ui/CheckerBoard.h
     prefs/ui/PrecisionPrefsPage.cpp
@@ -50,6 +54,8 @@ set(PREFS_SOURCES
     prefs/ui/ToolPrefsPage.h
     prefs/ui/UnitsPrefsPage.cpp
     prefs/ui/UnitsPrefsPage.h
+    prefs/models/CalibrationPrefsModel.cpp
+    prefs/models/CalibrationPrefsModel.h
     prefs/models/PrecisionPrefsModel.cpp
     prefs/models/PrecisionPrefsModel.h
     prefs/models/Preference.h

@@ -51,7 +51,7 @@ public:
     uint16_t height() override { return m_geom->height; }
 
 protected:
-    Xcb::Geometry m_geom; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes)
+    Xcb::Geometry m_geom;
 };
 
 

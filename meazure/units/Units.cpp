@@ -140,7 +140,7 @@ QString LinearUnits::getAreaLabel() const {
 }
 
 QString LinearUnits::getResLabel() const {
-    return QString("px / %1").arg(getLengthLabel());
+    return QString("px/%1").arg(getLengthLabel());
 }
 
 QPointF LinearUnits::convertCoord(const QPoint& pos) const {
@@ -345,7 +345,7 @@ QString PixelUnits::getLengthLabel() const {
 }
 
 QString PixelUnits::getResLabel() const {
-    return "px / in";
+    return "px/in";
 }
 
 bool PixelUnits::isResRequired() const {
@@ -382,7 +382,7 @@ QString PointUnits::getLengthLabel() const {
 }
 
 QSizeF PointUnits::fromPixels(const QSizeF& res) const {
-    return { 72.0 / res.width(), 72.0 / res.height() };
+    return { k_ptPerIn / res.width(), k_ptPerIn / res.height() };
 }
 
 
@@ -407,7 +407,7 @@ QString PicaUnits::getLengthLabel() const {
 }
 
 QSizeF PicaUnits::fromPixels(const QSizeF& res) const {
-    return { 6.0 / res.width(), 6.0 / res.height() };
+    return { k_pcPerIn / res.width(), k_pcPerIn / res.height() };
 }
 
 
@@ -432,7 +432,7 @@ QString TwipUnits::getLengthLabel() const {
 }
 
 QSizeF TwipUnits::fromPixels(const QSizeF& res) const {
-    return { 1440.0 / res.width(), 1440.0 / res.height() };
+    return { k_tpPerIn / res.width(), k_tpPerIn / res.height() };
 }
 
 
@@ -482,7 +482,7 @@ QString CentimeterUnits::getLengthLabel() const {
 }
 
 QSizeF CentimeterUnits::fromPixels(const QSizeF& res) const {
-    return { 2.54 / res.width(), 2.54 / res.height() };
+    return { k_cmPerIn / res.width(), k_cmPerIn / res.height() };
 }
 
 
@@ -507,5 +507,5 @@ QString MillimeterUnits::getLengthLabel() const {
 }
 
 QSizeF MillimeterUnits::fromPixels(const QSizeF& res) const {
-    return { 25.4 / res.width(), 25.4 / res.height() };
+    return { k_mmPerIn / res.width(), k_mmPerIn / res.height() };
 }

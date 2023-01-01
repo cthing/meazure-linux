@@ -39,9 +39,9 @@ public:
 
     [[nodiscard]] bool isDirty() const;
 
-    Preference<QRgb>* m_rulerBackColor;         // NOLINT(misc-non-private-member-variables-in-classes)
-    Preference<QRgb>* m_rulerBorderColor;       // NOLINT(misc-non-private-member-variables-in-classes)
-    Preference<int>* m_rulerOpacity;            // NOLINT(misc-non-private-member-variables-in-classes)
+    Preference<QRgb>* m_rulerBackColor;
+    Preference<QRgb>* m_rulerBorderColor;
+    Preference<int>* m_rulerOpacity;
 
 signals:
     void dirtyChanged(bool dirty);

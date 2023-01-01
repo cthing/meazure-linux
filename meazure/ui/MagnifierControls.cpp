@@ -61,8 +61,8 @@ MagnifierControls::MagnifierControls(Magnifier* magnifier) {
     zoom->setRange(0, Magnifier::getZoomFactors().size() - 1);
     connect(zoom, &QSlider::valueChanged, magnifier, &Magnifier::setZoom);
 
-    connect(magnifier, &Magnifier::zoomChanged, this, [this, zoom, factorLabel](int zoomIndex) {
-        const QSignalBlocker blocker(this);
+    connect(magnifier, &Magnifier::zoomChanged, this, [zoom, factorLabel](int zoomIndex) {
+        const QSignalBlocker blocker(zoom);
         const QString zoomFactor = QString("%1X").arg(Magnifier::getZoomFactors()[zoomIndex]);
 
         zoom->setValue(zoomIndex);

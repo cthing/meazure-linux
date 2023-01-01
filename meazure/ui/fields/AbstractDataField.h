@@ -103,9 +103,6 @@ protected:
             QPalette palette;
             palette.setColor(QPalette::Base, SPIN_TYPE::isEnabled() ? m_defaultBackground : m_readOnlyBackground);
             SPIN_TYPE::setPalette(palette);
-            if (!SPIN_TYPE::isEnabled()) {
-                setValueQuietly(0);
-            }
         }
 
         SPIN_TYPE::changeEvent(ev);

@@ -25,6 +25,7 @@
 #include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
 #include <meazure/ui/ToolDataWindow.h>
+#include <meazure/ui/fields/IntegerDataField.h>
 #include <QWidget>
 #include <QMargins>
 #include <QSlider>
@@ -86,5 +87,5 @@ private:
     QPushButton* m_lineColorButton;
     QPushButton* m_lineDefaultButton;
     QSlider* m_opacitySlider;
-    QSpinBox* m_lineThkSpin;
+    IntegerDataField* m_lineThkSpin;
 };

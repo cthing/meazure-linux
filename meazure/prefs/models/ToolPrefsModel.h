@@ -39,12 +39,12 @@ public:
 
     [[nodiscard]] bool isDirty() const;
 
-    Preference<QRgb>* m_lineForeColor;             // NOLINT(misc-non-private-member-variables-in-classes)
-    Preference<QRgb>* m_crosshairBackColor;        // NOLINT(misc-non-private-member-variables-in-classes)
-    Preference<QRgb>* m_crosshairBorderColor;      // NOLINT(misc-non-private-member-variables-in-classes)
-    Preference<QRgb>* m_crosshairHighlightColor;   // NOLINT(misc-non-private-member-variables-in-classes)
-    Preference<int>* m_crosshairOpacity;           // NOLINT(misc-non-private-member-variables-in-classes)
-    Preference<int>* m_lineWidth;                  // NOLINT(misc-non-private-member-variables-in-classes)
+    Preference<QRgb>* m_lineForeColor;
+    Preference<QRgb>* m_crosshairBackColor;
+    Preference<QRgb>* m_crosshairBorderColor;
+    Preference<QRgb>* m_crosshairHighlightColor;
+    Preference<int>* m_crosshairOpacity;
+    Preference<int>* m_lineWidth;
 
 signals:
     void dirtyChanged(bool dirty);

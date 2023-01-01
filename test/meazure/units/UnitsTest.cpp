@@ -253,7 +253,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     PixelUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, PixelsId, "px", "px", "sq. px", "px / in"));
+    MEA_CHECK(verifyUnitsId(units, PixelsId, "px", "px", "sq. px", "px/in"));
 
     const Units::DisplayPrecisions defaultPrecisions { 0, 0, 0, 0, 1, 0, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -280,7 +280,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     PointUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, PointsId, "pt", "pt", "sq. pt", "px / pt"));
+    MEA_CHECK(verifyUnitsId(units, PointsId, "pt", "pt", "sq. pt", "px/pt"));
 
     const Units::DisplayPrecisions defaultPrecisions { 1, 1, 1, 1, 1, 1, 2, 2 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -307,7 +307,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     PicaUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, PicasId, "pc", "pc", "sq. pc", "px / pc"));
+    MEA_CHECK(verifyUnitsId(units, PicasId, "pc", "pc", "sq. pc", "px/pc"));
 
     const Units::DisplayPrecisions defaultPrecisions { 2, 2, 2, 2, 2, 2, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -334,7 +334,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     TwipUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, TwipsId, "tp", "tp", "sq. tp", "px / tp"));
+    MEA_CHECK(verifyUnitsId(units, TwipsId, "tp", "tp", "sq. tp", "px/tp"));
 
     const Units::DisplayPrecisions defaultPrecisions { 0, 0, 0, 0, 0, 0, 4, 4 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -361,7 +361,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     InchUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, InchesId, "in", "in", "sq. in", "px / in"));
+    MEA_CHECK(verifyUnitsId(units, InchesId, "in", "in", "sq. in", "px/in"));
 
     const Units::DisplayPrecisions defaultPrecisions { 3, 3, 3, 3, 3, 3, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -388,7 +388,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     CentimeterUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, CentimetersId, "cm", "cm", "sq. cm", "px / cm"));
+    MEA_CHECK(verifyUnitsId(units, CentimetersId, "cm", "cm", "sq. cm", "px/cm"));
 
     const Units::DisplayPrecisions defaultPrecisions { 2, 2, 2, 2, 2, 2, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -415,7 +415,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     const MockScreenInfoProvider screenProvider;
     MillimeterUnits units(screenProvider);
 
-    MEA_CHECK(verifyUnitsId(units, MillimetersId, "mm", "mm", "sq. mm", "px / mm"));
+    MEA_CHECK(verifyUnitsId(units, MillimetersId, "mm", "mm", "sq. mm", "px/mm"));
 
     const Units::DisplayPrecisions defaultPrecisions { 1, 1, 1, 1, 1, 1, 2, 2 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));
@@ -488,7 +488,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
     units.setScaleFactor(2.0);
     QCOMPARE(units.getScaleFactor(), 2.0);
 
-    MEA_CHECK(verifyUnitsId(units, CustomId, "custom", "ab", "sq. ab", "px / ab"));
+    MEA_CHECK(verifyUnitsId(units, CustomId, "custom", "ab", "sq. ab", "px/ab"));
 
     const Units::DisplayPrecisions defaultPrecisions { 0, 0, 0, 0, 1, 0, 1, 1 };
     MEA_CHECK(verifyPrecisions(units, defaultPrecisions, linearPrecisionNames));

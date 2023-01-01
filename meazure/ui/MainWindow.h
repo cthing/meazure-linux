@@ -77,11 +77,11 @@ private:
                     || m_magnifierSectionVisible || m_statusBarVisible;
         }
 
-        bool m_toolBarVisible { k_defToolBarVisible };                      // NOLINT(misc-non-private-member-variables-in-classes)
-        bool m_toolDataSectionVisible { k_defToolDataSectionVisible };      // NOLINT(misc-non-private-member-variables-in-classes)
-        bool m_screenDataSectionVisible { k_defScreenDataSectionVisible };  // NOLINT(misc-non-private-member-variables-in-classes)
-        bool m_magnifierSectionVisible { k_defMagnifierSectionVisible };    // NOLINT(misc-non-private-member-variables-in-classes)
-        bool m_statusBarVisible { k_defStatusBarVisible };                  // NOLINT(misc-non-private-member-variables-in-classes)
+        bool m_toolBarVisible { k_defToolBarVisible };
+        bool m_toolDataSectionVisible { k_defToolDataSectionVisible };
+        bool m_screenDataSectionVisible { k_defScreenDataSectionVisible };
+        bool m_magnifierSectionVisible { k_defMagnifierSectionVisible };
+        bool m_statusBarVisible { k_defStatusBarVisible };
     };
 
 

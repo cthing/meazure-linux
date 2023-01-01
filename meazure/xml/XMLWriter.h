@@ -159,10 +159,8 @@ protected:
     struct Attribute {
         Attribute(QString  name, QString  value) : m_name(std::move(name)), m_value(std::move(value)) {}
 
-        // NOLINTBEGIN(misc-non-private-member-variables-in-classes)
         QString m_name;
         QString m_value;
-        // NOLINTEND(misc-non-private-member-variables-in-classes)
     };
 
 
@@ -266,11 +264,9 @@ private:
     struct Element {
         Element(QString  name, State state): m_name(std::move(name)), m_state(state) {}
 
-        // NOLINTBEGIN(misc-non-private-member-variables-in-classes)
         QString m_name;             ///< Name of the element
         Attributes m_attributes;    ///< Attributes for the element
         State m_state;              ///< Writer state in which this element is being written
-        // NOLINTEND(misc-non-private-member-variables-in-classes)
     };
 
 

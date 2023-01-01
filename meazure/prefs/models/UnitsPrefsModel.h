@@ -39,10 +39,10 @@ public:
 
     [[nodiscard]] bool isDirty() const;
 
-    Preference<QString>* m_name;                        // NOLINT(misc-non-private-member-variables-in-classes,cppcoreguidelines-non-private-member-variables-in-classes)
-    Preference<QString>* m_abbrev;                      // NOLINT(misc-non-private-member-variables-in-classes,cppcoreguidelines-non-private-member-variables-in-classes)
-    Preference<CustomUnits::ScaleBasis>* m_scaleBasis;  // NOLINT(misc-non-private-member-variables-in-classes,cppcoreguidelines-non-private-member-variables-in-classes)
-    Preference<double>* m_scaleFactor;                  // NOLINT(misc-non-private-member-variables-in-classes,cppcoreguidelines-non-private-member-variables-in-classes)
+    Preference<QString>* m_name;
+    Preference<QString>* m_abbrev;
+    Preference<CustomUnits::ScaleBasis>* m_scaleBasis;
+    Preference<double>* m_scaleFactor;
 
 signals:
     void dirtyChanged(bool dirty);

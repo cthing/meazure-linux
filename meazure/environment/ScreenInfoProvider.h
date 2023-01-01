@@ -100,7 +100,7 @@ struct ScreenInfoProvider {
 
     /// Returns the manually set screen resolution for the screen pointed to by the specified iterator.
     ///
-    /// @param[in] screenIndex Screen iterator pointed at the screen whose manual resolution is desired.
+    /// @param[in] screenIndex Screen whose manual resolution is desired.
     /// @param[out] useManualRes true if the resolution was set manually.
     /// @param[out] manualRes Manually set resolution, in pixels per inch.
     ///

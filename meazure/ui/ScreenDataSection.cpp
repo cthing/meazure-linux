@@ -99,7 +99,7 @@ void ScreenDataSection::update(QPointF, QPoint rawPos) {
 void ScreenDataSection::refresh() {
     QString title = m_screenInfo.getScreenName(m_currentScreenIdx);
     if (title.isEmpty()) {
-        title = QString("%1").arg(m_currentScreenIdx);
+        title = QString::number(m_currentScreenIdx);
     }
     if (m_screenInfo.isPrimary(m_currentScreenIdx)) {
         title += tr(" (primary)");
