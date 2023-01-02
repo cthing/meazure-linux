@@ -23,7 +23,7 @@
 #include "RadioToolTraits.h"
 #include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Rectangle.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
@@ -41,8 +41,7 @@ class RectangleTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"RectTool" };
 
-    explicit RectangleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                           QObject* parent = nullptr);
+    explicit RectangleTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     ~RectangleTool() override;
 

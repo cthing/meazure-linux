@@ -22,7 +22,7 @@
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
 #include <meazure/graphics/Crosshair.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
@@ -39,8 +39,7 @@ class PointTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"PointTool" };
 
-    explicit PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                       QObject* parent = nullptr);
+    explicit PointTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     ~PointTool() override;
 

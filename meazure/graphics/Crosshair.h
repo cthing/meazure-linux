@@ -21,7 +21,7 @@
 
 #include "Graphic.h"
 #include "Colors.h"
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QPainterPath>
 #include <QSize>
@@ -44,7 +44,7 @@ class Crosshair : public Graphic {
 public:
     /// Constructs a crosshair.
     ///
-    /// @param[in] screenInfoProvider Information about the display screens
+    /// @param[in] screenInfo Information about the display screens
     /// @param[in] unitsProvider Measurement units
     /// @param[in] parent Parent widget for the crosshair or nullptr for a top level crosshair
     /// @param[in] tooltip Tooltip shown when hovering over the crosshair
@@ -54,7 +54,7 @@ public:
     /// @param[in] borderColor Crosshair border color
     /// @param[in] opacity Crosshair opacity
     ///
-    explicit Crosshair(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+    explicit Crosshair(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
                        QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
                        QRgb backgroundColor = Colors::get(Colors::CrosshairBack),
                        QRgb highlightColor = Colors::get(Colors::CrosshairHighlight),
@@ -203,7 +203,8 @@ private:
     QPainterPath m_crosshair;
     bool m_pointerOver { false };
     bool m_highlight { false };
-    QPoint m_centerPosition;
+    QPoint m_centerOffset;
+    QPoint m_position;
     QPoint m_initialGrabPosition;
     QTimer m_flashTimer;
     int m_flashCountDown { -1 };

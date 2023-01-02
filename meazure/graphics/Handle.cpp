@@ -23,10 +23,10 @@
 #include <QPainter>
 
 
-Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+Handle::Handle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
                QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb highlightColor,
                QRgb borderColor, QRgb opacity) :
-        Graphic(screenInfoProvider, unitsProvider, parent),
+        Graphic(screenInfo, unitsProvider, parent),
         m_id(id),
         m_backgroundBrush(backgroundColor),
         m_highlightBrush(highlightColor),
@@ -44,6 +44,10 @@ Handle::Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
     }
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Handle::colorChanged);
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        init();
+        setPosition(m_position);
+    });
 
     m_flashTimer.setTimerType(Qt::PreciseTimer);
     m_flashTimer.setInterval(100);
@@ -61,7 +65,7 @@ void Handle::init() {
     actualSize.rheight() = MathUtils::makeOddUp(actualSize.height());
     setFixedSize(actualSize);
 
-    m_centerPosition = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
+    m_centerOffset = QPoint((actualSize.width() - 1) / 2, (actualSize.height() - 1) / 2);
 }
 
 void Handle::colorChanged(Colors::Item item, QRgb color) {
@@ -97,9 +101,10 @@ void Handle::setOpacity(int opacityPercent) {
 }
 
 void Handle::setPosition(const QPoint &center) {
-    const QPoint topLeft = center - m_centerPosition;
+    m_position = center;
+    const QPoint topLeft = m_position - m_centerOffset;
     move(topLeft);
-    emit moved(*this, m_id, center);
+    emit moved(*this, m_id, m_position);
 }
 
 void Handle::flash(int flashCount) {
@@ -166,7 +171,7 @@ void Handle::mouseMoveEvent(QMouseEvent* event) {
 }
 
 QPoint Handle::findCenter(const QPoint& point) const {
-    const QPoint center(point - (m_initialGrabPosition - m_centerPosition));
+    const QPoint center(point - (m_initialGrabPosition - m_centerOffset));
     const QPoint globalCenter(mapToGlobal(center));
     return m_screenInfo.constrainPosition(globalCenter);
 }

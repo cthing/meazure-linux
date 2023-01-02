@@ -20,10 +20,9 @@
 #include "OriginTool.h"
 #include <QPoint>
 
-OriginTool::OriginTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                       QObject* parent) :
-        Tool(screenInfoProvider, unitsProvider, parent),
-        m_marker(new OriginMarker(screenInfoProvider, unitsProvider)) {
+OriginTool::OriginTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+        Tool(screenInfo, unitsProvider, parent),
+        m_marker(new OriginMarker(screenInfo, unitsProvider)) {
 }
 
 OriginTool::~OriginTool() {

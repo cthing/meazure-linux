@@ -23,9 +23,9 @@
 #include <QBrush>
 
 
-OriginMarker::OriginMarker(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+OriginMarker::OriginMarker(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
                             QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(screenInfoProvider, unitsProvider, parent),
+        Graphic(screenInfo, unitsProvider, parent),
         m_pen(QBrush(lineColor), lineWidth) {
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -34,6 +34,10 @@ OriginMarker::OriginMarker(const ScreenInfoProvider& screenInfoProvider, const U
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &OriginMarker::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this,
             &OriginMarker::setLineWidth);
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        setPosition(m_origin, m_inverted);
+        repaint();
+    });
 }
 
 void OriginMarker::colorChanged(Colors::Item item, QRgb color) {

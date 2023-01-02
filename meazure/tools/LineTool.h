@@ -23,7 +23,7 @@
 #include "RadioToolTraits.h"
 #include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
@@ -41,8 +41,7 @@ class LineTool : public RadioTool {
 public:
     static constexpr const char* k_toolName { "LineTool" };
 
-    explicit LineTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                      QObject* parent = nullptr);
+    explicit LineTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     ~LineTool() override;
 

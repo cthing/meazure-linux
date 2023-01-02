@@ -25,9 +25,9 @@
 #include <QLine>
 #include <vector>
 
-Grid::Grid(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+Grid::Grid(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
            QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(screenInfoProvider, unitsProvider, parent),
+        Graphic(screenInfo, unitsProvider, parent),
         m_pen(QBrush(lineColor), lineWidth),
         m_gridRect(0, 0, 100, 100) {
     setAttribute(Qt::WA_NoSystemBackground);
@@ -36,6 +36,9 @@ Grid::Grid(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Grid::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Grid::setLineWidth);
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        repaint();
+    });
 }
 
 void Grid::colorChanged(Colors::Item item, QRgb color) {

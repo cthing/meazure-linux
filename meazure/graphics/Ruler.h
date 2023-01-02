@@ -21,7 +21,7 @@
 
 #include "Graphic.h"
 #include "Colors.h"
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QFont>
 #include <QRect>
@@ -47,7 +47,7 @@ class Ruler : public Graphic {
 public:
     static constexpr int k_unusedIndicator { -1000000 };
 
-    explicit Ruler(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, bool flip,
+    explicit Ruler(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, bool flip,
                    QWidget* parent = nullptr, QRgb backgroundColor = Colors::get(Colors::RulerBack),
                    QRgb borderColor = Colors::get(Colors::RulerBorder),
                    QRgb opacity = Colors::get(Colors::RulerOpacity));
@@ -87,6 +87,7 @@ private:
     QFont m_font;                                       ///< Ruler label font
     QFontMetrics m_fontMetrics;                         ///< Information about the label font
     bool m_flip;                                        ///< Flip rule on long edge
+    QPoint m_origin;                                    ///< Ruler origin location
     int m_length { 100 };                               ///< Ruler length, pixels
     int m_angle { 0 };                                  ///< Rotation angle, degrees
     double m_angleFraction { 0.0 };                     ///< Rotation angle as a fraction of a 90 degree quadrant

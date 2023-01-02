@@ -25,9 +25,9 @@
 #include <QtMath>
 
 
-Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double gap,
+Circle::Circle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, double gap,
                QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(screenInfoProvider, unitsProvider, parent),
+        Graphic(screenInfo, unitsProvider, parent),
         m_gap(gap),
         m_pen(QBrush(lineColor), lineWidth),
         m_center(50, 50),
@@ -38,6 +38,10 @@ Circle::Circle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Circle::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Circle::setLineWidth);
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        setPosition(m_center, m_perimeter);
+        repaint();
+    });
 }
 
 void Circle::colorChanged(Colors::Item item, QRgb color) {

@@ -22,13 +22,12 @@
 #include <meazure/utils/StringUtils.h>
 #include <QPointF>
 
-PointTool::PointTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QObject *parent) :
-        RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_center(screenInfoProvider.getCenter()),
+PointTool::PointTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject *parent) :
+        RadioTool(screenInfo, unitsProvider, parent),
+        m_center(screenInfo.getCenter()),
         m_anchorPoint(m_center),
-        m_crosshair(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"))),
-        m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
+        m_crosshair(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"))),
+        m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly)) {
     connect(m_crosshair, &Crosshair::entered, this, &PointTool::entered);
     connect(m_crosshair, &Crosshair::departed, this, &PointTool::departed);
     connect(m_crosshair, &Crosshair::dragged, this, &PointTool::dragged);

@@ -24,22 +24,21 @@
 #include <QtMath>
 #include <cmath>
 
-AngleTool::AngleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QObject* parent) :
-        RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_vertex(screenInfoProvider.getCenter()),
-        m_point1(screenInfoProvider.getCenter() + QPoint(80, -50)),
-        m_point2(screenInfoProvider.getCenter() + QPoint(80, 50)),
-        m_vertexAnchor(screenInfoProvider.getCenter()),
-        m_vertexCH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Vertex"), k_vertexId)),
-        m_point1CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
-        m_point2CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
-        m_lineB(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
-        m_line1(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
-        m_line2(new Line(screenInfoProvider, unitsProvider, k_crosshairOffset)),
-        m_dataWinV(new ToolDataWindow(screenInfoProvider, unitsProvider, XYVReadOnly | AngleReadOnly)),
-        m_dataWin1(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly | AngleReadOnly)),
-        m_dataWin2(new ToolDataWindow(screenInfoProvider, unitsProvider, XY2ReadOnly | AngleReadOnly)) {
+AngleTool::AngleTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+        RadioTool(screenInfo, unitsProvider, parent),
+        m_vertex(screenInfo.getCenter()),
+        m_point1(screenInfo.getCenter() + QPoint(80, -50)),
+        m_point2(screenInfo.getCenter() + QPoint(80, 50)),
+        m_vertexAnchor(screenInfo.getCenter()),
+        m_vertexCH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Vertex"), k_vertexId)),
+        m_point1CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
+        m_point2CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
+        m_lineB(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_line1(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_line2(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_dataWinV(new ToolDataWindow(screenInfo, unitsProvider, XYVReadOnly | AngleReadOnly)),
+        m_dataWin1(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | AngleReadOnly)),
+        m_dataWin2(new ToolDataWindow(screenInfo, unitsProvider, XY2ReadOnly | AngleReadOnly)) {
     connect(m_point1CH, &Crosshair::entered, this, &AngleTool::entered);
     connect(m_point2CH, &Crosshair::entered, this, &AngleTool::entered);
     connect(m_vertexCH, &Crosshair::entered, this, &AngleTool::entered);

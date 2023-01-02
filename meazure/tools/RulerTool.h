@@ -23,7 +23,7 @@
 #include "RadioTool.h"
 #include <meazure/graphics/Handle.h>
 #include <meazure/graphics/Ruler.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QPoint>
@@ -39,8 +39,7 @@ class RulerTool : public Tool {
 public:
     static constexpr const char* k_toolName { "RulerTool" };
 
-    explicit RulerTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                       QObject* parent = nullptr);
+    explicit RulerTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     ~RulerTool() override;
 

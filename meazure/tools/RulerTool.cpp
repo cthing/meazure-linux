@@ -21,21 +21,20 @@
 #include <meazure/utils/Geometry.h>
 #include <QTransform>
 
-RulerTool::RulerTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QObject* parent) :
-        Tool(screenInfoProvider, unitsProvider, parent),
-        m_origin(screenInfoProvider.getCenter() - QPoint(200, 200)),
+RulerTool::RulerTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+        Tool(screenInfo, unitsProvider, parent),
+        m_origin(screenInfo.getCenter() - QPoint(200, 200)),
         m_moveAnchorPoint(m_origin),
-        m_hRuler(new Ruler(screenInfoProvider, unitsProvider, false)),
-        m_vRuler(new Ruler(screenInfoProvider, unitsProvider, true)),
-        m_hLengthHandle(new Handle(screenInfoProvider, unitsProvider, nullptr, tr("Adjust length"), k_hLengthId)),
-        m_vLengthHandle(new Handle(screenInfoProvider, unitsProvider, nullptr, tr("Adjust length"), k_vLengthId)),
-        m_moveHandle(new Handle(screenInfoProvider, unitsProvider, nullptr, tr("Move rulers"), k_moveId)),
-        m_rotateHandle(new Handle(screenInfoProvider, unitsProvider, nullptr, tr("Rotate rulers"), k_rotateId)),
-        m_hLengthDataWin(new ToolDataWindow(screenInfoProvider, unitsProvider, DistReadOnly)),
-        m_vLengthDataWin(new ToolDataWindow(screenInfoProvider, unitsProvider, DistReadOnly)),
-        m_moveDataWin(new ToolDataWindow(screenInfoProvider, unitsProvider, XYVReadOnly)),
-        m_rotateDataWin(new ToolDataWindow(screenInfoProvider, unitsProvider, AngleReadOnly)) {
+        m_hRuler(new Ruler(screenInfo, unitsProvider, false)),
+        m_vRuler(new Ruler(screenInfo, unitsProvider, true)),
+        m_hLengthHandle(new Handle(screenInfo, unitsProvider, nullptr, tr("Adjust length"), k_hLengthId)),
+        m_vLengthHandle(new Handle(screenInfo, unitsProvider, nullptr, tr("Adjust length"), k_vLengthId)),
+        m_moveHandle(new Handle(screenInfo, unitsProvider, nullptr, tr("Move rulers"), k_moveId)),
+        m_rotateHandle(new Handle(screenInfo, unitsProvider, nullptr, tr("Rotate rulers"), k_rotateId)),
+        m_hLengthDataWin(new ToolDataWindow(screenInfo, unitsProvider, DistReadOnly)),
+        m_vLengthDataWin(new ToolDataWindow(screenInfo, unitsProvider, DistReadOnly)),
+        m_moveDataWin(new ToolDataWindow(screenInfo, unitsProvider, XYVReadOnly)),
+        m_rotateDataWin(new ToolDataWindow(screenInfo, unitsProvider, AngleReadOnly)) {
     connect(m_rotateHandle, &Handle::entered, this, &RulerTool::handleEntered);
     connect(m_rotateHandle, &Handle::departed, this, &RulerTool::handleDeparted);
     connect(m_rotateHandle, &Handle::dragged, this, &RulerTool::rotateHandleDragged);

@@ -24,9 +24,9 @@
 #include <cmath>
 
 
-Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double offset,
+Line::Line(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, double offset,
            QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(screenInfoProvider, unitsProvider, parent),
+        Graphic(screenInfo, unitsProvider, parent),
         m_offset(offset),
         m_lineWidth(lineWidth),
         m_pen(QBrush(lineColor), lineWidth),
@@ -38,6 +38,10 @@ Line::Line(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& un
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Line::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Line::setLineWidth);
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        setPosition(m_start, m_end);
+        repaint();
+    });
 }
 
 void Line::colorChanged(Colors::Item item, QRgb color) {

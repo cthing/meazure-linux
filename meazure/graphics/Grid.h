@@ -22,7 +22,7 @@
 #include "Graphic.h"
 #include "Colors.h"
 #include "Dimensions.h"
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/units/Units.h>
 #include <QObject>
@@ -44,13 +44,13 @@ public:
 
     /// Constructs a grid.
     ///
-    /// @param[in] screenInfoProvider Information about the display screens
+    /// @param[in] screenInfo Information about the display screens
     /// @param[in] unitsProvider Measurement units
     /// @param[in] parent Parent widget for the grid or nullptr for a top level grid
     /// @param[in] lineColor Grid line foreground color
     /// @param[in] lineWidth Width of line, in pixels
     ///
-    explicit Grid(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+    explicit Grid(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
                   QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore),
                   int lineWidth = Dimensions::getLineWidth());
 

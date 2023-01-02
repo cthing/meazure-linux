@@ -23,9 +23,9 @@
 #include <QLine>
 
 
-Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, double offset,
+Rectangle::Rectangle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, double offset,
                      QWidget* parent, QRgb lineColor, int lineWidth) :
-        Graphic(screenInfoProvider, unitsProvider, parent),
+        Graphic(screenInfo, unitsProvider, parent),
         m_offset(offset),
         m_lineWidth(lineWidth),
         m_pen(QBrush(lineColor), lineWidth),
@@ -38,6 +38,10 @@ Rectangle::Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsPr
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Rectangle::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this,
             &Rectangle::setLineWidth);
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        setPosition(m_start, m_end);
+        repaint();
+    });
 }
 
 void Rectangle::colorChanged(Colors::Item item, QRgb color) {

@@ -21,10 +21,9 @@
 #include <meazure/utils/Geometry.h>
 #include <algorithm>
 
-GridTool::GridTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,    // NOLINT(cppcoreguidelines-pro-type-member-init)
-                   QObject* parent) :
-        Tool(screenInfoProvider, unitsProvider, parent),
-        m_grid(new Grid(screenInfoProvider, unitsProvider)) {
+GridTool::GridTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :   // NOLINT(cppcoreguidelines-pro-type-member-init)
+        Tool(screenInfo, unitsProvider, parent),
+        m_grid(new Grid(screenInfo, unitsProvider)) {
     init();
 }
 

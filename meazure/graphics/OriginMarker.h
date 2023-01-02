@@ -22,7 +22,7 @@
 #include "Graphic.h"
 #include "Colors.h"
 #include "Dimensions.h"
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QObject>
 #include <QPen>
@@ -37,7 +37,7 @@ class OriginMarker : public Graphic {
     Q_OBJECT
 
 public:
-    explicit OriginMarker(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+    explicit OriginMarker(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
                           QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore),
                           int lineWidth = Dimensions::getLineWidth());
 

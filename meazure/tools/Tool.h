@@ -20,7 +20,7 @@
 #pragma once
 
 #include <meazure/units/UnitsProvider.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/profile/Profile.h>
 #include <QObject>
 
@@ -33,8 +33,7 @@ class Tool : public QObject {
     Q_OBJECT
 
 public:
-    explicit Tool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                  QObject* parent = nullptr);
+    explicit Tool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     ~Tool() override = default;
 
@@ -116,7 +115,7 @@ signals:
     void toolEnabled(Tool& tool, bool enabled);
 
 protected:
-    const ScreenInfoProvider& m_screenInfo;
+    const ScreenInfo& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
 
 private:

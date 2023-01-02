@@ -22,11 +22,10 @@
 #include <meazure/utils/Cloaker.h>
 #include <meazure/graphics/Dimensions.h>
 
-WindowTool::WindowTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                       QObject* parent) :
-        RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_rectangle(new Rectangle(screenInfoProvider, unitsProvider)),
-        m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, WHReadOnly)) {
+WindowTool::WindowTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+        RadioTool(screenInfo, unitsProvider, parent),
+        m_rectangle(new Rectangle(screenInfo, unitsProvider)),
+        m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, WHReadOnly)) {
     m_rectangle->setLineWidth(2 * Dimensions::getLineWidth());
 
     connect(m_pointerTracker, &PointerTracker::motion, this, &WindowTool::pointerMotion);

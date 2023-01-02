@@ -20,8 +20,8 @@
 #include "Tool.h"
 
 
-Tool::Tool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, QObject *parent) :
-        QObject(parent), m_screenInfo(screenInfoProvider), m_unitsProvider(unitsProvider) {
+Tool::Tool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject *parent) :
+        QObject(parent), m_screenInfo(screenInfo), m_unitsProvider(unitsProvider) {
 }
 
 void Tool::setEnabled(bool enable) {

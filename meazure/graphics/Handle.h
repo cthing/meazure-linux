@@ -21,7 +21,7 @@
 
 #include "Graphic.h"
 #include "Colors.h"
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QPoint>
 #include <QTimer>
@@ -38,7 +38,7 @@ class Handle : public Graphic {
     Q_OBJECT
 
 public:
-    explicit Handle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+    explicit Handle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
                     QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
                     QRgb backgroundColor = Colors::get(Colors::CrosshairBack),
                     QRgb highlightColor = Colors::get(Colors::CrosshairHighlight),
@@ -98,7 +98,8 @@ private:
     QPen m_borderPen;
     bool m_pointerOver { false };
     bool m_highlight { false };
-    QPoint m_centerPosition;
+    QPoint m_centerOffset;
+    QPoint m_position;
     QPoint m_initialGrabPosition;
     QTimer m_flashTimer;
     int m_flashCountDown { -1 };

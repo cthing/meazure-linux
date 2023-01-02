@@ -22,7 +22,7 @@
 #include "Tool.h"
 #include "RadioToolTraits.h"
 #include <meazure/units/UnitsProvider.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/graphics/Crosshair.h>
 #include <QObject>
 #include <QImage>
@@ -33,8 +33,7 @@ class RadioTool : public Tool {
     Q_OBJECT
 
 public:
-    explicit RadioTool(const ScreenInfoProvider& screenInfo, const UnitsProvider& unitsProvider,
-                       QObject* parent = nullptr);
+    explicit RadioTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     /// Provides the flags that describe which measurements are provided by the tool and which ones are settable.
     ///

@@ -21,10 +21,9 @@
 #include <QPointF>
 
 
-CursorTool::CursorTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                       QObject *parent) :
-        RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_dataWindow(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly)) {
+CursorTool::CursorTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject *parent) :
+        RadioTool(screenInfo, unitsProvider, parent),
+        m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly)) {
     connect(m_pointerTracker, &PointerTracker::motion, this, &CursorTool::pointerMotion);
 }
 

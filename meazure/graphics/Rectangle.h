@@ -22,7 +22,7 @@
 #include "Graphic.h"
 #include "Colors.h"
 #include "Dimensions.h"
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <QObject>
 #include <QPen>
@@ -38,7 +38,7 @@ class Rectangle : public Graphic {
 public:
     /// Constructs a rectangle.
     ///
-    /// @param[in] screenInfoProvider Information about the display screens
+    /// @param[in] screenInfo Information about the display screens
     /// @param[in] unitsProvider Measurement units
     /// @param[in] offset Distance, in inches, to shrink rectangle from start and end points. The typical use for this
     ///     parameter is in the Rectangle tool. Offseting the rectangle end points allows the contents of the end
@@ -47,7 +47,7 @@ public:
     /// @param[in] lineColor Rectangle line foreground color
     /// @param[in] lineWidth Width of line, in pixels
     ///
-    explicit Rectangle(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+    explicit Rectangle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
                        double offset = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore),
                        int lineWidth = Dimensions::getLineWidth());
 

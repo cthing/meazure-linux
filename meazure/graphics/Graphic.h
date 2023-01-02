@@ -20,7 +20,7 @@
 #pragma once
 
 #include <QWidget>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 
 
@@ -32,14 +32,13 @@ class Graphic : public QWidget {
     Q_OBJECT
 
 public:
-    explicit Graphic(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                     QWidget* parent);
+    explicit Graphic(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QWidget* parent);
 
     static bool isGraphicWindow(unsigned long windowId);
 
     bool event(QEvent* ev) override;
 
 protected:
-    const ScreenInfoProvider& m_screenInfo;
+    const ScreenInfo& m_screenInfo;
     const UnitsProvider& m_unitsProvider;
 };

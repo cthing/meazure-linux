@@ -24,7 +24,7 @@
 #include <meazure/graphics/Crosshair.h>
 #include <meazure/graphics/Line.h>
 #include <meazure/graphics/Circle.h>
-#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
@@ -42,8 +42,7 @@ class CircleTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"CircleTool" };
 
-    explicit CircleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                        QObject* parent = nullptr);
+    explicit CircleTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
 
     ~CircleTool() override;
 

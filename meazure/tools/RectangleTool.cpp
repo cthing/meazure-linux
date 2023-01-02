@@ -24,18 +24,17 @@
 #include <QPointF>
 #include <QSizeF>
 
-RectangleTool::RectangleTool(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
-                             QObject* parent) :
-        RadioTool(screenInfoProvider, unitsProvider, parent),
-        m_point1(screenInfoProvider.getCenter() - QPoint(30, 30)),
-        m_point2(screenInfoProvider.getCenter() + QPoint(30, 30)),
+RectangleTool::RectangleTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+        RadioTool(screenInfo, unitsProvider, parent),
+        m_point1(screenInfo.getCenter() - QPoint(30, 30)),
+        m_point2(screenInfo.getCenter() + QPoint(30, 30)),
         m_anchorPoint1(m_point1),
         m_anchorPoint2(m_point2),
-        m_point1CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
-        m_point2CH(new Crosshair(screenInfoProvider, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
-        m_rectangle(new Rectangle(screenInfoProvider, unitsProvider, k_crosshairOffset)),
-        m_dataWin1(new ToolDataWindow(screenInfoProvider, unitsProvider, XY1ReadOnly | DistReadOnly)),
-        m_dataWin2(new ToolDataWindow(screenInfoProvider, unitsProvider, XY2ReadOnly | DistReadOnly)) {
+        m_point1CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
+        m_point2CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
+        m_rectangle(new Rectangle(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_dataWin1(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | DistReadOnly)),
+        m_dataWin2(new ToolDataWindow(screenInfo, unitsProvider, XY2ReadOnly | DistReadOnly)) {
     connect(m_point1CH, &Crosshair::entered, this, &RectangleTool::entered);
     connect(m_point2CH, &Crosshair::entered, this, &RectangleTool::entered);
 

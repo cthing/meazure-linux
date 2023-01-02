@@ -25,9 +25,9 @@
 #include <utility>
 
 
-Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &unitsProvider, bool flip,
+Ruler::Ruler(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, bool flip,
              QWidget* parent, QRgb backgroundColor, QRgb borderColor, QRgb opacity) :
-        Graphic(screenInfoProvider, unitsProvider, parent),
+        Graphic(screenInfo, unitsProvider, parent),
         m_backgroundBrush(backgroundColor),
         m_linePen(QBrush(borderColor), k_lineWidth),
         m_font("FreeSans", 10),
@@ -46,6 +46,10 @@ Ruler::Ruler(const ScreenInfoProvider &screenInfoProvider, const UnitsProvider &
     }
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Ruler::colorChanged);
+    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        setPosition(m_origin, m_length, m_angle);
+        repaint();
+    });
 
     m_font.setLetterSpacing(QFont::PercentageSpacing, 120);
 }
@@ -83,6 +87,7 @@ void Ruler::setOpacity(int opacityPercent) {
 }
 
 void Ruler::setPosition(const QPoint& origin, int length, int angle) {
+    m_origin = origin;
     m_angle = angle;
     m_length = length;
     m_angleFraction = (m_angle % 90) / 90.0;
