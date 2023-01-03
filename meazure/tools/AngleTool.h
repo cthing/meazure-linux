@@ -104,7 +104,8 @@ private slots:
 
 private:
     static constexpr RadioToolTraits k_traits { XY1ReadWrite | XY2ReadWrite | XYVReadWrite | AngleReadOnly };
-    static constexpr double k_lengthB { 65.0 };     ///< Length of the angle bisector line in pixels
+    static constexpr double k_lengthB { 0.75 };     ///< Length of the angle bisector line in inches
+    static constexpr double k_minLengthB { 65 };    ///< Minimum length of the angle bisector line in pixels
     static constexpr int k_point1Id { 1 };          ///< ID for the point 1 crosshair
     static constexpr int k_point2Id { 2 };          ///< ID for the point 2 crosshair
     static constexpr int k_vertexId { 3 };          ///< ID for the vertex crosshair

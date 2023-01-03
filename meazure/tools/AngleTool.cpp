@@ -270,19 +270,21 @@ void AngleTool::setBisectorPosition() {
 
     // Ensure that the bisector is on the acute or obtuse side of the angle.
     //
-    QPoint pointB(m_vertex.x() + static_cast<int>(k_lengthB * std::cos(alphaB)),
-                  m_vertex.y() + static_cast<int>(k_lengthB * std::sin(alphaB)));
-    const QPointF pB = m_unitsProvider.convertCoord(pointB);
-
-    const bool angleSign = Geometry::angle(coordV, coord1, coord2) >= 0.0;
-    const bool bisectorSign = Geometry::angle(coordV, coord1, pB) >= 0.0;
+    const int screenIndex = m_screenInfo.screenForPoint(m_vertex);
+    const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+    const QSize bisectorLength = m_unitsProvider.convertToPixels(InchesId, screenRes, k_lengthB, k_minLengthB);
+    QPoint pointB(m_vertex.x() + static_cast<int>(bisectorLength.width() * std::cos(alphaB)),
+                  m_vertex.y() + static_cast<int>(bisectorLength.height() * std::sin(alphaB)));
 
     // If we need to flip the bisector, add 180 degrees and recalculate its location.
     //
-    if ((angleSign && !bisectorSign) || (!angleSign && bisectorSign)) {
-        alphaB = alphaB + M_PI;
-        pointB.rx() = m_vertex.x() + static_cast<int>(k_lengthB * std::cos(alphaB));
-        pointB.ry() = m_vertex.y() + static_cast<int>(k_lengthB * std::sin(alphaB));
+    const QPointF coordB = m_unitsProvider.convertCoord(pointB);
+    const bool toolAngleIsPositive = Geometry::angle(coordV, coord1, coord2) >= 0.0;
+    const bool bisectorAngleIsPositive = Geometry::angle(coordV, coord1, coordB) >= 0.0;
+    if (toolAngleIsPositive != bisectorAngleIsPositive) {
+        alphaB += M_PI;
+        pointB.rx() = m_vertex.x() + static_cast<int>(bisectorLength.width() * std::cos(alphaB));
+        pointB.ry() = m_vertex.y() + static_cast<int>(bisectorLength.height() * std::sin(alphaB));
     }
 
     // Position the bisector line based on the calculated point.
