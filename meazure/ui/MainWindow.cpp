@@ -41,6 +41,8 @@
 #include <QClipboard>
 #include <QLayout>
 #include <QCursor>
+#include <QMessageBox>
+#include <QPushButton>
 #include <vector>
 
 
@@ -62,6 +64,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     connect(&unitsMgr, &UnitsMgr::supplementalAngleChanged, &toolMgr, &ToolMgr::refresh);
     connect(&unitsMgr, &UnitsMgr::invertYChanged, &toolMgr, &ToolMgr::refresh);
     connect(&unitsMgr, &UnitsMgr::originChanged, &toolMgr, &ToolMgr::refresh);
+    connect(&unitsMgr, &UnitsMgr::calibrationRequired, this, &MainWindow::warnCalibrationRequired);
 
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
@@ -651,5 +654,27 @@ void MainWindow::customUnitsChanged() {
 
     if (!defined && m_customUnitsAction->isChecked()) {
         App::instance()->getUnitsMgr().setLinearUnits(PixelsId);
+    }
+}
+
+void MainWindow::warnCalibrationRequired() {
+    QMessageBox calDlg;
+    QPushButton *calibrateButton = calDlg.addButton(tr("Calibrate"), QMessageBox::YesRole);
+    calDlg.addButton(tr("Continue"), QMessageBox::NoRole);
+    calDlg.setDefaultButton(calibrateButton);
+    calDlg.setWindowTitle(tr("Warning - Screen Resolution Not Calibrated"));
+    calDlg.setText(QObject::tr("Screen resolution calibration is recommended."));
+    calDlg.setInformativeText(tr("To accurately display the requested units, Meazure requires the correct screen "
+                                 "resolution (pixels/inch).\n\n"
+                                 "Using the operating system default screen resolution is not accurate. "
+                                 "It is highly recommended that you manually set the resolution using "
+                                 "the Calibration preference panel.\n\n"
+                                 "If the pixel dimensions of the screen have changed since the last time the screen "
+                                 "resolution was set (e.g. new monitor), please recalibrate the screen resolution "
+                                 "using the Calibration preference panel."));
+    calDlg.setIcon(QMessageBox::Warning);
+    calDlg.exec();
+    if (calDlg.clickedButton() == calibrateButton) {
+        m_prefsDialog->execPage(PrefsPageId::CalibrationPage);
     }
 }

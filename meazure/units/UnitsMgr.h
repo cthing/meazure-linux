@@ -372,7 +372,7 @@ private:
     AngularUnits* m_currentAngularUnits;
     LinearUnitsMap m_linearUnitsMap;
     AngularUnitsMap m_angularUnitsMap;
-    bool m_haveWarned {k_defHaveWarned };    ///< Indicates whether the user has already been warned about using
+    bool m_haveWarned { k_defHaveWarned };  ///< Indicates whether the user has already been warned about using
                                             ///< the operating system reported resolution.
     int m_majorTickCount { 10 };            ///< Number of minor ruler tick marks between major tick marks.
 

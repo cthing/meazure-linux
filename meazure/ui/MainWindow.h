@@ -70,6 +70,8 @@ private slots:
 
     void customUnitsChanged();
 
+    void warnCalibrationRequired();
+
 private:
     struct SectionVisibility {
         [[nodiscard]] bool canCollapse() const {
