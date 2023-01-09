@@ -34,6 +34,7 @@
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
 #include <meazure/prefs/ui/PrefsPageId.h>
+#include <meazure/position-log/PosLogMgr.h>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QActionGroup>
@@ -96,6 +97,7 @@ void MainWindow::createStatusBar() {
 void MainWindow::createActions() {
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
+    PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
 
     // Edit actions
 
@@ -110,6 +112,13 @@ void MainWindow::createActions() {
     });
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_findCrosshairsAction->setEnabled(tool.hasCrosshairs());
+    });
+
+    m_recordPositionAction = new QAction(tr("R&ecord Position"), this);
+    m_recordPositionAction->setShortcut(QKeySequence("Ctrl+P"));
+    connect(m_recordPositionAction, &QAction::triggered, this, [&posLogMgr, &toolMgr]() {
+        posLogMgr.recordPosition();
+        toolMgr.strobeTool();
     });
 
     m_preferencesAction = new QAction(tr("Pre&ferences..."), this);
@@ -401,6 +410,8 @@ void MainWindow::createMenus() {
     editMenu->addAction(m_mainView->getCopyColorAction());
     editMenu->addSeparator();
     editMenu->addAction(m_findCrosshairsAction);
+    editMenu->addSeparator();
+    editMenu->addAction(m_recordPositionAction);
     editMenu->addSeparator();
     editMenu->addAction(m_preferencesAction);
 

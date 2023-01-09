@@ -123,7 +123,7 @@ public:
     ///
     /// @return Identifier for the current angular measurement units.
     ///
-    [[nodiscard]] AngularUnitsId getAngularUnitsId() const {
+    [[nodiscard]] AngularUnitsId getAngularUnitsId() const override {
         return m_currentAngularUnits->getUnitsId();
     }
 

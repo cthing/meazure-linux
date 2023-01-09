@@ -66,6 +66,12 @@ struct UnitsProvider {
     ///
     [[nodiscard]] virtual LinearUnits* getLinearUnits(const QString& unitsStr) const = 0;
 
+    /// Returns the identifier for the current angular measurement units.
+    ///
+    /// @return Identifier for the current angular measurement units.
+    ///
+    [[nodiscard]] virtual AngularUnitsId getAngularUnitsId() const = 0;
+
     /// Returns the current angular measurement units.
     ///
     /// @return Current angular units.

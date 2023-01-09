@@ -32,7 +32,8 @@ App::App(int &argc, char **argv):
         QApplication(argc, argv),
         m_screenInfo(screens()),
         m_unitsMgr(m_screenInfo),
-        m_toolMgr(m_screenInfo, m_unitsMgr) {
+        m_toolMgr(m_screenInfo, m_unitsMgr),
+        m_posLogMgr(m_toolMgr, m_screenInfo, m_unitsMgr) {
     setApplicationName("meazure");
     setApplicationDisplayName("Meazure");
     setApplicationVersion(appVersion);

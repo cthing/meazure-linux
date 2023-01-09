@@ -23,6 +23,7 @@
 #include "environment/ScreenInfo.h"
 #include "units/UnitsMgr.h"
 #include "tools/ToolMgr.h"
+#include "position-log/PosLogMgr.h"
 #include <QApplication>
 
 
@@ -52,10 +53,12 @@ public:
     [[nodiscard]] ScreenInfo& getScreenInfo() { return m_screenInfo; }
     [[nodiscard]] UnitsMgr& getUnitsMgr() { return m_unitsMgr; }
     [[nodiscard]] ToolMgr& getToolMgr() { return m_toolMgr; }
+    [[nodiscard]] PosLogMgr& getPosLogMgr() { return m_posLogMgr; }
 
 private:
     ScreenInfo m_screenInfo;
     UnitsMgr m_unitsMgr;
     ToolMgr m_toolMgr;
+    PosLogMgr m_posLogMgr;
     MainWindow m_mainWindow;
 };
