@@ -64,7 +64,7 @@ void PosLogMgr::recordPosition() {
     position.setToolName(m_toolMgr.getCurentRadioTool()->getName());
     position.setToolTraits(m_toolMgr.getCurentRadioTool()->getTraits());
     position.setToolData(m_currentToolData);
-    position.setRecorded(QDateTime::currentDateTime());
+    position.setRecorded(QDateTime::currentDateTime().toUTC());
 
     PosLogDesktopSharedPtr desktop = createDesktop();       // NOLINT(misc-const-correctness)
     position.setDesktop(desktop);
@@ -78,7 +78,7 @@ void PosLogMgr::savePositions(std::ostream& out) {
     PosLogInfo info;
     info.setTitle(m_title);
     info.setDescription(m_description);
-    info.setCreated(QDateTime::currentDateTime());
+    info.setCreated(QDateTime::currentDateTime().toUTC());
     info.setAppName(QGuiApplication::applicationDisplayName());
     info.setAppVersion(appVersion);
     info.setAppBuild(appBuild);

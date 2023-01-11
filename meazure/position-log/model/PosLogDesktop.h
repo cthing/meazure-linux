@@ -117,6 +117,14 @@ public:
                m_customUnits == rhs.m_customUnits;
     }
 
+    bool operator==(const PosLogDesktop &rhs) const {
+        return m_id == rhs.m_id && isSame(rhs);
+    }
+
+    bool operator!=(const PosLogDesktop &rhs) const {
+        return !(rhs == *this);
+    }
+
 private:
     QUuid m_id;                                     ///< ID for use by a position object to reference this object.
     QPointF m_origin;                               ///< Origin in the units in effect when this object was created.

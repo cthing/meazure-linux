@@ -1,5 +1,6 @@
 set(MOCK_SOURCES
     mocks/MockScreenInfoProvider.h
+    mocks/MockUnitsProvider.h
     )
 
 # Builds and adds the specified test runner program to the list of unit tests to run.
@@ -29,6 +30,14 @@ ADD_MEAZURE_TEST(FileProfileTest profile)
 ADD_MEAZURE_TEST(GeometryTest utils)
 ADD_MEAZURE_TEST(MathUtilsTest utils)
 ADD_MEAZURE_TEST(PlotterTest graphics)
+ADD_MEAZURE_TEST(PosLogArchiveTest position-log/model)
+ADD_MEAZURE_TEST(PosLogCustomUnitsTest position-log/model)
+ADD_MEAZURE_TEST(PosLogDesktopTest position-log/model)
+ADD_MEAZURE_TEST(PosLogInfoTest position-log/model)
+ADD_MEAZURE_TEST(PosLogPositionTest position-log/model)
+ADD_MEAZURE_TEST(PosLogScreenTest position-log/model)
+ADD_MEAZURE_TEST(PosLogToolDataTest position-log/model)
+ADD_MEAZURE_TEST(PosLogWriterTest position-log)
 ADD_MEAZURE_TEST(PreferenceTest prefs/models)
 ADD_MEAZURE_TEST(SettingsProfileTest profile)
 ADD_MEAZURE_TEST(StringUtilsTest utils)

@@ -87,6 +87,22 @@ public:
         m_desktop = desktop;        // NOLINT(performance-unnecessary-value-param)
     }
 
+    bool operator==(const PosLogPosition &rhs) const {
+        const bool desktopsEqual = (m_desktop == rhs.m_desktop) ||
+                                   (m_desktop && rhs.m_desktop && *m_desktop == *rhs.m_desktop);
+
+        return m_toolName == rhs.m_toolName &&
+               m_toolTraits == rhs.m_toolTraits &&
+               m_toolData == rhs.m_toolData &&
+               m_description == rhs.m_description &&
+               m_recorded == rhs.m_recorded &&
+               desktopsEqual;
+    }
+
+    bool operator!=(const PosLogPosition &rhs) const {
+        return !(rhs == *this);
+    }
+
 private:
     QString m_toolName;
     RadioToolTraits m_toolTraits;

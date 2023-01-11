@@ -527,8 +527,6 @@ private:
 
 
     static XMLParserHandler m_noopHandler;  ///< Do nothing handler when only building a DOM
-    static const QString m_homeURL1;        ///< URL for cthing.com
-    static const QString m_homeURL2;        ///< URL for cthing.com
 
     XMLParserHandler* m_handler;            ///< XML event callback object.
     bool m_buildDOM;                        ///< Indicates whether a DOM should be built.

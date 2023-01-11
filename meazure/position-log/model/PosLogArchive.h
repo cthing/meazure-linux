@@ -23,6 +23,7 @@
 #include "PosLogDesktop.h"
 #include "PosLogPosition.h"
 #include <vector>
+#include <algorithm>
 
 
 /// Represents the complete position log file for serialization and deserialization.
@@ -62,6 +63,20 @@ public:
 
     void setPositions(const PosLogPositionVector& positions) {
         m_positions = positions;
+    }
+
+    bool operator==(const PosLogArchive &rhs) const {
+        const bool desktopsEqual = std::equal(m_desktops.begin(), m_desktops.end(),
+                                              rhs.m_desktops.begin(), rhs.m_desktops.end(),
+                                              [](PosLogDesktopSharedPtr desktop1, PosLogDesktopSharedPtr desktop2) { // NOLINT(performance-unnecessary-value-param)
+            return (desktop1 == desktop2) || (*desktop1 == *desktop2);
+        });
+
+        return desktopsEqual && m_info == rhs.m_info && m_positions == rhs.m_positions;
+    }
+
+    bool operator!=(const PosLogArchive &rhs) const {
+        return !(rhs == *this);
     }
 
 private:

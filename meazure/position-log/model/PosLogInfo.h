@@ -84,6 +84,20 @@ public:
         m_description = description;
     }
 
+    bool operator==(const PosLogInfo &rhs) const {
+        return m_title == rhs.m_title &&
+               m_created == rhs.m_created &&
+               m_appName == rhs.m_appName &&
+               m_appVersion == rhs.m_appVersion &&
+               m_appBuild == rhs.m_appBuild &&
+               m_machineName == rhs.m_machineName &&
+               m_description == rhs.m_description;
+    }
+
+    bool operator!=(const PosLogInfo &rhs) const {
+        return !(rhs == *this);
+    }
+
 private:
     QString m_title;
     QDateTime m_created;

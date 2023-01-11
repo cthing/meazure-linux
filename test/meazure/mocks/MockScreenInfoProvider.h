@@ -17,6 +17,8 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/utils/Geometry.h>
 #include <QRect>

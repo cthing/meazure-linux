@@ -18,3 +18,6 @@
  */
 
 #include "PosLogReader.h"
+
+PosLogReader::PosLogReader(const UnitsProvider& unitsProvider) : PosLogIO(unitsProvider) {
+}

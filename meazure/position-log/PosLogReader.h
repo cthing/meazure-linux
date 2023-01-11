@@ -19,9 +19,14 @@
 
 #pragma once
 
+#include "PosLogIO.h"
+#include <meazure/xml/XMLParser.h>
+
 
 /// Reads a position log XML file.
 ///
-class PosLogReader {
+class PosLogReader : public PosLogIO, public XMLParserHandler {
 
+public:
+    explicit PosLogReader(const UnitsProvider& unitsProvider);
 };

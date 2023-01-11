@@ -230,8 +230,6 @@ QString XMLParserHandler::getFilePathname() {
 
 
 XMLParserHandler XMLParser::m_noopHandler;
-const QString XMLParser::m_homeURL1("https://www.cthing.com/");
-const QString XMLParser::m_homeURL2("http://www.cthing.com/");
 
 
 XMLParser::XMLParser() : XMLParser(&m_noopHandler, true) {}
@@ -361,25 +359,13 @@ void XMLParser::resetDocument() {
 
 xercesc::InputSource* XMLParser::resolveEntity(const XMLCh* const /*publicId*/, const XMLCh* const systemId) {
     if (systemId != nullptr) {
-        QString sysId = QString::fromUtf16(systemId);
+        const QString sysId = QString::fromUtf16(systemId);
 
-        qsizetype homeURLPos = sysId.indexOf(m_homeURL1);
-        qsizetype homeURLLen = m_homeURL1.size();
-        if (homeURLPos < 0) {
-            homeURLPos = sysId.indexOf(m_homeURL2);
-            homeURLLen = m_homeURL2.size();
-        }
+        m_pathnameStack.push(sysId);
+        xercesc::InputSource* source = m_handler->resolveEntity(sysId);
+        m_pathnameStack.pop();
 
-        if (homeURLPos == 0) {
-            const QString appPath = QCoreApplication::applicationDirPath();
-            sysId = appPath + '/' + sysId.mid(homeURLLen);
-
-            m_pathnameStack.push(sysId);
-            xercesc::InputSource* source = m_handler->resolveEntity(sysId);
-            m_pathnameStack.pop();
-
-            return source;
-        }
+        return source;
     }
 
     return nullptr;

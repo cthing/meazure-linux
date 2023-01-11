@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <meazure/utils/MathUtils.h>
 #include <QString>
 #include <QPointF>
 #include <QSizeF>
@@ -83,6 +84,20 @@ public:
 
     void setArea(double area) {
         m_area = area;
+    }
+
+    bool operator==(const PosLogToolData &rhs) const {
+        return m_point1 == rhs.m_point1 &&
+               m_point2 == rhs.m_point2 &&
+               m_pointV == rhs.m_pointV &&
+               m_widthHeight == rhs.m_widthHeight &&
+               MathUtils::fuzzyEqual(m_distance, rhs.m_distance) &&
+               MathUtils::fuzzyEqual(m_angle, rhs.m_angle) &&
+               MathUtils::fuzzyEqual(m_area, rhs.m_area);
+    }
+
+    bool operator!=(const PosLogToolData &rhs) const {
+        return !(rhs == *this);
     }
 
 private:
