@@ -220,6 +220,7 @@ set(MEAZURE_SOURCES
     )
 
 set(MEAZURE_RESOURCES
+    resources/dtd/PositionLog1.dtd
     resources/images/AngleTool.svg
     resources/images/CalWarning.svg
     resources/images/CircleTool.svg

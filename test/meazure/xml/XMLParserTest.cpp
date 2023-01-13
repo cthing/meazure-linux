@@ -33,12 +33,13 @@ class XMLParserTest : public QObject {
 Q_OBJECT
 
 private slots:
-    void testParserHandlerNoValidation();
-    void testDOMNoValidation();
-    void testValidationInternalDTD();
-    void testValidationExternalDTD();
-    void testParsingError();
-    void testValidationError();
+    [[maybe_unused]] void testParserHandlerNoop();
+    [[maybe_unused]] void testParserHandlerNoValidation();
+    [[maybe_unused]] void testDOMNoValidation();
+    [[maybe_unused]] void testValidationInternalDTD();
+    [[maybe_unused]] void testValidationExternalDTD();
+    [[maybe_unused]] void testParsingError();
+    [[maybe_unused]] void testValidationError();
 };
 
 
@@ -90,6 +91,17 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
 </elem1>
 )|";
 
+
+[[maybe_unused]] void XMLParserTest::testParserHandlerNoop() {
+
+    XMLParserHandler testHandler;
+    XMLParser parser(&testHandler);
+    parser.parseString(xml1);
+
+    if (QTest::currentTestFailed()) {
+        return;
+    }
+}
 
 [[maybe_unused]] void XMLParserTest::testParserHandlerNoValidation() {
 
@@ -320,7 +332,7 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
 
             const QString dtd("<!ELEMENT elem1 (#PCDATA)>");
             auto* source = new xercesc::MemBufInputSource(reinterpret_cast<const XMLByte*>(dtd.toUtf8().constData()),
-                                                          dtd.size(), "DTD");
+                                                          dtd.toUtf8().size(), "DTD");
 
             return source;
         }
@@ -403,6 +415,6 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
 }
 
 
-QTEST_MAIN(XMLParserTest)
+QTEST_GUILESS_MAIN(XMLParserTest)
 
 #include "XMLParserTest.moc"

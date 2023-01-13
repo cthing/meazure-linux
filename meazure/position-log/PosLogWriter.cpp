@@ -26,9 +26,9 @@ void PosLogWriter::write(std::ostream& out, const PosLogArchive& archive) {
     XMLWriter writer(out);
 
     writer.startDocument();
-    writer.doctype("positionLog", k_dtdUrl);
+    writer.doctype(k_positionLogElem, k_dtdUrl);
 
-    writer.startElement("positionLog").addAttribute("version", k_majorVersion);
+    writer.startElement(k_positionLogElem).addAttribute(k_versionAttr, archive.getVersion());
 
     writeInfoSection(writer, archive);
     writeDesktopsSection(writer, archive);
@@ -41,24 +41,24 @@ void PosLogWriter::write(std::ostream& out, const PosLogArchive& archive) {
 void PosLogWriter::writeInfoSection(XMLWriter& writer, const PosLogArchive& archive) {
     const PosLogInfo& info = archive.getInfo();
 
-    writer.startElement("info");
+    writer.startElement(k_infoElem);
 
-    writer.startElement("title")
+    writer.startElement(k_titleElem)
           .characters(info.getTitle())
           .endElement();
-    writer.startElement("created")
-          .addAttribute("date", info.getCreated().toString(Qt::ISODate))
+    writer.startElement(k_createdElem)
+          .addAttribute(k_dateAttr, info.getCreated().toString(Qt::ISODate))
           .endElement();
-    writer.startElement("generator")
-          .addAttribute("name", info.getAppName())
-          .addAttribute("version", info.getAppVersion())
-          .addAttribute("build", info.getAppBuild())
+    writer.startElement(k_generatorElem)
+          .addAttribute(k_nameAttr, info.getAppName())
+          .addAttribute(k_versionAttr, info.getAppVersion())
+          .addAttribute(k_buildAttr, info.getAppBuild())
           .endElement();
-    writer.startElement("machine")
-          .addAttribute("name", info.getMachineName())
+    writer.startElement(k_machineElem)
+          .addAttribute(k_nameAttr, info.getMachineName())
           .endElement();
     if (!info.getDescription().isEmpty()) {
-        writer.startElement("desc")
+        writer.startElement(k_descElem)
               .characters(info.getDescription())
               .endElement();
     }
@@ -67,55 +67,55 @@ void PosLogWriter::writeInfoSection(XMLWriter& writer, const PosLogArchive& arch
 }
 
 void PosLogWriter::writeDesktopsSection(XMLWriter& writer, const PosLogArchive& archive) {
-    writer.startElement("desktops");
+    writer.startElement(k_desktopsElem);
 
     for (PosLogDesktopSharedPtr desktop : archive.getDesktops()) {      // NOLINT(misc-const-correctness,performance-for-range-copy)
-        writer.startElement("desktop")
-              .addAttribute("id", desktop->getId());
+        writer.startElement(k_desktopElem)
+              .addAttribute(k_idAttr, desktop->getId());
 
-        writer.startElement("units")
-              .addAttribute("length", m_units.getLinearUnits(desktop->getLinearUnitsId())->getUnitsStr())
-              .addAttribute("angle", m_units.getAngularUnits(desktop->getAngularUnitsId())->getUnitsStr())
+        writer.startElement(k_unitsElem)
+              .addAttribute(k_lengthAttr, m_units.getLinearUnits(desktop->getLinearUnitsId())->getUnitsStr())
+              .addAttribute(k_angleAttr, m_units.getAngularUnits(desktop->getAngularUnitsId())->getUnitsStr())
               .endElement();
 
         if (desktop->getLinearUnitsId() == CustomId) {
             const PosLogCustomUnits& customUnits = desktop->getCustomUnits();
-            writer.startElement("customUnits")
-                  .addAttribute("name", customUnits.getName())
-                  .addAttribute("abbrev", customUnits.getAbbrev())
-                  .addAttribute("scaleBasis", customUnits.getScaleBasis())
-                  .addAttribute("scaleFactor", customUnits.getScaleFactor())
+            writer.startElement(k_customUnitsElem)
+                  .addAttribute(k_nameAttr, customUnits.getName())
+                  .addAttribute(k_abbrevAttr, customUnits.getAbbrev())
+                  .addAttribute(k_scaleBasisAttr, customUnits.getScaleBasisStr())
+                  .addAttribute(k_scaleFactorAttr, customUnits.getScaleFactor())
                   .endElement();
         }
 
-        writer.startElement("origin")
-              .addAttribute("xoffset", desktop->getOrigin().x())
-              .addAttribute("yoffset", desktop->getOrigin().y())
-              .addAttribute("invertY", (desktop->isInvertY() ? "true" : "false"))
+        writer.startElement(k_originElem)
+              .addAttribute(k_xoffsetAttr, desktop->getOrigin().x())
+              .addAttribute(k_yoffsetAttr, desktop->getOrigin().y())
+              .addAttribute(k_invertYAttr, (desktop->isInvertY() ? "true" : "false"))
               .endElement();
 
-        writer.startElement("size")
-              .addAttribute("x", desktop->getSize().width())
-              .addAttribute("y", desktop->getSize().height())
+        writer.startElement(k_sizeElem)
+              .addAttribute(k_xAttr, desktop->getSize().width())
+              .addAttribute(k_yAttr, desktop->getSize().height())
               .endElement();
 
-        writer.startElement("screens");
+        writer.startElement(k_screensElem);
         for (const PosLogScreen& screen : desktop->getScreens()) {
-            writer.startElement("screen")
-                  .addAttribute("desc", screen.getDescription())
-                  .addAttribute("primary", (screen.isPrimary() ? "true" : "false"));
+            writer.startElement(k_screenElem)
+                  .addAttribute(k_descAttr, screen.getDescription())
+                  .addAttribute(k_primaryAttr, (screen.isPrimary() ? "true" : "false"));
 
-            writer.startElement("rect")
-                  .addAttribute("top", screen.getRect().top())
-                  .addAttribute("bottom", screen.getRect().bottom())
-                  .addAttribute("left", screen.getRect().left())
-                  .addAttribute("right", screen.getRect().right())
+            writer.startElement(k_rectElem)
+                  .addAttribute(k_topAttr, screen.getRect().top())
+                  .addAttribute(k_bottomAttr, screen.getRect().bottom())
+                  .addAttribute(k_leftAttr, screen.getRect().left())
+                  .addAttribute(k_rightAttr, screen.getRect().right())
                   .endElement();
 
-            writer.startElement("resolution")
-                  .addAttribute("x", screen.getRes().width())
-                  .addAttribute("y", screen.getRes().height())
-                  .addAttribute("manual", (screen.isManualRes() ? "true" : "false"))
+            writer.startElement(k_resolutionElem)
+                  .addAttribute(k_xAttr, screen.getRes().width())
+                  .addAttribute(k_yAttr, screen.getRes().height())
+                  .addAttribute(k_manualAttr, (screen.isManualRes() ? "true" : "false"))
                   .endElement();
 
             writer.endElement();        // screen
@@ -125,18 +125,18 @@ void PosLogWriter::writeDesktopsSection(XMLWriter& writer, const PosLogArchive& 
         if (desktop->getLinearUnitsId() == CustomId) {
             const LinearUnits* customUnits = m_units.getLinearUnits(desktop->getLinearUnitsId());
 
-            writer.startElement("displayPrecisions");
+            writer.startElement(k_displayPrecisionsElem);
 
-            writer.startElement("displayPrecision")
-                  .addAttribute("units", customUnits->getUnitsStr());
+            writer.startElement(k_displayPrecisionElem)
+                  .addAttribute(k_unitsAttr, customUnits->getUnitsStr());
 
             const Units::DisplayPrecisionNames& precisionNames = customUnits->getDisplayPrecisionNames();
             const Units::DisplayPrecisions  precisions = customUnits->getDisplayPrecisions();
 
             for (unsigned int i = 0; i < precisions.size(); i++) {
-                writer.startElement("measurement")
-                      .addAttribute("name", precisionNames[i])
-                      .addAttribute("decimalPlaces", precisions[i])
+                writer.startElement(k_measurementElem)
+                      .addAttribute(k_nameAttr, precisionNames[i])
+                      .addAttribute(k_decimalPlacesAttr, precisions[i])
                       .endElement();
             }
 
@@ -152,16 +152,16 @@ void PosLogWriter::writeDesktopsSection(XMLWriter& writer, const PosLogArchive& 
 }
 
 void PosLogWriter::writePositionsSection(XMLWriter& writer, const PosLogArchive& archive) {
-    writer.startElement("positions");
+    writer.startElement(k_positionsElem);
 
     for (const PosLogPosition& position : archive.getPositions()) {
-        writer.startElement("position")
-              .addAttribute("desktopRef", position.getDesktop()->getId())
-              .addAttribute("tool", position.getToolName())
-              .addAttribute("date", position.getRecorded().toString(Qt::ISODate));
+        writer.startElement(k_positionElem)
+              .addAttribute(k_desktopRefAttr, position.getDesktop()->getId())
+              .addAttribute(k_toolAttr, position.getToolName())
+              .addAttribute(k_dateAttr, position.getRecorded().toString(Qt::ISODate));
 
         if (!position.getDescription().isEmpty()) {
-            writer.startElement("desc")
+            writer.startElement(k_descElem)
                   .characters(position.getDescription())
                   .endElement();
         }
@@ -171,34 +171,34 @@ void PosLogWriter::writePositionsSection(XMLWriter& writer, const PosLogArchive&
 
         auto writePoint = [toolTraits, &writer](RadioToolTrait trait, const char* pointName, const QPointF& point) {
             if ((toolTraits & trait) != 0) {
-                writer.startElement("point")
-                      .addAttribute("name", pointName)
-                      .addAttribute("x", point.x())
-                      .addAttribute("y", point.y())
+                writer.startElement(k_pointElem)
+                      .addAttribute(k_nameAttr, pointName)
+                      .addAttribute(k_xAttr, point.x())
+                      .addAttribute(k_yAttr, point.y())
                       .endElement();
             }
         };
 
-        writer.startElement("points");
-        writePoint(RadioToolTrait::XY1Available, "1", toolData.getPoint1());
-        writePoint(RadioToolTrait::XY2Available, "2", toolData.getPoint2());
-        writePoint(RadioToolTrait::XYVAvailable, "v", toolData.getPointV());
+        writer.startElement(k_pointsElem);
+        writePoint(RadioToolTrait::XY1Available, k_oneAttr, toolData.getPoint1());
+        writePoint(RadioToolTrait::XY2Available, k_twoAttr, toolData.getPoint2());
+        writePoint(RadioToolTrait::XYVAvailable, k_vAttr, toolData.getPointV());
         writer.endElement();        // points
 
         auto writeProperty = [toolTraits, &writer](RadioToolTrait trait, const char* propertyName, double value) {
             if ((toolTraits & trait) != 0) {
                 writer.startElement(propertyName)
-                      .addAttribute("value", value)
+                      .addAttribute(k_valueAttr, value)
                       .endElement();
             }
         };
 
-        writer.startElement("properties");
-        writeProperty(RadioToolTrait::WHAvailable, "width", toolData.getWidthHeight().width());
-        writeProperty(RadioToolTrait::WHAvailable, "height", toolData.getWidthHeight().height());
-        writeProperty(RadioToolTrait::DistAvailable, "distance", toolData.getDistance());
-        writeProperty(RadioToolTrait::AreaAvailable, "area", toolData.getArea());
-        writeProperty(RadioToolTrait::AngleAvailable, "angle", toolData.getAngle());
+        writer.startElement(k_propertiesElem);
+        writeProperty(RadioToolTrait::WHAvailable, k_widthElem, toolData.getWidthHeight().width());
+        writeProperty(RadioToolTrait::WHAvailable, k_heightElem, toolData.getWidthHeight().height());
+        writeProperty(RadioToolTrait::DistAvailable, k_distanceElem, toolData.getDistance());
+        writeProperty(RadioToolTrait::AreaAvailable, k_areaElem, toolData.getArea());
+        writeProperty(RadioToolTrait::AngleAvailable, k_angleElem, toolData.getAngle());
         writer.endElement();        // properties
 
         writer.endElement();        // position

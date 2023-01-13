@@ -33,7 +33,7 @@
 #include <QRectF>
 #include <QPointF>
 #include <QSizeF>
-#include <QStringList>
+#include <QString>
 #include <memory>
 
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
@@ -49,7 +49,7 @@ private slots:
 };
 
 
-static const char* positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
+QString positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE positionLog SYSTEM "https://www.cthing.com/dtd/PositionLog1.dtd">
 <positionLog version="1">
     <info>
@@ -77,6 +77,7 @@ static const char* positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
         </desktop>
         <desktop id="51bc31df-68f3-49c7-b84e-d52e000009b2">
             <units length="px" angle="deg"/>
+            <customUnits name="Miles" abbrev="mi" scaleBasis="px" scaleFactor="10.0"/>
             <origin xoffset="0.0" yoffset="0.0" invertY="false"/>
             <size x="20.0" y="15.0"/>
             <screens>
@@ -85,6 +86,18 @@ static const char* positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
                     <resolution x="100.0" y="100.0" manual="false"/>
                 </screen>
             </screens>
+            <displayPrecisions>
+                <displayPrecision units="px">
+                    <measurement name="x" decimalPlaces="0"/>
+                    <measurement name="y" decimalPlaces="0"/>
+                    <measurement name="w" decimalPlaces="0"/>
+                    <measurement name="h" decimalPlaces="0"/>
+                    <measurement name="d" decimalPlaces="1"/>
+                    <measurement name="area" decimalPlaces="0"/>
+                    <measurement name="rx" decimalPlaces="1"/>
+                    <measurement name="ry" decimalPlaces="1"/>
+                </displayPrecision>
+            </displayPrecisions>
         </desktop>
     </desktops>
     <positions>
@@ -158,7 +171,7 @@ static const char* positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     PosLogCustomUnits customUnits;
     customUnits.setName("Miles");
     customUnits.setAbbrev("mi");
-    customUnits.setScaleBasis(CustomUnits::ScaleBasis::PixelBasis);
+    customUnits.setScaleBasisStr("px");
     customUnits.setScaleFactor(10.0);
 
     const PosLogDesktopSharedPtr desktop1 = std::make_shared<PosLogDesktop>("1f48833b-8edc-465e-833f-40065970b877");
@@ -170,6 +183,7 @@ static const char* positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     const PosLogDesktopSharedPtr desktop2 = std::make_shared<PosLogDesktop>("51bc31df-68f3-49c7-b84e-d52e000009b2");
     desktop2->setSize(QSizeF(20.0, 15.0));
     desktop2->addScreen(screen3);
+    desktop2->setLinearUnitsId(CustomId);
     desktop2->setCustomUnits(customUnits);
 
     PosLogToolData data1;
@@ -215,6 +229,7 @@ static const char* positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     positions.push_back(position3);
 
     PosLogArchive archive;
+    archive.setVersion(1);
     archive.setInfo(info);
     archive.addDesktop(desktop1);
     archive.addDesktop(desktop2);
@@ -230,7 +245,7 @@ static const char* positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     //std::cerr << stream.str();
 
     const QStringList actualLines = QString(stream.str().c_str()).split('\n');
-    const QStringList expectedLines = QString(positionLog).split('\n');
+    const QStringList expectedLines = positionLog.split('\n');
 
     const unsigned int actualNumberLines = actualLines.size();
     const unsigned int expectedNumberLines = expectedLines.size();

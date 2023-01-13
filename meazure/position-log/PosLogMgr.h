@@ -38,11 +38,41 @@ class PosLogMgr : public QObject {
     Q_OBJECT
 
 public:
-    void recordPosition();
-
     void savePositions(std::ostream& out);
 
+    void loadPositions(const QString& pathname);
+
+    [[nodiscard]] const QString& getTitle() const {
+        return m_title;
+    }
+
+    void setTitle(const QString& title) {
+        m_title = title;
+    }
+
+    [[nodiscard]] const QString& getDescription() const {
+        return m_description;
+    }
+
+    void setDescription(const QString& description) {
+        m_description = description;
+    }
+
+    [[nodiscard]] bool isDirty() const {
+        return m_dirty;
+    }
+
+signals:
+    void positionsChanged(unsigned int numPositions);
+
+public slots:
+    void recordPosition();
+
+    void deletePositions();
+
 private:
+    static constexpr int k_archiveMajorVersion { 1 };
+
     explicit PosLogMgr(const ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, const UnitsProvider& unitsMgr);
 
     [[nodiscard]] PosLogDesktopSharedPtr createDesktop();
@@ -55,6 +85,7 @@ private:
     PosLogPositionVector m_positions;
     QString m_title;
     QString m_description;
+    bool m_dirty { false };
 
     friend class App;
 };

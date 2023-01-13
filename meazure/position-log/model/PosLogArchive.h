@@ -24,6 +24,7 @@
 #include "PosLogPosition.h"
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 
 /// Represents the complete position log file for serialization and deserialization.
@@ -31,6 +32,14 @@
 class PosLogArchive {
 
 public:
+    [[nodiscard]] int getVersion() const {
+        return m_version;
+    }
+
+    void setVersion(int version) {
+        m_version = version;
+    }
+
     [[nodiscard]] const PosLogInfo& getInfo() const {
         return m_info;
     }
@@ -65,6 +74,10 @@ public:
         m_positions = positions;
     }
 
+    void addPosition(const PosLogPosition& position) {
+        m_positions.push_back(position);
+    }
+
     bool operator==(const PosLogArchive &rhs) const {
         const bool desktopsEqual = std::equal(m_desktops.begin(), m_desktops.end(),
                                               rhs.m_desktops.begin(), rhs.m_desktops.end(),
@@ -72,7 +85,10 @@ public:
             return (desktop1 == desktop2) || (*desktop1 == *desktop2);
         });
 
-        return desktopsEqual && m_info == rhs.m_info && m_positions == rhs.m_positions;
+        return m_version == rhs.m_version &&
+               desktopsEqual &&
+               m_info == rhs.m_info &&
+               m_positions == rhs.m_positions;
     }
 
     bool operator!=(const PosLogArchive &rhs) const {
@@ -80,7 +96,11 @@ public:
     }
 
 private:
+    int m_version { 0 };
     PosLogInfo m_info;
     PosLogDesktopSharedPtrVector m_desktops;
     PosLogPositionVector m_positions;
 };
+
+
+using PosLogArchiveSharedPtr = std::shared_ptr<PosLogArchive>;

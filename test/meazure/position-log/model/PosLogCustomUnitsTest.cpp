@@ -40,9 +40,11 @@ private slots:
     const PosLogCustomUnits units;
     QVERIFY(units.getName().isEmpty());
     QVERIFY(units.getAbbrev().isEmpty());
-    QCOMPARE(units.getScaleBasis(), CustomUnits::ScaleBasis::PixelBasis);
+    QVERIFY(units.getScaleBasisStr().isEmpty());
     QCOMPARE(units.getScaleFactor(), 0.0);
-    QVERIFY(units.getDisplayPrecisions().empty());
+    QCOMPARE(units.getDisplayPrecisions().size(), 8);
+    const Units::DisplayPrecisions precisions { 0, 0, 0, 0, 0, 0, 0, 0 };
+    QCOMPARE(units.getDisplayPrecisions(), precisions);
 }
 
 [[maybe_unused]] void PosLogCustomUnitsTest::testSetGet() {
@@ -54,8 +56,8 @@ private slots:
     units.setAbbrev("defg");
     QCOMPARE(units.getAbbrev(), "defg");
 
-    units.setScaleBasis(CustomUnits::ScaleBasis::CentimeterBasis);
-    QCOMPARE(units.getScaleBasis(), CustomUnits::ScaleBasis::CentimeterBasis);
+    units.setScaleBasisStr("px");
+    QCOMPARE(units.getScaleBasisStr(), "px");
 
     units.setScaleFactor(2.5);
     QCOMPARE(units.getScaleFactor(), 2.5);
@@ -70,7 +72,9 @@ private slots:
     precisions.push_back(1);        // ResX
     precisions.push_back(1);        // ResY
     units.setDisplayPrecisions(precisions);
-    QCOMPARE(units.getDisplayPrecisions(), precisions);
+    units.setDisplayPrecision(LinearMeasurementId::Area, 4);
+    const Units::DisplayPrecisions expectedPrecisions { 0, 0, 0, 0, 1, 4, 1, 1 };
+    QCOMPARE(units.getDisplayPrecisions(), expectedPrecisions);
 }
 
 [[maybe_unused]] void PosLogCustomUnitsTest::testAssignmentEquality() {
@@ -79,7 +83,7 @@ private slots:
 
     units1.setName("abc");
     units1.setAbbrev("defg");
-    units1.setScaleBasis(CustomUnits::ScaleBasis::CentimeterBasis);
+    units1.setScaleBasisStr("px");
     units1.setScaleFactor(2.5);
 
     Units::DisplayPrecisions precisions1;
@@ -95,7 +99,7 @@ private slots:
 
     units2.setName("asdf");
     units2.setAbbrev("wertwer");
-    units2.setScaleBasis(CustomUnits::ScaleBasis::InchBasis);
+    units2.setScaleBasisStr("in");
     units2.setScaleFactor(3.0);
 
     Units::DisplayPrecisions precisions2;

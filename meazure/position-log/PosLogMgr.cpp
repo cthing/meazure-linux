@@ -20,6 +20,7 @@
 #include "PosLogMgr.h"
 #include "model/PosLogArchive.h"
 #include "model/PosLogInfo.h"
+#include "PosLogReader.h"
 #include "PosLogWriter.h"
 #include "AppVersion.h"
 #include <QPoint>
@@ -28,6 +29,7 @@
 #include <QDateTime>
 #include <QHostInfo>
 #include <QGuiApplication>
+#include <QMessageBox>
 
 
 PosLogMgr::PosLogMgr(const ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, const UnitsProvider& unitsMgr) :
@@ -70,10 +72,23 @@ void PosLogMgr::recordPosition() {
     position.setDesktop(desktop);
 
     m_positions.push_back(position);
+    m_dirty = true;
+
+    emit positionsChanged(m_positions.size());
+}
+
+void PosLogMgr::deletePositions() {
+    m_positions.clear();
+    m_desktopCache.clear();
+
+    m_dirty = false;
+
+    emit positionsChanged(m_positions.size());
 }
 
 void PosLogMgr::savePositions(std::ostream& out) {
     PosLogArchive archive;
+    archive.setVersion(k_archiveMajorVersion);
 
     PosLogInfo info;
     info.setTitle(m_title);
@@ -95,6 +110,47 @@ void PosLogMgr::savePositions(std::ostream& out) {
 
     PosLogWriter logWriter(m_units);
     logWriter.write(out, archive);
+
+    m_dirty = false;
+}
+
+void PosLogMgr::loadPositions(const QString& pathname) {
+    PosLogReader logReader(m_units);
+    bool success = false;
+
+    PosLogArchiveSharedPtr archive;
+    try {
+        archive = logReader.readFile(pathname);
+        success = true;
+    } catch (XMLParserException&) {
+        // Handled by the parser.
+    } catch (...) {
+        QMessageBox dialog;
+        dialog.setText(QObject::tr("Invalid Log file"));
+        dialog.setIcon(QMessageBox::Warning);
+        dialog.exec();
+    }
+
+    if (!success) {
+        return;
+    }
+
+    deletePositions();
+
+    for (PosLogDesktopSharedPtr desktopSharePtr : archive->getDesktops()) {     // NOLINT(misc-const-correctness,performance-for-range-copy)
+        const PosLogDesktopWeakPtr desktopWeakPtr(desktopSharePtr);
+        m_desktopCache.push_back(desktopWeakPtr);
+    }
+
+    for (const PosLogPosition& position : archive->getPositions()) {
+        m_positions.push_back(position);
+    }
+
+    if (!m_positions.empty()) {
+        m_dirty = true;
+
+        emit positionsChanged(m_positions.size());
+    }
 }
 
 PosLogDesktopSharedPtr PosLogMgr::createDesktop() {
@@ -128,7 +184,7 @@ PosLogDesktopSharedPtr PosLogMgr::createDesktop() {
         PosLogCustomUnits posLogCustomUnits;
         posLogCustomUnits.setName(customUnits->getName());
         posLogCustomUnits.setAbbrev(customUnits->getAbbrev());
-        posLogCustomUnits.setScaleBasis(customUnits->getScaleBasis());
+        posLogCustomUnits.setScaleBasisStr(customUnits->getScaleBasisStr());
         posLogCustomUnits.setScaleFactor(customUnits->getScaleFactor());
         posLogCustomUnits.setDisplayPrecisions(customUnits->getDisplayPrecisions());
         desktop->setCustomUnits(posLogCustomUnits);

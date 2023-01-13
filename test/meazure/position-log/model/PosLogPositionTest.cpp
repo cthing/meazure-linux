@@ -58,6 +58,10 @@ private slots:
     position.setToolTraits(RadioToolTrait::XY1ReadWrite | RadioToolTrait::XY2ReadOnly);
     QCOMPARE(position.getToolTraits(), RadioToolTrait::XY1ReadWrite | RadioToolTrait::XY2ReadOnly);
 
+    position.addToolTrait(RadioToolTrait::AreaAvailable);
+    QCOMPARE(position.getToolTraits(), RadioToolTrait::XY1ReadWrite | RadioToolTrait::XY2ReadOnly |
+             RadioToolTrait::AreaAvailable);
+
     PosLogToolData toolData;
     toolData.setArea(10.0);
     position.setToolData(toolData);

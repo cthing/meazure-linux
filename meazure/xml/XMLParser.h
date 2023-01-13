@@ -32,6 +32,7 @@
 #include <stack>
 #include <iostream>
 #include <exception>
+#include <functional>
 
 
 class XMLParser;
@@ -75,6 +76,14 @@ public:
     ///
     bool getValueStr(const QString& name, QString& value) const;
 
+    /// Returns the value of the specified attribute as a string.
+    ///
+    /// @param[in] name Attribute name.
+    /// @param[in] valueFunc Function that will be called with the value of the attribute.
+    /// @return true if the attribute is found.
+    ///
+    bool getValueStr(const QString& name, const std::function<void (const QString&)>& valueFunc) const;
+
     /// Returns the value of the specified attribute converted to an integer.
     ///
     /// @param[in] name Attribute name.
@@ -82,6 +91,14 @@ public:
     /// @return true if the attribute is found.
     ///
     bool getValueInt(const QString& name, int& value) const;
+
+    /// Returns the value of the specified attribute converted to an integer.
+    ///
+    /// @param[in] name Attribute name.
+    /// @param[in] valueFunc Function that will be called with the value of the attribute.
+    /// @return true if the attribute is found.
+    ///
+    bool getValueInt(const QString& name, const std::function<void (int)>& valueFunc) const;
 
     /// Returns the value of the specified attribute converted to an unsigned integer.
     ///
@@ -91,6 +108,14 @@ public:
     ///
     bool getValueUInt(const QString& name, unsigned int& value) const;
 
+    /// Returns the value of the specified attribute converted to an unsigned integer.
+    ///
+    /// @param[in] name Attribute name.
+    /// @param[in] valueFunc Function that will be called with the value of the attribute.
+    /// @return true if the attribute is found.
+    ///
+    bool getValueUInt(const QString& name, const std::function<void (unsigned int)>& valueFunc) const;
+
     /// Returns the value of the specified attribute converted to a double.
     ///
     /// @param[in] name Attribute name.
@@ -98,6 +123,14 @@ public:
     /// @return true if the attribute is found.
     ///
     bool getValueDbl(const QString& name, double& value) const;
+
+    /// Returns the value of the specified attribute converted to a double.
+    ///
+    /// @param[in] name Attribute name.
+    /// @param[in] valueFunc Function that will be called with the value of the attribute.
+    /// @return true if the attribute is found.
+    ///
+    bool getValueDbl(const QString& name, const std::function<void (double)>& valueFunc) const;
 
     /// Returns the value of the specified attribute converted to a boolean.
     ///
@@ -107,6 +140,15 @@ public:
     /// @return true if the attribute is found.
     ///
     bool getValueBool(const QString& name, bool& value) const;
+
+    /// Returns the value of the specified attribute converted to a boolean.
+    ///
+    /// @param[in] name Attribute name.
+    /// @param[in] valueFunc Function that will be called with the boolean value of the attribute. This value is true
+    ///     if the attribute contains the string "true" or "1". false is returned otherwise.
+    /// @return true if the attribute is found.
+    ///
+    bool getValueBool(const QString& name, const std::function<void (bool)>& valueFunc) const;
 
 private:
     using AttributeMap = std::map<QString, QString>;
@@ -315,10 +357,10 @@ struct XMLParserHandler {
 
     /// Called to resolve an external entity (e.g. DTD).
     ///
-    /// @param[in] pathname Pathname of the external entity.
+    /// @param[in] systemId System identifier of the external entity.
     /// @return Input source for the external entity. The default implementation returns nullptr.
     ///
-    virtual xercesc::InputSource* resolveEntity(const QString& pathname);
+    virtual xercesc::InputSource* resolveEntity(const QString& systemId);
 
     /// Called when there is a parsing error (e.g. syntax, structure).
     ///

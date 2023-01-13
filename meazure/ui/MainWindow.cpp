@@ -121,6 +121,13 @@ void MainWindow::createActions() {
         toolMgr.strobeTool();
     });
 
+    m_deletePositionsAction = new QAction(tr("De&lete Positions"), this);
+    m_deletePositionsAction->setEnabled(false);
+    connect(m_deletePositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::deletePositions);
+    connect(&posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+        m_deletePositionsAction->setEnabled(numPositions > 0);
+    });
+
     m_preferencesAction = new QAction(tr("Pre&ferences..."), this);
     connect(m_preferencesAction, &QAction::triggered, m_prefsDialog, &PrefsDialog::exec);
 
@@ -412,6 +419,7 @@ void MainWindow::createMenus() {
     editMenu->addAction(m_findCrosshairsAction);
     editMenu->addSeparator();
     editMenu->addAction(m_recordPositionAction);
+    editMenu->addAction(m_deletePositionsAction);
     editMenu->addSeparator();
     editMenu->addAction(m_preferencesAction);
 

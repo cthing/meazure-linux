@@ -132,6 +132,7 @@ private:
     QAction* m_copyRegionAction;
     QAction* m_findCrosshairsAction;
     QAction* m_recordPositionAction;
+    QAction* m_deletePositionsAction;
     QAction* m_preferencesAction;
 
     QAction* m_cursorToolAction;

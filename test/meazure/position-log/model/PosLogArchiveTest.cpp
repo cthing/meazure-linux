@@ -42,6 +42,7 @@ private slots:
 
 [[maybe_unused]] void PosLogArchiveTest::testConstruction() {
     const PosLogArchive archive;
+    QCOMPARE(archive.getVersion(), 0);
     QCOMPARE(archive.getInfo(), PosLogInfo());
     QVERIFY(archive.getDesktops().empty());
     QVERIFY(archive.getPositions().empty());
@@ -50,17 +51,24 @@ private slots:
 [[maybe_unused]] void PosLogArchiveTest::testMutation() {
     PosLogArchive archive;
 
+    archive.setVersion(2);
+    QCOMPARE(archive.getVersion(), 2);
+
     PosLogInfo info;
     info.setAppName("abcd");
 
     const PosLogDesktopSharedPtr desktop = std::make_shared<PosLogDesktop>();
     desktop->setInvertY(true);
 
-    PosLogPosition position;
-    position.setDesktop(desktop);
-    position.setToolName("asdb");
+    PosLogPosition position1;
+    position1.setDesktop(desktop);
+    position1.setToolName("asdb");
     PosLogPositionVector positions;
-    positions.push_back(position);
+    positions.push_back(position1);
+
+    PosLogPosition position2;
+    position2.setDesktop(desktop);
+    position2.setToolName("ddddff");
 
     archive.setInfo(info);
     QCOMPARE(archive.getInfo(), info);
@@ -70,6 +78,10 @@ private slots:
     QCOMPARE(archive.getDesktops()[0], desktop);
 
     archive.setPositions(positions);
+    QCOMPARE(archive.getPositions(), positions);
+
+    archive.addPosition(position2);
+    positions.push_back(position2);
     QCOMPARE(archive.getPositions(), positions);
 }
 
@@ -101,13 +113,15 @@ private slots:
     PosLogPositionVector positions2;
     positions2.push_back(position2);
 
+    archive1.setVersion(1);
     archive1.setInfo(info1);
     archive1.addDesktop(desktop1);
     archive1.setPositions(positions1);
 
-    archive1.setInfo(info2);
-    archive1.addDesktop(desktop2);
-    archive1.setPositions(positions2);
+    archive2.setVersion(2);
+    archive2.setInfo(info2);
+    archive2.addDesktop(desktop2);
+    archive2.setPositions(positions2);
 
     QVERIFY(archive1 == archive1);
     QVERIFY(archive1 != archive2);

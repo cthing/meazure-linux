@@ -55,6 +55,10 @@ public:
         m_toolTraits = toolTraits;
     }
 
+    void addToolTrait(RadioToolTrait toolTrait) {
+        m_toolTraits |= toolTrait;
+    }
+
     [[nodiscard]] const PosLogToolData& getToolData() const {
         return m_toolData;
     }

@@ -20,6 +20,7 @@
 #include "XMLParser.h"
 #include <QApplication>
 #include <QMessageBox>
+#include <QByteArray>
 #include <utility>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
@@ -39,49 +40,69 @@ XMLAttributes::XMLAttributes(const xercesc::AttributeList& atts) {
 }
 
 bool XMLAttributes::getValueStr(const QString& name, QString& value) const {
+    return getValueStr(name, [&value](const QString& v) { value = v; });
+}
+
+bool XMLAttributes::getValueStr(const QString& name, const std::function<void (const QString&)>& valueFunc) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
-        value = (*iter).second;
+        valueFunc((*iter).second);
         return true;
     }
     return false;
 }
 
 bool XMLAttributes::getValueInt(const QString& name, int& value) const {
+    return getValueInt(name, [&value](int v) { value = v; });
+}
+
+bool XMLAttributes::getValueInt(const QString& name, const std::function<void (int)>& valueFunc) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
         bool success = false;
-        value = ((*iter).second).toInt(&success);
+        valueFunc(((*iter).second).toInt(&success));
         return success;
     }
     return false;
 }
 
 bool XMLAttributes::getValueUInt(const QString& name, unsigned int& value) const {
+    return getValueUInt(name, [&value](unsigned int v) { value = v; });
+}
+
+bool XMLAttributes::getValueUInt(const QString& name, const std::function<void (unsigned int)>& valueFunc) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
         bool success = false;
-        value = ((*iter).second).toUInt(&success);
+        valueFunc(((*iter).second).toUInt(&success));
         return success;
     }
     return false;
 }
 
 bool XMLAttributes::getValueDbl(const QString& name, double& value) const {
+    return getValueDbl(name, [&value](double v) { value = v; });
+}
+
+bool XMLAttributes::getValueDbl(const QString& name, const std::function<void (double)>& valueFunc) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
         bool success = false;
-        value = (*iter).second.toDouble(&success);
+        valueFunc((*iter).second.toDouble(&success));
         return success;
     }
     return false;
 }
 
 bool XMLAttributes::getValueBool(const QString& name, bool& value) const {
+    return getValueBool(name, [&value](bool v) { value = v; });
+}
+
+bool XMLAttributes::getValueBool(const QString& name, const std::function<void (bool)>& valueFunc) const {
     auto iter = m_attributeMap.find(name);
     if (iter != m_attributeMap.end()) {
         const QString& vstr = (*iter).second;
-        value = (vstr == "true" || vstr == "1");
+        valueFunc(vstr == "true" || vstr == "1");
         return true;
     }
     return false;
@@ -264,8 +285,8 @@ void XMLParser::parseFile(const QString& pathname) {
 }
 
 void XMLParser::parseString(const QString& content) {
-    const xercesc::MemBufInputSource source(reinterpret_cast<const XMLByte*>(content.toUtf8().constData()),
-                                            content.toUtf8().size(), "XMLBuf");
+    const QByteArray data = content.toUtf8();
+    const xercesc::MemBufInputSource source(reinterpret_cast<const XMLByte*>(data.constData()), data.size(), "XMLBuf");
     m_parser->parse(source);
 }
 

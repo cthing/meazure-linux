@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include <meazure/units/CustomUnits.h>
 #include <meazure/units/Units.h>
 #include <meazure/utils/MathUtils.h>
 #include <QString>
@@ -30,27 +29,27 @@
 class PosLogCustomUnits {
 
 public:
-    [[nodiscard]] const QString &getName() const {
+    [[nodiscard]] const QString& getName() const {
         return m_name;
     }
 
-    void setName(const QString &name) {
+    void setName(const QString& name) {
         m_name = name;
     }
 
-    [[nodiscard]] const QString &getAbbrev() const {
+    [[nodiscard]] const QString& getAbbrev() const {
         return m_abbrev;
     }
 
-    void setAbbrev(const QString &abbrev) {
+    void setAbbrev(const QString& abbrev) {
         m_abbrev = abbrev;
     }
 
-    [[nodiscard]] CustomUnits::ScaleBasis getScaleBasis() const {
+    [[nodiscard]] QString getScaleBasisStr() const {
         return m_scaleBasis;
     }
 
-    void setScaleBasis(CustomUnits::ScaleBasis scaleBasis) {
+    void setScaleBasisStr(const QString& scaleBasis) {
         m_scaleBasis = scaleBasis;
     }
 
@@ -62,15 +61,19 @@ public:
         m_scaleFactor = scaleFactor;
     }
 
-    [[nodiscard]] const Units::DisplayPrecisions &getDisplayPrecisions() const {
+    [[nodiscard]] const Units::DisplayPrecisions& getDisplayPrecisions() const {
         return m_displayPrecisions;
     }
 
-    void setDisplayPrecisions(const Units::DisplayPrecisions &displayPrecisions) {
+    void setDisplayPrecisions(const Units::DisplayPrecisions& displayPrecisions) {
         m_displayPrecisions = displayPrecisions;
     }
 
-    bool operator==(const PosLogCustomUnits &rhs) const {
+    void setDisplayPrecision(LinearMeasurementId measurementId, int decimalPlaces) {
+        m_displayPrecisions[measurementId] = decimalPlaces;
+    }
+
+    bool operator==(const PosLogCustomUnits& rhs) const {
         return m_name == rhs.m_name &&
                m_abbrev == rhs.m_abbrev &&
                m_scaleBasis == rhs.m_scaleBasis &&
@@ -85,7 +88,7 @@ public:
 private:
     QString m_name;
     QString m_abbrev;
-    CustomUnits::ScaleBasis m_scaleBasis { CustomUnits::ScaleBasis::PixelBasis };
+    QString m_scaleBasis;
     double m_scaleFactor { 0.0 };
-    Units::DisplayPrecisions m_displayPrecisions;
+    Units::DisplayPrecisions m_displayPrecisions { 0, 0, 0, 0, 0, 0, 0, 0 };
 };
