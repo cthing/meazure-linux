@@ -20,7 +20,7 @@
 #pragma once
 
 #include "PosLogIO.h"
-#include "model/PosLogArchive.h"
+#include <meazure/position-log/model/PosLogArchive.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/xml/XMLWriter.h>
 #include <iostream>

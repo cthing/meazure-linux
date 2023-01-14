@@ -18,7 +18,7 @@
  */
 
 #include "PosLogReader.h"
-#include "model/PosLogCustomUnits.h"
+#include <meazure/position-log/model/PosLogCustomUnits.h>
 #include <QResource>
 #include <QDateTime>
 #include <QPointF>

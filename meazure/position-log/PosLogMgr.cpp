@@ -20,8 +20,8 @@
 #include "PosLogMgr.h"
 #include "model/PosLogArchive.h"
 #include "model/PosLogInfo.h"
-#include "PosLogReader.h"
-#include "PosLogWriter.h"
+#include "io/PosLogReader.h"
+#include "io/PosLogWriter.h"
 #include "AppVersion.h"
 #include <QPoint>
 #include <QSizeF>

@@ -69,6 +69,11 @@ set(PREFS_SOURCES
 source_group(PREFS FILES ${PREFS_SOURCES})
 
 set(POSITION_LOG_SOURCES
+    position-log/io/PosLogIO.h
+    position-log/io/PosLogReader.cpp
+    position-log/io/PosLogReader.h
+    position-log/io/PosLogWriter.cpp
+    position-log/io/PosLogWriter.h
     position-log/model/PosLogArchive.h
     position-log/model/PosLogCustomUnits.h
     position-log/model/PosLogDesktop.h
@@ -76,13 +81,8 @@ set(POSITION_LOG_SOURCES
     position-log/model/PosLogPosition.h
     position-log/model/PosLogToolData.h
     position-log/model/PosLogScreen.h
-    position-log/PosLogIO.h
     position-log/PosLogMgr.cpp
     position-log/PosLogMgr.h
-    position-log/PosLogReader.cpp
-    position-log/PosLogReader.h
-    position-log/PosLogWriter.cpp
-    position-log/PosLogWriter.h
     )
 source_group(POSITION_LOG FILES ${POSITION_LOG_SOURCES})
 

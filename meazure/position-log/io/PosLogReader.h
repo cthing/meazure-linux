@@ -20,12 +20,12 @@
 #pragma once
 
 #include "PosLogIO.h"
-#include "model/PosLogArchive.h"
-#include "model/PosLogInfo.h"
-#include "model/PosLogDesktop.h"
-#include "model/PosLogPosition.h"
-#include "model/PosLogScreen.h"
-#include "model/PosLogToolData.h"
+#include <meazure/position-log/model/PosLogArchive.h>
+#include <meazure/position-log/model/PosLogInfo.h>
+#include <meazure/position-log/model/PosLogDesktop.h>
+#include <meazure/position-log/model/PosLogPosition.h>
+#include <meazure/position-log/model/PosLogScreen.h>
+#include <meazure/position-log/model/PosLogToolData.h>
 #include <QByteArray>
 #include <QString>
 #include <meazure/xml/XMLParser.h>
