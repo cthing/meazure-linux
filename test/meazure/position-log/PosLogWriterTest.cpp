@@ -35,6 +35,7 @@
 #include <QSizeF>
 #include <QString>
 #include <memory>
+#include <fstream>
 
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
@@ -46,6 +47,7 @@ class PosLogWriterTest : public QObject {
 
 private slots:
     [[maybe_unused]] void testWrite();
+    [[maybe_unused]] void testFailedWrite();
 };
 
 
@@ -281,6 +283,28 @@ QString positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     if (failed) {
         QFAIL("PosLogWriter output not expected");
     }
+}
+
+[[maybe_unused]] void PosLogWriterTest::testFailedWrite() {
+    const PosLogArchive archive;
+
+    std::ofstream archiveFile;
+    archiveFile.open("/_missing/_missing/junk.mpl");
+
+    const MockScreenInfoProvider screenProvider;
+    const MockUnitsProvider unitsProvider(screenProvider);
+
+    PosLogWriter logWriter(unitsProvider);
+
+    try {
+        logWriter.write(archiveFile, archive);
+        QFAIL("Expected exception was not thrown");
+    } catch (const XMLWritingException& ex) {
+        QCOMPARE(ex.getMessage(), "No such file or directory");
+        QCOMPARE(ex.what(), "No such file or directory");
+    }
+
+    archiveFile.close();
 }
 
 

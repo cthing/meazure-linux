@@ -44,7 +44,7 @@ class XMLParser;
 class XMLParsingException : std::exception {
 
 public:
-    XMLParsingException(QString message, QString  pathname, int line, int column) :
+    XMLParsingException(QString message, QString pathname, uint64_t line, uint64_t column) :
             m_message(std::move(message)),
             m_pathname(std::move(pathname)),
             m_line(line),
@@ -55,23 +55,27 @@ public:
         return m_message;
     }
 
+    [[nodiscard]] const char* what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
+        return m_message.toUtf8().constData();
+    }
+
     [[nodiscard]] const QString& getPathname() const {
         return m_pathname;
     }
 
-    [[nodiscard]] int getLine() const {
+    [[nodiscard]] uint64_t getLine() const {
         return m_line;
     }
 
-    [[nodiscard]] int getColumn() const {
+    [[nodiscard]] uint64_t getColumn() const {
         return m_column;
     }
 
 private:
     QString m_message;
     QString m_pathname;
-    int m_line;
-    int m_column;
+    uint64_t m_line;
+    uint64_t m_column;
 };
 
 

@@ -35,6 +35,8 @@ Q_OBJECT
 
 private slots:
     [[maybe_unused]] void testRead();
+    [[maybe_unused]] void testBadSyntax();
+    [[maybe_unused]] void testUnkownElement();
 };
 
 
@@ -119,6 +121,57 @@ QString positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
             </points>
             <properties>
                 <angle value="20.0"/>
+            </properties>
+        </position>
+    </positions>
+</positionLog>
+)HERE";
+
+QString positionLogBadSyntax = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE positionLog SYSTEM "https://www.cthing.com/dtd/PositionLog1.dtd">
+<positionLog version="1">
+    <info>
+        <title>Test</title>
+        <created date="2023-01-10T07:45:42Z"/>
+        <generator name="TestRunner" version="1.2.3" build="10"/>
+        <machine name="hostA"/>
+        <desc>A test archive</desc>
+    </positions>
+</positionLog>
+)HERE";
+
+QString positionLogUnknownElement = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE positionLog SYSTEM "https://www.cthing.com/dtd/PositionLog1.dtd">
+<positionLog version="1">
+    <info>
+        <title>Test</title>
+        <created date="2023-01-10T07:45:42Z"/>
+        <generator name="TestRunner" version="1.2.3" build="10"/>
+        <machine name="hostA"/>
+        <desc>A test archive</desc>
+    </info>
+    <desktops>
+        <desktop id="1f48833b-8edc-465e-833f-40065970b877">
+            <something length="px" angle="deg"/>
+            <origin xoffset="10.0" yoffset="20.0" invertY="false"/>
+            <size x="30.0" y="25.0"/>
+            <screens>
+                <screen desc="default" primary="true">
+                    <rect top="0.0" bottom="1000.0" left="0.0" right="2000.0"/>
+                    <resolution x="100.0" y="100.0" manual="false"/>
+                </screen>
+            </screens>
+        </desktop>
+    </desktops>
+    <positions>
+        <position desktopRef="1f48833b-8edc-465e-833f-40065970b877" tool="LineTool" date="2023-01-10T07:45:42Z">
+            <points>
+                <point name="1" x="1.0" y="2.0"/>
+                <point name="2" x="3.0" y="7.0"/>
+            </points>
+            <properties>
+                <width value="10.0"/>
+                <height value="20.0"/>
             </properties>
         </position>
     </positions>
@@ -237,6 +290,40 @@ QString positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     QCOMPARE(toolData3.getPoint2(), QPointF(3.0, 7.5));
     QCOMPARE(toolData3.getPointV(), QPointF(6.0, 9.0));
     QCOMPARE(toolData3.getAngle(), 20.0);
+}
+
+[[maybe_unused]] void PosLogReaderTest::testBadSyntax() {
+    const MockScreenInfoProvider screenProvider;
+    const MockUnitsProvider unitsProvider(screenProvider);
+
+    PosLogReader logReader(unitsProvider);
+    try {
+        logReader.readString(positionLogBadSyntax);
+        QFAIL("Expected XMLParsingException not thrown");
+    } catch (const XMLParsingException& ex) {
+        QCOMPARE(ex.getMessage(), "expected end of tag 'info'");
+        QCOMPARE(ex.what(), "expected end of tag 'info'");
+        QCOMPARE(ex.getPathname(), "[string]");
+        QCOMPARE(ex.getLine(), 10);
+        QCOMPARE(ex.getColumn(), 7);
+    }
+}
+
+[[maybe_unused]] void PosLogReaderTest::testUnkownElement() {
+    const MockScreenInfoProvider screenProvider;
+    const MockUnitsProvider unitsProvider(screenProvider);
+
+    PosLogReader logReader(unitsProvider);
+    try {
+        logReader.readString(positionLogUnknownElement);
+        QFAIL("Expected XMLParsingException not thrown");
+    } catch (const XMLParsingException& ex) {
+        QCOMPARE(ex.getMessage(), "no declaration found for element 'something'");
+        QCOMPARE(ex.what(), "no declaration found for element 'something'");
+        QCOMPARE(ex.getPathname(), "[string]");
+        QCOMPARE(ex.getLine(), 13);
+        QCOMPARE(ex.getColumn(), 23);
+    }
 }
 
 

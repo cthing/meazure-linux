@@ -109,9 +109,14 @@ void PosLogMgr::savePositions(std::ostream& out) {
     archive.setPositions(m_positions);
 
     PosLogWriter logWriter(m_units);
-    logWriter.write(out, archive);
-
-    m_dirty = false;
+    try {
+        logWriter.write(out, archive);
+        m_dirty = false;
+    } catch (const XMLWritingException& ex) {
+        const QString msg = QObject::tr("There was an error while saving the position log file.\n\nError: %1")
+                .arg(ex.getMessage());
+        QMessageBox::warning(nullptr, tr("Position Log Save Error"), msg);
+    }
 }
 
 void PosLogMgr::loadPositions(const QString& pathname) {
@@ -124,18 +129,13 @@ void PosLogMgr::loadPositions(const QString& pathname) {
         success = true;
     } catch (const XMLParsingException& ex) {
         const QString msg =
-                QObject::tr("There was an error while parsing the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
+                QObject::tr("There was an error while loading the position log file:\n"
+                            "%1\n\nLine: %2\nCharacter: %3\nError: %4")
                 .arg(ex.getPathname()).arg(ex.getLine()).arg(ex.getColumn()).arg(ex.getMessage());
-        QMessageBox dialog;
-        dialog.setText(QObject::tr("File Parsing Error"));
-        dialog.setInformativeText(msg);
-        dialog.setIcon(QMessageBox::Warning);
-        dialog.exec();
+        QMessageBox::warning(nullptr, tr("Position Log Load Error"), msg);
     } catch (...) {
-        QMessageBox dialog;
-        dialog.setText(QObject::tr("Invalid Log file"));
-        dialog.setIcon(QMessageBox::Warning);
-        dialog.exec();
+        const QString msg = QObject::tr("There was an error while loading the position log file:\n%1").arg(pathname);
+        QMessageBox::warning(nullptr, tr("Position Log Load Error"), msg);
     }
 
     if (!success) {

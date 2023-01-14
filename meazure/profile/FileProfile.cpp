@@ -29,7 +29,6 @@ FileProfile::FileProfile(const QString& pathname, Mode mode) :
         m_title("Meazure Profile File") {
 
     if (m_mode == ProfWrite) {
-        m_writeStream.exceptions(std::ios::failbit | std::ios::badbit);
         m_writeStream.open(m_pathname.toStdString(), std::ios::out | std::ios::trunc);
         m_writer = std::make_unique<XMLWriter>(m_writeStream);
 

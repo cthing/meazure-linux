@@ -28,6 +28,27 @@
 #include <utility>
 
 
+/// Exception thrown when an error occurs while writing XML to the output stream.
+///
+class XMLWritingException : std::exception {
+
+public:
+    explicit XMLWritingException(QString message) : m_message(std::move(message)) {
+    }
+
+    [[nodiscard]] const QString& getMessage() const {
+        return m_message;
+    }
+
+    [[nodiscard]] const char* what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
+        return m_message.toUtf8().constData();
+    }
+
+private:
+    QString m_message;
+};
+
+
 /// This class writes pretty printed XML in UTF-8 encoding. Because this class serves only the needs of this
 /// application, it does not support XML namespaces. Typical usage:</p>
 /// <ol>
@@ -297,6 +318,15 @@ private:
     /// @return String representation of the specified event.
     ///
     static QString getEventName(Event event);
+
+    /// Checks that the last operation on the output stream was successful. If it was not, an XMLWritingException
+    /// is thrown.
+    ///
+    inline void verifySuccess() {
+        if (m_out.fail()) {
+            throw XMLWritingException(std::strerror(errno));    // NOLINT(concurrency-mt-unsafe)
+        }
+    }
 
 
     static const char* indent;    ///< String for each level of indentation

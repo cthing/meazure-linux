@@ -26,6 +26,7 @@ const char* XMLWriter::indent = "    ";
 
 void XMLWriter::flush() {
     m_out.flush();
+    verifySuccess();
 }
 
 XMLWriter& XMLWriter::startDocument() {
@@ -207,15 +208,15 @@ XMLWriter::State XMLWriter::handleEvent(Event event) {
             invalidEvent = true;
             break;
         default:
-            const QString msg("Unrecognized state " + getStateName(m_currentState));
-            throw std::ios::failure(msg.toStdString());
+            const QString msg = QString("Unrecognized state %1").arg(getStateName(m_currentState));
+            throw XMLWritingException(msg);
     }
 
     if (invalidEvent) {
         const QString msg = QString("Event %1 not allowed in state %2")
                 .arg(getEventName(event))
                 .arg(getStateName(m_currentState));
-        throw std::ios::failure(msg.toStdString());
+        throw XMLWritingException(msg);
     }
 
     return previousState;
@@ -361,10 +362,12 @@ void XMLWriter::writeEscaped(const QChar& ch) {
                 if ((ch >= u'\u007F' && ch <= u'\uD7FF') || (ch >= u'\uE000' && ch <= u'\uFFFD')) {
                     writeLiteral("&#");
                     m_out << ch.unicode();
+                    verifySuccess();
                     writeLiteral(';');
                 } else {
                     writeLiteral("ctrl-");
                     m_out << ch.unicode();
+                    verifySuccess();
                 }
             }
             break;
@@ -381,8 +384,10 @@ void XMLWriter::writeLiteral(const QString& str) {
 
 void XMLWriter::writeLiteral(const char* str) {
     m_out << str;
+    verifySuccess();
 }
 
 void XMLWriter::writeLiteral(char ch) {
     m_out << ch;
+    verifySuccess();
 }

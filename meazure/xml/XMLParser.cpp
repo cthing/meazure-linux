@@ -364,21 +364,14 @@ void XMLParser::warning(const xercesc::SAXParseException& /*exc*/) {
 }
 
 void XMLParser::error(const xercesc::SAXParseException& exc) {
-    const QString msg = QString::fromUtf16(exc.getMessage());
-    const QString pathname(m_pathnameStack.empty() ? m_handler->getFilePathname() : m_pathnameStack.top());
-    const int line = static_cast<int>(exc.getLineNumber());
-    const int column = static_cast<int>(exc.getColumnNumber());
-
-    throw XMLParsingException(msg, pathname, line, column);
+    fatalError(exc);
 }
 
 void XMLParser::fatalError(const xercesc::SAXParseException& exc) {
-    const QString msg = QString::fromUtf16(exc.getMessage());
+    const QString message = QString::fromUtf16(exc.getMessage());
     const QString pathname(m_pathnameStack.empty() ? m_handler->getFilePathname() : m_pathnameStack.top());
-    const int line = static_cast<int>(exc.getLineNumber());
-    const int column = static_cast<int>(exc.getColumnNumber());
 
-    throw XMLParsingException(msg, pathname, line, column);
+    throw XMLParsingException(message, pathname, exc.getLineNumber(), exc.getColumnNumber());
 }
 
 void XMLParser::resetErrors() {
