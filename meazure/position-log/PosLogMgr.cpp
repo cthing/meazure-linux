@@ -122,8 +122,15 @@ void PosLogMgr::loadPositions(const QString& pathname) {
     try {
         archive = logReader.readFile(pathname);
         success = true;
-    } catch (XMLParserException&) {
-        // Handled by the parser.
+    } catch (const XMLParsingException& ex) {
+        const QString msg =
+                QObject::tr("There was an error while parsing the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
+                .arg(ex.getPathname()).arg(ex.getLine()).arg(ex.getColumn()).arg(ex.getMessage());
+        QMessageBox dialog;
+        dialog.setText(QObject::tr("File Parsing Error"));
+        dialog.setInformativeText(msg);
+        dialog.setIcon(QMessageBox::Warning);
+        dialog.exec();
     } catch (...) {
         QMessageBox dialog;
         dialog.setText(QObject::tr("Invalid Log file"));

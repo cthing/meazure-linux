@@ -85,6 +85,6 @@ private slots:
 }
 
 
-QTEST_MAIN(FileProfileTest)
+QTEST_GUILESS_MAIN(FileProfileTest)
 
 #include "FileProfileTest.moc"

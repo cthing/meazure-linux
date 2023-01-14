@@ -19,7 +19,7 @@
 
 #include <QTest>
 #include <QtPlugin>
-#include <meazure/position-log/PosLogReader.h>
+#include <meazure/position-log/io/PosLogReader.h>
 #include <meazure/position-log/model/PosLogArchive.h>
 #include <test/meazure/mocks/MockScreenInfoProvider.h>
 #include <test/meazure/mocks/MockUnitsProvider.h>

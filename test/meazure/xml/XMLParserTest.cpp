@@ -178,16 +178,6 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
             MEA_VERIFY(pathname.isEmpty());
             return nullptr;
         }
-
-        void parsingError(const QString& error, const QString&, int line, int column) override {
-            const QString msg = QString("%1 (%2, %3)").arg(error).arg(line).arg(column);
-            QFAIL(msg.toUtf8().constData());
-        }
-
-        void validationError(const QString& error, const QString&, int line, int column) override {
-            const QString msg = QString("%1 (%2, %3)").arg(error).arg(line).arg(column);
-            QFAIL(msg.toUtf8().constData());
-        }
     } testHandler;
 
     XMLParser parser(&testHandler);
@@ -297,14 +287,6 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
             MEA_VERIFY(pathname.isEmpty());
             return nullptr;
         }
-
-        void parsingError(const QString& error, const QString&, int, int) override {
-            QFAIL(error.toUtf8().constData());
-        }
-
-        void validationError(const QString& error, const QString&, int, int) override {
-            QFAIL(error.toUtf8().constData());
-        }
     } testHandler;
 
     XMLParser parser(&testHandler);
@@ -336,14 +318,6 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
 
             return source;
         }
-
-        void parsingError(const QString& error, const QString&, int, int) override {
-            QFAIL(error.toUtf8().constData());
-        }
-
-        void validationError(const QString& error, const QString&, int, int) override {
-            QFAIL(error.toUtf8().constData());
-        }
     } testHandler;
 
     XMLParser parser(&testHandler);
@@ -357,61 +331,31 @@ QString xml6 = R"|(<?xml version="1.0" encoding="UTF-8"?>
 }
 
 [[maybe_unused]] void XMLParserTest::testParsingError() {
+    XMLParser parser;
 
-    struct TestHandler : public XMLParserHandler {
-        bool hadError = false;
-
-        void parsingError(const QString& error, const QString& pathname, int line, int column) override {
-            hadError = true;
-
-            QCOMPARE(error, "expected end of tag 'elem2'");
-            QVERIFY(pathname.isEmpty());
-            QCOMPARE(line, 6);
-            QCOMPARE(column, 3);
-        }
-
-        void validationError(const QString& error, const QString&, int, int) override {
-            QFAIL(error.toUtf8().constData());
-        }
-    } testHandler;
-
-    XMLParser parser(&testHandler);
-    QVERIFY_THROWS_EXCEPTION(XMLParserException, parser.parseString(xml3));
-
-    if (QTest::currentTestFailed()) {
-        return;
+    try {
+        parser.parseString(xml3);
+        QFAIL("Expected XMLParsingException to be thrown");
+    } catch (const XMLParsingException& ex) {
+        QCOMPARE(ex.getMessage(), "expected end of tag 'elem2'");
+        QVERIFY(ex.getPathname().isEmpty());
+        QCOMPARE(ex.getLine(), 6);
+        QCOMPARE(ex.getColumn(), 3);
     }
-
-    QVERIFY(testHandler.hadError);
 }
 
 [[maybe_unused]] void XMLParserTest::testValidationError() {
+    XMLParser parser;
 
-    struct TestHandler : public XMLParserHandler {
-        bool hadError = false;
-
-        void parsingError(const QString& error, const QString&, int, int) override {
-            QFAIL(error.toUtf8().constData());
-        }
-
-        void validationError(const QString& error, const QString& pathname, int line, int column) override {
-            hadError = true;
-
-            QCOMPARE(error, "no declaration found for element 'elem2'");
-            QVERIFY(pathname.isEmpty());
-            QCOMPARE(line, 6);
-            QCOMPARE(column, 11);
-        }
-    } testHandler;
-
-    XMLParser parser(&testHandler);
-    QVERIFY_THROWS_EXCEPTION(XMLParserException, parser.parseString(xml4));
-
-    if (QTest::currentTestFailed()) {
-        return;
+    try {
+        parser.parseString(xml4);
+        QFAIL("Expected XMLParsingException to be thrown");
+    } catch (const XMLParsingException& ex) {
+        QCOMPARE(ex.getMessage(), "no declaration found for element 'elem2'");
+        QVERIFY(ex.getPathname().isEmpty());
+        QCOMPARE(ex.getLine(), 6);
+        QCOMPARE(ex.getColumn(), 11);
     }
-
-    QVERIFY(testHandler.hadError);
 }
 
 

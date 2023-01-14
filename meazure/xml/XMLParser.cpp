@@ -19,7 +19,6 @@
 
 #include "XMLParser.h"
 #include <QApplication>
-#include <QMessageBox>
 #include <QByteArray>
 #include <utility>
 #include <xercesc/sax/SAXParseException.hpp>
@@ -208,38 +207,6 @@ xercesc::InputSource* XMLParserHandler::resolveEntity(const QString&) {
     return nullptr;
 }
 
-void XMLParserHandler::parsingError(const QString& error, const QString& pathname, int line, int column) {
-    if (dynamic_cast<QApplication*>(QCoreApplication::instance()) == nullptr) {
-        const QString msg = QString("XML format error in %1 (%2, %3): %4").arg(pathname).arg(line).arg(column).arg(error);
-        std::cerr << msg.toUtf8().constData() << '\n';
-    } else {
-        const QString msg = QObject::tr("There was an error while parsing the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
-                .arg(pathname).arg(line).arg(column).arg(error);
-        QMessageBox dialog;
-        dialog.setText(QObject::tr("File Parsing Error"));
-        dialog.setInformativeText(msg);
-        dialog.setIcon(QMessageBox::Warning);
-        dialog.exec();
-    }
-}
-
-void XMLParserHandler::validationError(const QString& error, const QString& pathname, int line, int column) {
-    if (dynamic_cast<QApplication*>(QCoreApplication::instance()) == nullptr) {
-        const QString msg = QString("XML validation error in %1 (%2, %3): %4").arg(pathname).arg(line).arg(column).arg(error);
-        std::cerr << msg.toUtf8().constData() << '\n';
-    } else {
-        const QString msg = QObject::tr("There is a format error in the file:\n%1\n\nLine: %2\nCharacter: %3\nError: %4")
-                .arg(pathname).arg(line).arg(column).arg(error);
-        QMessageBox dialog;
-        dialog.setText(QObject::tr("File Validation Error"));
-        dialog.setInformativeText(msg);
-        dialog.setIcon(QMessageBox::Warning);
-        dialog.exec();
-    }
-
-    throw XMLParserException();
-}
-
 QString XMLParserHandler::getFilePathname() {
     return "";
 }
@@ -402,9 +369,7 @@ void XMLParser::error(const xercesc::SAXParseException& exc) {
     const int line = static_cast<int>(exc.getLineNumber());
     const int column = static_cast<int>(exc.getColumnNumber());
 
-    m_handler->validationError(msg, pathname, line, column);
-
-    throw XMLParserException();
+    throw XMLParsingException(msg, pathname, line, column);
 }
 
 void XMLParser::fatalError(const xercesc::SAXParseException& exc) {
@@ -413,9 +378,7 @@ void XMLParser::fatalError(const xercesc::SAXParseException& exc) {
     const int line = static_cast<int>(exc.getLineNumber());
     const int column = static_cast<int>(exc.getColumnNumber());
 
-    m_handler->parsingError(msg, pathname, line, column);
-
-    throw XMLParserException();
+    throw XMLParsingException(msg, pathname, line, column);
 }
 
 void XMLParser::resetErrors() {

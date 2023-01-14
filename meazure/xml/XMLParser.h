@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <utility>
 #include <xercesc/sax/AttributeList.hpp>
 #include <xercesc/sax/InputSource.hpp>
 #include <xercesc/sax/DocumentHandler.hpp>
@@ -37,9 +38,41 @@
 
 class XMLParser;
 
-/// Exception thrown when an error occurs during XML parsing.
+
+/// Exception thrown when a syntax or validation error occurs during XML parsing.
 ///
-class XMLParserException : std::exception {};
+class XMLParsingException : std::exception {
+
+public:
+    XMLParsingException(QString message, QString  pathname, int line, int column) :
+            m_message(std::move(message)),
+            m_pathname(std::move(pathname)),
+            m_line(line),
+            m_column(column) {
+    }
+
+    [[nodiscard]] const QString& getMessage() const {
+        return m_message;
+    }
+
+    [[nodiscard]] const QString& getPathname() const {
+        return m_pathname;
+    }
+
+    [[nodiscard]] int getLine() const {
+        return m_line;
+    }
+
+    [[nodiscard]] int getColumn() const {
+        return m_column;
+    }
+
+private:
+    QString m_message;
+    QString m_pathname;
+    int m_line;
+    int m_column;
+};
 
 
 /// The class contains the attributes associated with an XML start element. In addition to iterating through
@@ -361,24 +394,6 @@ struct XMLParserHandler {
     /// @return Input source for the external entity. The default implementation returns nullptr.
     ///
     virtual xercesc::InputSource* resolveEntity(const QString& systemId);
-
-    /// Called when there is a parsing error (e.g. syntax, structure).
-    ///
-    /// @param[in] error Error message
-    /// @param[in] pathname Pathname of the file containing the error
-    /// @param[in] line Line number on which the error occurred (1 based)
-    /// @param[in] column Column number in which the error occurred (1 based)
-    ///
-    virtual void parsingError(const QString& error, const QString& pathname, int line, int column);
-
-    /// Called when there is a validation error (e.g. unknown element).
-    ///
-    /// @param[in] error Error message
-    /// @param[in] pathname Pathname of the file containing the error
-    /// @param[in] line Line number on which the error occurred (1 based)
-    /// @param[in] column Column number in which the error occurred (1 based)
-    ///
-    virtual void validationError(const QString& error, const QString& pathname, int line, int column);
 
     /// Returns the pathname of the currently parsed file.
     ///
