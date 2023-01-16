@@ -99,7 +99,7 @@ void PosLogMgr::savePositions() {
 }
 
 void PosLogMgr::saveAsPositions() {
-    QString pathname = QFileDialog::getSaveFileName(nullptr, tr("Save Positions"), QString(), k_fileFilter);
+    QString pathname = QFileDialog::getSaveFileName(nullptr, tr("Save Positions"), m_pathname, k_fileFilter);
     if (!pathname.isEmpty()) {
         if (!pathname.endsWith(k_fileSuffix)) {
             pathname.append(k_fileSuffix);
@@ -153,7 +153,7 @@ void PosLogMgr::save(const QString& pathname) {
 }
 
 void PosLogMgr::loadPositions() {
-    const QString pathname = QFileDialog::getOpenFileName(nullptr, tr("Load Positions"), QString(), k_fileFilter);
+    const QString pathname = QFileDialog::getOpenFileName(nullptr, tr("Load Positions"), m_pathname, k_fileFilter);
     if (!pathname.isEmpty()) {
         m_pathname = pathname;
         load(m_pathname);
