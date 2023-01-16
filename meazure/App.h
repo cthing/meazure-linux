@@ -25,6 +25,7 @@
 #include "tools/ToolMgr.h"
 #include "position-log/PosLogMgr.h"
 #include <QApplication>
+#include <QString>
 
 
 /// Represents the application.
@@ -55,7 +56,12 @@ public:
     [[nodiscard]] ToolMgr& getToolMgr() { return m_toolMgr; }
     [[nodiscard]] PosLogMgr& getPosLogMgr() { return m_posLogMgr; }
 
+    static QString findAppDataDir(const QString& subdir = QString());
+    static QString findAppDataFile(const QString& filename);
+
 private:
+    static constexpr const char* k_icuDir { "icu" };
+
     ScreenInfo m_screenInfo;
     UnitsMgr m_unitsMgr;
     ToolMgr m_toolMgr;

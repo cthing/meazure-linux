@@ -23,6 +23,9 @@
 #include <QCommandLineParser>
 #include <QStyleFactory>
 #include <QPixmap>
+#include <QDir>
+#include <QtGlobal>
+#include <unicode/putil.h>
 
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
@@ -34,6 +37,10 @@ App::App(int &argc, char **argv):
         m_unitsMgr(m_screenInfo),
         m_toolMgr(m_screenInfo, m_unitsMgr),
         m_posLogMgr(m_toolMgr, m_screenInfo, m_unitsMgr) {
+    // Because the ICU library is statically compiled, its data file is not available at runtime. The data file is
+    // distributed with the application in the "icu" subdirectory. Point the ICU library at this directory.
+    u_setDataDirectory(findAppDataDir(k_icuDir).toUtf8().constData());
+
     setApplicationName("meazure");
     setApplicationDisplayName("Meazure");
     setApplicationVersion(appVersion);
@@ -51,4 +58,35 @@ App::App(int &argc, char **argv):
 
     m_mainWindow.setAttribute(Qt::WA_QuitOnClose, true);
     m_mainWindow.show();
+}
+
+QString App::findAppDataDir(const QString& subdir) {
+    const QString s(subdir.isNull() ? "" : ("/" + subdir));
+#ifdef Q_OS_LINUX
+    const QDir appDir(applicationDirPath() + s);
+    if (appDir.exists()) {
+        return appDir.filesystemPath().c_str();
+    }
+
+    const QDir shareDir("/usr/share/meazure" + s);
+    return shareDir.filesystemPath().c_str();
+#elif defined(Q_OS_WIN)
+    const QDir appDir(applicationDirPath() + s);
+    return appDir.filesystemPath().c_str();
+#elif defined(Q_OS_MACOS)
+    const QDir appDir(applicationDirPath() + s);
+    if (appDir.exists()) {
+        return appDir.filesystemPath().c_str();
+    }
+
+    const QString contentsDirStr(QDir(applicationDirPath()).filesystemPath().parent_path().c_str());
+    const QDir resourcesDir(contentsDirStr + "/Resources" + s);
+    return resourcesDir.filesystemPath().c_str();
+#else
+    return nullptr;
+#endif
+}
+
+QString App::findAppDataFile(const QString& filename) {
+    return (filename + QDir::separator() + filename).toUtf8().constData();
 }

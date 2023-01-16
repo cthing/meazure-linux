@@ -27,7 +27,6 @@
 #include <meazure/units/UnitsProvider.h>
 #include <QObject>
 #include <QString>
-#include <iostream>
 
 
 /// Manages the recording, saving and loading of measurement tool positions. The positions are saved to an XML
@@ -38,10 +37,6 @@ class PosLogMgr : public QObject {
     Q_OBJECT
 
 public:
-    void savePositions(std::ostream& out);
-
-    void loadPositions(const QString& pathname);
-
     [[nodiscard]] const QString& getTitle() const {
         return m_title;
     }
@@ -70,10 +65,24 @@ public slots:
 
     void deletePositions();
 
+    void savePositions();
+
+    void saveAsPositions();
+
+    void loadPositions();
+
+    void managePositions();
+
 private:
     static constexpr int k_archiveMajorVersion { 1 };
+    static constexpr const char* k_fileFilter { "Meazure Position Log Files (*.mpl);;All Files (*.*)" };
+    static constexpr const char* k_fileSuffix { ".mpl" };
 
     explicit PosLogMgr(const ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, const UnitsProvider& unitsMgr);
+
+    void save(const QString& pathname);
+
+    void load(const QString& pathname);
 
     [[nodiscard]] PosLogDesktopSharedPtr createDesktop();
 
@@ -85,6 +94,7 @@ private:
     PosLogPositionVector m_positions;
     QString m_title;
     QString m_description;
+    QString m_pathname;
     bool m_dirty { false };
 
     friend class App;

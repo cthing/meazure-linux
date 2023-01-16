@@ -30,6 +30,8 @@
 #include <QHostInfo>
 #include <QGuiApplication>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <fstream>
 
 
 PosLogMgr::PosLogMgr(const ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, const UnitsProvider& unitsMgr) :
@@ -74,6 +76,8 @@ void PosLogMgr::recordPosition() {
     m_positions.push_back(position);
     m_dirty = true;
 
+    m_toolMgr.strobeTool();
+
     emit positionsChanged(m_positions.size());
 }
 
@@ -86,7 +90,26 @@ void PosLogMgr::deletePositions() {
     emit positionsChanged(m_positions.size());
 }
 
-void PosLogMgr::savePositions(std::ostream& out) {
+void PosLogMgr::savePositions() {
+    if (m_pathname.isEmpty()) {
+        saveAsPositions();
+    } else {
+        save(m_pathname);
+    }
+}
+
+void PosLogMgr::saveAsPositions() {
+    QString pathname = QFileDialog::getSaveFileName(nullptr, tr("Save Positions"), QString(), k_fileFilter);
+    if (!pathname.isEmpty()) {
+        if (!pathname.endsWith(k_fileSuffix)) {
+            pathname.append(k_fileSuffix);
+        }
+        m_pathname = pathname;
+        save(m_pathname);
+    }
+}
+
+void PosLogMgr::save(const QString& pathname) {
     PosLogArchive archive;
     archive.setVersion(k_archiveMajorVersion);
 
@@ -108,18 +131,36 @@ void PosLogMgr::savePositions(std::ostream& out) {
 
     archive.setPositions(m_positions);
 
+    std::ofstream archiveStream;
     PosLogWriter logWriter(m_units);
     try {
-        logWriter.write(out, archive);
+        archiveStream.open(pathname.toUtf8().constData(), std::ios::out | std::ios::trunc);
+        if (archiveStream.fail()) {
+            const QString msg = QObject::tr("Could not open the position log file:\n%1\n\nError: %2")
+                    .arg(pathname).arg(std::strerror(errno));       // NOLINT(concurrency-mt-unsafe)
+            QMessageBox::warning(nullptr, tr("Position Log Save Error"), msg);
+        }
+
+        logWriter.write(archiveStream, archive);
+        archiveStream.close();
         m_dirty = false;
     } catch (const XMLWritingException& ex) {
-        const QString msg = QObject::tr("There was an error while saving the position log file.\n\nError: %1")
-                .arg(ex.getMessage());
+        archiveStream.close();
+        const QString msg = QObject::tr("There was an error while saving the position log file:\n%1\n\nError: %2")
+                .arg(pathname).arg(ex.getMessage());
         QMessageBox::warning(nullptr, tr("Position Log Save Error"), msg);
     }
 }
 
-void PosLogMgr::loadPositions(const QString& pathname) {
+void PosLogMgr::loadPositions() {
+    const QString pathname = QFileDialog::getOpenFileName(nullptr, tr("Load Positions"), QString(), k_fileFilter);
+    if (!pathname.isEmpty()) {
+        m_pathname = pathname;
+        load(m_pathname);
+    }
+}
+
+void PosLogMgr::load(const QString& pathname) {
     PosLogReader logReader(m_units);
     bool success = false;
 
@@ -158,6 +199,10 @@ void PosLogMgr::loadPositions(const QString& pathname) {
 
         emit positionsChanged(m_positions.size());
     }
+}
+
+void PosLogMgr::managePositions() {
+
 }
 
 PosLogDesktopSharedPtr PosLogMgr::createDesktop() {

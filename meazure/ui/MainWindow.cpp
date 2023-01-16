@@ -97,7 +97,34 @@ void MainWindow::createStatusBar() {
 void MainWindow::createActions() {
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
-    PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
+    const PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
+
+    // File actions
+
+    m_loadPositionsAction = new QAction(tr("&Load Positions..."), this);
+    m_loadPositionsAction->setShortcut(QKeySequence::Open);
+    connect(m_loadPositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::loadPositions);
+
+    m_savePositionsAction = new QAction(tr("&Save Positions"), this);
+    m_savePositionsAction->setShortcut(QKeySequence::Save);
+    m_savePositionsAction->setEnabled(false);
+    connect(m_savePositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::savePositions);
+    connect(&posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+        m_savePositionsAction->setEnabled(numPositions > 0);
+    });
+
+    m_saveAsPositionsAction = new QAction(tr("Save Positions &As..."), this);
+    m_saveAsPositionsAction->setShortcut(QKeySequence::SaveAs);
+    m_saveAsPositionsAction->setEnabled(false);
+    connect(m_saveAsPositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::saveAsPositions);
+    connect(&posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+        m_saveAsPositionsAction->setEnabled(numPositions > 0);
+    });
+
+    m_exitAction = new QAction(tr("E&xit"), this);
+    m_exitAction->setShortcuts(QKeySequence::Quit);
+    m_exitAction->setStatusTip(tr("Exit Meazure"));
+    connect(m_exitAction, &QAction::triggered, this, &QWidget::close);
 
     // Edit actions
 
@@ -116,10 +143,10 @@ void MainWindow::createActions() {
 
     m_recordPositionAction = new QAction(tr("R&ecord Position"), this);
     m_recordPositionAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(m_recordPositionAction, &QAction::triggered, this, [&posLogMgr, &toolMgr]() {
-        posLogMgr.recordPosition();
-        toolMgr.strobeTool();
-    });
+    connect(m_recordPositionAction, &QAction::triggered, &posLogMgr, &PosLogMgr::recordPosition);
+
+    m_managePositionsAction = new QAction(tr("&Manage Positions..."), this);
+    connect(m_managePositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::managePositions);
 
     m_deletePositionsAction = new QAction(tr("De&lete Positions"), this);
     m_deletePositionsAction->setEnabled(false);
@@ -401,14 +428,11 @@ void MainWindow::createMenus() {
     // File menu
 
     QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
-
+    fileMenu->addAction(m_loadPositionsAction);
+    fileMenu->addAction(m_savePositionsAction);
+    fileMenu->addAction(m_saveAsPositionsAction);
     fileMenu->addSeparator();
-
-    auto* exitAct = new QAction(tr("E&xit"), this);
-    exitAct->setShortcuts(QKeySequence::Quit);
-    exitAct->setStatusTip(tr("Exit Meazure"));
-    connect(exitAct, &QAction::triggered, this, &QWidget::close);
-    fileMenu->addAction(exitAct);
+    fileMenu->addAction(m_exitAction);
 
     // Edit menu
 
@@ -419,6 +443,7 @@ void MainWindow::createMenus() {
     editMenu->addAction(m_findCrosshairsAction);
     editMenu->addSeparator();
     editMenu->addAction(m_recordPositionAction);
+    editMenu->addAction(m_managePositionsAction);
     editMenu->addAction(m_deletePositionsAction);
     editMenu->addSeparator();
     editMenu->addAction(m_preferencesAction);

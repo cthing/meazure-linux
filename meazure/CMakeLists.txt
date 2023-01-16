@@ -248,6 +248,7 @@ target_include_directories(libmeazure PRIVATE
                            ${Qt6_Gui_Platform_INCLUDE_DIRS}
                            ${glib_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
+                           ${ICU_INCLUDE_DIRS}
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_CURRENT_BINARY_DIR}"
                            )
@@ -259,6 +260,7 @@ target_include_directories(meazure PRIVATE
                            ${Qt6_Gui_Platform_INCLUDE_DIRS}
                            ${glib_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
+                           ${ICU_INCLUDE_DIRS}
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_CURRENT_BINARY_DIR}"
                            )
@@ -277,8 +279,17 @@ target_link_libraries(meazure PRIVATE
                       qsvgicon
                       Qt6XcbQpa
                       Qt6::Core
+                      ${ICU_uc_LIBS}
                       XercesC::XercesC
                       )
 
 # Replace the version variables with the actual values from the project version.
 configure_file(AppVersion.h.in AppVersion.h @ONLY)
+
+# Because the ICU library is statically compiled, its data file is not available at runtime.
+# Copy the data file to the output directory. The directory will be included in the distribution
+# package and ICU will be configured to use that directory.
+add_custom_command(TARGET meazure POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E make_directory icu
+                   COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ICU_RES_DIRS}/* icu
+                   )

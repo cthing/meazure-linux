@@ -129,9 +129,15 @@ private:
 
     QToolBar* m_toolBar;
 
+    QAction* m_loadPositionsAction;
+    QAction* m_savePositionsAction;
+    QAction* m_saveAsPositionsAction;
+    QAction* m_exitAction;
+
     QAction* m_copyRegionAction;
     QAction* m_findCrosshairsAction;
     QAction* m_recordPositionAction;
+    QAction* m_managePositionsAction;
     QAction* m_deletePositionsAction;
     QAction* m_preferencesAction;
 
