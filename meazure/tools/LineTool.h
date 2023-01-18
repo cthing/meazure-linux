@@ -28,6 +28,7 @@
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
 #include <QPoint>
+#include <QPointF>
 
 
 /// Line measurement tool. This tool provides a line to measure the distance between two arbitrary points on the
@@ -76,8 +77,10 @@ public:
     void flash() override;
     void strobe() override;
 
+    void setXY1Position(const QPointF& position) override;
     void setX1Position(double x) override;
     void setY1Position(double y) override;
+    void setXY2Position(const QPointF& position) override;
     void setX2Position(double x) override;
     void setY2Position(double y) override;
 

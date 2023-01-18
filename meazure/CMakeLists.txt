@@ -12,6 +12,8 @@ set(UI_SOURCES
     ui/fields/DoubleDataField.h
     ui/fields/IntegerDataField.cpp
     ui/fields/IntegerDataField.h
+    ui/fields/TextField.cpp
+    ui/fields/TextField.h
     ui/GlobalShortcuts.cpp
     ui/GlobalShortcuts.h
     ui/GridDialog.cpp
@@ -81,6 +83,8 @@ set(POSITION_LOG_SOURCES
     position-log/model/PosLogPosition.h
     position-log/model/PosLogToolData.h
     position-log/model/PosLogScreen.h
+    position-log/PosLogManageDlg.cpp
+    position-log/PosLogManageDlg.h
     position-log/PosLogMgr.cpp
     position-log/PosLogMgr.h
     )

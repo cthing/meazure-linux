@@ -134,6 +134,12 @@ public slots:
     ///
     void setDataWinEnabled(bool enable);
 
+    /// Sets the current radio tool's position 1.
+    ///
+    /// @param[in] position Coordinates in the current units, origin and y-axis direction.
+    ///
+    void setXY1Position(const QPointF& position);
+
     /// Sets the current radio tool's position 1 x coordinate.
     ///
     /// @param[in] x X coordinate in the current units, origin and y-axis direction.
@@ -146,6 +152,12 @@ public slots:
     ///
     void setY1Position(double y);
 
+    /// Sets the current radio tool's position 2.
+    ///
+    /// @param[in] position Coordinates in the current units, origin and y-axis direction.
+    ///
+    void setXY2Position(const QPointF& position);
+
     /// Sets the current radio tool's position 2 x coordinate.
     ///
     /// @param[in] x X coordinate in the current units, origin and y-axis direction.
@@ -157,6 +169,12 @@ public slots:
     /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
     ///
     void setY2Position(double y);
+
+    /// Sets the current radio tool's vertex position.
+    ///
+    /// @param[in] position Coordinates in the current units, origin and y-axis direction.
+    ///
+    void setXYVPosition(const QPointF& position);
 
     /// Sets the current radio tool's vertex position x coordinate.
     ///

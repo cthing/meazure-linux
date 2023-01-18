@@ -224,6 +224,10 @@ void ToolMgr::setDataWinEnabled(bool enable) {
     emit dataWinEnabled(enable);
 }
 
+void ToolMgr::setXY1Position(const QPointF& position) {
+    m_currentRadioTool->setXY1Position(position);
+}
+
 void ToolMgr::setX1Position(double x) {
     m_currentRadioTool->setX1Position(x);
 }
@@ -232,12 +236,20 @@ void ToolMgr::setY1Position(double y) {
     m_currentRadioTool->setY1Position(y);
 }
 
+void ToolMgr::setXY2Position(const QPointF& position) {
+    m_currentRadioTool->setXY2Position(position);
+}
+
 void ToolMgr::setX2Position(double x) {
     m_currentRadioTool->setX2Position(x);
 }
 
 void ToolMgr::setY2Position(double y) {
     m_currentRadioTool->setY2Position(y);
+}
+
+void ToolMgr::setXYVPosition(const QPointF& position) {
+    m_currentRadioTool->setXYVPosition(position);
 }
 
 void ToolMgr::setXVPosition(double x) {

@@ -24,9 +24,10 @@
 #include "model/PosLogDesktop.h"
 #include <meazure/tools/ToolMgr.h>
 #include <meazure/environment/ScreenInfoProvider.h>
-#include <meazure/units/UnitsProvider.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QObject>
 #include <QString>
+#include <QDateTime>
 
 
 /// Manages the recording, saving and loading of measurement tool positions. The positions are saved to an XML
@@ -53,15 +54,47 @@ public:
         m_description = description;
     }
 
+    [[nodiscard]] unsigned int getNumPositions() const {
+        return m_positions.size();
+    }
+
+    [[nodiscard]] QDateTime getPositionRecorded(unsigned int positionIndex) const {
+        return (positionIndex < m_positions.size()) ? m_positions[positionIndex].getRecorded() : QDateTime();
+    }
+
+    [[nodiscard]] QString getPositionDescription(unsigned int positionIndex) const {
+        return (positionIndex < m_positions.size()) ? m_positions[positionIndex].getDescription() : QString();
+    }
+
+    void changePositionDescription(unsigned int positionIndex, const QString& description) {
+        if (positionIndex < m_positions.size()) {
+            m_positions[positionIndex].setDescription(description);
+            m_dirty = true;
+        }
+    }
+
     [[nodiscard]] bool isDirty() const {
         return m_dirty;
     }
 
+    void refresh() {
+        emit positionsChanged(m_positions.size());
+    }
+
 signals:
+    void positionsLoaded();
     void positionsChanged(unsigned int numPositions);
+    void positionAdded(unsigned int positionIndex);
 
 public slots:
-    void recordPosition();
+    void changeTitle(const QString& title);
+    void changeDescription(const QString& description);
+
+    void addPosition();
+
+    void insertPosition(unsigned int positionIndex);
+
+    void deletePosition(unsigned int positionIndex);
 
     void deletePositions();
 
@@ -71,14 +104,14 @@ public slots:
 
     void loadPositions();
 
-    void managePositions();
+    void showPosition(unsigned int positionIndex);
 
 private:
     static constexpr int k_archiveMajorVersion { 1 };
     static constexpr const char* k_fileFilter { "Meazure Position Log Files (*.mpl);;All Files (*.*)" };
     static constexpr const char* k_fileSuffix { ".mpl" };
 
-    explicit PosLogMgr(const ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, const UnitsProvider& unitsMgr);
+    explicit PosLogMgr(ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr);
 
     void save(const QString& pathname);
 
@@ -86,9 +119,9 @@ private:
 
     [[nodiscard]] PosLogDesktopSharedPtr createDesktop();
 
-    const ToolMgr& m_toolMgr;
+    ToolMgr& m_toolMgr;
     const ScreenInfoProvider& m_screenInfo;
-    const UnitsProvider& m_units;
+    UnitsMgr& m_units;
     PosLogToolData m_currentToolData;
     PosLogDesktopWeakPtrVector m_desktopCache;
     PosLogPositionVector m_positions;

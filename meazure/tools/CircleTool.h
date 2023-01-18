@@ -29,6 +29,7 @@
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
 #include <QPoint>
+#include <QPointF>
 
 
 /// Circle measurement tool. This tool provides a circle and its radius. Two crosshairs are provided: one at the center
@@ -77,8 +78,10 @@ public:
     void flash() override;
     void strobe() override;
 
+    void setXY1Position(const QPointF& position) override;
     void setX1Position(double x) override;
     void setY1Position(double y) override;
+    void setXYVPosition(const QPointF& position) override;
     void setXVPosition(double x) override;
     void setYVPosition(double y) override;
 

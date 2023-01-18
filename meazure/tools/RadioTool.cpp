@@ -37,16 +37,25 @@ bool RadioTool::hasCrosshairs() const {
     return true;
 }
 
+void RadioTool::setXY1Position(const QPointF&) {
+}
+
 void RadioTool::setX1Position(double) {
 }
 
 void RadioTool::setY1Position(double) {
 }
 
+void RadioTool::setXY2Position(const QPointF&) {
+}
+
 void RadioTool::setX2Position(double) {
 }
 
 void RadioTool::setY2Position(double) {
+}
+
+void RadioTool::setXYVPosition(const QPointF&) {
 }
 
 void RadioTool::setXVPosition(double) {

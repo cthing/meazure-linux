@@ -249,15 +249,7 @@ public:
         return m_currentLinearUnits->unconvertCoord(dir, wnd, pos);
     }
 
-    /// Converts from the current units to pixels. The conversion takes into account the location of the origin
-    /// and the orientation of the y-axis.
-    ///
-    /// @param[in] pos Coordinates to convert to pixels.
-    ///
-    /// @return Coordinates converted from the current units to pixels. The conversion takes into account the
-    ///         location of the origin and the orientation of the y-axis.
-    ///
-    [[nodiscard]] QPoint unconvertCoord(const QPointF& pos) const {
+    [[nodiscard]] QPoint unconvertCoord(const QPointF& pos) const override {
         return m_currentLinearUnits->unconvertCoord(pos);
     }
 

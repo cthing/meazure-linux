@@ -138,6 +138,12 @@ void CircleTool::loadProfile(Profile& profile) {
     setPosition();
 }
 
+void CircleTool::setXY1Position(const QPointF& position) {
+    m_activePointId = k_perimeterId;
+    m_perimeter = m_unitsProvider.unconvertCoord(position);
+    setPosition();
+}
+
 void CircleTool::setX1Position(double x) {
     m_activePointId = k_perimeterId;
     m_perimeter.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_perimeterCH, x));
@@ -147,6 +153,12 @@ void CircleTool::setX1Position(double x) {
 void CircleTool::setY1Position(double y) {
     m_activePointId = k_perimeterId;
     m_perimeter.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_perimeterCH, y));
+    setPosition();
+}
+
+void CircleTool::setXYVPosition(const QPointF& position) {
+    m_activePointId = k_centerId;
+    m_center = m_unitsProvider.unconvertCoord(position);
     setPosition();
 }
 

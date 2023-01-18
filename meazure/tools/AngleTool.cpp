@@ -165,6 +165,12 @@ void AngleTool::loadProfile(Profile& profile) {
     setPosition();
 }
 
+void AngleTool::setXY1Position(const QPointF& position) {
+    m_activePointId = k_point1Id;
+    m_point1 = m_unitsProvider.unconvertCoord(position);
+    setPosition();
+}
+
 void AngleTool::setX1Position(double x) {
     m_activePointId = k_point1Id;
     m_point1.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point1CH, x));
@@ -177,6 +183,12 @@ void AngleTool::setY1Position(double y) {
     setPosition();
 }
 
+void AngleTool::setXY2Position(const QPointF& position) {
+    m_activePointId = k_point2Id;
+    m_point2 = m_unitsProvider.unconvertCoord(position);
+    setPosition();
+}
+
 void AngleTool::setX2Position(double x) {
     m_activePointId = k_point2Id;
     m_point2.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point2CH, x));
@@ -186,6 +198,12 @@ void AngleTool::setX2Position(double x) {
 void AngleTool::setY2Position(double y) {
     m_activePointId = k_point2Id;
     m_point2.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_point2CH, y));
+    setPosition();
+}
+
+void AngleTool::setXYVPosition(const QPointF& position) {
+    m_activePointId = k_vertexId;
+    m_vertex = m_unitsProvider.unconvertCoord(position);
     setPosition();
 }
 

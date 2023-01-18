@@ -235,16 +235,16 @@ QPoint LinearUnits::unconvertCoord(const QPointF& pos) const {
     const QSizeF from = fromPixels(findResFromCoord(pos));
 
     QPoint point;
-    point.rx() = static_cast<int>(pos.x() / from.width() + m_originOffset.x());
+    point.rx() = qRound(pos.x() / from.width() + m_originOffset.x());
 
     if (m_invertY) {
         if ((m_originOffset.x() == 0) && (m_originOffset.y() == 0)) {
-            point.ry() = static_cast<int>((m_screenInfoProvider.getVirtualRect().height() - 1) - pos.y() / from.height());
+            point.ry() = qRound((m_screenInfoProvider.getVirtualRect().height() - 1) - pos.y() / from.height());
         } else {
-            point.ry() = static_cast<int>(m_originOffset.y() - pos.y() / from.height());
+            point.ry() = qRound(m_originOffset.y() - pos.y() / from.height());
         }
     } else {
-        point.ry() = static_cast<int>(pos.y() / from.height() + m_originOffset.y());
+        point.ry() = qRound(pos.y() / from.height() + m_originOffset.y());
     }
 
     return point;

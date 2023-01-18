@@ -26,6 +26,7 @@
 #include <meazure/graphics/Crosshair.h>
 #include <QObject>
 #include <QImage>
+#include <QPointF>
 
 
 class RadioTool : public Tool {
@@ -95,6 +96,12 @@ public:
     ///
     [[nodiscard]] virtual bool hasCrosshairs() const;
 
+    /// Sets the radio tool's position 1 coordinates.
+    ///
+    /// @param[in] position Coordinates in the current units, origin and y-axis direction.
+    ///
+    virtual void setXY1Position(const QPointF& position);
+
     /// Sets the radio tool's position 1 x coordinate.
     ///
     /// @param[in] x X coordinate in the current units, origin and y-axis direction.
@@ -107,6 +114,12 @@ public:
     ///
     virtual void setY1Position(double y);
 
+    /// Sets the radio tool's position 2 coordinates.
+    ///
+    /// @param[in] position Coordinates in the current units, origin and y-axis direction.
+    ///
+    virtual void setXY2Position(const QPointF& position);
+
     /// Sets the radio tool's position 2 x coordinate.
     ///
     /// @param[in] x X coordinate in the current units, origin and y-axis direction.
@@ -118,6 +131,12 @@ public:
     /// @param[in] y Y coordinate in the current units, origin and y-axis direction.
     ///
     virtual void setY2Position(double y);
+
+    /// Sets the radio tool's vertex position coordinates.
+    ///
+    /// @param[in] position Coordinates in the current units, origin and y-axis direction.
+    ///
+    virtual void setXYVPosition(const QPointF& position);
 
     /// Sets the radio tool's vertex position x coordinate.
     ///

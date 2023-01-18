@@ -143,10 +143,10 @@ void MainWindow::createActions() {
 
     m_recordPositionAction = new QAction(tr("R&ecord Position"), this);
     m_recordPositionAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(m_recordPositionAction, &QAction::triggered, &posLogMgr, &PosLogMgr::recordPosition);
+    connect(m_recordPositionAction, &QAction::triggered, &posLogMgr, &PosLogMgr::addPosition);
 
     m_managePositionsAction = new QAction(tr("&Manage Positions..."), this);
-    connect(m_managePositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::managePositions);
+    connect(m_managePositionsAction, &QAction::triggered, this, &MainWindow::managePositions);
 
     m_deletePositionsAction = new QAction(tr("De&lete Positions"), this);
     m_deletePositionsAction->setEnabled(false);
@@ -535,6 +535,8 @@ void MainWindow::createDialogs() {
     m_gridDialog = new GridDialog(gridTool, app->getScreenInfo(), app->getUnitsMgr(), this);
 
     m_prefsDialog = new PrefsDialog(this);
+
+    m_positionDialog = new PosLogManageDlg(app->getPosLogMgr(), this);
 }
 
 void MainWindow::createKeyboardControl() {
@@ -621,6 +623,10 @@ void MainWindow::adjustGrid() {
         m_gridToolAction->trigger();
     }
     m_gridDialog->exec();
+}
+
+void MainWindow::managePositions() {
+    m_positionDialog->show();
 }
 
 void MainWindow::setAlwaysVisible(bool alwaysVisible) {

@@ -191,6 +191,16 @@ struct UnitsProvider {
     ///
     [[nodiscard]] virtual double unconvertCoord(ConvertDir dir, const QWidget* wnd, double pos) const = 0;
 
+    /// Converts from the current units to pixels. The conversion takes into account the location of the origin
+    /// and the orientation of the y-axis.
+    ///
+    /// @param[in] pos Coordinates to convert to pixels.
+    ///
+    /// @return Coordinates converted from the current units to pixels. The conversion takes into account the
+    ///         location of the origin and the orientation of the y-axis.
+    ///
+    [[nodiscard]] virtual QPoint unconvertCoord(const QPointF& pos) const = 0;
+
     /// Converts from the current units to pixels. The conversion does not take into account the location of the
     /// origin nor the orientation of the y-axis.
     ///

@@ -92,6 +92,11 @@ void PointTool::loadProfile(Profile& profile) {
     setPosition();
 }
 
+void PointTool::setXY1Position(const QPointF& position) {
+    m_center = m_unitsProvider.unconvertCoord(position);
+    setPosition();
+}
+
 void PointTool::setX1Position(double x) {
     m_center.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_crosshair, x));
     setPosition();

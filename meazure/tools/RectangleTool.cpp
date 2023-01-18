@@ -137,6 +137,12 @@ void RectangleTool::loadProfile(Profile& profile) {
     setPosition();
 }
 
+void RectangleTool::setXY1Position(const QPointF& position) {
+    m_activePointId = k_point1Id;
+    m_point1 = m_unitsProvider.unconvertCoord(position);
+    setPosition();
+}
+
 void RectangleTool::setX1Position(double x) {
     m_activePointId = k_point1Id;
     m_point1.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point1CH, x));
@@ -146,6 +152,12 @@ void RectangleTool::setX1Position(double x) {
 void RectangleTool::setY1Position(double y) {
     m_activePointId = k_point1Id;
     m_point1.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_point1CH, y));
+    setPosition();
+}
+
+void RectangleTool::setXY2Position(const QPointF& position) {
+    m_activePointId = k_point2Id;
+    m_point2 = m_unitsProvider.unconvertCoord(position);
     setPosition();
 }
 

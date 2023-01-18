@@ -28,6 +28,7 @@
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
 #include <QPoint>
+#include <QPointF>
 
 
 /// Angle measurement tool. This tool measures the acute or obtuse angle between two intersecting lines. There are
@@ -75,10 +76,13 @@ public:
     void flash() override;
     void strobe() override;
 
+    void setXY1Position(const QPointF& position) override;
     void setX1Position(double x) override;
     void setY1Position(double y) override;
+    void setXY2Position(const QPointF& position) override;
     void setX2Position(double x) override;
     void setY2Position(double y) override;
+    void setXYVPosition(const QPointF& position) override;
     void setXVPosition(double x) override;
     void setYVPosition(double y) override;
 

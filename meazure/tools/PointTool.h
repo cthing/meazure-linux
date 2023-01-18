@@ -27,6 +27,7 @@
 #include <meazure/ui/ToolDataWindow.h>
 #include <QObject>
 #include <QPoint>
+#include <QPointF>
 
 
 /// Point measurement tool. This tool provides a crosshair that can be placed arbitrarily on the screen to measure
@@ -72,6 +73,7 @@ public:
     void flash() override;
     void strobe() override;
 
+    void setXY1Position(const QPointF& position) override;
     void setX1Position(double x) override;
     void setY1Position(double y) override;
 

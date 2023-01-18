@@ -132,6 +132,12 @@ void LineTool::loadProfile(Profile& profile) {
     setPosition();
 }
 
+void LineTool::setXY1Position(const QPointF& position) {
+    m_activePointId = k_point1Id;
+    m_point1 = m_unitsProvider.unconvertCoord(position);
+    setPosition();
+}
+
 void LineTool::setX1Position(double x) {
     m_activePointId = k_point1Id;
     m_point1.rx() = qRound(m_unitsProvider.unconvertCoord(ConvertX, m_point1CH, x));
@@ -141,6 +147,12 @@ void LineTool::setX1Position(double x) {
 void LineTool::setY1Position(double y) {
     m_activePointId = k_point1Id;
     m_point1.ry() = qRound(m_unitsProvider.unconvertCoord(ConvertY, m_point1CH, y));
+    setPosition();
+}
+
+void LineTool::setXY2Position(const QPointF& position) {
+    m_activePointId = k_point2Id;
+    m_point2 = m_unitsProvider.unconvertCoord(position);
     setPosition();
 }
 

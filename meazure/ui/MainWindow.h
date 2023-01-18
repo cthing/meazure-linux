@@ -26,6 +26,7 @@
 #include <meazure/units/CustomUnits.h>
 #include <meazure/profile/Profile.h>
 #include <meazure/prefs/ui/PrefsDialog.h>
+#include <meazure/position-log/PosLogManageDlg.h>
 #include <QMainWindow>
 #include <QAction>
 #include <QToolBar>
@@ -58,6 +59,8 @@ private slots:
     static void copyRegion();
 
     void adjustGrid();
+
+    void managePositions();
 
     void setAlwaysVisible(bool alwaysVisible = k_defAlwaysVisible);
 
@@ -181,6 +184,7 @@ private:
 
     GridDialog* m_gridDialog;
     PrefsDialog* m_prefsDialog;
+    PosLogManageDlg* m_positionDialog;
 
     SectionVisibility m_sectionVisibility;
 };
