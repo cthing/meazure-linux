@@ -53,11 +53,15 @@ signals:
     void statusBarVisibilityChanged(bool visible);
     void visibilityChanged();
 
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 private slots:
     void radioToolSelected(RadioTool& tool);
 
     static void copyRegion();
 
+private:
     void adjustGrid();
 
     void managePositions();

@@ -42,7 +42,6 @@ App::App(int &argc, char **argv):
     u_setDataDirectory(findAppDataDir(k_icuDir).toUtf8().constData());
 
     setApplicationName("meazure");
-    setApplicationDisplayName("Meazure");
     setApplicationVersion(appVersion);
 
     setOrganizationName("cthing");

@@ -67,6 +67,9 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     connect(&unitsMgr, &UnitsMgr::originChanged, &toolMgr, &ToolMgr::refresh);
     connect(&unitsMgr, &UnitsMgr::calibrationRequired, this, &MainWindow::warnCalibrationRequired);
 
+    const PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
+    connect(&posLogMgr, &PosLogMgr::dirtyChanged, this, &MainWindow::setWindowModified);
+
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
     m_degreeUnitsAction->trigger();
@@ -74,6 +77,7 @@ MainWindow::MainWindow() {      // NOLINT(cppcoreguidelines-pro-type-member-init
     toolMgr.setEnabled(OriginTool::k_toolName, true);
     toolMgr.setCrosshairsEnabled(true);
 
+    setWindowTitle("[*]" + App::applicationName());
     setWindowFlag(Qt::WindowMaximizeButtonHint, false);
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
@@ -727,4 +731,24 @@ void MainWindow::warnCalibrationRequired() {
     if (calDlg.clickedButton() == calibrateButton) {
         m_prefsDialog->execPage(PrefsPageId::CalibrationPage);
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    bool accept = true;
+
+    if (isWindowModified()) {
+        const QMessageBox::StandardButton response =
+                QMessageBox::question(this, tr("Save Positions"),
+                                      tr("Positions have been recorded but have not yet been saved.\n\n"
+                                         "Save these positions?"),
+                                      QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                                      QMessageBox::Yes);
+        if (response == QMessageBox::Yes) {
+            accept = App::instance()->getPosLogMgr().savePositions();
+        } else {
+            accept = (response == QMessageBox::No);
+        }
+    }
+
+    event->setAccepted(accept);
 }

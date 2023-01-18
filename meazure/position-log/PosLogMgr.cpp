@@ -68,12 +68,12 @@ PosLogMgr::PosLogMgr(ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, Uni
 
 void PosLogMgr::changeTitle(const QString& title) {
     m_title = title;
-    m_dirty = true;
+    markDirty();
 }
 
 void PosLogMgr::changeDescription(const QString& description) {
     m_description = description;
-    m_dirty = true;
+    markDirty();
 }
 
 void PosLogMgr::addPosition() {
@@ -92,7 +92,7 @@ void PosLogMgr::insertPosition(unsigned int positionIndex) {
 
     auto iter = (positionIndex >= m_positions.size()) ? m_positions.end() : (m_positions.begin() + positionIndex);
     m_positions.insert(iter, position);
-    m_dirty = true;
+    markDirty();
 
     m_toolMgr.strobeTool();
 
@@ -106,7 +106,12 @@ void PosLogMgr::deletePosition(unsigned int positionIndex) {
     }
 
     m_positions.erase(m_positions.begin() + positionIndex);
-    m_dirty = !m_positions.empty();
+
+    if (m_positions.empty()) {
+        clearDirty();
+    } else {
+        markDirty();
+    }
 
     emit positionsChanged(m_positions.size());
 }
@@ -115,31 +120,33 @@ void PosLogMgr::deletePositions() {
     m_positions.clear();
     m_desktopCache.clear();
 
-    m_dirty = false;
+    clearDirty();
 
     emit positionsChanged(m_positions.size());
 }
 
-void PosLogMgr::savePositions() {
-    if (m_pathname.isEmpty()) {
-        saveAsPositions();
-    } else {
-        save(m_pathname);
-    }
+bool PosLogMgr::savePositions() {
+    return m_pathname.isEmpty() ? saveAsPositions() : save(m_pathname);
 }
 
-void PosLogMgr::saveAsPositions() {
+bool PosLogMgr::saveAsPositions() {
+    bool success = false;
+
     QString pathname = QFileDialog::getSaveFileName(nullptr, tr("Save Positions"), m_pathname, k_fileFilter);
-    if (!pathname.isEmpty()) {
+    if (pathname.isEmpty()) {
+        success = false;
+    } else {
         if (!pathname.endsWith(k_fileSuffix)) {
             pathname.append(k_fileSuffix);
         }
         m_pathname = pathname;
-        save(m_pathname);
+        success = save(m_pathname);
     }
+
+    return success;
 }
 
-void PosLogMgr::save(const QString& pathname) {
+bool PosLogMgr::save(const QString& pathname) {
     PosLogArchive archive;
     archive.setVersion(k_archiveMajorVersion);
 
@@ -161,6 +168,7 @@ void PosLogMgr::save(const QString& pathname) {
 
     archive.setPositions(m_positions);
 
+    bool success = false;
     std::ofstream archiveStream;
     PosLogWriter logWriter(m_units);
     try {
@@ -173,13 +181,17 @@ void PosLogMgr::save(const QString& pathname) {
 
         logWriter.write(archiveStream, archive);
         archiveStream.close();
-        m_dirty = false;
+        clearDirty();
+        success = true;
     } catch (const XMLWritingException& ex) {
         archiveStream.close();
         const QString msg = QObject::tr("There was an error while saving the position log file:\n%1\n\nError: %2")
                 .arg(pathname).arg(ex.getMessage());
         QMessageBox::warning(nullptr, tr("Position Log Save Error"), msg);
+        success = false;
     }
+
+    return success;
 }
 
 void PosLogMgr::loadPositions() {

@@ -69,7 +69,7 @@ public:
     void changePositionDescription(unsigned int positionIndex, const QString& description) {
         if (positionIndex < m_positions.size()) {
             m_positions[positionIndex].setDescription(description);
-            m_dirty = true;
+            markDirty();
         }
     }
 
@@ -85,6 +85,7 @@ signals:
     void positionsLoaded();
     void positionsChanged(unsigned int numPositions);
     void positionAdded(unsigned int positionIndex);
+    void dirtyChanged(bool dirty);
 
 public slots:
     void changeTitle(const QString& title);
@@ -98,9 +99,9 @@ public slots:
 
     void deletePositions();
 
-    void savePositions();
+    bool savePositions();
 
-    void saveAsPositions();
+    bool saveAsPositions();
 
     void loadPositions();
 
@@ -113,11 +114,21 @@ private:
 
     explicit PosLogMgr(ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr);
 
-    void save(const QString& pathname);
+    bool save(const QString& pathname);
 
     void load(const QString& pathname);
 
     [[nodiscard]] PosLogDesktopSharedPtr createDesktop();
+
+    void clearDirty() {
+        m_dirty = false;
+        emit dirtyChanged(m_dirty);
+    }
+
+    void markDirty() {
+        m_dirty = true;
+        emit dirtyChanged(m_dirty);
+    }
 
     ToolMgr& m_toolMgr;
     const ScreenInfoProvider& m_screenInfo;
