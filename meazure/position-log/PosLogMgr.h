@@ -81,6 +81,8 @@ public:
         emit positionsChanged(m_positions.size());
     }
 
+    void load(const QString& pathname);
+
 signals:
     void positionsLoaded();
     void positionsChanged(unsigned int numPositions);
@@ -115,8 +117,6 @@ private:
     explicit PosLogMgr(ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr);
 
     bool save(const QString& pathname);
-
-    void load(const QString& pathname);
 
     [[nodiscard]] PosLogDesktopSharedPtr createDesktop();
 

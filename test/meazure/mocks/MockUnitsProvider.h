@@ -143,6 +143,10 @@ public:
         return m_linearUnits->unconvertCoord(dir, wnd, pos);
     }
 
+    [[nodiscard]] QPoint unconvertCoord(const QPointF& pos) const override {
+        return m_linearUnits->unconvertCoord(pos);
+    }
+
     [[nodiscard]] QPoint unconvertPos(const QPointF& pos) const override {
         return m_linearUnits->unconvertPos(pos);
     }

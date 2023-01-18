@@ -53,7 +53,17 @@ App::App(int &argc, char **argv):
     parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
     parser.addHelpOption();
     parser.addVersionOption();
+    parser.addOptions({
+        {
+            { "p", "positions" },
+            tr("Load the position log file <filename>."),
+            tr("filename")},
+        });
     parser.process(*this);
+
+    if (parser.isSet("positions")) {
+        m_posLogMgr.load(parser.value("positions"));
+    }
 
     m_mainWindow.setAttribute(Qt::WA_QuitOnClose, true);
     m_mainWindow.show();
