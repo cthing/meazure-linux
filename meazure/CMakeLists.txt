@@ -295,5 +295,5 @@ configure_file(AppVersion.h.in AppVersion.h @ONLY)
 # package and ICU will be configured to use that directory.
 add_custom_command(TARGET meazure POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E make_directory icu
-                   COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ICU_RES_DIRS}/* icu
+                   COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ICU_RES_DIRS}/*" icu
                    )

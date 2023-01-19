@@ -52,8 +52,8 @@ add_custom_target(cmakelint
                   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_custom_target(apidocs
-                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${DOCS_DIR}/api/html"
-                  COMMAND ${DOXYGEN_EXECUTABLE} "${DEV_DIR}/doxygen/meazure.cfg"
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_CURRENT_BINARY_DIR}/meazure/apidocs"
+                  COMMAND ${CMAKE_COMMAND} -E env MEA_APIDOCS_DIR=${CMAKE_CURRENT_BINARY_DIR}/meazure/apidocs ${DOXYGEN_EXECUTABLE} "${DEV_DIR}/doxygen/meazure.cfg"
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(meazure)
