@@ -34,6 +34,7 @@
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <fstream>
 
 
@@ -203,6 +204,12 @@ void PosLogMgr::loadPositions() {
 }
 
 void PosLogMgr::load(const QString& pathname) {
+    if (!QFileInfo::exists(pathname)) {
+        const QString msg = QObject::tr("Could not find file:\n%1").arg(pathname);
+        QMessageBox::warning(nullptr, tr("File Not Found\n"), msg);
+        return;
+    }
+
     PosLogReader logReader(m_units);
     bool success = false;
 
