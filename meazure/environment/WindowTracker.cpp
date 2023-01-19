@@ -23,32 +23,54 @@
 #include <meazure/utils/XRecordUtils.h>
 #include <X11/Xproto.h>
 #include <sys/select.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 
-WindowTracker::WindowTracker(QObject *parent) : QThread(parent) {
+WindowTracker::WindowTracker(QObject *parent) : QThread(parent) { // NOLINT(cppcoreguidelines-pro-type-member-init)
 }
 
 WindowTracker::~WindowTracker() {
-    if (isRunning()) {
-        stop();
-    }
+    stop();
 }
 
 void WindowTracker::start() {
+    // Create the pipe that is used to unblock the select to stop the tracking thread.
+    if (pipe2(m_stopFd, O_NONBLOCK) == -1) {
+        qCritical("Could not create pipe: %s", strerror(errno));    // NOLINT(concurrency-mt-unsafe)
+        return;
+    }
+
+    // Indicate that the tracking thread should loop.
     m_run = true;
 
+    // Start the tracking thread.
     QThread::start();
 }
 
 void WindowTracker::stop() {
+    if (!m_run) {
+        return;
+    }
+
+    // Indicate that the tracking thread should stop looping.
     m_run = false;
 
+    // If the tracking thread is blocked in select, writing to the pipe will unblock it. Though it is virtually
+    // impossible for the pipe to be full (typically 4096 byte capacity), ignore EAGAIN anyway.
+    if (write(m_stopFd[1], "q", 1) == -1 && errno != EAGAIN) {
+        qWarning("Could not write to stop pipe: %s", strerror(errno));    // NOLINT(concurrency-mt-unsafe)
+    }
+
+    // Wait for the tracking thread to complete.
     wait();
+
+    // Close the pipe used to unblock the tracking thread.
+    close(m_stopFd[0]);
+    close(m_stopFd[1]);
 }
 
 void WindowTracker::run() {
-    constexpr long k_selectTimeout = 2;   // Seconds
-
     // Two display connections are recommended by the XRecord spec
     // (https://www.x.org/releases/X11R7.6/doc/libXtst/recordlib.html#record_clients). The spec also indicates which
     // display connections should be specified in a given XRecord function call. For example, the control display
@@ -95,16 +117,20 @@ void WindowTracker::run() {
 
     const int displayFd = ConnectionNumber(dataDisplay.display());
 
+    const int numFds = std::max(displayFd, m_stopFd[0]) + 1;
+    fd_set fds;
+
     while (m_run) {
-        // The select system call is used to avoid spinning on XRecordProcessReplies, which would
-        // needlessly load the processor. The timeout is used to avoid blocking on the select so
-        // that the state of the run flag can be checked and the loop can be terminated when stop()
-        // is called.
-        fd_set fds;
+        // The select system call is used to avoid spinning on XRecordProcessReplies, which would needlessly
+        // load the processor. The stop pipe is used to unblock the select so that the state of the run flag
+        // can be checked and the loop can be terminated when stop() is called. This technique for unblocking
+        // the select is called the "self-pipe trick". See http://cr.yp.to/docs/selfpipe.html for the description
+        // of this technique created by D. J. Bernstein.
         FD_ZERO(&fds);
         FD_SET(displayFd, &fds);
-        timeval timeout { k_selectTimeout, 0 };
-        select(displayFd + 1, &fds, nullptr, nullptr, &timeout);
+        FD_SET(m_stopFd[0], &fds);
+
+        select(numFds, &fds, nullptr, nullptr, nullptr);
         if (FD_ISSET(displayFd, &fds)) {
             context.processReplies();
         }

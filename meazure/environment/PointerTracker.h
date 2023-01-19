@@ -62,5 +62,6 @@ protected:
 private:
     void handleMotion(int16_t x, int16_t y);
 
+    int m_stopFd[2];
     volatile bool m_run { false };
 };

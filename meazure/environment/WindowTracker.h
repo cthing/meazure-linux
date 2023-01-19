@@ -66,5 +66,6 @@ protected:
 private:
     void handleChange(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height);
 
+    int m_stopFd[2];
     volatile bool m_run { false };
 };

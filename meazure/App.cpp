@@ -61,12 +61,12 @@ App::App(int &argc, char **argv):
         });
     parser.process(*this);
 
+    m_mainWindow.setAttribute(Qt::WA_QuitOnClose, true);
+    m_mainWindow.show();
+
     if (parser.isSet("positions")) {
         m_posLogMgr.load(parser.value("positions"));
     }
-
-    m_mainWindow.setAttribute(Qt::WA_QuitOnClose, true);
-    m_mainWindow.show();
 }
 
 QString App::findAppDataDir(const QString& subdir) {
