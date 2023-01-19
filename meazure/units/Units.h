@@ -128,7 +128,7 @@ public:
 
     /// Called to restores the units to their default state.
     ///
-    virtual void masterReset();
+    virtual void hardReset();
 
     /// Returns a string describing the units.
     ///

@@ -235,7 +235,7 @@ void ScreenInfo::loadProfile(Profile& profile) {
     }
 }
 
-void ScreenInfo::masterReset() const {
+void ScreenInfo::hardReset() const {
     for (auto* screen : m_screens) {
         const QSizeF manualRes(0.0, 0.0);
         screen->setScreenRes(k_defUseManualRes, &manualRes);

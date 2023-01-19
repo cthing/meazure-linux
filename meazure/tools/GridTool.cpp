@@ -85,7 +85,7 @@ void GridTool::loadProfile(Profile& profile) {
     setEnabled(profile.readBool("ScrnGrid", false));
 }
 
-void GridTool::masterReset() {
+void GridTool::hardReset() {
     init();
     refresh();
 }

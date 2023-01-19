@@ -162,9 +162,9 @@ void ToolMgr::loadProfile(Profile& profile) {
     }
 }
 
-void ToolMgr::masterReset() {
+void ToolMgr::hardReset() {
     for (const auto& toolEntry : m_tools) {
-        toolEntry.second->masterReset();
+        toolEntry.second->hardReset();
     }
 
     selectRadioTool(CursorTool::k_toolName);

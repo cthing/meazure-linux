@@ -66,7 +66,7 @@ MagnifierSection::MagnifierSection() :
     m_colorDisplay->setColorFormat(RGBFmt);
 }
 
-void MagnifierSection::masterReset() {
+void MagnifierSection::hardReset() {
     m_magnifier->setGrid(k_initialShowGrid);
     m_magnifier->setFreeze(k_initialFreeze);
     m_magnifier->setZoom(k_initialZoomIndex);

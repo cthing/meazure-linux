@@ -40,7 +40,7 @@ void Tool::saveProfile(Profile&) const {
 void Tool::loadProfile(Profile&) {
 }
 
-void Tool::masterReset() {
+void Tool::hardReset() {
 }
 
 void Tool::refresh() {

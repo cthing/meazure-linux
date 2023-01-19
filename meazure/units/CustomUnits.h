@@ -74,7 +74,7 @@ public:
 
     /// Called when the master setToDefaultValue is initiated. Resets the custom units to its default state.
     ///
-    void masterReset() override;
+    void hardReset() override;
 
     /// Indicates whether the custom units requires a screen resolution to perform its conversion from pixels.
     ///

@@ -59,7 +59,7 @@ public:
 
     void loadProfile(Profile& profile) override;
 
-    void masterReset() override;
+    void hardReset() override;
 
     void refresh() override;
 

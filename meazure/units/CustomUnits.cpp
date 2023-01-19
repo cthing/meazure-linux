@@ -56,8 +56,8 @@ void CustomUnits::loadProfile(Profile& profile) {
     emit customUnitsChanged();
 }
 
-void CustomUnits::masterReset() {
-    LinearUnits::masterReset();
+void CustomUnits::hardReset() {
+    LinearUnits::hardReset();
 
     setName("");
     setAbbrev("");

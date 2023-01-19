@@ -279,7 +279,7 @@ void GridDialog::restoreState() {
 }
 
 void GridDialog::reset() {
-    m_gridTool->masterReset();
+    m_gridTool->hardReset();
     updateUI();
 }
 

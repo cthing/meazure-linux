@@ -36,7 +36,7 @@ class MagnifierSection : public QWidget {
 public:
     MagnifierSection();
 
-    void masterReset();
+    void hardReset();
 
     [[nodiscard]] QAction* getZoomInAction() const {
         return m_zoomInAction;

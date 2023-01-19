@@ -58,7 +58,7 @@ public:
 
     /// Resets the screen manager to its default state.
     ///
-    void masterReset() const;
+    void hardReset() const;
 
     [[nodiscard]] int getNumScreens() const override;
 

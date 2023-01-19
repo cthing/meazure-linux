@@ -60,7 +60,7 @@ public:
 
     /// Called when the master application reset is initiated. The units manager is setToDefaultValue to its default state.
     ///
-    void masterReset();
+    void hardReset();
 
     /// Sets the current linear measurement units based on the specified units identifier.
     ///

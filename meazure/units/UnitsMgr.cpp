@@ -100,7 +100,7 @@ void UnitsMgr::loadProfile(Profile& profile) {
     setOrigin(unconvertPos(pt));
 }
 
-void UnitsMgr::masterReset() {
+void UnitsMgr::hardReset() {
     m_haveWarned = k_defHaveWarned;
 
     setLinearUnits(k_defLinearUnits);
@@ -111,11 +111,11 @@ void UnitsMgr::masterReset() {
     setOrigin(QPoint());
 
     for (const auto& unitsEntry : m_linearUnitsMap) {
-        unitsEntry.second->masterReset();
+        unitsEntry.second->hardReset();
     }
 
     for (const auto& unitsEntry : m_angularUnitsMap) {
-        unitsEntry.second->masterReset();
+        unitsEntry.second->hardReset();
     }
 }
 

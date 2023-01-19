@@ -63,7 +63,7 @@ public:
 
     /// Resets the tool manager to its default state.
     ///
-    void masterReset();
+    void hardReset();
 
     /// Obtains the specified tool. Note that this method does not activate the requested tool.
     ///

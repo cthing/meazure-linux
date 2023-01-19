@@ -56,7 +56,7 @@ void Units::loadPrecision(Profile& profile) {
     }
 }
 
-void Units::masterReset() {
+void Units::hardReset() {
     restoreDefaultPrecisions();
 }
 

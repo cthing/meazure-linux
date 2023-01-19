@@ -103,7 +103,7 @@ public:
 
     /// Resets the tool to its default state.
     ///
-    virtual void masterReset();
+    virtual void hardReset();
 
     /// Causes the tool to remeasure thereby emitting any measurement related signals. Typically, this method is
     /// called when the measurement units are changed or when the tool is first selected. Does nothing if the tool
