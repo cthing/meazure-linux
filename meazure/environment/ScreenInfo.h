@@ -48,13 +48,13 @@ public:
     ///
     /// @param[in] profile Profile object into which the manager state is persisted.
     ///
-    void saveProfile(Profile& profile) const;
+    void saveToProfile(Profile& profile) const;
 
     /// Restore the state of the manager from the specified profile object.
     ///
     /// @param[in] profile Profile object from which the manager state is restored.
     ///
-    void loadProfile(Profile& profile);
+    void loadFromProfile(Profile& profile);
 
     /// Resets the screen manager to its default state.
     ///

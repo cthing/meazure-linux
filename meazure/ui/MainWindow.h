@@ -41,8 +41,8 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow();
 
-    void saveProfile(Profile& profile) const;
-    void loadProfile(Profile& profile);
+    void saveToProfile(Profile& profile) const;
+    void loadFromProfile(Profile& profile);
 
 signals:
     void alwaysVisibleChanged(bool alwaysVisible);
@@ -139,6 +139,8 @@ private:
     QAction* m_loadPositionsAction;
     QAction* m_savePositionsAction;
     QAction* m_saveAsPositionsAction;
+    QAction* m_loadProfileAction;
+    QAction* m_saveProfileAction;
     QAction* m_exitAction;
 
     QAction* m_copyRegionAction;

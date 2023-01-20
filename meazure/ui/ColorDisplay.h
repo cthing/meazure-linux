@@ -56,8 +56,8 @@ class ColorDisplay : public QWidget {
 public:
     ColorDisplay();
 
-    void saveProfile(Profile& profile) const;
-    void loadProfile(Profile& profile);
+    void saveToProfile(Profile& profile) const;
+    void loadFromProfile(Profile& profile);
 
     void setColorFormat(ColorFormatId colorFmt);
 

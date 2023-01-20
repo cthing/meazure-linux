@@ -135,9 +135,9 @@ ToolMgr::ToolMgr(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvide
     connect(&screenInfo, &ScreenInfo::resolutionChanged, this, &ToolMgr::refresh);
 }
 
-void ToolMgr::saveProfile(Profile& profile) const {
+void ToolMgr::saveToProfile(Profile& profile) const {
     for (const auto& toolEntry : m_tools) {
-        toolEntry.second->saveProfile(profile);
+        toolEntry.second->saveToProfile(profile);
     }
 
     profile.writeStr("CurrentRadioTool", m_currentRadioTool->getName());
@@ -148,9 +148,9 @@ void ToolMgr::saveProfile(Profile& profile) const {
     }
 }
 
-void ToolMgr::loadProfile(Profile& profile) {
+void ToolMgr::loadFromProfile(Profile& profile) {
     for (const auto& toolEntry : m_tools) {
-        toolEntry.second->loadProfile(profile);
+        toolEntry.second->loadFromProfile(profile);
     }
 
     const QString currentRadioToolName = profile.readStr("CurrentRadioTool", m_currentRadioTool->getName());

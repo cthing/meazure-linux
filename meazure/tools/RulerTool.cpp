@@ -102,7 +102,7 @@ void RulerTool::setDataWinEnabled(bool enable) {
     }
 }
 
-void RulerTool::saveProfile(Profile& profile) const {
+void RulerTool::saveToProfile(Profile& profile) const {
     profile.writeBool("Rulers", isEnabled());
 
     // The tag prefix "RulerSet0" is for compatibility with versions of Meazure on Windows.
@@ -113,7 +113,7 @@ void RulerTool::saveProfile(Profile& profile) const {
     profile.writeInt("RulerSet0-Angle", m_angle);
 }
 
-void RulerTool::loadProfile(Profile& profile) {
+void RulerTool::loadFromProfile(Profile& profile) {
     // The tag prefix "RulerSet0" is for compatibility with versions of Meazure on Windows.
     m_origin = QPoint(profile.readInt("RulerSet0-XPos", m_origin.x()),
                       profile.readInt("RulerSet0-YPos", m_origin.y()));

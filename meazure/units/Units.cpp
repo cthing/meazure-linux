@@ -30,13 +30,13 @@
 
 Units::Units(QString unitsStr) : m_unitsStr(std::move(unitsStr)) {}
 
-void Units::saveProfile(Profile& profile) {
+void Units::saveToProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         savePrecision(profile);
     }
 }
 
-void Units::loadProfile(Profile& profile) {
+void Units::loadFromProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         loadPrecision(profile);
     }

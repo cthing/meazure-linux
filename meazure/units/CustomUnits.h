@@ -64,13 +64,13 @@ public:
     ///
     /// @param[in] profile Profile object into which to persist the custom units.
     ///
-    void saveProfile(Profile& profile) override;
+    void saveToProfile(Profile& profile) override;
 
     /// Restores the custom units conversion factor and basis from the specified profile object.
     ///
     /// @param[in] profile Profile object from which to restore the custom units.
     ///
-    void loadProfile(Profile& profile) override;
+    void loadFromProfile(Profile& profile) override;
 
     /// Called when the master setToDefaultValue is initiated. Resets the custom units to its default state.
     ///

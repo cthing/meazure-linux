@@ -67,7 +67,7 @@ void PointTool::setDataWinEnabled(bool enable) {
     }
 }
 
-void PointTool::saveProfile(Profile& profile) const {
+void PointTool::saveToProfile(Profile& profile) const {
     // Save the position of the crosshair.
     //
     const QPointF pos = m_unitsProvider.convertPos(m_center);
@@ -75,7 +75,7 @@ void PointTool::saveProfile(Profile& profile) const {
     profile.writeStr("PointY1", StringUtils::dblToStr(pos.y()));
 }
 
-void PointTool::loadProfile(Profile& profile) {
+void PointTool::loadFromProfile(Profile& profile) {
     // Use the current position as the default value for those position components that are not
     // specified in the profile.
     //

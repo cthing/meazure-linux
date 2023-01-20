@@ -47,7 +47,7 @@ public:
     ///                     it does not exist.
     /// @param[in] mode Opening mode for the profile file (i.e. read or write).
     ///
-    FileProfile(const QString& pathname, Mode mode);
+    FileProfile(QString  pathname, Mode mode);
 
     /// Closes the profile file and destroys the object instance.
     ///
@@ -176,9 +176,7 @@ private:
 
     /// Supervises the parsing of the XML profile file.
     ///
-    /// @param[in] pathname Profile file to parse
-    ///
-    void parseFile(const QString& pathname);
+    void parseFile();
 
 
     using XMLWriterPtr = std::unique_ptr<XMLWriter>;

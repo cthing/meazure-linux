@@ -51,7 +51,7 @@ UnitsMgr::UnitsMgr(const ScreenInfoProvider& screenInfoProvider) :
     connect(&m_customUnits, SIGNAL(customUnitsChanged()), this, SIGNAL(customUnitsChanged()));
 }
 
-void UnitsMgr::saveProfile(Profile& profile) const {
+void UnitsMgr::saveToProfile(Profile& profile) const {
     profile.writeStr("LinearUnits", getLinearUnitsStr());
     profile.writeStr("AngularUnits", getAngularUnitsStr());
     profile.writeBool("InvertY", isInvertY());
@@ -66,21 +66,21 @@ void UnitsMgr::saveProfile(Profile& profile) const {
     }
 
     for (const auto& unitsEntry : m_linearUnitsMap) {
-        unitsEntry.second->saveProfile(profile);
+        unitsEntry.second->saveToProfile(profile);
     }
 
     for (const auto& unitsEntry : m_angularUnitsMap) {
-        unitsEntry.second->saveProfile(profile);
+        unitsEntry.second->saveToProfile(profile);
     }
 }
 
-void UnitsMgr::loadProfile(Profile& profile) {
+void UnitsMgr::loadFromProfile(Profile& profile) {
     for (const auto& unitsEntry : m_linearUnitsMap) {
-        unitsEntry.second->loadProfile(profile);
+        unitsEntry.second->loadFromProfile(profile);
     }
 
     for (const auto& unitsEntry : m_angularUnitsMap) {
-        unitsEntry.second->loadProfile(profile);
+        unitsEntry.second->loadFromProfile(profile);
     }
 
     if (!profile.userInitiated()) {

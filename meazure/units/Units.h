@@ -106,13 +106,13 @@ public:
     ///
     /// @param[in] profile Profile object into which to persist the state of the units class.
     ///
-    virtual void saveProfile(Profile& profile);
+    virtual void saveToProfile(Profile& profile);
 
     /// Restores the state of a units class instance from the specified profile object.
     ///
     /// @param[in] profile Profile object from which to restore the state of the units class.
     ///
-    virtual void loadProfile(Profile& profile);
+    virtual void loadFromProfile(Profile& profile);
 
     /// Persists the measurement precisions to the specified profile object.
     ///

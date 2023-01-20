@@ -35,13 +35,13 @@ void Dimensions::reset() {
     lineWidth = k_defaultLineWidth;
 }
 
-void Dimensions::saveProfile(Profile& profile) {
+void Dimensions::saveToProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         profile.writeInt("LineWidth", lineWidth);
     }
 }
 
-void Dimensions::loadProfile(Profile& profile) {
+void Dimensions::loadFromProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         lineWidth = profile.readInt("LineWidth", k_defaultLineWidth);
     }

@@ -101,7 +101,7 @@ QImage RectangleTool::grabRegion() const {
     return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
-void RectangleTool::saveProfile(Profile& profile) const {
+void RectangleTool::saveToProfile(Profile& profile) const {
     // Save the position of each end point.
     //
     const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
@@ -113,7 +113,7 @@ void RectangleTool::saveProfile(Profile& profile) const {
     profile.writeStr("RectY2", StringUtils::dblToStr(pos2.y()));
 }
 
-void RectangleTool::loadProfile(Profile& profile) {
+void RectangleTool::loadFromProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
     const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);

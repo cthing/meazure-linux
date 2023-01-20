@@ -92,14 +92,14 @@ public:
     /// @param[in] profile The destination for the state information, which is typically a FileProfile or
     ///         SettingsProfile object.
     ///
-    virtual void saveProfile(Profile& profile) const;
+    virtual void saveToProfile(Profile& profile) const;
 
     /// Restores the state of the tool from the specified profile object. This base class implementation does nothing.
     ///
     /// @param[in] profile The source for the state information, which is typically a FileProfile or SettingsProfile
     ///         object.
     ///
-    virtual void loadProfile(Profile& profile);
+    virtual void loadFromProfile(Profile& profile);
 
     /// Resets the tool to its default state.
     ///

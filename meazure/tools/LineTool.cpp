@@ -99,7 +99,7 @@ QImage LineTool::grabRegion() const {
     return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
-void LineTool::saveProfile(Profile& profile) const {
+void LineTool::saveToProfile(Profile& profile) const {
     // Save the position of each end point.
     //
     const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
@@ -111,7 +111,7 @@ void LineTool::saveProfile(Profile& profile) const {
     profile.writeStr("LineY2", StringUtils::dblToStr(pos2.y()));
 }
 
-void LineTool::loadProfile(Profile& profile) {
+void LineTool::loadFromProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
     const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);

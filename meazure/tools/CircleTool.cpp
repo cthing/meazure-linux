@@ -105,7 +105,7 @@ QImage CircleTool::grabRegion() const {
     return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
-void CircleTool::saveProfile(Profile& profile) const {
+void CircleTool::saveToProfile(Profile& profile) const {
     // Save the position of each end point.
     //
     const QPointF posCenter = m_unitsProvider.convertPos(m_center);
@@ -117,7 +117,7 @@ void CircleTool::saveProfile(Profile& profile) const {
     profile.writeStr("CircleY1", StringUtils::dblToStr(posPerimeter.y()));
 }
 
-void CircleTool::loadProfile(Profile& profile) {
+void CircleTool::loadFromProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
     const QPointF defaultCenter = m_unitsProvider.convertPos(m_center);

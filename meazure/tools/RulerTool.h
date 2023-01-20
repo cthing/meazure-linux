@@ -55,8 +55,8 @@ public:
 
     void setDataWinEnabled(bool enable) override;
 
-    void saveProfile(Profile& profile) const override;
-    void loadProfile(Profile& profile) override;
+    void saveToProfile(Profile& profile) const override;
+    void loadFromProfile(Profile& profile) override;
 
     void refresh() override;
 

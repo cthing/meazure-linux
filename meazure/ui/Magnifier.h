@@ -47,8 +47,8 @@ public:
         return k_zoomFactors;
     }
 
-    void saveProfile(Profile& profile) const;
-    void loadProfile(Profile& profile);
+    void saveToProfile(Profile& profile) const;
+    void loadFromProfile(Profile& profile);
 
 public slots:
     void setZoom(int zoomIndex);

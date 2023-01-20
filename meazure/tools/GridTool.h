@@ -55,9 +55,9 @@ public:
 
     void setEnabled(bool enable) override;
 
-    void saveProfile(Profile& profile) const override;
+    void saveToProfile(Profile& profile) const override;
 
-    void loadProfile(Profile& profile) override;
+    void loadFromProfile(Profile& profile) override;
 
     void hardReset() override;
 

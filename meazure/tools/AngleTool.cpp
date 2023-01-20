@@ -120,7 +120,7 @@ void AngleTool::setDataWinEnabled(bool enable) {
     }
 }
 
-void AngleTool::saveProfile(Profile& profile) const {
+void AngleTool::saveToProfile(Profile& profile) const {
     // Save the position of point 1, point 2 and the vertex.
     //
     const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
@@ -136,7 +136,7 @@ void AngleTool::saveProfile(Profile& profile) const {
     profile.writeStr("AngleYV", StringUtils::dblToStr(posV.y()));
 }
 
-void AngleTool::loadProfile(Profile& profile) {
+void AngleTool::loadFromProfile(Profile& profile) {
     // Use the current positions as the default values for those positions that are not specified in the profile.
     //
     const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);

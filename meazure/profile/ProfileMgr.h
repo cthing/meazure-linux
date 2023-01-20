@@ -17,31 +17,22 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Tool.h"
+#pragma once
+
+#include <QObject>
 
 
-Tool::Tool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject *parent) :
-        QObject(parent), m_screenInfo(screenInfo), m_unitsProvider(unitsProvider) {
-}
+/// Supervises the saving and loading of application profiles. The profile represents the state of the application
+/// (e.g. currently selected tools, color preferences, etc.) so that it can be saved and restored.
+///
+class ProfileMgr : public QObject {
 
-void Tool::setEnabled(bool enable) {
-    m_enabled = enable;
+    Q_OBJECT
 
-    emit toolEnabled(*this, enable);
-}
+public slots:
+    void saveProfile();
+    void loadProfile();
 
-void Tool::setDataWinEnabled(bool enable) {
-    m_dataWinEnabled = enable;
-}
-
-void Tool::saveToProfile(Profile&) const {
-}
-
-void Tool::loadFromProfile(Profile&) {
-}
-
-void Tool::hardReset() {
-}
-
-void Tool::refresh() {
-}
+    void saveSettings();
+    void loadSettings();
+};

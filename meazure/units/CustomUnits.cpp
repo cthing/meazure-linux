@@ -34,7 +34,7 @@ CustomUnits::CustomUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(1);        // ResY
 }
 
-void CustomUnits::saveProfile(Profile& profile) {
+void CustomUnits::saveToProfile(Profile& profile) {
     profile.writeStr("CustomName", m_name);
     profile.writeStr("CustomAbbrev", m_abbrev);
 
@@ -44,7 +44,7 @@ void CustomUnits::saveProfile(Profile& profile) {
     savePrecision(profile);
 }
 
-void CustomUnits::loadProfile(Profile& profile) {
+void CustomUnits::loadFromProfile(Profile& profile) {
     setName(profile.readStr("CustomName", m_name));
     setAbbrev(profile.readStr("CustomAbbrev", m_abbrev));
 

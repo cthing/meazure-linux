@@ -35,6 +35,7 @@
 #include <meazure/units/Units.h>
 #include <meazure/prefs/ui/PrefsPageId.h>
 #include <meazure/position-log/PosLogMgr.h>
+#include <meazure/profile/ProfileMgr.h>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QActionGroup>
@@ -102,6 +103,7 @@ void MainWindow::createActions() {
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     const PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
+    const ProfileMgr& profileMgr = App::instance()->getProfileMgr();
 
     // File actions
 
@@ -124,6 +126,12 @@ void MainWindow::createActions() {
     connect(&posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
         m_saveAsPositionsAction->setEnabled(numPositions > 0);
     });
+
+    m_loadProfileAction = new QAction(tr("Loa&d Profile..."), this);
+    connect(m_loadProfileAction, &QAction::triggered, &profileMgr, &ProfileMgr::loadProfile);
+
+    m_saveProfileAction = new QAction(tr("Save &Profile..."), this);
+    connect(m_saveProfileAction, &QAction::triggered, &profileMgr, &ProfileMgr::saveProfile);
 
     m_exitAction = new QAction(tr("E&xit"), this);
     m_exitAction->setShortcuts(QKeySequence::Quit);
@@ -436,6 +444,9 @@ void MainWindow::createMenus() {
     fileMenu->addAction(m_savePositionsAction);
     fileMenu->addAction(m_saveAsPositionsAction);
     fileMenu->addSeparator();
+    fileMenu->addAction(m_loadProfileAction);
+    fileMenu->addAction(m_saveProfileAction);
+    fileMenu->addSeparator();
     fileMenu->addAction(m_exitAction);
 
     // Edit menu
@@ -583,7 +594,7 @@ void MainWindow::createKeyboardControl() {
     App::instance()->installEventFilter(globalShortcuts);
 }
 
-void MainWindow::saveProfile(Profile& profile) const {
+void MainWindow::saveToProfile(Profile& profile) const {
     if (!profile.userInitiated()) {
         profile.writeBool("AlwaysVisible", isAlwaysVisible());
         profile.writeBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible);
@@ -594,7 +605,7 @@ void MainWindow::saveProfile(Profile& profile) const {
     }
 }
 
-void MainWindow::loadProfile(Profile& profile) {
+void MainWindow::loadFromProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         setAlwaysVisible(profile.readBool("AlwaysVisible", isAlwaysVisible()));
         setToolBarVisible(profile.readBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible));

@@ -21,10 +21,11 @@
 #include "AppVersion.h"
 #include <QDateTime>
 #include <QHostInfo>
+#include <utility>
 
 
-FileProfile::FileProfile(const QString& pathname, Mode mode) :
-        m_pathname(pathname),
+FileProfile::FileProfile(QString pathname, Mode mode) :
+        m_pathname(std::move(pathname)),
         m_mode(mode),
         m_title("Meazure Profile File") {
 
@@ -34,7 +35,7 @@ FileProfile::FileProfile(const QString& pathname, Mode mode) :
 
         writeFileStart();
     } else {
-        parseFile(pathname);
+        parseFile();
     }
 }
 
@@ -171,9 +172,9 @@ void FileProfile::writeFileEnd() {
     m_writer->endDocument();
 }
 
-void FileProfile::parseFile(const QString& pathname) {
+void FileProfile::parseFile() {
     XMLParser parser(this);
-    parser.parseFile(pathname);
+    parser.parseFile(m_pathname);
 }
 
 void FileProfile::startElement(const QString& container, const QString& elementName, const XMLAttributes& attrs) {

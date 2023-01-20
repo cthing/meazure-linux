@@ -173,7 +173,7 @@ ScreenInfo::~ScreenInfo() {
     }
 }
 
-void ScreenInfo::saveProfile(Profile& profile) const {
+void ScreenInfo::saveToProfile(Profile& profile) const {
     if (!profile.userInitiated()) {
         profile.writeInt("ScreenW", m_virtualGeometry.width());
         profile.writeInt("ScreenH", m_virtualGeometry.height());
@@ -196,7 +196,7 @@ void ScreenInfo::saveProfile(Profile& profile) const {
     }
 }
 
-void ScreenInfo::loadProfile(Profile& profile) {
+void ScreenInfo::loadFromProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         const int w = profile.readInt("ScreenW", m_virtualGeometry.width());
         const int h = profile.readInt("ScreenH", m_virtualGeometry.height());

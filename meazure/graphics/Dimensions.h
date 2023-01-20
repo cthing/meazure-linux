@@ -48,13 +48,13 @@ namespace Dimensions {
     ///
     /// @param[in] profile Profile into which the dimensions are persisted.
     ///
-    void saveProfile(Profile& profile);
+    void saveToProfile(Profile& profile);
 
     /// Restores the dimensions from the specified profile.
     ///
     /// @param[in] profile Profile from which the dimensions are restored.
     ///
-    void loadProfile(Profile& profile);
+    void loadFromProfile(Profile& profile);
 
     /// Sets the width for lines used by tools and the grid.
     ///

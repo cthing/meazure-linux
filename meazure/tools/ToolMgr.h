@@ -53,13 +53,13 @@ public:
     ///
     /// @param[in] profile Profile object into which the state is to be persisted.
     ///
-    void saveProfile(Profile& profile) const;
+    void saveToProfile(Profile& profile) const;
 
     /// Restores the state of the manager from the specified profile object.
     ///
     /// @param[in] profile Profile object from which the state is to be restored.
     ///
-    void loadProfile(Profile& profile);
+    void loadFromProfile(Profile& profile);
 
     /// Resets the tool manager to its default state.
     ///

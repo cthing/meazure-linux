@@ -152,6 +152,8 @@ set(PROFILE_SOURCES
     profile/FileProfile.cpp
     profile/FileProfile.h
     profile/Profile.h
+    profile/ProfileMgr.cpp
+    profile/ProfileMgr.h
     profile/SettingsProfile.cpp
     profile/SettingsProfile.h
     )

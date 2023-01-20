@@ -17,31 +17,17 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Tool.h"
+#include "ProfileMgr.h"
 
 
-Tool::Tool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject *parent) :
-        QObject(parent), m_screenInfo(screenInfo), m_unitsProvider(unitsProvider) {
+void ProfileMgr::saveProfile() {
 }
 
-void Tool::setEnabled(bool enable) {
-    m_enabled = enable;
-
-    emit toolEnabled(*this, enable);
+void ProfileMgr::loadProfile() {
 }
 
-void Tool::setDataWinEnabled(bool enable) {
-    m_dataWinEnabled = enable;
+void ProfileMgr::saveSettings() {
 }
 
-void Tool::saveToProfile(Profile&) const {
-}
-
-void Tool::loadFromProfile(Profile&) {
-}
-
-void Tool::hardReset() {
-}
-
-void Tool::refresh() {
+void ProfileMgr::loadSettings() {
 }

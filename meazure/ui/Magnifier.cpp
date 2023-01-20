@@ -44,14 +44,14 @@ Magnifier::Magnifier() :
     m_grabTimer.start();
 }
 
-void Magnifier::saveProfile(Profile& profile) const {
+void Magnifier::saveToProfile(Profile& profile) const {
     if (!profile.userInitiated()) {
         profile.writeInt("ZoomIndex", m_zoomIndex);
         profile.writeBool("MagGrid", m_showGrid);
     }
 }
 
-void Magnifier::loadProfile(Profile& profile) {
+void Magnifier::loadFromProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         setZoom(profile.readInt("ZoomIndex", m_zoomIndex));
         setGrid(profile.readBool("MagGrid", m_showGrid));

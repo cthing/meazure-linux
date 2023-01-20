@@ -160,13 +160,13 @@ namespace Colors {
     ///
     /// @param[in] profile Profile into which the color settings are persisted.
     ///
-    void saveProfile(Profile& profile);
+    void saveToProfile(Profile& profile);
 
     /// Restores the color settings from the specified profile.
     ///
     /// @param[in] profile Profile from which the color settings are restored.
     ///
-    void loadProfile(Profile& profile);
+    void loadFromProfile(Profile& profile);
 
     /// Sets the specified item to the specified color.
     ///

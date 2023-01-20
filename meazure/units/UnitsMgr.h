@@ -50,13 +50,13 @@ public:
     ///
     /// @param[in] profile Profile object into which the manager state is persisted.
     ///
-    void saveProfile(Profile& profile) const;
+    void saveToProfile(Profile& profile) const;
 
     /// Restores the state of the units manager from the specified profile object.
     ///
     /// @param[in] profile Profile object from which the manager state is restored.
     ///
-    void loadProfile(Profile& profile);
+    void loadFromProfile(Profile& profile);
 
     /// Called when the master application reset is initiated. The units manager is setToDefaultValue to its default state.
     ///

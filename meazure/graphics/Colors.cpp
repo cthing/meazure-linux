@@ -218,7 +218,7 @@ void Colors::reset() {
     colors = defaultColors;
 }
 
-void Colors::saveProfile(Profile& profile) {
+void Colors::saveToProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         profile.writeUInt("LineFore", colors[LineFore]);
         profile.writeUInt("CrossHairBack", colors[CrosshairBack]);
@@ -231,7 +231,7 @@ void Colors::saveProfile(Profile& profile) {
     }
 }
 
-void Colors::loadProfile(Profile& profile) {
+void Colors::loadFromProfile(Profile& profile) {
     if (!profile.userInitiated()) {
         colors[LineFore] = profile.readUInt("LineFore", defaultColors.at(LineFore));
         colors[CrosshairBack] = profile.readUInt("CrossHairBack", defaultColors.at(CrosshairBack));

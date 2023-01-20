@@ -55,7 +55,7 @@ void GridTool::setEnabled(bool enable) {
     }
 }
 
-void GridTool::saveProfile(Profile& profile) const {
+void GridTool::saveToProfile(Profile& profile) const {
     profile.writeBool("ScrnGrid", isEnabled());
     profile.writeInt("ScrnGridX", m_x);
     profile.writeInt("ScrnGridY", m_y);
@@ -68,7 +68,7 @@ void GridTool::saveProfile(Profile& profile) const {
     profile.writeStr("ScrnGridUnits", m_unitsProvider.getLinearUnits(m_units)->getUnitsStr());
 }
 
-void GridTool::loadProfile(Profile& profile) {
+void GridTool::loadFromProfile(Profile& profile) {
     m_x = profile.readInt("ScrnGridX", m_x);
     m_y = profile.readInt("ScrnGridY", m_y);
     m_width = profile.readInt("ScrnGridW", m_width);

@@ -24,6 +24,7 @@
 #include "units/UnitsMgr.h"
 #include "tools/ToolMgr.h"
 #include "position-log/PosLogMgr.h"
+#include "profile/ProfileMgr.h"
 #include <QApplication>
 #include <QString>
 
@@ -55,6 +56,8 @@ public:
     [[nodiscard]] UnitsMgr& getUnitsMgr() { return m_unitsMgr; }
     [[nodiscard]] ToolMgr& getToolMgr() { return m_toolMgr; }
     [[nodiscard]] PosLogMgr& getPosLogMgr() { return m_posLogMgr; }
+    [[nodiscard]] ProfileMgr& getProfileMgr() { return m_profileMgr; }
+    [[nodiscard]] MainWindow& getMainWindow() { return m_mainWindow; }
 
     static QString findAppDataDir(const QString& subdir = QString());
     static QString findAppDataFile(const QString& filename);
@@ -66,5 +69,6 @@ private:
     UnitsMgr m_unitsMgr;
     ToolMgr m_toolMgr;
     PosLogMgr m_posLogMgr;
+    ProfileMgr m_profileMgr;
     MainWindow m_mainWindow;
 };
