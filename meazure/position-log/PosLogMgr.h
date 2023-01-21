@@ -83,6 +83,9 @@ public:
 
     void load(const QString& pathname);
 
+    void saveToProfile(Profile& profile) const;
+    void loadFromProfile(Profile& profile);
+
 signals:
     void positionsLoaded();
     void positionsChanged(unsigned int numPositions);
@@ -138,7 +141,9 @@ private:
     PosLogPositionVector m_positions;
     QString m_title;
     QString m_description;
-    QString m_pathname;
+    QString m_savePathname;
+    QString m_loadPathname;
+    QString m_initialDir;
     bool m_dirty { false };
 
     friend class App;

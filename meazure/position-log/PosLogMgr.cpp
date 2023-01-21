@@ -35,13 +35,15 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QDir>
 #include <fstream>
 
 
 PosLogMgr::PosLogMgr(ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr) :
         m_toolMgr(toolMgr),
         m_screenInfo(screenInfo),
-        m_units(unitsMgr) {
+        m_units(unitsMgr),
+        m_initialDir(QDir::homePath()) {
     m_title = QString("%1 Position Log File").arg(QGuiApplication::applicationDisplayName());
 
     connect(&m_toolMgr, &ToolMgr::xy1PositionChanged, this, [this](const QPointF& coord) {
@@ -127,21 +129,26 @@ void PosLogMgr::deletePositions() {
 }
 
 bool PosLogMgr::savePositions() {
-    return m_pathname.isEmpty() ? saveAsPositions() : save(m_pathname);
+    return (m_savePathname.isEmpty() || !QFileInfo(m_savePathname).dir().exists())
+            ? saveAsPositions()
+            : save(m_savePathname);
 }
 
 bool PosLogMgr::saveAsPositions() {
     bool success = false;
 
-    QString pathname = QFileDialog::getSaveFileName(nullptr, tr("Save Positions"), m_pathname, k_fileFilter);
+    const QString& dir = m_savePathname.isEmpty() ? m_initialDir : m_savePathname;
+
+    QString pathname = QFileDialog::getSaveFileName(nullptr, tr("Save Positions"), dir, k_fileFilter);
     if (pathname.isEmpty()) {
         success = false;
     } else {
         if (!pathname.endsWith(k_fileSuffix)) {
             pathname.append(k_fileSuffix);
         }
-        m_pathname = pathname;
-        success = save(m_pathname);
+        m_savePathname = pathname;
+        m_initialDir = QFileInfo(m_savePathname).dir().path();
+        success = save(m_savePathname);
     }
 
     return success;
@@ -175,7 +182,7 @@ bool PosLogMgr::save(const QString& pathname) {
     try {
         archiveStream.open(pathname.toUtf8().constData(), std::ios::out | std::ios::trunc);
         if (archiveStream.fail()) {
-            const QString msg = QObject::tr("Could not open the position log file:\n%1\n\nError: %2")
+            const QString msg = tr("Could not open the position log file:\n%1\n\nError: %2")
                     .arg(pathname).arg(std::strerror(errno));       // NOLINT(concurrency-mt-unsafe)
             QMessageBox::warning(nullptr, tr("Position Log Save Error"), msg);
         }
@@ -186,7 +193,7 @@ bool PosLogMgr::save(const QString& pathname) {
         success = true;
     } catch (const XMLWritingException& ex) {
         archiveStream.close();
-        const QString msg = QObject::tr("There was an error while saving the position log file:\n%1\n\nError: %2")
+        const QString msg = tr("There was an error while saving the position log file:\n%1\n\nError: %2")
                 .arg(pathname).arg(ex.getMessage());
         QMessageBox::warning(nullptr, tr("Position Log Save Error"), msg);
         success = false;
@@ -196,19 +203,39 @@ bool PosLogMgr::save(const QString& pathname) {
 }
 
 void PosLogMgr::loadPositions() {
-    const QString pathname = QFileDialog::getOpenFileName(nullptr, tr("Load Positions"), m_pathname, k_fileFilter);
+    if (m_dirty) {
+        const QMessageBox::StandardButton response =
+                QMessageBox::question(nullptr, tr("Save Positions"),
+                                      tr("Positions have been recorded but have not yet been saved.\n\n"
+                                         "Save these positions?"),
+                                      QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                                      QMessageBox::Yes);
+        if (response == QMessageBox::Yes) {
+            if (!savePositions()) {
+                return;
+            }
+        } else if (response == QMessageBox::Cancel) {
+            return;
+        }
+    }
+
+    const QString& dir = m_loadPathname.isEmpty() ? m_initialDir : m_loadPathname;
+
+    const QString pathname = QFileDialog::getOpenFileName(nullptr, tr("Load Positions"), dir, k_fileFilter);
     if (!pathname.isEmpty()) {
-        m_pathname = pathname;
-        load(m_pathname);
+        load(pathname);
     }
 }
 
 void PosLogMgr::load(const QString& pathname) {
     if (!QFileInfo::exists(pathname)) {
-        const QString msg = QObject::tr("Could not find file:\n%1").arg(pathname);
+        const QString msg = tr("Could not find file:\n%1").arg(pathname);
         QMessageBox::warning(nullptr, tr("File Not Found\n"), msg);
         return;
     }
+
+    m_loadPathname = pathname;
+    m_initialDir = QFileInfo(m_loadPathname).dir().path();
 
     PosLogReader logReader(m_units);
     bool success = false;
@@ -219,12 +246,12 @@ void PosLogMgr::load(const QString& pathname) {
         success = true;
     } catch (const XMLParsingException& ex) {
         const QString msg =
-                QObject::tr("There was an error while loading the position log file:\n"
-                            "%1\n\nLine: %2\nCharacter: %3\nError: %4")
+                tr("There was an error while loading the position log file:\n"
+                   "%1\n\nLine: %2\nCharacter: %3\nError: %4")
                 .arg(ex.getPathname()).arg(ex.getLine()).arg(ex.getColumn()).arg(ex.getMessage());
         QMessageBox::warning(nullptr, tr("Position Log Load Error"), msg);
     } catch (...) {
-        const QString msg = QObject::tr("There was an error while loading the position log file:\n%1").arg(pathname);
+        const QString msg = tr("There was an error while loading the position log file:\n%1").arg(pathname);
         QMessageBox::warning(nullptr, tr("Position Log Load Error"), msg);
     }
 
@@ -251,6 +278,19 @@ void PosLogMgr::load(const QString& pathname) {
     }
 
     emit positionsLoaded();
+}
+
+void PosLogMgr::saveToProfile(Profile& profile) const {
+    if (!profile.userInitiated()) {
+        profile.writeStr("LastLogDir", m_initialDir);
+    }
+
+}
+
+void PosLogMgr::loadFromProfile(Profile& profile) {
+    if (!profile.userInitiated()) {
+        m_initialDir = profile.readStr("LastLogDir", m_initialDir);
+    }
 }
 
 void PosLogMgr::showPosition(unsigned int positionIndex) {
