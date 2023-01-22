@@ -68,3 +68,11 @@ ScreenDataSection* MainView::getScreenDataSection() const {
 MagnifierSection* MainView::getMagnifierSection() const {
     return m_magnifierSection;
 }
+
+void MainView::saveToProfile(Profile& profile) const {
+    m_magnifierSection->saveToProfile(profile);
+}
+
+void MainView::loadFromProfile(Profile& profile) {
+    m_magnifierSection->saveToProfile(profile);
+}

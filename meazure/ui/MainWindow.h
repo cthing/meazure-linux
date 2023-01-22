@@ -141,6 +141,7 @@ private:
     QAction* m_saveAsPositionsAction;
     QAction* m_loadProfileAction;
     QAction* m_saveProfileAction;
+    QAction* m_saveAsProfileAction;
     QAction* m_exitAction;
 
     QAction* m_copyRegionAction;

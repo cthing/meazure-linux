@@ -95,7 +95,3 @@ QString App::findAppDataDir(const QString& subdir) {
     return nullptr;
 #endif
 }
-
-QString App::findAppDataFile(const QString& filename) {
-    return (filename + QDir::separator() + filename).toUtf8().constData();
-}

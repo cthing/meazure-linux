@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "Profile.h"
 #include <QObject>
 
 
@@ -29,10 +30,28 @@ class ProfileMgr : public QObject {
 
     Q_OBJECT
 
+public:
+    ProfileMgr();
+
 public slots:
     void saveProfile();
+    void saveAsProfile();
     void loadProfile();
+    void load(const QString& pathname);
 
     void saveSettings();
     void loadSettings();
+
+private:
+    static constexpr const char* k_fileFilter { "Meazure Profile Files (*.mea);;All Files (*.*)" };
+    static constexpr const char* k_fileSuffix { ".mea" };
+
+    void save(const QString& pathname);
+
+    void saveToProfile(Profile& profile);
+    void loadFromProfile(Profile& profile);
+
+    QString m_savePathname;
+    QString m_loadPathname;
+    QString m_initialDir;
 };

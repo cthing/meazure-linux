@@ -133,6 +133,9 @@ void MainWindow::createActions() {
     m_saveProfileAction = new QAction(tr("Save &Profile..."), this);
     connect(m_saveProfileAction, &QAction::triggered, &profileMgr, &ProfileMgr::saveProfile);
 
+    m_saveAsProfileAction = new QAction(tr("Save &Profile As..."), this);
+    connect(m_saveAsProfileAction, &QAction::triggered, &profileMgr, &ProfileMgr::saveAsProfile);
+
     m_exitAction = new QAction(tr("E&xit"), this);
     m_exitAction->setShortcuts(QKeySequence::Quit);
     m_exitAction->setStatusTip(tr("Exit Meazure"));
@@ -446,6 +449,7 @@ void MainWindow::createMenus() {
     fileMenu->addSeparator();
     fileMenu->addAction(m_loadProfileAction);
     fileMenu->addAction(m_saveProfileAction);
+    fileMenu->addAction(m_saveAsProfileAction);
     fileMenu->addSeparator();
     fileMenu->addAction(m_exitAction);
 
@@ -596,6 +600,10 @@ void MainWindow::createKeyboardControl() {
 
 void MainWindow::saveToProfile(Profile& profile) const {
     if (!profile.userInitiated()) {
+        const QRect geom = geometry();
+        profile.writeInt("WindowLeft", geom.x());
+        profile.writeInt("WindowTop", geom.y());
+
         profile.writeBool("AlwaysVisible", isAlwaysVisible());
         profile.writeBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible);
         profile.writeBool("ExpandToolInfo", m_sectionVisibility.m_toolDataSectionVisible);
@@ -603,9 +611,13 @@ void MainWindow::saveToProfile(Profile& profile) const {
         profile.writeBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible);
         profile.writeBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible);
     }
+
+    m_mainView->saveToProfile(profile);
 }
 
 void MainWindow::loadFromProfile(Profile& profile) {
+    m_mainView->loadFromProfile(profile);
+
     if (!profile.userInitiated()) {
         setAlwaysVisible(profile.readBool("AlwaysVisible", isAlwaysVisible()));
         setToolBarVisible(profile.readBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible));
@@ -613,6 +625,11 @@ void MainWindow::loadFromProfile(Profile& profile) {
         setScreenDataSectionVisible(profile.readBool("ExpandScreenInfo", m_sectionVisibility.m_screenDataSectionVisible));
         setMagnifierSectionVisible(profile.readBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible));
         setStatusBarVisible(profile.readBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible));
+
+        QRect geom = geometry();
+        geom.setX(profile.readInt("WindowLeft", geom.x()));
+        geom.setY(profile.readInt("WindowTop", geom.y()));
+        setGeometry(geom);
     }
 }
 

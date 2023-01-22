@@ -23,6 +23,7 @@
 #include "ScreenDataSection.h"
 #include "MagnifierSection.h"
 #include <meazure/prefs/ui/PrefsDialog.h>
+#include <meazure/profile/Profile.h>
 #include <QWidget>
 #include <QAction>
 #include <vector>
@@ -47,6 +48,9 @@ public:
     [[nodiscard]] ToolDataSection* getToolDataSection() const;
     [[nodiscard]] ScreenDataSection* getScreenDataSection() const;
     [[nodiscard]] MagnifierSection* getMagnifierSection() const;
+
+    void saveToProfile(Profile& profile) const;
+    void loadFromProfile(Profile& profile);
 
 private:
     ToolDataSection* m_toolDataSection;

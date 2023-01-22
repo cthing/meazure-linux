@@ -22,6 +22,7 @@
 #include "Magnifier.h"
 #include "MagnifierControls.h"
 #include "ColorDisplay.h"
+#include <meazure/profile/Profile.h>
 #include <QWidget>
 #include <QAction>
 #include <vector>
@@ -35,6 +36,9 @@ class MagnifierSection : public QWidget {
 
 public:
     MagnifierSection();
+
+    void saveToProfile(Profile& profile) const;
+    void loadFromProfile(Profile& profile);
 
     void hardReset();
 

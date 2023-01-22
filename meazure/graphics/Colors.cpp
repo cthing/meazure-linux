@@ -19,6 +19,8 @@
 
 #include "Colors.h"
 #include <meazure/utils/MathUtils.h>
+#include <QColorDialog>
+#include <QColor>
 #include <map>
 #include <cmath>
 #include <limits>
@@ -228,11 +230,25 @@ void Colors::saveToProfile(Profile& profile) {
         profile.writeUInt("RulerBack", colors[RulerBack]);
         profile.writeUInt("RulerBorder", colors[RulerBorder]);
         profile.writeUInt("RulerOpacity", colors[RulerOpacity]);
+
+        const int numCustomColors = QColorDialog::customCount();
+        profile.writeInt("CustomColors", numCustomColors);
+        for (int idx = 0; idx < numCustomColors; idx++) {
+            profile.writeUInt(QString("CustomColor%1").arg(idx), QColorDialog::customColor(idx).rgb());
+        }
     }
 }
 
 void Colors::loadFromProfile(Profile& profile) {
     if (!profile.userInitiated()) {
+        const int availableNumCustomColors = QColorDialog::customCount();
+        const int savedNumCustomColors = profile.readInt("CustomColors", availableNumCustomColors);
+        const int numCustomColors = std::min(availableNumCustomColors, savedNumCustomColors);
+        for (int idx = 0; idx < numCustomColors; idx++) {
+            const QRgb color = profile.readUInt(QString("CustomColor%1").arg(idx), QColorDialog::customColor(idx).rgb());
+            QColorDialog::setCustomColor(idx, QColor(color));
+        }
+
         colors[LineFore] = profile.readUInt("LineFore", defaultColors.at(LineFore));
         colors[CrosshairBack] = profile.readUInt("CrossHairBack", defaultColors.at(CrosshairBack));
         colors[CrosshairBorder] = profile.readUInt("CrossHairBorder", defaultColors.at(CrosshairBorder));

@@ -63,7 +63,17 @@ MagnifierSection::MagnifierSection() :
     m_magnifier->setGrid(k_initialShowGrid);
     m_magnifier->setFreeze(k_initialFreeze);
     m_magnifier->setZoom(k_initialZoomIndex);
-    m_colorDisplay->setColorFormat(RGBFmt);
+    m_colorDisplay->setColorFormat(k_initialColorFmt);
+}
+
+void MagnifierSection::saveToProfile(Profile& profile) const {
+    m_magnifier->saveToProfile(profile);
+    m_colorDisplay->saveToProfile(profile);
+}
+
+void MagnifierSection::loadFromProfile(Profile& profile) {
+    m_magnifier->loadFromProfile(profile);
+    m_colorDisplay->saveToProfile(profile);
 }
 
 void MagnifierSection::hardReset() {

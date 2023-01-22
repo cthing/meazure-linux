@@ -60,7 +60,6 @@ public:
     [[nodiscard]] MainWindow& getMainWindow() { return m_mainWindow; }
 
     static QString findAppDataDir(const QString& subdir = QString());
-    static QString findAppDataFile(const QString& filename);
 
 private:
     static constexpr const char* k_icuDir { "icu" };
