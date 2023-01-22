@@ -131,7 +131,6 @@ private:
     using PositionUniquePtr = std::unique_ptr<PosLogPosition>;
 
     static const ElementMap elementMap ;
-    static const AttrMap attrMap;
     static const LinearMesurementMap linearMesurementMap;
 
     PosLogArchiveSharedPtr m_archive;

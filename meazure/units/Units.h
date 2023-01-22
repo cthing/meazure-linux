@@ -440,7 +440,7 @@ public:
     ///
     [[nodiscard]] QString format(LinearMeasurementId id, double value) const;
 
-    /// Formats the specifiedaspect ratio value with the appropriate precision.
+    /// Formats the specified aspect ratio value with the appropriate precision.
     ///
     /// @param[in] value Aspect ratio
     /// @return Aspect ratio formatted for display

@@ -55,10 +55,6 @@ public:
         return m_center;
     }
 
-    [[nodiscard]] QPoint getOffScreen() const override {
-        return { 3000, 5000 };
-    }
-
     [[nodiscard]] QRect getVirtualRect() const override {
         return m_rect;
     }

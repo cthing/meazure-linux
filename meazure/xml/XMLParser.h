@@ -534,7 +534,7 @@ private:
     ///
     void endDocument() override;
 
-    /// Resets the document object for reuse. This method helps in reseting the document implementation defaults
+    /// Resets the document object for reuse. This method helps in resetting the document implementation defaults
     /// each time the document is begun.
     ///
     void resetDocument() override;

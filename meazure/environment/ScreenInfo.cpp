@@ -60,13 +60,7 @@ public:
             const QPlatformCursor* platformCursor = screen->handle()->cursor();
             m_cursorSize = (platformCursor == nullptr) ? k_defaultCursorSize : platformCursor->size();
         }
-   }
-
-   /// Returns the usable geometry (i.e. not used by the window manager).
-   ///
-   /// @return Available screen geometry.
-   ///
-   [[nodiscard]] const QRect& getAvailableGeom() const { return m_availableGeom; }
+    }
 
     /// Returns the descriptive name for the screen.
     ///
@@ -270,13 +264,6 @@ QPoint ScreenInfo::getCenter() const {
     }
 
     return m_screens.empty() ? QPoint() : m_screens[0]->center();
-}
-
-QPoint ScreenInfo::getOffScreen() const {
-    QPoint offScreenPoint = getVirtualRect().bottomRight();
-    offScreenPoint.rx() += 1000;
-    offScreenPoint.ry() += 1000;
-    return offScreenPoint;
 }
 
 QRect ScreenInfo::getVirtualRect() const {

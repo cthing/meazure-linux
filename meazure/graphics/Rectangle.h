@@ -41,7 +41,7 @@ public:
     /// @param[in] screenInfo Information about the display screens
     /// @param[in] unitsProvider Measurement units
     /// @param[in] offset Distance, in inches, to shrink rectangle from start and end points. The typical use for this
-    ///     parameter is in the Rectangle tool. Offseting the rectangle end points allows the contents of the end
+    ///     parameter is in the Rectangle tool. Offsetting the rectangle end points allows the contents of the end
     ///     points to be clear for viewing and measuring.
     /// @param[in] parent Parent widget for the rectangle or nullptr for a top level rectangle
     /// @param[in] lineColor Rectangle line foreground color
@@ -58,7 +58,7 @@ public:
     void setColor(QRgb color);
 
     /// Distance to shrink rectangle from start and end points. The typical use for this parameter is in the
-    /// Rectangle tool. Offseting the rectangle end points allows the contents of the end points to be clear
+    /// Rectangle tool. Offsetting the rectangle end points allows the contents of the end points to be clear
     /// for viewing and measuring.
     ///
     /// @param[in] offset Distance to shrink rectangle from start and end points, in inches

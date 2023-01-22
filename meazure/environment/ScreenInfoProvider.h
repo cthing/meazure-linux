@@ -70,12 +70,6 @@ struct ScreenInfoProvider {
     ///
     [[nodiscard]] virtual QPoint getCenter() const = 0;
 
-    /// Returns a point guaranteed to be located off any screen.
-    ///
-    /// @return Point located off any display screen.
-    ///
-    [[nodiscard]] virtual QPoint getOffScreen() const = 0;
-
     /// Returns the virtual screen rectangle. The virtual rectangle is the rectangle containing all display screens
     /// attached to the system.
     ///

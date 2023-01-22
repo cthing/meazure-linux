@@ -59,39 +59,6 @@ const PosLogReader::ElementMap PosLogReader::elementMap {
         { k_widthElem, ElementId::width }
 };
 
-const PosLogReader::AttrMap PosLogReader::attrMap {
-        { k_abbrevAttr, AttrId::abbrev },
-        { k_angleAttr, AttrId::angle },
-        { k_bottomAttr, AttrId::bottom },
-        { k_buildAttr, AttrId::build },
-        { k_dateAttr, AttrId::date },
-        { k_decimalPlacesAttr, AttrId::decimalPlaces },
-        { k_descAttr, AttrId::desc },
-        { k_desktopRefAttr, AttrId::desktopRef },
-        { k_idAttr, AttrId::id },
-        { k_invertYAttr, AttrId::invertY },
-        { k_leftAttr, AttrId::left },
-        { k_lengthAttr, AttrId::length },
-        { k_manualAttr, AttrId::manual },
-        { k_nameAttr, AttrId::name },
-        { k_oneAttr, AttrId::one },
-        { k_primaryAttr, AttrId::primary },
-        { k_rightAttr, AttrId::right },
-        { k_scaleBasisAttr, AttrId::scaleBasis },
-        { k_scaleFactorAttr, AttrId::scaleFactor},
-        { k_toolAttr, AttrId::tool },
-        { k_topAttr, AttrId::top },
-        { k_twoAttr, AttrId::two },
-        { k_unitsAttr, AttrId::units },
-        { k_vAttr, AttrId::v },
-        { k_valueAttr, AttrId::value },
-        { k_versionAttr, AttrId::version },
-        { k_xAttr, AttrId::x },
-        { k_xoffsetAttr, AttrId::xoffset },
-        { k_yAttr, AttrId::y },
-        { k_yoffsetAttr, AttrId::yoffset }
-};
-
 const PosLogReader::LinearMesurementMap PosLogReader::linearMesurementMap {
         { "x", LinearMeasurementId::XCoord },
         { "y", LinearMeasurementId::YCoord },

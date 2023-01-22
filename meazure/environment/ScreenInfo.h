@@ -70,8 +70,6 @@ public:
 
     [[nodiscard]] QPoint getCenter() const override;
 
-    [[nodiscard]] QPoint getOffScreen() const override;
-
     [[nodiscard]] QRect getVirtualRect() const override;
 
     [[nodiscard]] QRect getAvailableVirtualRect() const override;
@@ -128,7 +126,6 @@ private:
     class Screen;
 
     using Screens = std::vector<Screen*>;
-    using AvailableScreens = std::vector<const QRect*>;
 
     explicit ScreenInfo(const QList<QScreen*>& screens);
 

@@ -19,6 +19,7 @@
 
 #include "ConfigMgr.h"
 #include "ExportedConfig.h"
+#include "PersistentConfig.h"
 #include <meazure/App.h>
 #include <meazure/graphics/Colors.h>
 #include <meazure/graphics/Dimensions.h>
@@ -90,9 +91,13 @@ void ConfigMgr::import(const QString& pathname) {
 }
 
 void ConfigMgr::saveConfig() {
+    PersistentConfig config;
+    writeConfig(config);
 }
 
 void ConfigMgr::restoreConfig() {
+    const PersistentConfig config;
+    readConfig(config);
 }
 
 void ConfigMgr::writeConfig(Config& config) const {

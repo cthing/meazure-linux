@@ -23,7 +23,7 @@
 #include <cstdint>
 
 
-/// Trackes changes to the position and size of all windows on the screen. This is accomplished using the XRecord
+/// Tracks changes to the position and size of all windows on the screen. This is accomplished using the XRecord
 /// extension to capture configure notify events. The code is based on examples at
 /// https://github.com/nibrahim/showkeys/blob/master/tests/record-example.c and
 /// https://github.com/KivApple/qvkbd/blob/master/src/x11support.cpp. Note that Meazure graphics windows (e.g. the
