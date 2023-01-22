@@ -23,7 +23,7 @@
 #include <QRgb>
 #include <QObject>
 #include <array>
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 
 
 /// A color style sheet class that provides the colors and opacities used by the crosshairs, lines and other
@@ -156,17 +156,17 @@ namespace Colors {
     ///
     void reset();
 
-    /// Persists the color settings to the specified profile.
+    /// Persists the color settings to the specified configuration.
     ///
-    /// @param[in] profile Profile into which the color settings are persisted.
+    /// @param[in] config Configuration into which the color settings are persisted.
     ///
-    void saveToProfile(Profile& profile);
+    void writeConfig(Config& config);
 
-    /// Restores the color settings from the specified profile.
+    /// Restores the color settings from the specified configuration.
     ///
-    /// @param[in] profile Profile from which the color settings are restored.
+    /// @param[in] config Configuration from which the color settings are restored.
     ///
-    void loadFromProfile(Profile& profile);
+    void readConfig(const Config& config);
 
     /// Sets the specified item to the specified color.
     ///

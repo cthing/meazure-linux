@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <QWidget>
 #include <QFrame>
 #include <QLineEdit>
@@ -56,8 +56,8 @@ class ColorDisplay : public QWidget {
 public:
     ColorDisplay();
 
-    void saveToProfile(Profile& profile) const;
-    void loadFromProfile(Profile& profile);
+    void writeConfig(Config& config) const;
+    void readConfig(const Config& config);
 
     void setColorFormat(ColorFormatId colorFmt);
 

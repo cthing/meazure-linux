@@ -44,7 +44,7 @@ App::App(int &argc, char **argv):
     setApplicationName("meazure");
     setApplicationVersion(appVersion);
 
-    setOrganizationName("cthing");
+    setOrganizationName("C Thing Software");
     setOrganizationDomain("cthing.com");
 
     setWindowIcon(QPixmap(":/images/Meazure.png"));
@@ -59,6 +59,12 @@ App::App(int &argc, char **argv):
             tr("Load the position log file <filename>."),
             tr("filename")},
         });
+    parser.addOptions({
+        {
+            { "c", "config" },
+            tr("Load the configuration file <filename>."),
+            tr("filename")},
+        });
     parser.process(*this);
 
     m_mainWindow.setAttribute(Qt::WA_QuitOnClose, true);
@@ -66,6 +72,9 @@ App::App(int &argc, char **argv):
 
     if (parser.isSet("positions")) {
         m_posLogMgr.load(parser.value("positions"));
+    }
+    if (parser.isSet("config")) {
+        m_configMgr.import(parser.value("config"));
     }
 }
 

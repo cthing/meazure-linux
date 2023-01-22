@@ -105,20 +105,20 @@ QImage CircleTool::grabRegion() const {
     return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
-void CircleTool::saveToProfile(Profile& profile) const {
+void CircleTool::writeConfig(Config& config) const {
     // Save the position of each end point.
     //
     const QPointF posCenter = m_unitsProvider.convertPos(m_center);
-    profile.writeStr("CircleXV", StringUtils::dblToStr(posCenter.x()));
-    profile.writeStr("CircleYV", StringUtils::dblToStr(posCenter.y()));
+    config.writeStr("CircleXV", StringUtils::dblToStr(posCenter.x()));
+    config.writeStr("CircleYV", StringUtils::dblToStr(posCenter.y()));
 
     const QPointF posPerimeter = m_unitsProvider.convertPos(m_perimeter);
-    profile.writeStr("CircleX1", StringUtils::dblToStr(posPerimeter.x()));
-    profile.writeStr("CircleY1", StringUtils::dblToStr(posPerimeter.y()));
+    config.writeStr("CircleX1", StringUtils::dblToStr(posPerimeter.x()));
+    config.writeStr("CircleY1", StringUtils::dblToStr(posPerimeter.y()));
 }
 
-void CircleTool::loadFromProfile(Profile& profile) {
-    // Use the current positions as the default values for those positions that are not specified in the profile.
+void CircleTool::readConfig(const Config& config) {
+    // Use the current positions as the default values for those positions that are not specified in the configuration.
     //
     const QPointF defaultCenter = m_unitsProvider.convertPos(m_center);
     const QPointF defaultPerimeter = m_unitsProvider.convertPos(m_perimeter);
@@ -126,13 +126,13 @@ void CircleTool::loadFromProfile(Profile& profile) {
     // Load the end point positions.
     //
     QPointF posPerimeter;
-    posPerimeter.rx() = profile.readDbl("CircleX1", defaultCenter.x());
-    posPerimeter.ry() = profile.readDbl("CircleY1", defaultCenter.y());
+    posPerimeter.rx() = config.readDbl("CircleX1", defaultCenter.x());
+    posPerimeter.ry() = config.readDbl("CircleY1", defaultCenter.y());
     m_perimeter = m_unitsProvider.unconvertPos(posPerimeter);
 
     QPointF posCenter;
-    posCenter.rx() = profile.readDbl("CircleXV", defaultPerimeter.x());
-    posCenter.ry() = profile.readDbl("CircleYV", defaultPerimeter.y());
+    posCenter.rx() = config.readDbl("CircleXV", defaultPerimeter.x());
+    posCenter.ry() = config.readDbl("CircleYV", defaultPerimeter.y());
     m_center = m_unitsProvider.unconvertPos(posCenter);
 
     setPosition();

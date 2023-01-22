@@ -25,6 +25,7 @@
 #include <meazure/tools/ToolMgr.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/units/UnitsMgr.h>
+#include <meazure/config/Config.h>
 #include <QObject>
 #include <QString>
 #include <QDateTime>
@@ -83,8 +84,8 @@ public:
 
     void load(const QString& pathname);
 
-    void saveToProfile(Profile& profile) const;
-    void loadFromProfile(Profile& profile);
+    void writeConfig(Config& config) const;
+    void readConfig(const Config& config);
 
 signals:
     void positionsLoaded();

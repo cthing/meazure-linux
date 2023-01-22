@@ -93,16 +93,12 @@ ColorDisplay::ColorDisplay() :
     createFormatAction(tr("Basic #RRGGBB"), BasicHexFmt);
 }
 
-void ColorDisplay::saveToProfile(Profile& profile) const {
-    if (!profile.userInitiated()) {
-        profile.writeInt("ColorFmt", m_colorFmt);
-    }
+void ColorDisplay::writeConfig(Config& config) const {
+    config.writeInt("ColorFmt", m_colorFmt);
 }
 
-void ColorDisplay::loadFromProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        setColorFormat(static_cast<ColorFormatId>(profile.readInt("ColorFmt", m_colorFmt)));
-    }
+void ColorDisplay::readConfig(const Config& config) {
+    setColorFormat(static_cast<ColorFormatId>(config.readInt("ColorFmt", m_colorFmt)));
 }
 
 void ColorDisplay::setColorFormat(ColorFormatId colorFmt) {

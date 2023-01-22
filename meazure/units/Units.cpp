@@ -30,29 +30,25 @@
 
 Units::Units(QString unitsStr) : m_unitsStr(std::move(unitsStr)) {}
 
-void Units::saveToProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        savePrecision(profile);
-    }
+void Units::writeConfig(Config& config) const {
+    writePrecision(config);
 }
 
-void Units::loadFromProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        loadPrecision(profile);
-    }
+void Units::readConfig(const Config& config) {
+    readPrecision(config);
 }
 
-void Units::savePrecision(Profile& profile) {
+void Units::writePrecision(Config& config) const {
     for (unsigned int i = 0; i < m_displayPrecisions.size(); i++) {
         const QString tag = QString("Precision-%1-%2").arg(m_displayPrecisionNames[i]).arg(m_unitsStr);
-        profile.writeInt(tag, m_displayPrecisions[i]);
+        config.writeInt(tag, m_displayPrecisions[i]);
     }
 }
 
-void Units::loadPrecision(Profile& profile) {
+void Units::readPrecision(const Config& config) {
     for (unsigned int i = 0; i < m_displayPrecisions.size(); i++) {
         const QString tag = QString("Precision-%1-%2").arg(m_displayPrecisionNames[i]).arg(m_unitsStr);
-        m_displayPrecisions[i] = profile.readInt(tag, m_displayPrecisions[i]);
+        m_displayPrecisions[i] = config.readInt(tag, m_displayPrecisions[i]);
     }
 }
 

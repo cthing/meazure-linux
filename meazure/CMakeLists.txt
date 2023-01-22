@@ -148,16 +148,16 @@ set(TOOLS_SOURCES
     )
 source_group(TOOLS FILES ${TOOLS_SOURCES})
 
-set(PROFILE_SOURCES
-    profile/FileProfile.cpp
-    profile/FileProfile.h
-    profile/Profile.h
-    profile/ProfileMgr.cpp
-    profile/ProfileMgr.h
-    profile/SettingsProfile.cpp
-    profile/SettingsProfile.h
+set(CONFIG_SOURCES
+    config/Config.h
+    config/ConfigMgr.cpp
+    config/ConfigMgr.h
+    config/ExportedConfig.cpp
+    config/ExportedConfig.h
+    config/PersistentConfig.cpp
+    config/PersistentConfig.h
     )
-source_group(Profiles FILES ${PROFILE_SOURCES})
+source_group(CONFIG FILES ${CONFIG_SOURCES})
 
 set(XML_SOURCES
     xml/XMLParser.cpp
@@ -218,7 +218,7 @@ set(MEAZURE_SOURCES
     ${PREFS_SOURCES}
     ${GRAPHICS_SOURCES}
     ${TOOLS_SOURCES}
-    ${PROFILE_SOURCES}
+    ${CONFIG_SOURCES}
     ${XML_SOURCES}
     ${UTILS_SOURCES}
     ${ENVIRONMENT_SOURCES}

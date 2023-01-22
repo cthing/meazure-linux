@@ -51,52 +51,48 @@ UnitsMgr::UnitsMgr(const ScreenInfoProvider& screenInfoProvider) :
     connect(&m_customUnits, SIGNAL(customUnitsChanged()), this, SIGNAL(customUnitsChanged()));
 }
 
-void UnitsMgr::saveToProfile(Profile& profile) const {
-    profile.writeStr("LinearUnits", getLinearUnitsStr());
-    profile.writeStr("AngularUnits", getAngularUnitsStr());
-    profile.writeBool("InvertY", isInvertY());
-    profile.writeBool("SupplementalAngle", isSupplementalAngle());
+void UnitsMgr::writeConfig(Config& config) const {
+    config.writeStr("LinearUnits", getLinearUnitsStr());
+    config.writeStr("AngularUnits", getAngularUnitsStr());
+    config.writeBool("InvertY", isInvertY());
+    config.writeBool("SupplementalAngle", isSupplementalAngle());
 
     const QPointF pt = convertPos(getOrigin());
-    profile.writeStr("OriginX", StringUtils::dblToStr(pt.x()));
-    profile.writeStr("OriginY", StringUtils::dblToStr(pt.y()));
+    config.writeStr("OriginX", StringUtils::dblToStr(pt.x()));
+    config.writeStr("OriginY", StringUtils::dblToStr(pt.y()));
 
-    if (!profile.userInitiated()) {
-        profile.writeBool("HaveWarned", m_haveWarned);
-    }
+    config.writeBool("HaveWarned", m_haveWarned);
 
     for (const auto& unitsEntry : m_linearUnitsMap) {
-        unitsEntry.second->saveToProfile(profile);
+        unitsEntry.second->writeConfig(config);
     }
 
     for (const auto& unitsEntry : m_angularUnitsMap) {
-        unitsEntry.second->saveToProfile(profile);
+        unitsEntry.second->writeConfig(config);
     }
 }
 
-void UnitsMgr::loadFromProfile(Profile& profile) {
+void UnitsMgr::readConfig(const Config& config) {
     for (const auto& unitsEntry : m_linearUnitsMap) {
-        unitsEntry.second->loadFromProfile(profile);
+        unitsEntry.second->readConfig(config);
     }
 
     for (const auto& unitsEntry : m_angularUnitsMap) {
-        unitsEntry.second->loadFromProfile(profile);
+        unitsEntry.second->readConfig(config);
     }
 
-    if (!profile.userInitiated()) {
-        m_haveWarned = profile.readBool("HaveWarned", m_haveWarned);
-    }
+    m_haveWarned = config.readBool("HaveWarned", m_haveWarned);
 
-    if (profile.getVersion() == 1) {
-        setLinearUnits(static_cast<LinearUnitsId>(profile.readInt("Units", PixelsId)));
+    if (config.getVersion() == 1) {
+        setLinearUnits(static_cast<LinearUnitsId>(config.readInt("Units", PixelsId)));
     } else {
-        setLinearUnits(profile.readStr("LinearUnits", k_defLinearUnits));
+        setLinearUnits(config.readStr("LinearUnits", k_defLinearUnits));
     }
-    setAngularUnits(profile.readStr("AngularUnits", k_defAngularUnits));
-    setInvertY(profile.readBool("InvertY", k_defInvertY));
-    setSupplementalAngle(profile.readBool("SupplementalAngle", k_defSupplementalAngle));
+    setAngularUnits(config.readStr("AngularUnits", k_defAngularUnits));
+    setInvertY(config.readBool("InvertY", k_defInvertY));
+    setSupplementalAngle(config.readBool("SupplementalAngle", k_defSupplementalAngle));
 
-    const QPointF pt(profile.readDbl("OriginX", 0.0), profile.readDbl("OriginY", 0.0));
+    const QPointF pt(config.readDbl("OriginX", 0.0), config.readDbl("OriginY", 0.0));
     setOrigin(unconvertPos(pt));
 }
 

@@ -20,7 +20,7 @@
 #pragma once
 
 #include "ScreenInfoProvider.h"
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <QObject>
 #include <QList>
 #include <QScreen>
@@ -44,17 +44,17 @@ public:
     ScreenInfo(ScreenInfo&&) = delete;
     ScreenInfo& operator=(const ScreenInfo&) = delete;
 
-    /// Persists the state of the manager to the specified profile object.
+    /// Persists the state of the manager to the specified configuration object.
     ///
-    /// @param[in] profile Profile object into which the manager state is persisted.
+    /// @param[in] config Configuration object into which the manager state is persisted.
     ///
-    void saveToProfile(Profile& profile) const;
+    void writeConfig(Config& config) const;
 
-    /// Restore the state of the manager from the specified profile object.
+    /// Restore the state of the manager from the specified configuration object.
     ///
-    /// @param[in] profile Profile object from which the manager state is restored.
+    /// @param[in] config Configuration object from which the manager state is restored.
     ///
-    void loadFromProfile(Profile& profile);
+    void readConfig(const Config& config);
 
     /// Resets the screen manager to its default state.
     ///

@@ -66,14 +66,14 @@ MagnifierSection::MagnifierSection() :
     m_colorDisplay->setColorFormat(k_initialColorFmt);
 }
 
-void MagnifierSection::saveToProfile(Profile& profile) const {
-    m_magnifier->saveToProfile(profile);
-    m_colorDisplay->saveToProfile(profile);
+void MagnifierSection::writeConfig(Config& config) const {
+    m_magnifier->writeConfig(config);
+    m_colorDisplay->writeConfig(config);
 }
 
-void MagnifierSection::loadFromProfile(Profile& profile) {
-    m_magnifier->loadFromProfile(profile);
-    m_colorDisplay->saveToProfile(profile);
+void MagnifierSection::readConfig(const Config& config) {
+    m_magnifier->readConfig(config);
+    m_colorDisplay->readConfig(config);
 }
 
 void MagnifierSection::hardReset() {

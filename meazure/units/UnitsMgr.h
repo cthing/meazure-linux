@@ -22,7 +22,7 @@
 #include "UnitsProvider.h"
 #include "Units.h"
 #include <meazure/environment/ScreenInfoProvider.h>
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <map>
 
 
@@ -46,17 +46,17 @@ public:
     UnitsMgr(UnitsMgr&&) = delete;
     UnitsMgr& operator=(const UnitsMgr&) = delete;
 
-    /// Persists the state of the units manager to the specified profile object.
+    /// Persists the state of the units manager to the specified configuration object.
     ///
-    /// @param[in] profile Profile object into which the manager state is persisted.
+    /// @param[in] config Configuration object into which the manager state is persisted.
     ///
-    void saveToProfile(Profile& profile) const;
+    void writeConfig(Config& config) const;
 
-    /// Restores the state of the units manager from the specified profile object.
+    /// Restores the state of the units manager from the specified configuration object.
     ///
-    /// @param[in] profile Profile object from which the manager state is restored.
+    /// @param[in] config Configuration object from which the manager state is restored.
     ///
-    void loadFromProfile(Profile& profile);
+    void readConfig(const Config& config);
 
     /// Called when the master application reset is initiated. The units manager is setToDefaultValue to its default state.
     ///

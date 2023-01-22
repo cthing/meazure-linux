@@ -101,20 +101,20 @@ QImage RectangleTool::grabRegion() const {
     return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
-void RectangleTool::saveToProfile(Profile& profile) const {
+void RectangleTool::writeConfig(Config& config) const {
     // Save the position of each end point.
     //
     const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
-    profile.writeStr("RectX1", StringUtils::dblToStr(pos1.x()));
-    profile.writeStr("RectY1", StringUtils::dblToStr(pos1.y()));
+    config.writeStr("RectX1", StringUtils::dblToStr(pos1.x()));
+    config.writeStr("RectY1", StringUtils::dblToStr(pos1.y()));
 
     const QPointF pos2 = m_unitsProvider.convertPos(m_point2);
-    profile.writeStr("RectX2", StringUtils::dblToStr(pos2.x()));
-    profile.writeStr("RectY2", StringUtils::dblToStr(pos2.y()));
+    config.writeStr("RectX2", StringUtils::dblToStr(pos2.x()));
+    config.writeStr("RectY2", StringUtils::dblToStr(pos2.y()));
 }
 
-void RectangleTool::loadFromProfile(Profile& profile) {
-    // Use the current positions as the default values for those positions that are not specified in the profile.
+void RectangleTool::readConfig(const Config& config) {
+    // Use the current positions as the default values for those positions that are not specified in the configuration.
     //
     const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);
     const QPointF defaultPos2 = m_unitsProvider.convertPos(m_point2);
@@ -122,13 +122,13 @@ void RectangleTool::loadFromProfile(Profile& profile) {
     // Load the end point positions.
     //
     QPointF pos1;
-    pos1.rx() = profile.readDbl("RectX1", defaultPos1.x());
-    pos1.ry() = profile.readDbl("RectY1", defaultPos1.y());
+    pos1.rx() = config.readDbl("RectX1", defaultPos1.x());
+    pos1.ry() = config.readDbl("RectY1", defaultPos1.y());
     m_point1 = m_unitsProvider.unconvertPos(pos1);
 
     QPointF pos2;
-    pos2.rx() = profile.readDbl("RectX2", defaultPos2.x());
-    pos2.ry() = profile.readDbl("RectY2", defaultPos2.y());
+    pos2.rx() = config.readDbl("RectX2", defaultPos2.x());
+    pos2.ry() = config.readDbl("RectY2", defaultPos2.y());
     m_point2 = m_unitsProvider.unconvertPos(pos2);
 
     m_anchorPoint1 = m_point1;

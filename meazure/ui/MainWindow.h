@@ -24,7 +24,7 @@
 #include <meazure/tools/RadioTool.h>
 #include <meazure/units/Units.h>
 #include <meazure/units/CustomUnits.h>
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <meazure/prefs/ui/PrefsDialog.h>
 #include <meazure/position-log/PosLogManageDlg.h>
 #include <QMainWindow>
@@ -41,8 +41,8 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow();
 
-    void saveToProfile(Profile& profile) const;
-    void loadFromProfile(Profile& profile);
+    void writeConfig(Config& config) const;
+    void readConfig(const Config& config);
 
 signals:
     void alwaysVisibleChanged(bool alwaysVisible);
@@ -139,9 +139,8 @@ private:
     QAction* m_loadPositionsAction;
     QAction* m_savePositionsAction;
     QAction* m_saveAsPositionsAction;
-    QAction* m_loadProfileAction;
-    QAction* m_saveProfileAction;
-    QAction* m_saveAsProfileAction;
+    QAction* m_importConfigAction;
+    QAction* m_exportConfigAction;
     QAction* m_exitAction;
 
     QAction* m_copyRegionAction;

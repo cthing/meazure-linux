@@ -55,34 +55,34 @@ void GridTool::setEnabled(bool enable) {
     }
 }
 
-void GridTool::saveToProfile(Profile& profile) const {
-    profile.writeBool("ScrnGrid", isEnabled());
-    profile.writeInt("ScrnGridX", m_x);
-    profile.writeInt("ScrnGridY", m_y);
-    profile.writeInt("ScrnGridW", m_width);
-    profile.writeInt("ScrnGridH", m_height);
-    profile.writeInt("ScrnGridA", m_angle);
-    profile.writeDbl("ScrnGridSpaceX", m_hSpacing);
-    profile.writeDbl("ScrnGridSpaceY", m_vSpacing);
-    profile.writeBool("ScrnGridLinked", m_linkedSpacing);
-    profile.writeStr("ScrnGridUnits", m_unitsProvider.getLinearUnits(m_units)->getUnitsStr());
+void GridTool::writeConfig(Config& config) const {
+    config.writeBool("ScrnGrid", isEnabled());
+    config.writeInt("ScrnGridX", m_x);
+    config.writeInt("ScrnGridY", m_y);
+    config.writeInt("ScrnGridW", m_width);
+    config.writeInt("ScrnGridH", m_height);
+    config.writeInt("ScrnGridA", m_angle);
+    config.writeDbl("ScrnGridSpaceX", m_hSpacing);
+    config.writeDbl("ScrnGridSpaceY", m_vSpacing);
+    config.writeBool("ScrnGridLinked", m_linkedSpacing);
+    config.writeStr("ScrnGridUnits", m_unitsProvider.getLinearUnits(m_units)->getUnitsStr());
 }
 
-void GridTool::loadFromProfile(Profile& profile) {
-    m_x = profile.readInt("ScrnGridX", m_x);
-    m_y = profile.readInt("ScrnGridY", m_y);
-    m_width = profile.readInt("ScrnGridW", m_width);
-    m_height = profile.readInt("ScrnGridH", m_height);
-    m_angle = profile.readInt("ScrnGridA", m_angle);
-    m_hSpacing = profile.readDbl("ScrnGridSpaceX", m_hSpacing);
-    m_vSpacing = profile.readDbl("ScrnGridSpaceY", m_vSpacing);
-    m_linkedSpacing = profile.readBool("ScrnGridLinked", m_linkedSpacing);
+void GridTool::readConfig(const Config& config) {
+    m_x = config.readInt("ScrnGridX", m_x);
+    m_y = config.readInt("ScrnGridY", m_y);
+    m_width = config.readInt("ScrnGridW", m_width);
+    m_height = config.readInt("ScrnGridH", m_height);
+    m_angle = config.readInt("ScrnGridA", m_angle);
+    m_hSpacing = config.readDbl("ScrnGridSpaceX", m_hSpacing);
+    m_vSpacing = config.readDbl("ScrnGridSpaceY", m_vSpacing);
+    m_linkedSpacing = config.readBool("ScrnGridLinked", m_linkedSpacing);
 
     const QString defaultUnits = m_unitsProvider.getLinearUnits(PixelsId)->getUnitsStr();
-    m_units = m_unitsProvider.getLinearUnits(profile.readStr("ScrnGridUnits", defaultUnits))->getUnitsId();
+    m_units = m_unitsProvider.getLinearUnits(config.readStr("ScrnGridUnits", defaultUnits))->getUnitsId();
 
     refresh();
-    setEnabled(profile.readBool("ScrnGrid", false));
+    setEnabled(config.readBool("ScrnGrid", false));
 }
 
 void GridTool::hardReset() {

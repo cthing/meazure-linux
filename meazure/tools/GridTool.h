@@ -22,6 +22,7 @@
 #include "Tool.h"
 #include <meazure/graphics/Grid.h>
 #include <meazure/units/Units.h>
+#include <meazure/config/Config.h>
 #include <QPoint>
 #include <QSize>
 #include <QSizeF>
@@ -55,9 +56,9 @@ public:
 
     void setEnabled(bool enable) override;
 
-    void saveToProfile(Profile& profile) const override;
+    void writeConfig(Config& config) const override;
 
-    void loadFromProfile(Profile& profile) override;
+    void readConfig(const Config& config) override;
 
     void hardReset() override;
 

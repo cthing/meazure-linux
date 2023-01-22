@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <QObject>
 
 
@@ -44,17 +44,17 @@ namespace Dimensions {
     ///
     void reset();
 
-    /// Persists the dimensions to the specified profile.
+    /// Persists the dimensions to the specified configuration.
     ///
-    /// @param[in] profile Profile into which the dimensions are persisted.
+    /// @param[in] config Configuration into which the dimensions are persisted.
     ///
-    void saveToProfile(Profile& profile);
+    void writeConfig(Config& config);
 
-    /// Restores the dimensions from the specified profile.
+    /// Restores the dimensions from the specified configuration.
     ///
-    /// @param[in] profile Profile from which the dimensions are restored.
+    /// @param[in] config Configuration from which the dimensions are restored.
     ///
-    void loadFromProfile(Profile& profile);
+    void readConfig(const Config& config);
 
     /// Sets the width for lines used by tools and the grid.
     ///

@@ -20,7 +20,7 @@
 #pragma once
 
 #include "Units.h"
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <QString>
 #include <QSizeF>
 #include <QObject>
@@ -60,17 +60,17 @@ public:
     CustomUnits& operator=(const CustomUnits&) = delete;
     CustomUnits& operator=(CustomUnits&&) = delete;
 
-    /// Persists the custom units conversion factor and basis to the  specified profile object.
+    /// Persists the custom units conversion factor and basis to the specified configuration object.
     ///
-    /// @param[in] profile Profile object into which to persist the custom units.
+    /// @param[in] config Configuration object into which to persist the custom units.
     ///
-    void saveToProfile(Profile& profile) override;
+    void writeConfig(Config& config) const override;
 
-    /// Restores the custom units conversion factor and basis from the specified profile object.
+    /// Restores the custom units conversion factor and basis from the specified configuration object.
     ///
-    /// @param[in] profile Profile object from which to restore the custom units.
+    /// @param[in] config Configuration object from which to restore the custom units.
     ///
-    void loadFromProfile(Profile& profile) override;
+    void readConfig(const Config& config) override;
 
     /// Called when the master setToDefaultValue is initiated. Resets the custom units to its default state.
     ///

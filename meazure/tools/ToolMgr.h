@@ -23,7 +23,7 @@
 #include "RadioTool.h"
 #include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <QObject>
 #include <QString>
 #include <QPointF>
@@ -49,17 +49,17 @@ public:
     ToolMgr(ToolMgr&&) = delete;
     ToolMgr& operator=(const ToolMgr&) = delete;
 
-    /// Persists the state of the manager to the specified profile object.
+    /// Persists the state of the manager to the specified configuration object.
     ///
-    /// @param[in] profile Profile object into which the state is to be persisted.
+    /// @param[in] config Configuration object into which the state is to be persisted.
     ///
-    void saveToProfile(Profile& profile) const;
+    void writeConfig(Config& config) const;
 
-    /// Restores the state of the manager from the specified profile object.
+    /// Restores the state of the manager from the specified configuration object.
     ///
-    /// @param[in] profile Profile object from which the state is to be restored.
+    /// @param[in] config Configuration object from which the state is to be restored.
     ///
-    void loadFromProfile(Profile& profile);
+    void readConfig(const Config& config);
 
     /// Resets the tool manager to its default state.
     ///

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 C Thing Software
+ * Copyright 2023 C Thing Software
  *
  * This file is part of Meazure.
  *
@@ -19,39 +19,37 @@
 
 #pragma once
 
-#include "Profile.h"
+#include "Config.h"
 #include <QObject>
+#include <QString>
 
 
-/// Supervises the saving and loading of application profiles. The profile represents the state of the application
-/// (e.g. currently selected tools, color preferences, etc.) so that it can be saved and restored.
+/// Supervises the persistence and exporting of the application configuration. The configuration represents the state
+/// of the application (e.g. currently selected tools, color preferences, etc.) so that it can be saved and restored.
 ///
-class ProfileMgr : public QObject {
+class ConfigMgr : public QObject {
 
     Q_OBJECT
 
 public:
-    ProfileMgr();
+    ConfigMgr();
 
 public slots:
-    void saveProfile();
-    void saveAsProfile();
-    void loadProfile();
-    void load(const QString& pathname);
+    void exportConfig();
+    void importConfig();
+    void import(const QString& pathname);
 
-    void saveSettings();
-    void loadSettings();
+    void saveConfig();
+    void restoreConfig();
 
 private:
-    static constexpr const char* k_fileFilter { "Meazure Profile Files (*.mea);;All Files (*.*)" };
+    static constexpr const char* k_fileFilter { "Meazure Configuration Files (*.mea);;All Files (*.*)" };
     static constexpr const char* k_fileSuffix { ".mea" };
 
-    void save(const QString& pathname);
+    void writeConfig(Config& config) const;
+    void readConfig(const Config& config);
 
-    void saveToProfile(Profile& profile);
-    void loadFromProfile(Profile& profile);
-
-    QString m_savePathname;
-    QString m_loadPathname;
+    QString m_exportPathname;
+    QString m_importPathname;
     QString m_initialDir;
 };

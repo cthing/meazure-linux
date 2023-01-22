@@ -34,24 +34,24 @@ CustomUnits::CustomUnits(const ScreenInfoProvider& screenInfoProvider) :
     addPrecision(1);        // ResY
 }
 
-void CustomUnits::saveToProfile(Profile& profile) {
-    profile.writeStr("CustomName", m_name);
-    profile.writeStr("CustomAbbrev", m_abbrev);
+void CustomUnits::writeConfig(Config& config) const {
+    config.writeStr("CustomName", m_name);
+    config.writeStr("CustomAbbrev", m_abbrev);
 
-    profile.writeStr("CustomScaleBasis", getScaleBasisStr());
-    profile.writeDbl("CustomScaleFactor", m_scaleFactor);
+    config.writeStr("CustomScaleBasis", getScaleBasisStr());
+    config.writeDbl("CustomScaleFactor", m_scaleFactor);
 
-    savePrecision(profile);
+    writePrecision(config);
 }
 
-void CustomUnits::loadFromProfile(Profile& profile) {
-    setName(profile.readStr("CustomName", m_name));
-    setAbbrev(profile.readStr("CustomAbbrev", m_abbrev));
+void CustomUnits::readConfig(const Config& config) {
+    setName(config.readStr("CustomName", m_name));
+    setAbbrev(config.readStr("CustomAbbrev", m_abbrev));
 
-    setScaleBasis(profile.readStr("CustomScaleBasis", ""));
-    setScaleFactor(profile.readDbl("CustomScaleFactor", m_scaleFactor));
+    setScaleBasis(config.readStr("CustomScaleBasis", ""));
+    setScaleFactor(config.readDbl("CustomScaleFactor", m_scaleFactor));
 
-    loadPrecision(profile);
+    readPrecision(config);
 
     emit customUnitsChanged();
 }

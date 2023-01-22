@@ -67,25 +67,25 @@ void PointTool::setDataWinEnabled(bool enable) {
     }
 }
 
-void PointTool::saveToProfile(Profile& profile) const {
+void PointTool::writeConfig(Config& config) const {
     // Save the position of the crosshair.
     //
     const QPointF pos = m_unitsProvider.convertPos(m_center);
-    profile.writeStr("PointX1", StringUtils::dblToStr(pos.x()));
-    profile.writeStr("PointY1", StringUtils::dblToStr(pos.y()));
+    config.writeStr("PointX1", StringUtils::dblToStr(pos.x()));
+    config.writeStr("PointY1", StringUtils::dblToStr(pos.y()));
 }
 
-void PointTool::loadFromProfile(Profile& profile) {
+void PointTool::readConfig(const Config& config) {
     // Use the current position as the default value for those position components that are not
-    // specified in the profile.
+    // specified in the configuration.
     //
     const QPointF defaultPos = m_unitsProvider.convertPos(m_center);
 
     // Load the crosshair position.
     //
     QPointF pos;
-    pos.rx() = profile.readDbl("PointX1", defaultPos.x());
-    pos.ry() = profile.readDbl("PointY1", defaultPos.y());
+    pos.rx() = config.readDbl("PointX1", defaultPos.x());
+    pos.ry() = config.readDbl("PointY1", defaultPos.y());
     m_center = m_unitsProvider.unconvertPos(pos);
     m_anchorPoint = m_center;
 

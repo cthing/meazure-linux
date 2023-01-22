@@ -35,21 +35,18 @@ void Dimensions::reset() {
     lineWidth = k_defaultLineWidth;
 }
 
-void Dimensions::saveToProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        profile.writeInt("LineWidth", lineWidth);
-    }
+void Dimensions::writeConfig(Config& config) {
+    config.writeInt("LineWidth", lineWidth);
 }
 
-void Dimensions::loadFromProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        lineWidth = profile.readInt("LineWidth", k_defaultLineWidth);
-    }
+void Dimensions::readConfig(const Config& config) {
+    lineWidth = config.readInt("LineWidth", k_defaultLineWidth);
+    emit getChangeNotifier()->lineWidthChanged(lineWidth);
 }
 
 void Dimensions::setLineWidth(int width) {
     lineWidth = width;
-    emit getChangeNotifier()->lineWidthChanged(width);
+    emit getChangeNotifier()->lineWidthChanged(lineWidth);
 }
 
 int Dimensions::getLineWidth() {

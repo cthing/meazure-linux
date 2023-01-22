@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 C Thing Software
+ * Copyright 2023 C Thing Software
  *
  * This file is part of Meazure.
  *
@@ -17,19 +17,19 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "FileProfile.h"
+#include "ExportedConfig.h"
 #include "AppVersion.h"
 #include <QDateTime>
 #include <QHostInfo>
 #include <utility>
 
 
-FileProfile::FileProfile(QString pathname, Mode mode) :
+ExportedConfig::ExportedConfig(QString pathname, Mode mode) :
         m_pathname(std::move(pathname)),
         m_mode(mode),
-        m_title("Meazure Profile File") {
+        m_title("Meazure Configuration File") {
 
-    if (m_mode == ProfWrite) {
+    if (m_mode == Write) {
         m_writeStream.open(m_pathname.toStdString(), std::ios::out | std::ios::trunc);
         m_writer = std::make_unique<XMLWriter>(m_writeStream);
 
@@ -39,8 +39,8 @@ FileProfile::FileProfile(QString pathname, Mode mode) :
     }
 }
 
-FileProfile::~FileProfile() {
-    if (m_mode == ProfWrite) {
+ExportedConfig::~ExportedConfig() {
+    if (m_mode == Write) {
         try {
             writeFileEnd();
         } catch (...) {
@@ -49,37 +49,37 @@ FileProfile::~FileProfile() {
     }
 }
 
-void FileProfile::writeBool(const QString& key, bool value) {
+void ExportedConfig::writeBool(const QString& key, bool value) {
     m_writer->startElement(key)
-            .addAttribute("value", (value ? "true" : "false"))
+            .addAttribute(k_valueAttr, (value ? "true" : "false"))
             .endElement();
 }
 
-void FileProfile::writeInt(const QString& key, int value) {
+void ExportedConfig::writeInt(const QString& key, int value) {
     m_writer->startElement(key)
-            .addAttribute("value", value)
+            .addAttribute(k_valueAttr, value)
             .endElement();
 }
 
-void FileProfile::writeUInt(const QString& key, unsigned int value) {
+void ExportedConfig::writeUInt(const QString& key, unsigned int value) {
     m_writer->startElement(key)
-            .addAttribute("value", value)
+            .addAttribute(k_valueAttr, value)
             .endElement();
 }
 
-void FileProfile::writeDbl(const QString& key, double value) {
+void ExportedConfig::writeDbl(const QString& key, double value) {
     m_writer->startElement(key)
-            .addAttribute("value", value)
+            .addAttribute(k_valueAttr, value)
             .endElement();
 }
 
-void FileProfile::writeStr(const QString& key, const QString& value) {
+void ExportedConfig::writeStr(const QString& key, const QString& value) {
     m_writer->startElement(key)
-            .addAttribute("value", value)
+            .addAttribute(k_valueAttr, value)
             .endElement();
 }
 
-bool FileProfile::readBool(const QString& key, bool defaultValue) {
+bool ExportedConfig::readBool(const QString& key, bool defaultValue) const {
     auto iter = m_valueMap.find(key);
     if (iter == m_valueMap.end()) {
         return defaultValue;
@@ -89,7 +89,7 @@ bool FileProfile::readBool(const QString& key, bool defaultValue) {
     return ((val == "true") || (val == "1") || (val == "yes"));
 }
 
-int FileProfile::readInt(const QString& key, int defaultValue) {
+int ExportedConfig::readInt(const QString& key, int defaultValue) const {
     auto iter = m_valueMap.find(key);
     if (iter == m_valueMap.end()) {
         return defaultValue;
@@ -100,7 +100,7 @@ int FileProfile::readInt(const QString& key, int defaultValue) {
     return success ? value : defaultValue;
 }
 
-unsigned int FileProfile::readUInt(const QString& key, unsigned int defaultValue) {
+unsigned int ExportedConfig::readUInt(const QString& key, unsigned int defaultValue) const {
     auto iter = m_valueMap.find(key);
     if (iter == m_valueMap.end()) {
         return defaultValue;
@@ -111,7 +111,7 @@ unsigned int FileProfile::readUInt(const QString& key, unsigned int defaultValue
     return success ? value : defaultValue;
 }
 
-double FileProfile::readDbl(const QString& key, double defaultValue) {
+double ExportedConfig::readDbl(const QString& key, double defaultValue) const {
     auto iter = m_valueMap.find(key);
     if (iter == m_valueMap.end()) {
         return defaultValue;
@@ -122,79 +122,81 @@ double FileProfile::readDbl(const QString& key, double defaultValue) {
     return success ? value : defaultValue;
 }
 
-QString FileProfile::readStr(const QString& key, const QString& defaultValue) {
+QString ExportedConfig::readStr(const QString& key, const QString& defaultValue) const {
     auto iter = m_valueMap.find(key);
     return (iter == m_valueMap.end()) ? defaultValue : (*iter).second;
 }
 
-bool FileProfile::userInitiated() {
-    return true;
+bool ExportedConfig::isPersistent() const {
+    return false;
 }
 
-int FileProfile::getVersion() {
+int ExportedConfig::getVersion() const {
     return m_readVersion;
 }
 
-void FileProfile::writeFileStart() {
+void ExportedConfig::writeFileStart() {
     m_writer->startDocument();
 
-    m_writer->startElement("profile")
-            .addAttribute("version", k_version);
+    // The root element is named "profile" rather than "config" for backward compatibility. In older versions of
+    // Meazure, exported configuration files were called profiles.
+    m_writer->startElement(k_profileElem)
+            .addAttribute(k_versionAttr, k_version);
 
-    m_writer->startElement("info");
+    m_writer->startElement(k_infoElem);
 
-    m_writer->startElement("title")
+    m_writer->startElement(k_titleElem)
             .characters(m_title)
             .endElement();
 
-    m_writer->startElement("created")
-            .addAttribute("date", QDateTime::currentDateTime().toString(Qt::ISODate))
+    m_writer->startElement(k_createdElem)
+            .addAttribute(k_dateAttr, QDateTime::currentDateTime().toString(Qt::ISODate))
             .endElement();
 
-    m_writer->startElement("generator")
-            .addAttribute("name", "Meazure")
-            .addAttribute("version", appVersion)
-            .addAttribute("build", appBuild)
+    m_writer->startElement(k_generatorElem)
+            .addAttribute(k_nameAttr, "Meazure")
+            .addAttribute(k_versionAttr, appVersion)
+            .addAttribute(k_buildAttr, appBuild)
             .endElement();
 
-    m_writer->startElement("machine")
-            .addAttribute("name", QHostInfo::localHostName())
+    m_writer->startElement(k_machineElem)
+            .addAttribute(k_nameAttr, QHostInfo::localHostName())
             .endElement();
 
     m_writer->endElement();         // info
 
-    m_writer->startElement("data");
+    m_writer->startElement(k_dataElem);
 }
 
-void FileProfile::writeFileEnd() {
+void ExportedConfig::writeFileEnd() {
     m_writer->endElement();         // data
     m_writer->endElement();         // profile
     m_writer->endDocument();
 }
 
-void FileProfile::parseFile() {
+void ExportedConfig::parseFile() {
     XMLParser parser(this);
     parser.parseFile(m_pathname);
 }
 
-void FileProfile::startElement(const QString& container, const QString& elementName, const XMLAttributes& attrs) {
-    if (elementName == "profile") {
+void ExportedConfig::startElement(const QString& container, const QString& elementName, const XMLAttributes& attrs) {
+    if (elementName == k_profileElem) {
         int value = 0;
-        attrs.getValueInt("version", value);
+        attrs.getValueInt(k_versionAttr, value);
         m_readVersion = value;
-    } else if ((container == "data") || (m_readVersion == 1)) {
+    } else if ((container == k_dataElem) || (m_readVersion == 1)) {
         QString value;
-        attrs.getValueStr("value", value);
+        attrs.getValueStr(k_valueAttr, value);
         m_valueMap[elementName] = value;
     }
 }
 
-void FileProfile::characterData(const QString& container, const QString& data) {
-    if (container == "title") {
+void ExportedConfig::characterData(const QString& container, const QString& data) {
+    if (container == k_titleElem) {
         m_title += data;
     }
 }
 
-QString FileProfile::getFilePathname() {
+QString ExportedConfig::getFilePathname() {
     return m_pathname;
 }

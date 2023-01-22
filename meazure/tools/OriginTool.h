@@ -21,6 +21,7 @@
 
 #include "Tool.h"
 #include <meazure/graphics/OriginMarker.h>
+#include <meazure/config/Config.h>
 
 
 /// Origin marker tool. Two thin lines are arranged to form axes indicators on the screen at the location of the
@@ -48,8 +49,8 @@ public:
 
     void setEnabled(bool enable) override;
 
-    void saveToProfile(Profile& profile) const override;
-    void loadFromProfile(Profile& profile) override;
+    void writeConfig(Config& config) const override;
+    void readConfig(const Config& config) override;
 
     void refresh() override;
 

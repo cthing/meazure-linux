@@ -35,7 +35,7 @@
 #include <meazure/units/Units.h>
 #include <meazure/prefs/ui/PrefsPageId.h>
 #include <meazure/position-log/PosLogMgr.h>
-#include <meazure/profile/ProfileMgr.h>
+#include <meazure/config/ConfigMgr.h>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QActionGroup>
@@ -103,7 +103,7 @@ void MainWindow::createActions() {
     ToolMgr& toolMgr = App::instance()->getToolMgr();
     UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
     const PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
-    const ProfileMgr& profileMgr = App::instance()->getProfileMgr();
+    const ConfigMgr& configMgr = App::instance()->getConfigMgr();
 
     // File actions
 
@@ -127,14 +127,11 @@ void MainWindow::createActions() {
         m_saveAsPositionsAction->setEnabled(numPositions > 0);
     });
 
-    m_loadProfileAction = new QAction(tr("Loa&d Profile..."), this);
-    connect(m_loadProfileAction, &QAction::triggered, &profileMgr, &ProfileMgr::loadProfile);
+    m_importConfigAction = new QAction(tr("&Import Configuration..."), this);
+    connect(m_importConfigAction, &QAction::triggered, &configMgr, &ConfigMgr::importConfig);
 
-    m_saveProfileAction = new QAction(tr("Save &Profile..."), this);
-    connect(m_saveProfileAction, &QAction::triggered, &profileMgr, &ProfileMgr::saveProfile);
-
-    m_saveAsProfileAction = new QAction(tr("Save &Profile As..."), this);
-    connect(m_saveAsProfileAction, &QAction::triggered, &profileMgr, &ProfileMgr::saveAsProfile);
+    m_exportConfigAction = new QAction(tr("&Export Configuration..."), this);
+    connect(m_exportConfigAction, &QAction::triggered, &configMgr, &ConfigMgr::exportConfig);
 
     m_exitAction = new QAction(tr("E&xit"), this);
     m_exitAction->setShortcuts(QKeySequence::Quit);
@@ -447,9 +444,8 @@ void MainWindow::createMenus() {
     fileMenu->addAction(m_savePositionsAction);
     fileMenu->addAction(m_saveAsPositionsAction);
     fileMenu->addSeparator();
-    fileMenu->addAction(m_loadProfileAction);
-    fileMenu->addAction(m_saveProfileAction);
-    fileMenu->addAction(m_saveAsProfileAction);
+    fileMenu->addAction(m_importConfigAction);
+    fileMenu->addAction(m_exportConfigAction);
     fileMenu->addSeparator();
     fileMenu->addAction(m_exitAction);
 
@@ -598,37 +594,37 @@ void MainWindow::createKeyboardControl() {
     App::instance()->installEventFilter(globalShortcuts);
 }
 
-void MainWindow::saveToProfile(Profile& profile) const {
-    if (!profile.userInitiated()) {
+void MainWindow::writeConfig(Config& config) const {
+    if (config.isPersistent()) {
         const QRect geom = geometry();
-        profile.writeInt("WindowLeft", geom.x());
-        profile.writeInt("WindowTop", geom.y());
-
-        profile.writeBool("AlwaysVisible", isAlwaysVisible());
-        profile.writeBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible);
-        profile.writeBool("ExpandToolInfo", m_sectionVisibility.m_toolDataSectionVisible);
-        profile.writeBool("ExpandScreenInfo", m_sectionVisibility.m_screenDataSectionVisible);
-        profile.writeBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible);
-        profile.writeBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible);
+        config.writeInt("WindowLeft", geom.x());
+        config.writeInt("WindowTop", geom.y());
     }
 
-    m_mainView->saveToProfile(profile);
+    config.writeBool("AlwaysVisible", isAlwaysVisible());
+    config.writeBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible);
+    config.writeBool("ExpandToolInfo", m_sectionVisibility.m_toolDataSectionVisible);
+    config.writeBool("ExpandScreenInfo", m_sectionVisibility.m_screenDataSectionVisible);
+    config.writeBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible);
+    config.writeBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible);
+
+    m_mainView->writeConfig(config);
 }
 
-void MainWindow::loadFromProfile(Profile& profile) {
-    m_mainView->loadFromProfile(profile);
+void MainWindow::readConfig(const Config& config) {
+    m_mainView->readConfig(config);
 
-    if (!profile.userInitiated()) {
-        setAlwaysVisible(profile.readBool("AlwaysVisible", isAlwaysVisible()));
-        setToolBarVisible(profile.readBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible));
-        setToolDataSectionVisible(profile.readBool("ExpandToolInfo", m_sectionVisibility.m_toolDataSectionVisible));
-        setScreenDataSectionVisible(profile.readBool("ExpandScreenInfo", m_sectionVisibility.m_screenDataSectionVisible));
-        setMagnifierSectionVisible(profile.readBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible));
-        setStatusBarVisible(profile.readBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible));
+    setAlwaysVisible(config.readBool("AlwaysVisible", isAlwaysVisible()));
+    setToolBarVisible(config.readBool("ExpandToolbar", m_sectionVisibility.m_toolBarVisible));
+    setToolDataSectionVisible(config.readBool("ExpandToolInfo", m_sectionVisibility.m_toolDataSectionVisible));
+    setScreenDataSectionVisible(config.readBool("ExpandScreenInfo", m_sectionVisibility.m_screenDataSectionVisible));
+    setMagnifierSectionVisible(config.readBool("ExpandMagnifier", m_sectionVisibility.m_magnifierSectionVisible));
+    setStatusBarVisible(config.readBool("ExpandStatusbar", m_sectionVisibility.m_statusBarVisible));
 
+    if (config.isPersistent()) {
         QRect geom = geometry();
-        geom.setX(profile.readInt("WindowLeft", geom.x()));
-        geom.setY(profile.readInt("WindowTop", geom.y()));
+        geom.setX(config.readInt("WindowLeft", geom.x()));
+        geom.setY(config.readInt("WindowTop", geom.y()));
         setGeometry(geom);
     }
 }

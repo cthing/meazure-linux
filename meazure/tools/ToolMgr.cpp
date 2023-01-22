@@ -135,31 +135,25 @@ ToolMgr::ToolMgr(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvide
     connect(&screenInfo, &ScreenInfo::resolutionChanged, this, &ToolMgr::refresh);
 }
 
-void ToolMgr::saveToProfile(Profile& profile) const {
+void ToolMgr::writeConfig(Config& config) const {
     for (const auto& toolEntry : m_tools) {
-        toolEntry.second->saveToProfile(profile);
+        toolEntry.second->writeConfig(config);
     }
 
-    profile.writeStr("CurrentRadioTool", m_currentRadioTool->getName());
-
-    if (!profile.userInitiated()) {
-        profile.writeBool("EnableCrosshairs", m_crosshairsEnabled);
-        profile.writeBool("ShowDataWin", m_dataWinEnabled);
-    }
+    config.writeStr("CurrentRadioTool", m_currentRadioTool->getName());
+    config.writeBool("EnableCrosshairs", m_crosshairsEnabled);
+    config.writeBool("ShowDataWin", m_dataWinEnabled);
 }
 
-void ToolMgr::loadFromProfile(Profile& profile) {
+void ToolMgr::readConfig(const Config& config) {
     for (const auto& toolEntry : m_tools) {
-        toolEntry.second->loadFromProfile(profile);
+        toolEntry.second->readConfig(config);
     }
 
-    const QString currentRadioToolName = profile.readStr("CurrentRadioTool", m_currentRadioTool->getName());
+    const QString currentRadioToolName = config.readStr("CurrentRadioTool", m_currentRadioTool->getName());
     selectRadioTool(currentRadioToolName.toUtf8().constData());
-
-    if (!profile.userInitiated()) {
-        setCrosshairsEnabled(profile.readBool("EnableCrosshairs", m_crosshairsEnabled));
-        setDataWinEnabled(profile.readBool("ShowDataWin", m_dataWinEnabled));
-    }
+    setCrosshairsEnabled(config.readBool("EnableCrosshairs", m_crosshairsEnabled));
+    setDataWinEnabled(config.readBool("ShowDataWin", m_dataWinEnabled));
 }
 
 void ToolMgr::hardReset() {

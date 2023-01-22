@@ -99,20 +99,20 @@ QImage LineTool::grabRegion() const {
     return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
-void LineTool::saveToProfile(Profile& profile) const {
+void LineTool::writeConfig(Config& config) const {
     // Save the position of each end point.
     //
     const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
-    profile.writeStr("LineX1", StringUtils::dblToStr(pos1.x()));
-    profile.writeStr("LineY1", StringUtils::dblToStr(pos1.y()));
+    config.writeStr("LineX1", StringUtils::dblToStr(pos1.x()));
+    config.writeStr("LineY1", StringUtils::dblToStr(pos1.y()));
 
     const QPointF pos2 = m_unitsProvider.convertPos(m_point2);
-    profile.writeStr("LineX2", StringUtils::dblToStr(pos2.x()));
-    profile.writeStr("LineY2", StringUtils::dblToStr(pos2.y()));
+    config.writeStr("LineX2", StringUtils::dblToStr(pos2.x()));
+    config.writeStr("LineY2", StringUtils::dblToStr(pos2.y()));
 }
 
-void LineTool::loadFromProfile(Profile& profile) {
-    // Use the current positions as the default values for those positions that are not specified in the profile.
+void LineTool::readConfig(const Config& config) {
+    // Use the current positions as the default values for those positions that are not specified in the configuration.
     //
     const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);
     const QPointF defaultPos2 = m_unitsProvider.convertPos(m_point2);
@@ -120,13 +120,13 @@ void LineTool::loadFromProfile(Profile& profile) {
     // Load the end point positions.
     //
     QPointF pos1;
-    pos1.rx() = profile.readDbl("LineX1", defaultPos1.x());
-    pos1.ry() = profile.readDbl("LineY1", defaultPos1.y());
+    pos1.rx() = config.readDbl("LineX1", defaultPos1.x());
+    pos1.ry() = config.readDbl("LineY1", defaultPos1.y());
     m_point1 = m_unitsProvider.unconvertPos(pos1);
 
     QPointF pos2;
-    pos2.rx() = profile.readDbl("LineX2", defaultPos2.x());
-    pos2.ry() = profile.readDbl("LineY2", defaultPos2.y());
+    pos2.rx() = config.readDbl("LineX2", defaultPos2.x());
+    pos2.ry() = config.readDbl("LineY2", defaultPos2.y());
     m_point2 = m_unitsProvider.unconvertPos(pos2);
 
     setPosition();

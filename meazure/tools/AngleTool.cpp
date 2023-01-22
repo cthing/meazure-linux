@@ -120,24 +120,24 @@ void AngleTool::setDataWinEnabled(bool enable) {
     }
 }
 
-void AngleTool::saveToProfile(Profile& profile) const {
+void AngleTool::writeConfig(Config& config) const {
     // Save the position of point 1, point 2 and the vertex.
     //
     const QPointF pos1 = m_unitsProvider.convertPos(m_point1);
-    profile.writeStr("AngleX1", StringUtils::dblToStr(pos1.x()));
-    profile.writeStr("AngleY1", StringUtils::dblToStr(pos1.y()));
+    config.writeStr("AngleX1", StringUtils::dblToStr(pos1.x()));
+    config.writeStr("AngleY1", StringUtils::dblToStr(pos1.y()));
 
     const QPointF pos2 = m_unitsProvider.convertPos(m_point2);
-    profile.writeStr("AngleX2", StringUtils::dblToStr(pos2.x()));
-    profile.writeStr("AngleY2", StringUtils::dblToStr(pos2.y()));
+    config.writeStr("AngleX2", StringUtils::dblToStr(pos2.x()));
+    config.writeStr("AngleY2", StringUtils::dblToStr(pos2.y()));
 
     const QPointF posV = m_unitsProvider.convertPos(m_vertex);
-    profile.writeStr("AngleXV", StringUtils::dblToStr(posV.x()));
-    profile.writeStr("AngleYV", StringUtils::dblToStr(posV.y()));
+    config.writeStr("AngleXV", StringUtils::dblToStr(posV.x()));
+    config.writeStr("AngleYV", StringUtils::dblToStr(posV.y()));
 }
 
-void AngleTool::loadFromProfile(Profile& profile) {
-    // Use the current positions as the default values for those positions that are not specified in the profile.
+void AngleTool::readConfig(const Config& config) {
+    // Use the current positions as the default values for those positions that are not specified in the configuration.
     //
     const QPointF defaultPos1 = m_unitsProvider.convertPos(m_point1);
     const QPointF defaultPos2 = m_unitsProvider.convertPos(m_point2);
@@ -146,18 +146,18 @@ void AngleTool::loadFromProfile(Profile& profile) {
     // Load the position of point 1, point 2 and the vertex.
     //
     QPointF pos1;
-    pos1.rx() = profile.readDbl("AngleX1", defaultPos1.x());
-    pos1.ry() = profile.readDbl("AngleY1", defaultPos1.y());
+    pos1.rx() = config.readDbl("AngleX1", defaultPos1.x());
+    pos1.ry() = config.readDbl("AngleY1", defaultPos1.y());
     m_point1 = m_unitsProvider.unconvertPos(pos1);
 
     QPointF pos2;
-    pos2.rx() = profile.readDbl("AngleX2", defaultPos2.x());
-    pos2.ry() = profile.readDbl("AngleY2", defaultPos2.y());
+    pos2.rx() = config.readDbl("AngleX2", defaultPos2.x());
+    pos2.ry() = config.readDbl("AngleY2", defaultPos2.y());
     m_point2 = m_unitsProvider.unconvertPos(pos2);
 
     QPointF posV;
-    posV.rx() = profile.readDbl("AngleXV", defaultPosV.x());
-    posV.ry() = profile.readDbl("AngleYV", defaultPosV.y());
+    posV.rx() = config.readDbl("AngleXV", defaultPosV.x());
+    posV.ry() = config.readDbl("AngleYV", defaultPosV.y());
     m_vertex = m_unitsProvider.unconvertPos(posV);
 
     m_vertexAnchor = m_vertex;

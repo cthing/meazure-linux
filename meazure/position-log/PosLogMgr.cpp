@@ -280,16 +280,16 @@ void PosLogMgr::load(const QString& pathname) {
     emit positionsLoaded();
 }
 
-void PosLogMgr::saveToProfile(Profile& profile) const {
-    if (!profile.userInitiated()) {
-        profile.writeStr("LastLogDir", m_initialDir);
+void PosLogMgr::writeConfig(Config& config) const {
+    if (config.isPersistent()) {
+        config.writeStr("LastLogDir", m_initialDir);
     }
 
 }
 
-void PosLogMgr::loadFromProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        m_initialDir = profile.readStr("LastLogDir", m_initialDir);
+void PosLogMgr::readConfig(const Config& config) {
+    if (config.isPersistent()) {
+        m_initialDir = config.readStr("LastLogDir", m_initialDir);
     }
 }
 

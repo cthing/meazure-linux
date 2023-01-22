@@ -21,7 +21,7 @@
 
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/environment/ScreenInfo.h>
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <QObject>
 
 
@@ -41,9 +41,9 @@ public:
     Tool(Tool&&) = delete;
     Tool& operator=(const Tool&) = delete;
 
-    /// Returns the name of the tool. Each tool has a unique name which is used to identify the tool in profiles and
-    /// position logs. Because the names are persisted, they should not be changed without support for the old name
-    /// to maintain backwards compatibility.
+    /// Returns the name of the tool. Each tool has a unique name which is used to identify the tool in configurations
+    /// files and position logs. Because the names are persisted, they should not be changed without support for the
+    /// old name to maintain backwards compatibility.
     ///
     /// @return Name of the tool. Will never be nullptr and the memory for the string is owned by the tool.
     ///
@@ -87,19 +87,19 @@ public:
         return m_dataWinEnabled;
     }
 
-    /// Persists the state of the tool to the specified profile object. This base class implementation does nothing.
+    /// Persists the state of the tool to the specified configuration object. This base class implementation does
+    /// nothing.
     ///
-    /// @param[in] profile The destination for the state information, which is typically a FileProfile or
-    ///         SettingsProfile object.
+    /// @param[in] config The destination for the state information.
     ///
-    virtual void saveToProfile(Profile& profile) const;
+    virtual void writeConfig(Config& config) const;
 
-    /// Restores the state of the tool from the specified profile object. This base class implementation does nothing.
+    /// Restores the state of the tool from the specified configuration object. This base class implementation does
+    /// nothing.
     ///
-    /// @param[in] profile The source for the state information, which is typically a FileProfile or SettingsProfile
-    ///         object.
+    /// @param[in] config The source for the state information.
     ///
-    virtual void loadFromProfile(Profile& profile);
+    virtual void readConfig(const Config& config);
 
     /// Resets the tool to its default state.
     ///

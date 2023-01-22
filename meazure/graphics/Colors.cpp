@@ -220,44 +220,40 @@ void Colors::reset() {
     colors = defaultColors;
 }
 
-void Colors::saveToProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        profile.writeUInt("LineFore", colors[LineFore]);
-        profile.writeUInt("CrossHairBack", colors[CrosshairBack]);
-        profile.writeUInt("CrossHairBorder", colors[CrosshairBorder]);
-        profile.writeUInt("CrossHairHilite", colors[CrosshairHighlight]);
-        profile.writeUInt("CrossHairOpacity", colors[CrosshairOpacity]);
-        profile.writeUInt("RulerBack", colors[RulerBack]);
-        profile.writeUInt("RulerBorder", colors[RulerBorder]);
-        profile.writeUInt("RulerOpacity", colors[RulerOpacity]);
+void Colors::writeConfig(Config& config) {
+    config.writeUInt("LineFore", colors[LineFore]);
+    config.writeUInt("CrossHairBack", colors[CrosshairBack]);
+    config.writeUInt("CrossHairBorder", colors[CrosshairBorder]);
+    config.writeUInt("CrossHairHilite", colors[CrosshairHighlight]);
+    config.writeUInt("CrossHairOpacity", colors[CrosshairOpacity]);
+    config.writeUInt("RulerBack", colors[RulerBack]);
+    config.writeUInt("RulerBorder", colors[RulerBorder]);
+    config.writeUInt("RulerOpacity", colors[RulerOpacity]);
 
-        const int numCustomColors = QColorDialog::customCount();
-        profile.writeInt("CustomColors", numCustomColors);
-        for (int idx = 0; idx < numCustomColors; idx++) {
-            profile.writeUInt(QString("CustomColor%1").arg(idx), QColorDialog::customColor(idx).rgb());
-        }
+    const int numCustomColors = QColorDialog::customCount();
+    config.writeInt("CustomColors", numCustomColors);
+    for (int idx = 0; idx < numCustomColors; idx++) {
+        config.writeUInt(QString("CustomColor%1").arg(idx), QColorDialog::customColor(idx).rgb());
     }
 }
 
-void Colors::loadFromProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        const int availableNumCustomColors = QColorDialog::customCount();
-        const int savedNumCustomColors = profile.readInt("CustomColors", availableNumCustomColors);
-        const int numCustomColors = std::min(availableNumCustomColors, savedNumCustomColors);
-        for (int idx = 0; idx < numCustomColors; idx++) {
-            const QRgb color = profile.readUInt(QString("CustomColor%1").arg(idx), QColorDialog::customColor(idx).rgb());
-            QColorDialog::setCustomColor(idx, QColor(color));
-        }
-
-        colors[LineFore] = profile.readUInt("LineFore", defaultColors.at(LineFore));
-        colors[CrosshairBack] = profile.readUInt("CrossHairBack", defaultColors.at(CrosshairBack));
-        colors[CrosshairBorder] = profile.readUInt("CrossHairBorder", defaultColors.at(CrosshairBorder));
-        colors[CrosshairHighlight] = profile.readUInt("CrossHairHilite", defaultColors.at(CrosshairHighlight));
-        colors[CrosshairOpacity] = profile.readUInt("CrossHairOpacity", defaultColors.at(CrosshairOpacity));
-        colors[RulerBack] = profile.readUInt("RulerBack", defaultColors.at(RulerBack));
-        colors[RulerBorder] = profile.readUInt("RulerBorder", defaultColors.at(RulerBorder));
-        colors[RulerOpacity] = profile.readUInt("RulerOpacity", defaultColors.at(RulerOpacity));
+void Colors::readConfig(const Config& config) {
+    const int availableNumCustomColors = QColorDialog::customCount();
+    const int savedNumCustomColors = config.readInt("CustomColors", availableNumCustomColors);
+    const int numCustomColors = std::min(availableNumCustomColors, savedNumCustomColors);
+    for (int idx = 0; idx < numCustomColors; idx++) {
+        const QRgb color = config.readUInt(QString("CustomColor%1").arg(idx), QColorDialog::customColor(idx).rgb());
+        QColorDialog::setCustomColor(idx, QColor(color));
     }
+
+    set(LineFore, config.readUInt("LineFore", defaultColors.at(LineFore)));
+    set(CrosshairBack, config.readUInt("CrossHairBack", defaultColors.at(CrosshairBack)));
+    set(CrosshairBorder, config.readUInt("CrossHairBorder", defaultColors.at(CrosshairBorder)));
+    set(CrosshairHighlight, config.readUInt("CrossHairHilite", defaultColors.at(CrosshairHighlight)));
+    set(CrosshairOpacity, config.readUInt("CrossHairOpacity", defaultColors.at(CrosshairOpacity)));
+    set(RulerBack, config.readUInt("RulerBack", defaultColors.at(RulerBack)));
+    set(RulerBorder, config.readUInt("RulerBorder", defaultColors.at(RulerBorder)));
+    set(RulerOpacity, config.readUInt("RulerOpacity", defaultColors.at(RulerOpacity)));
 }
 
 void Colors::set(Item item, QRgb color) {

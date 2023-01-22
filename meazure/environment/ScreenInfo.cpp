@@ -173,63 +173,59 @@ ScreenInfo::~ScreenInfo() {
     }
 }
 
-void ScreenInfo::saveToProfile(Profile& profile) const {
-    if (!profile.userInitiated()) {
-        profile.writeInt("ScreenW", m_virtualGeometry.width());
-        profile.writeInt("ScreenH", m_virtualGeometry.height());
+void ScreenInfo::writeConfig(Config& config) const {
+    config.writeInt("ScreenW", m_virtualGeometry.width());
+    config.writeInt("ScreenH", m_virtualGeometry.height());
 
-        profile.writeInt("NumScreens", m_numScreens);
-        for (int i = 0; i < m_numScreens; i++) {
-            Screen* screen = m_screens[i];
-            bool useManualRes = false;
-            QSizeF manualRes;
-            screen->getScreenRes(useManualRes, manualRes);
+    config.writeInt("NumScreens", m_numScreens);
+    for (int i = 0; i < m_numScreens; i++) {
+        Screen* screen = m_screens[i];
+        bool useManualRes = false;
+        QSizeF manualRes;
+        screen->getScreenRes(useManualRes, manualRes);
 
-            const QString tag = QString("Screen%1-").arg(i);
-            profile.writeInt(tag + "CenterX", screen->center().x());
-            profile.writeInt(tag + "CenterY", screen->center().y());
-            profile.writeBool(tag + "UseManualRes", useManualRes);
-            profile.writeStr(tag + "ManualResX", StringUtils::dblToStr(manualRes.width()));
-            profile.writeStr(tag + "ManualResY", StringUtils::dblToStr(manualRes.height()));
-            profile.writeBool(tag + "CalInInches", screen->isCalInInches());
-        }
+        const QString tag = QString("Screen%1-").arg(i);
+        config.writeInt(tag + "CenterX", screen->center().x());
+        config.writeInt(tag + "CenterY", screen->center().y());
+        config.writeBool(tag + "UseManualRes", useManualRes);
+        config.writeStr(tag + "ManualResX", StringUtils::dblToStr(manualRes.width()));
+        config.writeStr(tag + "ManualResY", StringUtils::dblToStr(manualRes.height()));
+        config.writeBool(tag + "CalInInches", screen->isCalInInches());
     }
 }
 
-void ScreenInfo::loadFromProfile(Profile& profile) {
-    if (!profile.userInitiated()) {
-        const int w = profile.readInt("ScreenW", m_virtualGeometry.width());
-        const int h = profile.readInt("ScreenH", m_virtualGeometry.height());
-        const int numScreens = profile.readInt("NumScreens", 0);
-        m_sizeChanged = ((w != m_virtualGeometry.width()) || (h != m_virtualGeometry.height()));
+void ScreenInfo::readConfig(const Config& config) {
+    const int w = config.readInt("ScreenW", m_virtualGeometry.width());
+    const int h = config.readInt("ScreenH", m_virtualGeometry.height());
+    const int numScreens = config.readInt("NumScreens", 0);
+    m_sizeChanged = ((w != m_virtualGeometry.width()) || (h != m_virtualGeometry.height()));
 
-        if ((profile.getVersion() == 1) || (numScreens == 0)) {
-            QSizeF manualRes;
-            const bool useManualRes = profile.readBool("UseManualRes", k_defUseManualRes);
-            manualRes.rwidth() = profile.readDbl("ManualResX", 0.0);
-            manualRes.rheight() = profile.readDbl("ManualResY", 0.0);
+    if ((config.getVersion() == 1) || (numScreens == 0)) {
+        QSizeF manualRes;
+        const bool useManualRes = config.readBool("UseManualRes", k_defUseManualRes);
+        manualRes.rwidth() = config.readDbl("ManualResX", 0.0);
+        manualRes.rheight() = config.readDbl("ManualResY", 0.0);
 
-            for (int i = 0; i < m_numScreens; i++) {
-                m_screens[i]->setScreenRes(useManualRes, &manualRes);
-            }
-        } else {
-            for (int i = 0; i < numScreens; i++) {
-                const QString tag = QString("Screen%1-").arg(i);
-                const QPoint center(profile.readInt(tag + "CenterX", 0), profile.readInt(tag + "CenterY", 0));
+        for (int i = 0; i < m_numScreens; i++) {
+            m_screens[i]->setScreenRes(useManualRes, &manualRes);
+        }
+    } else {
+        for (int i = 0; i < numScreens; i++) {
+            const QString tag = QString("Screen%1-").arg(i);
+            const QPoint center(config.readInt(tag + "CenterX", 0), config.readInt(tag + "CenterY", 0));
 
-                const int screenIndex = screenForPoint(center);
-                if (screenIndex != -1) {
-                    Screen* screen = m_screens[screenIndex];
-                    QSizeF manualRes;
+            const int screenIndex = screenForPoint(center);
+            if (screenIndex != -1) {
+                Screen* screen = m_screens[screenIndex];
+                QSizeF manualRes;
 
-                    const bool useManualRes = profile.readBool(tag + "UseManualRes", k_defUseManualRes);
-                    manualRes.rwidth() = profile.readDbl(tag + "ManualResX", 0.0);
-                    manualRes.rheight() = profile.readDbl(tag + "ManualResY", 0.0);
-                    screen->setScreenRes(useManualRes, &manualRes);
+                const bool useManualRes = config.readBool(tag + "UseManualRes", k_defUseManualRes);
+                manualRes.rwidth() = config.readDbl(tag + "ManualResX", 0.0);
+                manualRes.rheight() = config.readDbl(tag + "ManualResY", 0.0);
+                screen->setScreenRes(useManualRes, &manualRes);
 
-                    const bool calInInches = profile.readBool(tag + "CalInInches", k_defCalInInches);
-                    screen->setCalInInches(calInInches);
-                }
+                const bool calInInches = config.readBool(tag + "CalInInches", k_defCalInInches);
+                screen->setCalInInches(calInInches);
             }
         }
     }

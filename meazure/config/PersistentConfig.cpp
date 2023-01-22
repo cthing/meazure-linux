@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 C Thing Software
+ * Copyright 2023 C Thing Software
  *
  * This file is part of Meazure.
  *
@@ -17,73 +17,73 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "SettingsProfile.h"
+#include "PersistentConfig.h"
 
 
-SettingsProfile::SettingsProfile() : m_settings(new QSettings()) {
+PersistentConfig::PersistentConfig() : m_settings(new QSettings(k_orgKey, k_appKey)) {
     m_settings->beginGroup(QString::number(k_version));
 }
 
-SettingsProfile::SettingsProfile(const QString& pathname) :
-        m_settings(new QSettings(pathname, QSettings::Format::IniFormat)) {
+PersistentConfig::PersistentConfig(const QString& pathname) :
+        m_settings(new QSettings(pathname, QSettings::Format::IniFormat))  {
     m_settings->beginGroup(QString::number(k_version));
 }
 
-SettingsProfile::~SettingsProfile() {
+PersistentConfig::~PersistentConfig() {
     m_settings->endGroup();
     delete m_settings;
 }
 
-void SettingsProfile::writeBool(const QString &key, bool value) {
+void PersistentConfig::writeBool(const QString &key, bool value) {
     m_settings->setValue(key, value);
 }
 
-void SettingsProfile::writeInt(const QString& key, int value) {
+void PersistentConfig::writeInt(const QString& key, int value) {
     m_settings->setValue(key, value);
 }
 
-void SettingsProfile::writeUInt(const QString& key, unsigned int value) {
+void PersistentConfig::writeUInt(const QString& key, unsigned int value) {
     m_settings->setValue(key, value);
 }
 
-void SettingsProfile::writeDbl(const QString& key, double value) {
+void PersistentConfig::writeDbl(const QString& key, double value) {
     m_settings->setValue(key, value);
 }
 
-void SettingsProfile::writeStr(const QString& key, const QString& value) {
+void PersistentConfig::writeStr(const QString& key, const QString& value) {
     m_settings->setValue(key, value);
 }
 
-bool SettingsProfile::readBool(const QString& key, bool defaultValue) {
+bool PersistentConfig::readBool(const QString& key, bool defaultValue) const {
     return m_settings->value(key, defaultValue).toBool();
 }
 
-int SettingsProfile::readInt(const QString& key, int defaultValue) {
+int PersistentConfig::readInt(const QString& key, int defaultValue) const {
     bool success = false;
     const int value = m_settings->value(key, defaultValue).toInt(&success);
     return success ? value : defaultValue;
 }
 
-unsigned int SettingsProfile::readUInt(const QString& key, unsigned int defaultValue) {
+unsigned int PersistentConfig::readUInt(const QString& key, unsigned int defaultValue) const {
     bool success = false;
     const unsigned int value = m_settings->value(key, defaultValue).toUInt(&success);
     return success ? value : defaultValue;
 }
 
-double SettingsProfile::readDbl(const QString& key, double defaultValue) {
+double PersistentConfig::readDbl(const QString& key, double defaultValue) const {
     bool success = false;
     const double value = m_settings->value(key, defaultValue).toDouble(&success);
     return success ? value : defaultValue;
 }
 
-QString SettingsProfile::readStr(const QString& key, const QString& defaultValue) {
+QString PersistentConfig::readStr(const QString& key, const QString& defaultValue) const {
     return m_settings->value(key, defaultValue).toString();
 }
 
-bool SettingsProfile::userInitiated() {
-    return false;
+bool PersistentConfig::isPersistent() const {
+    return true;
 }
 
-int SettingsProfile::getVersion() {
+int PersistentConfig::getVersion() const {
     return k_version;
 }

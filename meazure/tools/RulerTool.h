@@ -26,6 +26,7 @@
 #include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
+#include <meazure/config/Config.h>
 #include <QPoint>
 #include <array>
 
@@ -55,8 +56,8 @@ public:
 
     void setDataWinEnabled(bool enable) override;
 
-    void saveToProfile(Profile& profile) const override;
-    void loadFromProfile(Profile& profile) override;
+    void writeConfig(Config& config) const override;
+    void readConfig(const Config& config) override;
 
     void refresh() override;
 

@@ -34,10 +34,10 @@ void Tool::setDataWinEnabled(bool enable) {
     m_dataWinEnabled = enable;
 }
 
-void Tool::saveToProfile(Profile&) const {
+void Tool::writeConfig(Config&) const {
 }
 
-void Tool::loadFromProfile(Profile&) {
+void Tool::readConfig(const Config&) {
 }
 
 void Tool::hardReset() {

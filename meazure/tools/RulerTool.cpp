@@ -102,27 +102,27 @@ void RulerTool::setDataWinEnabled(bool enable) {
     }
 }
 
-void RulerTool::saveToProfile(Profile& profile) const {
-    profile.writeBool("Rulers", isEnabled());
+void RulerTool::writeConfig(Config& config) const {
+    config.writeBool("Rulers", isEnabled());
 
     // The tag prefix "RulerSet0" is for compatibility with versions of Meazure on Windows.
-    profile.writeInt("RulerSet0-XPos", m_origin.x());
-    profile.writeInt("RulerSet0-YPos", m_origin.y());
-    profile.writeInt("RulerSet0-HLength", m_hLength);
-    profile.writeInt("RulerSet0-VLength", m_vLength);
-    profile.writeInt("RulerSet0-Angle", m_angle);
+    config.writeInt("RulerSet0-XPos", m_origin.x());
+    config.writeInt("RulerSet0-YPos", m_origin.y());
+    config.writeInt("RulerSet0-HLength", m_hLength);
+    config.writeInt("RulerSet0-VLength", m_vLength);
+    config.writeInt("RulerSet0-Angle", m_angle);
 }
 
-void RulerTool::loadFromProfile(Profile& profile) {
+void RulerTool::readConfig(const Config& config) {
     // The tag prefix "RulerSet0" is for compatibility with versions of Meazure on Windows.
-    m_origin = QPoint(profile.readInt("RulerSet0-XPos", m_origin.x()),
-                      profile.readInt("RulerSet0-YPos", m_origin.y()));
-    m_hLength = profile.readInt("RulerSet0-HLength", m_hLength);
-    m_vLength = profile.readInt("RulerSet0-VLength", m_vLength);
-    m_angle = profile.readInt("RulerSet0-Angle", m_angle);
+    m_origin = QPoint(config.readInt("RulerSet0-XPos", m_origin.x()),
+                      config.readInt("RulerSet0-YPos", m_origin.y()));
+    m_hLength = config.readInt("RulerSet0-HLength", m_hLength);
+    m_vLength = config.readInt("RulerSet0-VLength", m_vLength);
+    m_angle = config.readInt("RulerSet0-Angle", m_angle);
 
     refresh();
-    setEnabled(profile.readBool("Rulers", false));
+    setEnabled(config.readBool("Rulers", false));
 }
 
 void RulerTool::setPositionConstrained(const QPoint &origin, int angle, int hLength, int vLength) {

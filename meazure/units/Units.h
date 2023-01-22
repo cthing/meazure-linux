@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/utils/EnumIterator.h>
 #include <vector>
@@ -91,40 +91,40 @@ enum ConvertDir {
 /// Base class for all measurement units.
 ///
 /// Measurement units are packaged into a class, one for each set of units (e.g. inches). Each class contains methods
-/// for conversion, display precision, and persistence of the state of the class to a given profile object. Related
-/// to these classes but not contained by them are the set of unit label classes.
+/// for conversion, display precision, and persistence of the state of the class to a given configuration object.
+/// Related to these classes but not contained by them are the set of unit label classes.
 ///
 class Units {
 
 public:
     using DisplayPrecisions = std::vector<int>;             ///< Decimal places to display for each type of measurement.
-    using DisplayPrecisionNames = std::vector<QString>;     ///< Strings to identify units precisions in profiles.
+    using DisplayPrecisionNames = std::vector<QString>;     ///< Strings to identify units precisions in configurations.
 
     virtual ~Units() = default;
 
-    /// Persists the state of a units class instance to the specified profile object.
+    /// Persists the state of a units class instance to the specified configuration object.
     ///
-    /// @param[in] profile Profile object into which to persist the state of the units class.
+    /// @param[in] config Configuration object into which to persist the state of the units class.
     ///
-    virtual void saveToProfile(Profile& profile);
+    virtual void writeConfig(Config& config) const;
 
-    /// Restores the state of a units class instance from the specified profile object.
+    /// Restores the state of a units class instance from the specified configuration object.
     ///
-    /// @param[in] profile Profile object from which to restore the state of the units class.
+    /// @param[in] config Configuration object from which to restore the state of the units class.
     ///
-    virtual void loadFromProfile(Profile& profile);
+    virtual void readConfig(const Config& config);
 
-    /// Persists the measurement precisions to the specified profile object.
+    /// Persists the measurement precisions to the specified configuration object.
     ///
-    /// @param[in] profile Profile object into which to persist the decimal place precisions.
+    /// @param[in] config Configuration object into which to persist the decimal place precisions.
     ///
-    void savePrecision(Profile& profile);
+    void writePrecision(Config& config) const;
 
-    /// Restores the measurement precisions from the specified profile object.
+    /// Restores the measurement precisions from the specified configuration object.
     ///
-    /// @param[in] profile Profile object from which to restore the decimal place precisions.
+    /// @param[in] config Configuration object from which to restore the decimal place precisions.
     ///
-    void loadPrecision(Profile& profile);
+    void readPrecision(const Config& config);
 
     /// Called to restores the units to their default state.
     ///

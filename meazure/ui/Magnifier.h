@@ -20,7 +20,7 @@
 #pragma once
 
 #include <meazure/environment/ScreenInfoProvider.h>
-#include <meazure/profile/Profile.h>
+#include <meazure/config/Config.h>
 #include <QWidget>
 #include <QPoint>
 #include <QImage>
@@ -47,8 +47,8 @@ public:
         return k_zoomFactors;
     }
 
-    void saveToProfile(Profile& profile) const;
-    void loadFromProfile(Profile& profile);
+    void writeConfig(Config& config) const;
+    void readConfig(const Config& config);
 
 public slots:
     void setZoom(int zoomIndex);

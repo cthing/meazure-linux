@@ -40,12 +40,12 @@ void OriginTool::setEnabled(bool enable) {
     }
 }
 
-void OriginTool::saveToProfile(Profile& profile) const {
-    profile.writeBool("OriginMarker", isEnabled());
+void OriginTool::writeConfig(Config& config) const {
+    config.writeBool("OriginMarker", isEnabled());
 }
 
-void OriginTool::loadFromProfile(Profile& profile) {
-    setEnabled(profile.readBool("OriginMarker", isEnabled()));
+void OriginTool::readConfig(const Config& config) {
+    setEnabled(config.readBool("OriginMarker", isEnabled()));
 
     setPosition();
 }

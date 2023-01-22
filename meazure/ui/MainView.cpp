@@ -69,10 +69,10 @@ MagnifierSection* MainView::getMagnifierSection() const {
     return m_magnifierSection;
 }
 
-void MainView::saveToProfile(Profile& profile) const {
-    m_magnifierSection->saveToProfile(profile);
+void MainView::writeConfig(Config& config) const {
+    m_magnifierSection->writeConfig(config);
 }
 
-void MainView::loadFromProfile(Profile& profile) {
-    m_magnifierSection->saveToProfile(profile);
+void MainView::readConfig(const Config& config) {
+    m_magnifierSection->readConfig(config);
 }
