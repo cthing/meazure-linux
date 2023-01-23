@@ -118,7 +118,7 @@ private:
     static constexpr const char* k_fileFilter { "Meazure Position Log Files (*.mpl);;All Files (*.*)" };
     static constexpr const char* k_fileSuffix { ".mpl" };
 
-    explicit PosLogMgr(ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr);
+    explicit PosLogMgr(const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr);
 
     bool save(const QString& pathname);
 

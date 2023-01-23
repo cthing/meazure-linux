@@ -28,7 +28,11 @@
 #include <QMessageBox>
 
 
-ConfigMgr::ConfigMgr() : m_initialDir(QDir::homePath()) {
+ConfigMgr::ConfigMgr(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr) :
+        m_screenInfo(screenInfo),
+        m_unitsMgr(unitsMgr),
+        m_toolMgr(toolMgr),
+        m_initialDir(QDir::homePath()) {
 }
 
 void ConfigMgr::exportConfig() {
@@ -103,9 +107,9 @@ void ConfigMgr::restoreConfig() {
 void ConfigMgr::writeConfig(Config& config) const {
     App::instance()->getMainWindow().writeConfig(config);
     App::instance()->getPosLogMgr().writeConfig(config);
-    App::instance()->getToolMgr().writeConfig(config);
-    App::instance()->getUnitsMgr().writeConfig(config);
-    App::instance()->getScreenInfo().writeConfig(config);
+    m_toolMgr.writeConfig(config);
+    m_unitsMgr.writeConfig(config);
+    m_screenInfo.writeConfig(config);
     Colors::writeConfig(config);
     Dimensions::writeConfig(config);
 
@@ -117,9 +121,9 @@ void ConfigMgr::writeConfig(Config& config) const {
 void ConfigMgr::readConfig(const Config& config) {
     Dimensions::readConfig(config);
     Colors::readConfig(config);
-    App::instance()->getScreenInfo().readConfig(config);
-    App::instance()->getUnitsMgr().readConfig(config);
-    App::instance()->getToolMgr().readConfig(config);
+    m_screenInfo.readConfig(config);
+    m_unitsMgr.readConfig(config);
+    m_toolMgr.readConfig(config);
     App::instance()->getPosLogMgr().readConfig(config);
     App::instance()->getMainWindow().readConfig(config);
 

@@ -20,6 +20,9 @@
 #pragma once
 
 #include "Config.h"
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/tools/ToolMgr.h>
 #include <QObject>
 #include <QString>
 
@@ -32,7 +35,7 @@ class ConfigMgr : public QObject {
     Q_OBJECT
 
 public:
-    ConfigMgr();
+    ConfigMgr(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr);
 
 public slots:
     void exportConfig();
@@ -49,6 +52,9 @@ private:
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
 
+    ScreenInfo& m_screenInfo;
+    UnitsMgr& m_unitsMgr;
+    ToolMgr& m_toolMgr;
     QString m_exportPathname;
     QString m_importPathname;
     QString m_initialDir;

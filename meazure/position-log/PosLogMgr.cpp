@@ -39,7 +39,7 @@
 #include <fstream>
 
 
-PosLogMgr::PosLogMgr(ToolMgr& toolMgr, const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr) :
+PosLogMgr::PosLogMgr(const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr) :
         m_toolMgr(toolMgr),
         m_screenInfo(screenInfo),
         m_units(unitsMgr),
