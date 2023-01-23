@@ -19,7 +19,6 @@
 
 #include "MainWindow.h"
 #include "GlobalShortcuts.h"
-#include <meazure/App.h>
 #include <meazure/tools/CircleTool.h>
 #include <meazure/tools/CursorTool.h>
 #include <meazure/tools/GridTool.h>
@@ -34,6 +33,7 @@
 #include <meazure/prefs/ui/PrefsPageId.h>
 #include <meazure/position-log/PosLogMgr.h>
 #include <meazure/config/ConfigMgr.h>
+#include <QGuiApplication>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QActionGroup>
@@ -46,10 +46,13 @@
 #include <vector>
 
 
-MainWindow::MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+MainWindow::MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr, PosLogMgr& posLogMgr, // NOLINT(cppcoreguidelines-pro-type-member-init)
+                       ConfigMgr& configMgr) :
         m_screenInfo(screenInfo),
         m_unitsMgr(unitsMgr),
-        m_toolMgr(toolMgr) {
+        m_toolMgr(toolMgr),
+        m_posLogMgr(posLogMgr),
+        m_configMgr(configMgr) {
     createDialogs();
     createCentralWidget();
     createStatusBar();
@@ -67,8 +70,7 @@ MainWindow::MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& tool
     connect(&m_unitsMgr, &UnitsMgr::originChanged, &toolMgr, &ToolMgr::refresh);
     connect(&m_unitsMgr, &UnitsMgr::calibrationRequired, this, &MainWindow::warnCalibrationRequired);
 
-    const PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
-    connect(&posLogMgr, &PosLogMgr::dirtyChanged, this, &MainWindow::setWindowModified);
+    connect(&m_posLogMgr, &PosLogMgr::dirtyChanged, this, &MainWindow::setWindowModified);
 
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
@@ -77,7 +79,7 @@ MainWindow::MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& tool
     m_toolMgr.setEnabled(OriginTool::k_toolName, true);
     m_toolMgr.setCrosshairsEnabled(true);
 
-    setWindowTitle("[*]" + App::applicationName());
+    setWindowTitle("[*]" + QCoreApplication::applicationName());
     setWindowFlag(Qt::WindowMaximizeButtonHint, false);
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
@@ -99,36 +101,33 @@ void MainWindow::createStatusBar() {
 }
 
 void MainWindow::createActions() {
-    const PosLogMgr& posLogMgr = App::instance()->getPosLogMgr();
-    const ConfigMgr& configMgr = App::instance()->getConfigMgr();
-
     // File actions
 
     m_loadPositionsAction = new QAction(tr("&Load Positions..."), this);
     m_loadPositionsAction->setShortcut(QKeySequence::Open);
-    connect(m_loadPositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::loadPositions);
+    connect(m_loadPositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::loadPositions);
 
     m_savePositionsAction = new QAction(tr("&Save Positions"), this);
     m_savePositionsAction->setShortcut(QKeySequence::Save);
     m_savePositionsAction->setEnabled(false);
-    connect(m_savePositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::savePositions);
-    connect(&posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+    connect(m_savePositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::savePositions);
+    connect(&m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
         m_savePositionsAction->setEnabled(numPositions > 0);
     });
 
     m_saveAsPositionsAction = new QAction(tr("Save Positions &As..."), this);
     m_saveAsPositionsAction->setShortcut(QKeySequence::SaveAs);
     m_saveAsPositionsAction->setEnabled(false);
-    connect(m_saveAsPositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::saveAsPositions);
-    connect(&posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+    connect(m_saveAsPositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::saveAsPositions);
+    connect(&m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
         m_saveAsPositionsAction->setEnabled(numPositions > 0);
     });
 
     m_importConfigAction = new QAction(tr("&Import Configuration..."), this);
-    connect(m_importConfigAction, &QAction::triggered, &configMgr, &ConfigMgr::importConfig);
+    connect(m_importConfigAction, &QAction::triggered, &m_configMgr, &ConfigMgr::importConfig);
 
     m_exportConfigAction = new QAction(tr("&Export Configuration..."), this);
-    connect(m_exportConfigAction, &QAction::triggered, &configMgr, &ConfigMgr::exportConfig);
+    connect(m_exportConfigAction, &QAction::triggered, &m_configMgr, &ConfigMgr::exportConfig);
 
     m_exitAction = new QAction(tr("E&xit"), this);
     m_exitAction->setShortcuts(QKeySequence::Quit);
@@ -152,15 +151,15 @@ void MainWindow::createActions() {
 
     m_recordPositionAction = new QAction(tr("R&ecord Position"), this);
     m_recordPositionAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(m_recordPositionAction, &QAction::triggered, &posLogMgr, &PosLogMgr::addPosition);
+    connect(m_recordPositionAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::addPosition);
 
     m_managePositionsAction = new QAction(tr("&Manage Positions..."), this);
     connect(m_managePositionsAction, &QAction::triggered, this, &MainWindow::managePositions);
 
     m_deletePositionsAction = new QAction(tr("De&lete Positions"), this);
     m_deletePositionsAction->setEnabled(false);
-    connect(m_deletePositionsAction, &QAction::triggered, &posLogMgr, &PosLogMgr::deletePositions);
-    connect(&posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+    connect(m_deletePositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::deletePositions);
+    connect(&m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
         m_deletePositionsAction->setEnabled(numPositions > 0);
     });
 
@@ -573,7 +572,7 @@ void MainWindow::createDialogs() {
 
     m_prefsDialog = new PrefsDialog(m_screenInfo, m_unitsMgr, this);
 
-    m_positionDialog = new PosLogManageDlg(App::instance()->getPosLogMgr(), this);
+    m_positionDialog = new PosLogManageDlg(m_posLogMgr, this);
 }
 
 void MainWindow::createKeyboardControl() {
@@ -610,7 +609,7 @@ void MainWindow::createKeyboardControl() {
         m_toolMgr.setYVPosition(coord.y());
     });
 
-    App::instance()->installEventFilter(globalShortcuts);
+    QCoreApplication::instance()->installEventFilter(globalShortcuts);
 }
 
 void MainWindow::writeConfig(Config& config) const {
@@ -659,7 +658,7 @@ void MainWindow::copyRegion() {
     if (radioTool->canGrabRegion()) {
         const QImage image = radioTool->grabRegion();
         if (!image.isNull()) {
-            App::clipboard()->setImage(image);
+            QGuiApplication::clipboard()->setImage(image);
         }
         radioTool->flash();
     }
@@ -787,7 +786,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
                                       QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
                                       QMessageBox::Yes);
         if (response == QMessageBox::Yes) {
-            accept = App::instance()->getPosLogMgr().savePositions();
+            accept = m_posLogMgr.savePositions();
         } else {
             accept = (response == QMessageBox::No);
         }

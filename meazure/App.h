@@ -47,17 +47,6 @@ public:
     App(App&&) = delete;
     App& operator=(const App&) = delete;
 
-    static inline App* instance() {
-        return dynamic_cast<App*>(QApplication::instance());
-    }
-
-    [[nodiscard]] ScreenInfo& getScreenInfo() { return m_screenInfo; }
-    [[nodiscard]] UnitsMgr& getUnitsMgr() { return m_unitsMgr; }
-    [[nodiscard]] ToolMgr& getToolMgr() { return m_toolMgr; }
-    [[nodiscard]] PosLogMgr& getPosLogMgr() { return m_posLogMgr; }
-    [[nodiscard]] ConfigMgr& getConfigMgr() { return m_configMgr; }
-    [[nodiscard]] MainWindow& getMainWindow() { return m_mainWindow; }
-
     static QString findAppDataDir(const QString& subdir = QString());
 
 private:

@@ -23,8 +23,12 @@
 #include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/tools/ToolMgr.h>
+#include <meazure/position-log/PosLogMgr.h>
 #include <QObject>
 #include <QString>
+
+
+class MainWindow;
 
 
 /// Supervises the persistence and exporting of the application configuration. The configuration represents the state
@@ -35,7 +39,9 @@ class ConfigMgr : public QObject {
     Q_OBJECT
 
 public:
-    ConfigMgr(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr);
+    ConfigMgr(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr, PosLogMgr& posLogMgr);
+
+    void setMainWindow(MainWindow* mainWindow);
 
 public slots:
     void exportConfig();
@@ -55,6 +61,8 @@ private:
     ScreenInfo& m_screenInfo;
     UnitsMgr& m_unitsMgr;
     ToolMgr& m_toolMgr;
+    PosLogMgr& m_posLogMgr;
+    MainWindow* m_mainWindow { nullptr };
     QString m_exportPathname;
     QString m_importPathname;
     QString m_initialDir;

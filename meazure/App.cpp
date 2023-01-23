@@ -37,11 +37,13 @@ App::App(int &argc, char **argv):
         m_unitsMgr(m_screenInfo),
         m_toolMgr(m_screenInfo, m_unitsMgr),
         m_posLogMgr(m_screenInfo, m_unitsMgr, m_toolMgr),
-        m_configMgr(m_screenInfo, m_unitsMgr, m_toolMgr),
-        m_mainWindow(m_screenInfo, m_unitsMgr, m_toolMgr) {
+        m_configMgr(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr),
+        m_mainWindow(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, m_configMgr) {
     // Because the ICU library is statically compiled, its data file is not available at runtime. The data file is
     // distributed with the application in the "icu" subdirectory. Point the ICU library at this directory.
     u_setDataDirectory(findAppDataDir(k_icuDir).toUtf8().constData());
+
+    m_configMgr.setMainWindow(&m_mainWindow);
 
     setApplicationName("meazure");
     setApplicationVersion(appVersion);

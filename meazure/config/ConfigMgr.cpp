@@ -23,16 +23,22 @@
 #include <meazure/App.h>
 #include <meazure/graphics/Colors.h>
 #include <meazure/graphics/Dimensions.h>
+#include <meazure/ui/MainWindow.h>
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
 
 
-ConfigMgr::ConfigMgr(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr) :
+ConfigMgr::ConfigMgr(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr, PosLogMgr& posLogMgr) :
         m_screenInfo(screenInfo),
         m_unitsMgr(unitsMgr),
         m_toolMgr(toolMgr),
+        m_posLogMgr(posLogMgr),
         m_initialDir(QDir::homePath()) {
+}
+
+void ConfigMgr::setMainWindow(MainWindow* mainWindow) {
+    m_mainWindow = mainWindow;
 }
 
 void ConfigMgr::exportConfig() {
@@ -105,8 +111,8 @@ void ConfigMgr::restoreConfig() {
 }
 
 void ConfigMgr::writeConfig(Config& config) const {
-    App::instance()->getMainWindow().writeConfig(config);
-    App::instance()->getPosLogMgr().writeConfig(config);
+    m_mainWindow->writeConfig(config);
+    m_posLogMgr.writeConfig(config);
     m_toolMgr.writeConfig(config);
     m_unitsMgr.writeConfig(config);
     m_screenInfo.writeConfig(config);
@@ -124,8 +130,8 @@ void ConfigMgr::readConfig(const Config& config) {
     m_screenInfo.readConfig(config);
     m_unitsMgr.readConfig(config);
     m_toolMgr.readConfig(config);
-    App::instance()->getPosLogMgr().readConfig(config);
-    App::instance()->getMainWindow().readConfig(config);
+    m_posLogMgr.readConfig(config);
+    m_mainWindow->readConfig(config);
 
     if (config.isPersistent()) {
         m_initialDir = config.readStr("LastConfigDir", m_initialDir);

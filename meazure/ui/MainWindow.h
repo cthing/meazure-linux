@@ -28,7 +28,9 @@
 #include <meazure/units/Units.h>
 #include <meazure/units/CustomUnits.h>
 #include <meazure/config/Config.h>
+#include <meazure/config/ConfigMgr.h>
 #include <meazure/prefs/ui/PrefsDialog.h>
+#include <meazure/position-log/PosLogMgr.h>
 #include <meazure/position-log/PosLogManageDlg.h>
 #include <QMainWindow>
 #include <QAction>
@@ -42,7 +44,8 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr);
+    MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr, PosLogMgr& posLogMgr,
+               ConfigMgr& configMgr);
 
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
@@ -138,6 +141,8 @@ private:
     ScreenInfo& m_screenInfo;
     UnitsMgr& m_unitsMgr;
     ToolMgr& m_toolMgr;
+    PosLogMgr& m_posLogMgr;
+    ConfigMgr& m_configMgr;
 
     MainView* m_mainView;
 
