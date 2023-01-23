@@ -47,7 +47,7 @@ public:
     /// @param[in] lineColor Rectangle line foreground color
     /// @param[in] lineWidth Width of line, in pixels
     ///
-    explicit Rectangle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+    explicit Rectangle(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                        double offset = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore),
                        int lineWidth = Dimensions::getLineWidth());
 

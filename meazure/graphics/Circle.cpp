@@ -25,7 +25,7 @@
 #include <QtMath>
 
 
-Circle::Circle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, double gap,
+Circle::Circle(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, double gap,
                QWidget* parent, QRgb lineColor, int lineWidth) :
         Graphic(screenInfo, unitsProvider, parent),
         m_gap(gap),
@@ -38,7 +38,7 @@ Circle::Circle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Circle::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Circle::setLineWidth);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         setPosition(m_center, m_perimeter);
         repaint();
     });
@@ -66,8 +66,8 @@ void Circle::setGap(double gap) {
 }
 
 void Circle::setPosition(const QPoint& center, const QPoint& perimeter) {
-    m_center = m_screenInfo.constrainPosition(center);
-    m_perimeter = m_screenInfo.constrainPosition(perimeter);
+    m_center = m_screenInfo->constrainPosition(center);
+    m_perimeter = m_screenInfo->constrainPosition(perimeter);
     m_radius = Geometry::hypot(m_center, m_perimeter);
 
     const int x = qRound(m_center.x() - m_radius);
@@ -77,10 +77,10 @@ void Circle::setPosition(const QPoint& center, const QPoint& perimeter) {
 }
 
 void Circle::paintEvent(QPaintEvent*) {
-    const int screenIndex = m_screenInfo.screenForPoint(m_perimeter);
-    const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+    const int screenIndex = m_screenInfo->screenForPoint(m_perimeter);
+    const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
-    const QSize gap = m_unitsProvider.convertToPixels(InchesId, screenRes, m_gap, 0.0);
+    const QSize gap = m_unitsProvider->convertToPixels(InchesId, screenRes, m_gap, 0.0);
     const double halfGapAngle = qRadiansToDegrees(gap.width()/m_radius);
     const double startAngle = 360.0 - qRadiansToDegrees(Geometry::angle(m_center, m_perimeter)) + halfGapAngle;
     const double spanAngle = 360.0 - 2.0 * halfGapAngle;

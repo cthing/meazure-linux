@@ -24,7 +24,7 @@
 #include <QGraphicsOpacityEffect>
 
 
-ToolDataWindow::ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider, // NOLINT(cppcoreguidelines-pro-type-member-init)
+ToolDataWindow::ToolDataWindow(const ScreenInfoProvider* screenInfoProvider, const UnitsProvider* unitsProvider, // NOLINT(cppcoreguidelines-pro-type-member-init)
                                RadioToolTraits traits, QWidget* parent, QRgb opacity) :
         QFrame(parent),
         m_screenInfo(screenInfoProvider),
@@ -112,8 +112,8 @@ void ToolDataWindow::setOpacity(int opacityPercent) {
 }
 
 void ToolDataWindow::moveNear(const QRect& target) {
-    const int screenIndex = m_screenInfo.screenForRect(target);
-    const QRect screenRect = m_screenInfo.getScreenRect(screenIndex);
+    const int screenIndex = m_screenInfo->screenForRect(target);
+    const QRect screenRect = m_screenInfo->getScreenRect(screenIndex);
     const QRect expandedTarget = target.marginsAdded(k_targetMargins);
 
     int x = expandedTarget.left() - size().width();
@@ -160,36 +160,36 @@ void ToolDataWindow::setColors() {
 }
 
 void ToolDataWindow::xy1PositionChanged(QPointF coord, QPoint) {
-    m_x1Value->setText(m_units.format(XCoord, coord.x()));
-    m_y1Value->setText(m_units.format(YCoord, coord.y()));
+    m_x1Value->setText(m_units->format(XCoord, coord.x()));
+    m_y1Value->setText(m_units->format(YCoord, coord.y()));
     adjustSize();
 }
 
 void ToolDataWindow::xy2PositionChanged(QPointF coord, QPoint) {
-    m_x2Value->setText(m_units.format(XCoord, coord.x()));
-    m_y2Value->setText(m_units.format(YCoord, coord.y()));
+    m_x2Value->setText(m_units->format(XCoord, coord.x()));
+    m_y2Value->setText(m_units->format(YCoord, coord.y()));
     adjustSize();
 }
 
 void ToolDataWindow::xyvPositionChanged(QPointF coord, QPoint) {
-    m_xvValue->setText(m_units.format(XCoord, coord.x()));
-    m_yvValue->setText(m_units.format(YCoord, coord.y()));
+    m_xvValue->setText(m_units->format(XCoord, coord.x()));
+    m_yvValue->setText(m_units->format(YCoord, coord.y()));
     adjustSize();
 }
 
 void ToolDataWindow::widthHeightChanged(QSizeF widthHeight) {
-    m_wValue->setText(m_units.format(Width, widthHeight.width()));
-    m_hValue->setText(m_units.format(Height, widthHeight.height()));
+    m_wValue->setText(m_units->format(Width, widthHeight.width()));
+    m_hValue->setText(m_units->format(Height, widthHeight.height()));
     adjustSize();
 }
 
 void ToolDataWindow::distanceChanged(double distance) {
-    m_dValue->setText(m_units.format(Distance, distance));
+    m_dValue->setText(m_units->format(Distance, distance));
     adjustSize();
 }
 
 void ToolDataWindow::angleChanged(double angle) {
-    m_aValue->setText(m_units.format(Angle, angle));
+    m_aValue->setText(m_units->format(Angle, angle));
     adjustSize();
 }
 
@@ -199,6 +199,6 @@ void ToolDataWindow::aspectChanged(double aspect) {
 }
 
 void ToolDataWindow::areaChanged(double area) {
-    m_arValue->setText(m_units.format(Area, area));
+    m_arValue->setText(m_units->format(Area, area));
     adjustSize();
 }

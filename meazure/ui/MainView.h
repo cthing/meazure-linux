@@ -39,7 +39,7 @@ class MainView : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MainView(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr,
+    explicit MainView(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr, const ToolMgr* toolMgr,
                       PrefsDialog* prefsDialog);
 
     [[nodiscard]] QAction* getMagnifierZoomInAction() const;

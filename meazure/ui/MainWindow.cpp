@@ -46,8 +46,8 @@
 #include <vector>
 
 
-MainWindow::MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr, PosLogMgr& posLogMgr, // NOLINT(cppcoreguidelines-pro-type-member-init)
-                       ConfigMgr& configMgr) :
+MainWindow::MainWindow(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr, // NOLINT(cppcoreguidelines-pro-type-member-init)
+                       ConfigMgr* configMgr) :
         m_screenInfo(screenInfo),
         m_unitsMgr(unitsMgr),
         m_toolMgr(toolMgr),
@@ -61,23 +61,23 @@ MainWindow::MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& tool
     createToolBar();
     createKeyboardControl();
 
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, &MainWindow::radioToolSelected);
 
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, &toolMgr, &ToolMgr::refresh);
-    connect(&m_unitsMgr, &UnitsMgr::angularUnitsChanged, &toolMgr, &ToolMgr::refresh);
-    connect(&m_unitsMgr, &UnitsMgr::supplementalAngleChanged, &toolMgr, &ToolMgr::refresh);
-    connect(&m_unitsMgr, &UnitsMgr::invertYChanged, &toolMgr, &ToolMgr::refresh);
-    connect(&m_unitsMgr, &UnitsMgr::originChanged, &toolMgr, &ToolMgr::refresh);
-    connect(&m_unitsMgr, &UnitsMgr::calibrationRequired, this, &MainWindow::warnCalibrationRequired);
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, m_toolMgr, &ToolMgr::refresh);
+    connect(m_unitsMgr, &UnitsMgr::angularUnitsChanged, m_toolMgr, &ToolMgr::refresh);
+    connect(m_unitsMgr, &UnitsMgr::supplementalAngleChanged, m_toolMgr, &ToolMgr::refresh);
+    connect(m_unitsMgr, &UnitsMgr::invertYChanged, m_toolMgr, &ToolMgr::refresh);
+    connect(m_unitsMgr, &UnitsMgr::originChanged, m_toolMgr, &ToolMgr::refresh);
+    connect(m_unitsMgr, &UnitsMgr::calibrationRequired, this, &MainWindow::warnCalibrationRequired);
 
-    connect(&m_posLogMgr, &PosLogMgr::dirtyChanged, this, &MainWindow::setWindowModified);
+    connect(m_posLogMgr, &PosLogMgr::dirtyChanged, this, &MainWindow::setWindowModified);
 
     m_cursorToolAction->trigger();
     m_pixelUnitsAction->trigger();
     m_degreeUnitsAction->trigger();
 
-    m_toolMgr.setEnabled(OriginTool::k_toolName, true);
-    m_toolMgr.setCrosshairsEnabled(true);
+    m_toolMgr->setEnabled(OriginTool::k_toolName, true);
+    m_toolMgr->setCrosshairsEnabled(true);
 
     setWindowTitle("[*]" + QCoreApplication::applicationName());
     setWindowFlag(Qt::WindowMaximizeButtonHint, false);
@@ -105,29 +105,29 @@ void MainWindow::createActions() {
 
     m_loadPositionsAction = new QAction(tr("&Load Positions..."), this);
     m_loadPositionsAction->setShortcut(QKeySequence::Open);
-    connect(m_loadPositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::loadPositions);
+    connect(m_loadPositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::loadPositions);
 
     m_savePositionsAction = new QAction(tr("&Save Positions"), this);
     m_savePositionsAction->setShortcut(QKeySequence::Save);
     m_savePositionsAction->setEnabled(false);
-    connect(m_savePositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::savePositions);
-    connect(&m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+    connect(m_savePositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::savePositions);
+    connect(m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
         m_savePositionsAction->setEnabled(numPositions > 0);
     });
 
     m_saveAsPositionsAction = new QAction(tr("Save Positions &As..."), this);
     m_saveAsPositionsAction->setShortcut(QKeySequence::SaveAs);
     m_saveAsPositionsAction->setEnabled(false);
-    connect(m_saveAsPositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::saveAsPositions);
-    connect(&m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+    connect(m_saveAsPositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::saveAsPositions);
+    connect(m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
         m_saveAsPositionsAction->setEnabled(numPositions > 0);
     });
 
     m_importConfigAction = new QAction(tr("&Import Configuration..."), this);
-    connect(m_importConfigAction, &QAction::triggered, &m_configMgr, &ConfigMgr::importConfig);
+    connect(m_importConfigAction, &QAction::triggered, m_configMgr, &ConfigMgr::importConfig);
 
     m_exportConfigAction = new QAction(tr("&Export Configuration..."), this);
-    connect(m_exportConfigAction, &QAction::triggered, &m_configMgr, &ConfigMgr::exportConfig);
+    connect(m_exportConfigAction, &QAction::triggered, m_configMgr, &ConfigMgr::exportConfig);
 
     m_exitAction = new QAction(tr("E&xit"), this);
     m_exitAction->setShortcuts(QKeySequence::Quit);
@@ -143,23 +143,23 @@ void MainWindow::createActions() {
     m_findCrosshairsAction = new QAction(tr("&Find Crosshairs"), this);
     m_findCrosshairsAction->setShortcut(QKeySequence("Ctrl+F"));
     connect(m_findCrosshairsAction, &QAction::triggered, this, [this]() {
-        m_toolMgr.flashTool();
+        m_toolMgr->flashTool();
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_findCrosshairsAction->setEnabled(tool.hasCrosshairs());
     });
 
     m_recordPositionAction = new QAction(tr("R&ecord Position"), this);
     m_recordPositionAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(m_recordPositionAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::addPosition);
+    connect(m_recordPositionAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::addPosition);
 
     m_managePositionsAction = new QAction(tr("&Manage Positions..."), this);
     connect(m_managePositionsAction, &QAction::triggered, this, &MainWindow::managePositions);
 
     m_deletePositionsAction = new QAction(tr("De&lete Positions"), this);
     m_deletePositionsAction->setEnabled(false);
-    connect(m_deletePositionsAction, &QAction::triggered, &m_posLogMgr, &PosLogMgr::deletePositions);
-    connect(&m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
+    connect(m_deletePositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::deletePositions);
+    connect(m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
         m_deletePositionsAction->setEnabled(numPositions > 0);
     });
 
@@ -175,9 +175,9 @@ void MainWindow::createActions() {
     m_cursorToolAction->setCheckable(true);
     m_cursorToolAction->setToolTip("Tracks cursor position");
     connect(m_cursorToolAction, &QAction::triggered, this, [this] {
-        m_toolMgr.selectRadioTool(CursorTool::k_toolName);
+        m_toolMgr->selectRadioTool(CursorTool::k_toolName);
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_cursorToolAction->setChecked(tool.getName() == CursorTool::k_toolName);
     });
 
@@ -185,9 +185,9 @@ void MainWindow::createActions() {
     m_pointToolAction->setCheckable(true);
     m_pointToolAction->setToolTip("Measures a point");
     connect(m_pointToolAction, &QAction::triggered, this, [this] {
-        m_toolMgr.selectRadioTool(PointTool::k_toolName);
+        m_toolMgr->selectRadioTool(PointTool::k_toolName);
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_pointToolAction->setChecked(tool.getName() == PointTool::k_toolName);
     });
 
@@ -195,9 +195,9 @@ void MainWindow::createActions() {
     m_lineToolAction->setCheckable(true);
     m_lineToolAction->setToolTip("Measures using line");
     connect(m_lineToolAction, &QAction::triggered, this, [this] {
-        m_toolMgr.selectRadioTool(LineTool::k_toolName);
+        m_toolMgr->selectRadioTool(LineTool::k_toolName);
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_lineToolAction->setChecked(tool.getName() == LineTool::k_toolName);
     });
 
@@ -205,9 +205,9 @@ void MainWindow::createActions() {
     m_rectangleToolAction->setCheckable(true);
     m_rectangleToolAction->setToolTip("Measures using rectangle");
     connect(m_rectangleToolAction, &QAction::triggered, this, [this] {
-        m_toolMgr.selectRadioTool(RectangleTool::k_toolName);
+        m_toolMgr->selectRadioTool(RectangleTool::k_toolName);
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_rectangleToolAction->setChecked(tool.getName() == RectangleTool::k_toolName);
     });
 
@@ -215,9 +215,9 @@ void MainWindow::createActions() {
     m_circleToolAction->setCheckable(true);
     m_circleToolAction->setToolTip("Measures using circle");
     connect(m_circleToolAction, &QAction::triggered, this, [this] {
-        m_toolMgr.selectRadioTool(CircleTool::k_toolName);
+        m_toolMgr->selectRadioTool(CircleTool::k_toolName);
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_circleToolAction->setChecked(tool.getName() == CircleTool::k_toolName);
     });
 
@@ -225,9 +225,9 @@ void MainWindow::createActions() {
     m_angleToolAction->setCheckable(true);
     m_angleToolAction->setToolTip("Measures using protractor");
     connect(m_angleToolAction, &QAction::triggered, this, [this] {
-        m_toolMgr.selectRadioTool(AngleTool::k_toolName);
+        m_toolMgr->selectRadioTool(AngleTool::k_toolName);
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_angleToolAction->setChecked(tool.getName() == AngleTool::k_toolName);
     });
 
@@ -235,9 +235,9 @@ void MainWindow::createActions() {
     m_windowToolAction->setCheckable(true);
     m_windowToolAction->setToolTip("Measures a window");
     connect(m_windowToolAction, &QAction::triggered, this, [this] {
-        m_toolMgr.selectRadioTool(WindowTool::k_toolName);
+        m_toolMgr->selectRadioTool(WindowTool::k_toolName);
     });
-    connect(&m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
+    connect(m_toolMgr, &ToolMgr::radioToolSelected, this, [this](RadioTool& tool) {
         m_windowToolAction->setChecked(tool.getName() == WindowTool::k_toolName);
     });
 
@@ -245,9 +245,9 @@ void MainWindow::createActions() {
     m_rulerToolAction->setCheckable(true);
     m_rulerToolAction->setToolTip("Adds screen rulers");
     connect(m_rulerToolAction, &QAction::triggered, this, [this](bool checked) {
-        m_toolMgr.setEnabled(RulerTool::k_toolName, checked);
+        m_toolMgr->setEnabled(RulerTool::k_toolName, checked);
     });
-    connect(&m_toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
+    connect(m_toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
         if (tool.getName() == RulerTool::k_toolName) {
             m_rulerToolAction->setChecked(enabled);
         }
@@ -257,9 +257,9 @@ void MainWindow::createActions() {
     m_gridToolAction->setCheckable(true);
     m_gridToolAction->setToolTip("Adds screen grid");
     connect(m_gridToolAction, &QAction::triggered, this, [this](bool checked) {
-        m_toolMgr.setEnabled(GridTool::k_toolName, checked);
+        m_toolMgr->setEnabled(GridTool::k_toolName, checked);
     });
-    connect(&m_toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
+    connect(m_toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
         if (tool.getName() == GridTool::k_toolName) {
             m_gridToolAction->setChecked(enabled);
         }
@@ -276,69 +276,69 @@ void MainWindow::createActions() {
     m_pixelUnitsAction = new QAction(tr("&Pixels"), linearUnitsGroup);
     m_pixelUnitsAction->setCheckable(true);
     connect(m_pixelUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setLinearUnits(PixelsId);
+        m_unitsMgr->setLinearUnits(PixelsId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
         m_pixelUnitsAction->setChecked(id == PixelsId);
     });
 
     m_twipUnitsAction = new QAction(tr("&Twips"), linearUnitsGroup);
     m_twipUnitsAction->setCheckable(true);
     connect(m_twipUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setLinearUnits(TwipsId);
+        m_unitsMgr->setLinearUnits(TwipsId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
         m_twipUnitsAction->setChecked(id == TwipsId);
     });
 
     m_pointUnitsAction = new QAction(tr("P&oints"), linearUnitsGroup);
     m_pointUnitsAction->setCheckable(true);
     connect(m_pointUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setLinearUnits(PointsId);
+        m_unitsMgr->setLinearUnits(PointsId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
         m_pointUnitsAction->setChecked(id == PointsId);
     });
 
     m_picaUnitsAction = new QAction(tr("Pic&as"), linearUnitsGroup);
     m_picaUnitsAction->setCheckable(true);
     connect(m_picaUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setLinearUnits(PicasId);
+        m_unitsMgr->setLinearUnits(PicasId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
         m_picaUnitsAction->setChecked(id == PicasId);
     });
 
     m_inchUnitsAction = new QAction(tr("&Inches"), linearUnitsGroup);
     m_inchUnitsAction->setCheckable(true);
     connect(m_inchUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setLinearUnits(InchesId);
+        m_unitsMgr->setLinearUnits(InchesId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
         m_inchUnitsAction->setChecked(id == InchesId);
     });
 
     m_centimeterUnitsAction = new QAction(tr("&Centimeters"), linearUnitsGroup);
     m_centimeterUnitsAction->setCheckable(true);
     connect(m_centimeterUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setLinearUnits(CentimetersId);
+        m_unitsMgr->setLinearUnits(CentimetersId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
         m_centimeterUnitsAction->setChecked(id == CentimetersId);
     });
 
     m_millimeterUnitsAction = new QAction(tr("&Millimeters"), linearUnitsGroup);
     m_millimeterUnitsAction->setCheckable(true);
     connect(m_millimeterUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setLinearUnits(MillimetersId);
+        m_unitsMgr->setLinearUnits(MillimetersId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
         m_millimeterUnitsAction->setChecked(id == MillimetersId);
     });
 
     m_customUnitsAction = new QAction("", linearUnitsGroup);
     m_customUnitsAction->setCheckable(true);
-    connect(&m_unitsMgr, &UnitsMgr::customUnitsChanged, this, &MainWindow::customUnitsChanged);
+    connect(m_unitsMgr, &UnitsMgr::customUnitsChanged, this, &MainWindow::customUnitsChanged);
 
     m_defineCustomUnitsAction = new QAction(tr("Define C&ustom..."), this);
     connect(m_defineCustomUnitsAction, &QAction::triggered, this, [this]() {
@@ -351,18 +351,18 @@ void MainWindow::createActions() {
     m_degreeUnitsAction = new QAction(tr("&Degrees"), angularUnitsGroup);
     m_degreeUnitsAction->setCheckable(true);
     connect(m_degreeUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setAngularUnits(DegreesId);
+        m_unitsMgr->setAngularUnits(DegreesId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::angularUnitsChanged, this, [this](AngularUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::angularUnitsChanged, this, [this](AngularUnitsId id) {
         m_degreeUnitsAction->setChecked(id == DegreesId);
     });
 
     m_radianUnitsAction = new QAction(tr("&Radians"), angularUnitsGroup);
     m_radianUnitsAction->setCheckable(true);
     connect(m_radianUnitsAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setAngularUnits(RadiansId);
+        m_unitsMgr->setAngularUnits(RadiansId);
     });
-    connect(&m_unitsMgr, &UnitsMgr::angularUnitsChanged, this, [this](AngularUnitsId id) {
+    connect(m_unitsMgr, &UnitsMgr::angularUnitsChanged, this, [this](AngularUnitsId id) {
         m_radianUnitsAction->setChecked(id == RadiansId);
     });
 
@@ -406,27 +406,27 @@ void MainWindow::createActions() {
     m_hideCrosshairsAction->setShortcut(QKeySequence("Ctrl+B"));
     m_hideCrosshairsAction->setCheckable(true);
     connect(m_hideCrosshairsAction, &QAction::triggered, this, [this](bool hide) {
-        m_toolMgr.setCrosshairsEnabled(!hide);
+        m_toolMgr->setCrosshairsEnabled(!hide);
     });
-    connect(&m_toolMgr, &ToolMgr::crosshairsEnabled, this, [this](bool enable) {
+    connect(m_toolMgr, &ToolMgr::crosshairsEnabled, this, [this](bool enable) {
         m_hideCrosshairsAction->setChecked(!enable);
     });
 
     m_hideDataWindowsAction = new QAction(tr("Hide &Popup Data Windows"), this);
     m_hideDataWindowsAction->setCheckable(true);
     connect(m_hideDataWindowsAction, &QAction::triggered, this, [this](bool hide) {
-        m_toolMgr.setDataWinEnabled(!hide);
+        m_toolMgr->setDataWinEnabled(!hide);
     });
-    connect(&m_toolMgr, &ToolMgr::dataWinEnabled, this, [this](bool enable) {
+    connect(m_toolMgr, &ToolMgr::dataWinEnabled, this, [this](bool enable) {
         m_hideDataWindowsAction->setChecked(!enable);
     });
 
     m_hideOriginToolAction = new QAction(tr("Hide &Origin Marker"), this);
     m_hideOriginToolAction->setCheckable(true);
     connect(m_hideOriginToolAction, &QAction::triggered, this, [this](bool hide) {
-        m_toolMgr.setEnabled(OriginTool::k_toolName, !hide);
+        m_toolMgr->setEnabled(OriginTool::k_toolName, !hide);
     });
-    connect(&m_toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
+    connect(m_toolMgr, &ToolMgr::toolEnabled, this, [this](Tool& tool, bool enabled) {
         if (tool.getName() == OriginTool::k_toolName) {
             m_hideOriginToolAction->setChecked(!enabled);
         }
@@ -434,23 +434,23 @@ void MainWindow::createActions() {
 
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
-    connect(m_invertYAction, &QAction::triggered, &m_unitsMgr, &UnitsMgr::setInvertY);
-    connect(&m_unitsMgr, &UnitsMgr::invertYChanged, m_invertYAction, &QAction::setChecked);
+    connect(m_invertYAction, &QAction::triggered, m_unitsMgr, &UnitsMgr::setInvertY);
+    connect(m_unitsMgr, &UnitsMgr::invertYChanged, m_invertYAction, &QAction::setChecked);
 
     m_supplementalAngleAction = new QAction(tr("Supplemental &Angle"));
     m_supplementalAngleAction->setCheckable(true);
-    connect(m_supplementalAngleAction, &QAction::triggered, &m_unitsMgr, &UnitsMgr::setSupplementalAngle);
-    connect(&m_unitsMgr, &UnitsMgr::supplementalAngleChanged, m_supplementalAngleAction, &QAction::setChecked);
+    connect(m_supplementalAngleAction, &QAction::triggered, m_unitsMgr, &UnitsMgr::setSupplementalAngle);
+    connect(m_unitsMgr, &UnitsMgr::supplementalAngleChanged, m_supplementalAngleAction, &QAction::setChecked);
 
     m_setOriginAction = new QAction(tr("Set &Origin"), this);
     m_setOriginAction->setShortcut(QKeySequence("Ctrl+N"));
     connect(m_setOriginAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setOrigin(m_toolMgr.getActivePosition());
+        m_unitsMgr->setOrigin(m_toolMgr->getActivePosition());
     });
 
     m_resetOriginAction = new QAction(tr("&Reset Origin"), this);
     connect(m_resetOriginAction, &QAction::triggered, this, [this] {
-        m_unitsMgr.setOrigin(QPoint(0, 0));
+        m_unitsMgr->setOrigin(QPoint(0, 0));
     });
 
     m_alwaysVisibleAction = new QAction(tr("Always &Visible"), this);
@@ -567,7 +567,7 @@ void MainWindow::createToolBar() {
 }
 
 void MainWindow::createDialogs() {
-    auto* gridTool = dynamic_cast<GridTool*>(m_toolMgr.getTool(GridTool::k_toolName));
+    auto* gridTool = dynamic_cast<GridTool*>(m_toolMgr->getTool(GridTool::k_toolName));
     m_gridDialog = new GridDialog(gridTool, m_screenInfo, m_unitsMgr, this);
 
     m_prefsDialog = new PrefsDialog(m_screenInfo, m_unitsMgr, this);
@@ -578,35 +578,35 @@ void MainWindow::createDialogs() {
 void MainWindow::createKeyboardControl() {
     auto* globalShortcuts = new GlobalShortcuts(this);
 
-    connect(globalShortcuts, &GlobalShortcuts::ctrl1Up, this, [this]() { m_toolMgr.stepY1Position(-1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl1Down, this, [this]() { m_toolMgr.stepY1Position(1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl1Left, this, [this]() { m_toolMgr.stepX1Position(-1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl1Right, this, [this]() { m_toolMgr.stepX1Position(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Up, this, [this]() { m_toolMgr->stepY1Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Down, this, [this]() { m_toolMgr->stepY1Position(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Left, this, [this]() { m_toolMgr->stepX1Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl1Right, this, [this]() { m_toolMgr->stepX1Position(1); });
 
-    connect(globalShortcuts, &GlobalShortcuts::ctrl2Up, this, [this]() { m_toolMgr.stepY2Position(-1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl2Down, this, [this]() { m_toolMgr.stepY2Position(1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl2Left, this, [this]() { m_toolMgr.stepX2Position(-1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl2Right, this, [this]() { m_toolMgr.stepX2Position(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Up, this, [this]() { m_toolMgr->stepY2Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Down, this, [this]() { m_toolMgr->stepY2Position(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Left, this, [this]() { m_toolMgr->stepX2Position(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl2Right, this, [this]() { m_toolMgr->stepX2Position(1); });
 
-    connect(globalShortcuts, &GlobalShortcuts::ctrl3Up, this, [this]() { m_toolMgr.stepYVPosition(-1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl3Down, this, [this]() { m_toolMgr.stepYVPosition(1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl3Left, this, [this]() { m_toolMgr.stepXVPosition(-1); });
-    connect(globalShortcuts, &GlobalShortcuts::ctrl3Right, this, [this]() { m_toolMgr.stepXVPosition(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Up, this, [this]() { m_toolMgr->stepYVPosition(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Down, this, [this]() { m_toolMgr->stepYVPosition(1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Left, this, [this]() { m_toolMgr->stepXVPosition(-1); });
+    connect(globalShortcuts, &GlobalShortcuts::ctrl3Right, this, [this]() { m_toolMgr->stepXVPosition(1); });
 
     connect(globalShortcuts, &GlobalShortcuts::ctrlShift1, this, [this]() {
-        const QPointF coord = m_unitsMgr.convertCoord(QCursor::pos());
-        m_toolMgr.setX1Position(coord.x());
-        m_toolMgr.setY1Position(coord.y());
+        const QPointF coord = m_unitsMgr->convertCoord(QCursor::pos());
+        m_toolMgr->setX1Position(coord.x());
+        m_toolMgr->setY1Position(coord.y());
     });
     connect(globalShortcuts, &GlobalShortcuts::ctrlShift2, this, [this]() {
-        const QPointF coord = m_unitsMgr.convertCoord(QCursor::pos());
-        m_toolMgr.setX2Position(coord.x());
-        m_toolMgr.setY2Position(coord.y());
+        const QPointF coord = m_unitsMgr->convertCoord(QCursor::pos());
+        m_toolMgr->setX2Position(coord.x());
+        m_toolMgr->setY2Position(coord.y());
     });
     connect(globalShortcuts, &GlobalShortcuts::ctrlShift3, this, [this]() {
-        const QPointF coord = m_unitsMgr.convertCoord(QCursor::pos());
-        m_toolMgr.setXVPosition(coord.x());
-        m_toolMgr.setYVPosition(coord.y());
+        const QPointF coord = m_unitsMgr->convertCoord(QCursor::pos());
+        m_toolMgr->setXVPosition(coord.x());
+        m_toolMgr->setYVPosition(coord.y());
     });
 
     QCoreApplication::instance()->installEventFilter(globalShortcuts);
@@ -654,7 +654,7 @@ void MainWindow::radioToolSelected(RadioTool& tool) {
 }
 
 void MainWindow::copyRegion() {
-    RadioTool* radioTool = m_toolMgr.getCurentRadioTool();
+    RadioTool* radioTool = m_toolMgr->getCurentRadioTool();
     if (radioTool->canGrabRegion()) {
         const QImage image = radioTool->grabRegion();
         if (!image.isNull()) {
@@ -743,13 +743,13 @@ void MainWindow::setAllVisible(bool visible) {
 }
 
 void MainWindow::customUnitsChanged() {
-    const CustomUnits* customUnits = m_unitsMgr.getCustomUnits();
+    const CustomUnits* customUnits = m_unitsMgr->getCustomUnits();
     const bool defined = customUnits->haveCustomUnits();
     m_customUnitsAction->setEnabled(defined);
     m_customUnitsAction->setText(defined ? customUnits->getName() : tr("[custom]"));
 
     if (!defined && m_customUnitsAction->isChecked()) {
-        m_unitsMgr.setLinearUnits(PixelsId);
+        m_unitsMgr->setLinearUnits(PixelsId);
     }
 }
 
@@ -786,7 +786,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
                                       QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
                                       QMessageBox::Yes);
         if (response == QMessageBox::Yes) {
-            accept = m_posLogMgr.savePositions();
+            accept = m_posLogMgr->savePositions();
         } else {
             accept = (response == QMessageBox::No);
         }

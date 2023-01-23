@@ -25,7 +25,7 @@
 #include <QLine>
 #include <vector>
 
-Grid::Grid(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+Grid::Grid(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
            QWidget* parent, QRgb lineColor, int lineWidth) :
         Graphic(screenInfo, unitsProvider, parent),
         m_pen(QBrush(lineColor), lineWidth),
@@ -36,7 +36,7 @@ Grid::Grid(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Grid::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Grid::setLineWidth);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         repaint();
     });
 }
@@ -92,8 +92,8 @@ void Grid::paintEvent(QPaintEvent*) {
     QPainter painter(this);
     painter.setPen(m_pen);
 
-    for (int idx = 0; idx < m_screenInfo.getNumScreens(); idx++) {
-        const QRect intersectRect = m_screenInfo.getScreenRect(idx).intersected(geometry());
+    for (int idx = 0; idx < m_screenInfo->getNumScreens(); idx++) {
+        const QRect intersectRect = m_screenInfo->getScreenRect(idx).intersected(geometry());
         if (!intersectRect.isEmpty()) {
             int hPixelSpacing;      // NOLINT(cppcoreguidelines-init-variables)
             int vPixelSpacing;      // NOLINT(cppcoreguidelines-init-variables)
@@ -102,10 +102,10 @@ void Grid::paintEvent(QPaintEvent*) {
                 vPixelSpacing = static_cast<int>(m_vSpacing);
             } else {
                 const double angleFrac = (m_angle % 90) / 90.0;
-                const QSizeF res = m_screenInfo.getScreenRes(idx);
+                const QSizeF res = m_screenInfo->getScreenRes(idx);
                 const QSizeF effectiveRes(MathUtils::linearInterpolate(res.width(), res.height(), angleFrac),
                                           MathUtils::linearInterpolate(res.height(), res.width(), angleFrac));
-                const QSizeF unitsRes = m_unitsProvider.getLinearUnits(m_units)->convertRes(effectiveRes);
+                const QSizeF unitsRes = m_unitsProvider->getLinearUnits(m_units)->convertRes(effectiveRes);
                 hPixelSpacing = qRound(m_hSpacing * unitsRes.width());
                 vPixelSpacing = qRound(m_vSpacing * unitsRes.height());
             }

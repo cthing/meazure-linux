@@ -23,24 +23,24 @@
 #include <QIcon>
 
 
-ScreenDataSection::ScreenDataSection(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr, // NOLINT(cppcoreguidelines-pro-type-member-init)
+ScreenDataSection::ScreenDataSection(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr, const ToolMgr* toolMgr, // NOLINT(cppcoreguidelines-pro-type-member-init)
                                      PrefsDialog* prefsDialog) :
         m_screenInfo(screenInfo),
         m_unitsMgr(unitsMgr) {
     createFields();
 
-    connect(&toolMgr, &ToolMgr::xy1PositionChanged, this, &ScreenDataSection::update);
-    connect(&toolMgr, &ToolMgr::xy2PositionChanged, this, &ScreenDataSection::update);
-    connect(&toolMgr, &ToolMgr::xyvPositionChanged, this, &ScreenDataSection::update);
+    connect(toolMgr, &ToolMgr::xy1PositionChanged, this, &ScreenDataSection::update);
+    connect(toolMgr, &ToolMgr::xy2PositionChanged, this, &ScreenDataSection::update);
+    connect(toolMgr, &ToolMgr::xyvPositionChanged, this, &ScreenDataSection::update);
 
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ScreenDataSection::linearUnitsChanged);
-    connect(&m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ScreenDataSection::linearUnitsChanged);
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ScreenDataSection::linearUnitsChanged);
+    connect(m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ScreenDataSection::linearUnitsChanged);
 
     connect(m_calButton, &QPushButton::clicked, this, [prefsDialog]() {
         prefsDialog->execPage(PrefsPageId::CalibrationPage);
     });
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
-        m_calButton->setVisible(m_screenInfo.isCalibrationRequired());
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+        m_calButton->setVisible(m_screenInfo->isCalibrationRequired());
 
         refresh();
     });
@@ -97,7 +97,7 @@ void ScreenDataSection::createFields() {
 }
 
 void ScreenDataSection::update(QPointF, QPoint rawPos) {
-    const int screenIdx = m_screenInfo.screenForPoint(rawPos);
+    const int screenIdx = m_screenInfo->screenForPoint(rawPos);
     if (screenIdx != m_currentScreenIdx) {
         m_currentScreenIdx = screenIdx;
         refresh();
@@ -105,28 +105,28 @@ void ScreenDataSection::update(QPointF, QPoint rawPos) {
 }
 
 void ScreenDataSection::refresh() {
-    QString title = m_screenInfo.getScreenName(m_currentScreenIdx);
+    QString title = m_screenInfo->getScreenName(m_currentScreenIdx);
     if (title.isEmpty()) {
         title = QString::number(m_currentScreenIdx);
     }
-    if (m_screenInfo.isPrimary(m_currentScreenIdx)) {
+    if (m_screenInfo->isPrimary(m_currentScreenIdx)) {
         title += tr(" (primary)");
     }
     m_screenName->setText(title);
 
-    const QRect screenRect = m_screenInfo.getScreenRect(m_currentScreenIdx);
-    const QSizeF wh = m_unitsMgr.getWidthHeight(screenRect.topLeft(), screenRect.bottomRight());
+    const QRect screenRect = m_screenInfo->getScreenRect(m_currentScreenIdx);
+    const QSizeF wh = m_unitsMgr->getWidthHeight(screenRect.topLeft(), screenRect.bottomRight());
     m_wField->setValue(wh.width());
     m_hField->setValue(wh.height());
 
-    const QSizeF res = m_screenInfo.getScreenRes(m_currentScreenIdx);
-    const QSizeF convertedRes = m_unitsMgr.convertRes(res);
+    const QSizeF res = m_screenInfo->getScreenRes(m_currentScreenIdx);
+    const QSizeF convertedRes = m_unitsMgr->convertRes(res);
     m_rxField->setValue(convertedRes.width());
     m_ryField->setValue(convertedRes.height());
 }
 
 void ScreenDataSection::linearUnitsChanged() {
-    const LinearUnits* linearUnits = m_unitsMgr.getLinearUnits();
+    const LinearUnits* linearUnits = m_unitsMgr->getLinearUnits();
 
     m_hUnits->setText(linearUnits->getLengthLabel());
     m_ryUnits->setText(linearUnits->getResLabel());

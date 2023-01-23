@@ -240,7 +240,7 @@ private:
     using ToolsMap = std::map<QString, Tool*>;   ///< Maps a tool name to the tool object.
 
 
-    explicit ToolMgr(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider);
+    explicit ToolMgr(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider);
 
     ToolsMap m_tools;
     RadioTool* m_currentRadioTool { nullptr };

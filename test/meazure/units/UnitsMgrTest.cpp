@@ -54,7 +54,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testDefaults() {
     const MockScreenInfoProvider screenProvider;
-    const UnitsMgr mgr(screenProvider);
+    const UnitsMgr mgr(&screenProvider);
 
     QCOMPARE(mgr.getLinearUnits()->getUnitsId(), LinearUnitsId::PixelsId);
     QCOMPARE(mgr.getLinearUnitsId(), LinearUnitsId::PixelsId);
@@ -73,7 +73,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testInvertY() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     QVERIFY(!mgr.isInvertY());
     mgr.setInvertY(true);
@@ -82,7 +82,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testOrigin() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     QCOMPARE(mgr.getOrigin(), QPoint());
     mgr.setOrigin(QPoint(100, 200));
@@ -91,7 +91,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testSupplementalAngle() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     QVERIFY(!mgr.isSupplementalAngle());
     mgr.setSupplementalAngle(true);
@@ -100,7 +100,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testSetLinearUnitsId() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     const QSignalSpy unitsChangedSpy(&mgr, SIGNAL(linearUnitsChanged(LinearUnitsId)));
     QVERIFY(unitsChangedSpy.isValid());
@@ -136,7 +136,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testGetLinearUnitsId() {
     const MockScreenInfoProvider screenProvider;
-    const UnitsMgr mgr(screenProvider);
+    const UnitsMgr mgr(&screenProvider);
 
     LinearUnits* units = mgr.getLinearUnits(LinearUnitsId::TwipsId);
     QCOMPARE(units->getUnitsId(), LinearUnitsId::TwipsId);
@@ -150,7 +150,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testSetAngularUnitsId() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     const QSignalSpy unitsChangedSpy(&mgr, SIGNAL(angularUnitsChanged(AngularUnitsId)));
     QVERIFY(unitsChangedSpy.isValid());
@@ -180,7 +180,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testGetAngularUnitsId() {
     const MockScreenInfoProvider screenProvider;
-    const UnitsMgr mgr(screenProvider);
+    const UnitsMgr mgr(&screenProvider);
 
     AngularUnits* units = mgr.getAngularUnits(AngularUnitsId::RadiansId);
     QCOMPARE(units->getUnitsId(), AngularUnitsId::RadiansId);
@@ -194,7 +194,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testGetCustomUnits() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     CustomUnits* units = mgr.getCustomUnits();
     QCOMPARE(units->getUnitsId(), LinearUnitsId::CustomId);
@@ -202,7 +202,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testLinearPrecisions() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     const std::vector<int> expectedDefaults { 3, 3, 3, 3, 3, 3, 1, 1 };
     const Units::DisplayPrecisions& defaultPrecisions1 = mgr.getLinearDefaultPrecisions(LinearUnitsId::InchesId);
@@ -220,7 +220,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testAngularPrecisions() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     const std::vector<int> expectedDefaults { 3 };
     const Units::DisplayPrecisions& defaultPrecisions1 = mgr.getAngularDefaultPrecisions(AngularUnitsId::RadiansId);
@@ -238,7 +238,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testGetWidthHeight() {
     const MockScreenInfoProvider screenProvider;
-    const UnitsMgr mgr(screenProvider);
+    const UnitsMgr mgr(&screenProvider);
 
     const QPoint p1(10, 200);
     const QPoint p2(20, 300);
@@ -249,7 +249,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testFormat() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     mgr.setAngularUnits(AngularUnitsId::DegreesId);
     QCOMPARE(mgr.formatConvertAngle(qDegreesToRadians(120.0)), "120.0");
@@ -275,7 +275,7 @@ private slots:
 
 [[maybe_unused]] void UnitsMgrTest::testConversion() {
     const MockScreenInfoProvider screenProvider;
-    UnitsMgr mgr(screenProvider);
+    UnitsMgr mgr(&screenProvider);
 
     mgr.setOrigin(QPoint(10, 20));
     mgr.setInvertY(true);

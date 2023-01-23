@@ -181,9 +181,9 @@ QString positionLogUnknownElement = R"HERE(<?xml version="1.0" encoding="UTF-8"?
 
 [[maybe_unused]] void PosLogReaderTest::testRead() {
     const MockScreenInfoProvider screenProvider;
-    const MockUnitsProvider unitsProvider(screenProvider);
+    const MockUnitsProvider unitsProvider(&screenProvider);
 
-    PosLogReader logReader(unitsProvider);
+    PosLogReader logReader(&unitsProvider);
     const PosLogArchiveSharedPtr archive = logReader.readString(positionLog);
 
     const PosLogInfo& info = archive->getInfo();
@@ -294,9 +294,9 @@ QString positionLogUnknownElement = R"HERE(<?xml version="1.0" encoding="UTF-8"?
 
 [[maybe_unused]] void PosLogReaderTest::testBadSyntax() {
     const MockScreenInfoProvider screenProvider;
-    const MockUnitsProvider unitsProvider(screenProvider);
+    const MockUnitsProvider unitsProvider(&screenProvider);
 
-    PosLogReader logReader(unitsProvider);
+    PosLogReader logReader(&unitsProvider);
     try {
         logReader.readString(positionLogBadSyntax);
         QFAIL("Expected XMLParsingException not thrown");
@@ -311,9 +311,9 @@ QString positionLogUnknownElement = R"HERE(<?xml version="1.0" encoding="UTF-8"?
 
 [[maybe_unused]] void PosLogReaderTest::testUnkownElement() {
     const MockScreenInfoProvider screenProvider;
-    const MockUnitsProvider unitsProvider(screenProvider);
+    const MockUnitsProvider unitsProvider(&screenProvider);
 
-    PosLogReader logReader(unitsProvider);
+    PosLogReader logReader(&unitsProvider);
     try {
         logReader.readString(positionLogUnknownElement);
         QFAIL("Expected XMLParsingException not thrown");

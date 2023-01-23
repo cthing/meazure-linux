@@ -33,7 +33,7 @@ class Tool : public QObject {
     Q_OBJECT
 
 public:
-    explicit Tool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit Tool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~Tool() override = default;
 
@@ -115,8 +115,8 @@ signals:
     void toolEnabled(Tool& tool, bool enabled);
 
 protected:
-    const ScreenInfo& m_screenInfo;
-    const UnitsProvider& m_unitsProvider;
+    const ScreenInfo* m_screenInfo;
+    const UnitsProvider* m_unitsProvider;
 
 private:
     bool m_enabled { false };

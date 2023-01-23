@@ -35,7 +35,7 @@
 class UnitsPrefsPage : public PrefsPage {
 
 public:
-    explicit UnitsPrefsPage(UnitsMgr& unitsMgr);
+    explicit UnitsPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::UnitsPage;

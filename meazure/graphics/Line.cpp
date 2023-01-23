@@ -24,7 +24,7 @@
 #include <cmath>
 
 
-Line::Line(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, double offset,
+Line::Line(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, double offset,
            QWidget* parent, QRgb lineColor, int lineWidth) :
         Graphic(screenInfo, unitsProvider, parent),
         m_offset(offset),
@@ -38,7 +38,7 @@ Line::Line(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, dou
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Line::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this, &Line::setLineWidth);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         setPosition(m_start, m_end);
         repaint();
     });
@@ -73,16 +73,16 @@ void Line::setPosition(const QPoint& start, const QPoint& end) {
     QPoint normalizedStart(std::min(start.x(), end.x()), std::min(start.y(), end.y()));
     QPoint normalizedEnd(std::max(start.x(), end.x()), std::max(start.y(), end.y()));
 
-    normalizedStart = m_screenInfo.constrainPosition(normalizedStart);
-    normalizedEnd = m_screenInfo.constrainPosition(normalizedEnd);
+    normalizedStart = m_screenInfo->constrainPosition(normalizedStart);
+    normalizedEnd = m_screenInfo->constrainPosition(normalizedEnd);
     QRect windowRect(normalizedStart, normalizedEnd);
 
     if (m_offset > 0.0) {
-        const int screenIndex = m_screenInfo.screenForPoint(normalizedStart);
-        const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+        const int screenIndex = m_screenInfo->screenForPoint(normalizedStart);
+        const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
         const double angle = Geometry::angle(normalizedStart, normalizedEnd);
-        const QSize offset = m_unitsProvider.convertToPixels(InchesId, screenRes, m_offset, 0.0);
+        const QSize offset = m_unitsProvider->convertToPixels(InchesId, screenRes, m_offset, 0.0);
         const int offsetX = qRound(offset.width() * std::cos(angle));
         const int offsetY = qRound(offset.height() * std::sin(angle));
 

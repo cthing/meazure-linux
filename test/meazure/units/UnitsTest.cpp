@@ -251,7 +251,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testPixelUnits() {
     const MockScreenInfoProvider screenProvider;
-    PixelUnits units(screenProvider);
+    PixelUnits units(&screenProvider);
 
     MEA_CHECK(verifyUnitsId(units, PixelsId, "px", "px", "sq. px", "px/in"));
 
@@ -278,7 +278,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testPointUnits() {
     const MockScreenInfoProvider screenProvider;
-    PointUnits units(screenProvider);
+    PointUnits units(&screenProvider);
 
     MEA_CHECK(verifyUnitsId(units, PointsId, "pt", "pt", "sq. pt", "px/pt"));
 
@@ -305,7 +305,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testPicaUnits() {
     const MockScreenInfoProvider screenProvider;
-    PicaUnits units(screenProvider);
+    PicaUnits units(&screenProvider);
 
     MEA_CHECK(verifyUnitsId(units, PicasId, "pc", "pc", "sq. pc", "px/pc"));
 
@@ -332,7 +332,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testTwipUnits() {
     const MockScreenInfoProvider screenProvider;
-    TwipUnits units(screenProvider);
+    TwipUnits units(&screenProvider);
 
     MEA_CHECK(verifyUnitsId(units, TwipsId, "tp", "tp", "sq. tp", "px/tp"));
 
@@ -359,7 +359,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testInchUnits() {
     const MockScreenInfoProvider screenProvider;
-    InchUnits units(screenProvider);
+    InchUnits units(&screenProvider);
 
     MEA_CHECK(verifyUnitsId(units, InchesId, "in", "in", "sq. in", "px/in"));
 
@@ -386,7 +386,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testCentimeterUnits() {
     const MockScreenInfoProvider screenProvider;
-    CentimeterUnits units(screenProvider);
+    CentimeterUnits units(&screenProvider);
 
     MEA_CHECK(verifyUnitsId(units, CentimetersId, "cm", "cm", "sq. cm", "px/cm"));
 
@@ -413,7 +413,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testMillimeterUnits() {
     const MockScreenInfoProvider screenProvider;
-    MillimeterUnits units(screenProvider);
+    MillimeterUnits units(&screenProvider);
 
     MEA_CHECK(verifyUnitsId(units, MillimetersId, "mm", "mm", "sq. mm", "px/mm"));
 
@@ -440,7 +440,7 @@ void verifyFromPixels(LinearUnits& units, double xfactor, double yfactor) {
 
 [[maybe_unused]] void UnitsTest::testCustomUnits() {
     const MockScreenInfoProvider screenProvider;
-    CustomUnits units(screenProvider);
+    CustomUnits units(&screenProvider);
 
     const QSignalSpy unitsSpy(&units, SIGNAL(customUnitsChanged()));
     QVERIFY(unitsSpy.isValid());

@@ -44,7 +44,7 @@ class AngleTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"AngleTool" };
 
-    explicit AngleTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit AngleTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~AngleTool() override;
 

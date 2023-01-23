@@ -54,7 +54,7 @@ public:
     /// @param[in] borderColor Crosshair border color
     /// @param[in] opacity Crosshair opacity
     ///
-    explicit Crosshair(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+    explicit Crosshair(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                        QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
                        QRgb backgroundColor = Colors::get(Colors::CrosshairBack),
                        QRgb highlightColor = Colors::get(Colors::CrosshairHighlight),

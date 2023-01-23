@@ -39,32 +39,32 @@
 #include <fstream>
 
 
-PosLogMgr::PosLogMgr(const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr) :
+PosLogMgr::PosLogMgr(const ScreenInfoProvider* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr) :
         m_toolMgr(toolMgr),
         m_screenInfo(screenInfo),
         m_units(unitsMgr),
         m_initialDir(QDir::homePath()) {
     m_title = QString("%1 Position Log File").arg(QGuiApplication::applicationDisplayName());
 
-    connect(&m_toolMgr, &ToolMgr::xy1PositionChanged, this, [this](const QPointF& coord) {
+    connect(m_toolMgr, &ToolMgr::xy1PositionChanged, this, [this](const QPointF& coord) {
         m_currentToolData.setPoint1(coord);
     });
-    connect(&m_toolMgr, &ToolMgr::xy2PositionChanged, this, [this](const QPointF& coord) {
+    connect(m_toolMgr, &ToolMgr::xy2PositionChanged, this, [this](const QPointF& coord) {
         m_currentToolData.setPoint2(coord);
     });
-    connect(&m_toolMgr, &ToolMgr::xyvPositionChanged, this, [this](const QPointF& coord) {
+    connect(m_toolMgr, &ToolMgr::xyvPositionChanged, this, [this](const QPointF& coord) {
         m_currentToolData.setPointV(coord);
     });
-    connect(&m_toolMgr, &ToolMgr::widthHeightChanged, this, [this](const QSizeF& widthHeight) {
+    connect(m_toolMgr, &ToolMgr::widthHeightChanged, this, [this](const QSizeF& widthHeight) {
         m_currentToolData.setWidthHeight(widthHeight);
     });
-    connect(&m_toolMgr, &ToolMgr::distanceChanged, this, [this](double distance) {
+    connect(m_toolMgr, &ToolMgr::distanceChanged, this, [this](double distance) {
         m_currentToolData.setDistance(distance);
     });
-    connect(&m_toolMgr, &ToolMgr::angleChanged, this, [this](double angle) {
+    connect(m_toolMgr, &ToolMgr::angleChanged, this, [this](double angle) {
         m_currentToolData.setAngle(angle);
     });
-    connect(&m_toolMgr, &ToolMgr::areaChanged, this, [this](double area) {
+    connect(m_toolMgr, &ToolMgr::areaChanged, this, [this](double area) {
         m_currentToolData.setArea(area);
     });
 }
@@ -85,8 +85,8 @@ void PosLogMgr::addPosition() {
 
 void PosLogMgr::insertPosition(unsigned int positionIndex) {
     PosLogPosition position;
-    position.setToolName(m_toolMgr.getCurentRadioTool()->getName());
-    position.setToolTraits(m_toolMgr.getCurentRadioTool()->getTraits());
+    position.setToolName(m_toolMgr->getCurentRadioTool()->getName());
+    position.setToolTraits(m_toolMgr->getCurentRadioTool()->getTraits());
     position.setToolData(m_currentToolData);
     position.setRecorded(QDateTime::currentDateTime().toUTC());
 
@@ -97,7 +97,7 @@ void PosLogMgr::insertPosition(unsigned int positionIndex) {
     m_positions.insert(iter, position);
     markDirty();
 
-    m_toolMgr.strobeTool();
+    m_toolMgr->strobeTool();
 
     emit positionsChanged(m_positions.size());
     emit positionAdded(positionIndex);
@@ -304,10 +304,10 @@ void PosLogMgr::showPosition(unsigned int positionIndex) {
     // Change the units if needed. If these are custom units perform additional configuration.
 
     const LinearUnitsId linearUnitsId = desktop->getLinearUnitsId();
-    if (linearUnitsId != m_units.getLinearUnitsId()) {
+    if (linearUnitsId != m_units->getLinearUnitsId()) {
         if (linearUnitsId == CustomId) {
             const PosLogCustomUnits& logCustomUnits = desktop->getCustomUnits();
-            CustomUnits* customUnits = m_units.getCustomUnits();
+            CustomUnits* customUnits = m_units->getCustomUnits();
 
             customUnits->setName(logCustomUnits.getName());
             customUnits->setAbbrev(logCustomUnits.getAbbrev());
@@ -316,24 +316,24 @@ void PosLogMgr::showPosition(unsigned int positionIndex) {
             customUnits->setDisplayPrecisions(logCustomUnits.getDisplayPrecisions());
         }
 
-        m_units.setLinearUnits(desktop->getLinearUnitsId());
+        m_units->setLinearUnits(desktop->getLinearUnitsId());
     }
 
     const AngularUnitsId angularUnitsId = desktop->getAngularUnitsId();
-    if (angularUnitsId != m_units.getAngularUnitsId()) {
-        m_units.setAngularUnits(desktop->getAngularUnitsId());
+    if (angularUnitsId != m_units->getAngularUnitsId()) {
+        m_units->setAngularUnits(desktop->getAngularUnitsId());
     }
 
     // Set the origin and y-axis orientation.
 
     const bool invertY = desktop->isInvertY();
-    if (invertY != m_units.isInvertY()) {
-        m_units.setInvertY(invertY);
+    if (invertY != m_units->isInvertY()) {
+        m_units->setInvertY(invertY);
     }
 
-    const QPoint origin = m_units.unconvertPos(desktop->getOrigin());
-    if (origin != m_units.getOrigin()) {
-        m_units.setOrigin(origin);
+    const QPoint origin = m_units->unconvertPos(desktop->getOrigin());
+    if (origin != m_units->getOrigin()) {
+        m_units->setOrigin(origin);
     }
 
     // Change the radio tool, if needed. If the position used the cursor tool, it is displayed using the
@@ -347,8 +347,8 @@ void PosLogMgr::showPosition(unsigned int positionIndex) {
         toolName = RectangleTool::k_toolName;
     }
 
-    if (toolName != m_toolMgr.getCurentRadioTool()->getName()) {
-        m_toolMgr.selectRadioTool(toolName.toUtf8().constData());
+    if (toolName != m_toolMgr->getCurentRadioTool()->getName()) {
+        m_toolMgr->selectRadioTool(toolName.toUtf8().constData());
     }
 
     // Show the position.
@@ -357,44 +357,44 @@ void PosLogMgr::showPosition(unsigned int positionIndex) {
     const PosLogToolData& toolData = position.getToolData();
 
     if ((traits & RadioToolTrait::XY1Available) != 0) {
-        m_toolMgr.setXY1Position(toolData.getPoint1());
+        m_toolMgr->setXY1Position(toolData.getPoint1());
     }
     if ((traits & RadioToolTrait::XY2Available) != 0) {
-        m_toolMgr.setXY2Position(toolData.getPoint2());
+        m_toolMgr->setXY2Position(toolData.getPoint2());
     }
     if ((traits & RadioToolTrait::XYVAvailable) != 0) {
-        m_toolMgr.setXYVPosition(toolData.getPointV());
+        m_toolMgr->setXYVPosition(toolData.getPointV());
     }
 }
 
 PosLogDesktopSharedPtr PosLogMgr::createDesktop() {
     PosLogDesktopSharedPtr desktop = std::make_shared<PosLogDesktop>();
-    desktop->setOrigin(m_units.convertPos(m_units.getOrigin()));
-    desktop->setInvertY(m_units.isInvertY());
-    desktop->setLinearUnitsId(m_units.getLinearUnitsId());
-    desktop->setAngularUnitsId(m_units.getAngularUnitsId());
+    desktop->setOrigin(m_units->convertPos(m_units->getOrigin()));
+    desktop->setInvertY(m_units->isInvertY());
+    desktop->setLinearUnitsId(m_units->getLinearUnitsId());
+    desktop->setAngularUnitsId(m_units->getAngularUnitsId());
 
-    const QRect screenVirtualRect = m_screenInfo.getVirtualRect();
-    const QSizeF size = m_units.getWidthHeight(screenVirtualRect.topLeft(), screenVirtualRect.bottomRight());
+    const QRect screenVirtualRect = m_screenInfo->getVirtualRect();
+    const QSizeF size = m_units->getWidthHeight(screenVirtualRect.topLeft(), screenVirtualRect.bottomRight());
     desktop->setSize(size);
 
-    for (int screenIndex = 0; screenIndex < m_screenInfo.getNumScreens(); screenIndex++) {
+    for (int screenIndex = 0; screenIndex < m_screenInfo->getNumScreens(); screenIndex++) {
         PosLogScreen screen;
-        screen.setPrimary(m_screenInfo.isPrimary(screenIndex));
-        screen.setManualRes(m_screenInfo.isManualRes(screenIndex));
-        screen.setRes(m_screenInfo.getScreenRes(screenIndex));
-        screen.setDescription(m_screenInfo.getScreenName(screenIndex));
+        screen.setPrimary(m_screenInfo->isPrimary(screenIndex));
+        screen.setManualRes(m_screenInfo->isManualRes(screenIndex));
+        screen.setRes(m_screenInfo->getScreenRes(screenIndex));
+        screen.setDescription(m_screenInfo->getScreenName(screenIndex));
 
-        const QRect& screenRect = m_screenInfo.getScreenRect(screenIndex);
-        const QPointF p1 = m_units.convertCoord(screenRect.topLeft());
-        const QPointF p2 = m_units.convertCoord(screenRect.bottomRight());
+        const QRect& screenRect = m_screenInfo->getScreenRect(screenIndex);
+        const QPointF p1 = m_units->convertCoord(screenRect.topLeft());
+        const QPointF p2 = m_units->convertCoord(screenRect.bottomRight());
         screen.setRect(QRectF(p1, p2));
 
         desktop->addScreen(screen);
     }
 
-    if (m_units.getLinearUnitsId() == CustomId) {
-        const CustomUnits* customUnits = m_units.getCustomUnits();
+    if (m_units->getLinearUnitsId() == CustomId) {
+        const CustomUnits* customUnits = m_units->getCustomUnits();
         PosLogCustomUnits posLogCustomUnits;
         posLogCustomUnits.setName(customUnits->getName());
         posLogCustomUnits.setAbbrev(customUnits->getAbbrev());

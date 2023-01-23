@@ -21,7 +21,7 @@
 #include <QVBoxLayout>
 
 
-MainView::MainView(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr,
+MainView::MainView(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr, const ToolMgr* toolMgr,
                    PrefsDialog* prefsDialog) :
         m_toolDataSection(new ToolDataSection(unitsMgr, toolMgr)),
         m_screenDataSection(new ScreenDataSection(screenInfo, unitsMgr, toolMgr, prefsDialog)),

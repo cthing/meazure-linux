@@ -71,7 +71,7 @@ const PosLogReader::LinearMesurementMap PosLogReader::linearMesurementMap {
 };
 
 
-PosLogReader::PosLogReader(const UnitsProvider& unitsProvider) :
+PosLogReader::PosLogReader(const UnitsProvider* unitsProvider) :
         PosLogIO(unitsProvider),
         m_dtdContents(QResource(":/dtd/PositionLog1.dtd").uncompressedData()) {
 }
@@ -289,10 +289,10 @@ void PosLogReader::startElement(const QString &, const QString &elementName, con
             break;
         case ElementId::units:
             attrs.getValueStr(k_lengthAttr, [this](const QString& unitsStr) {
-                m_currentDesktop->setLinearUnitsId(m_units.getLinearUnits(unitsStr)->getUnitsId());
+                m_currentDesktop->setLinearUnitsId(m_units->getLinearUnits(unitsStr)->getUnitsId());
             });
             attrs.getValueStr(k_angleAttr, [this](const QString& unitsStr) {
-                m_currentDesktop->setAngularUnitsId(m_units.getAngularUnits(unitsStr)->getUnitsId());
+                m_currentDesktop->setAngularUnitsId(m_units->getAngularUnits(unitsStr)->getUnitsId());
             });
             break;
         case ElementId::width: {

@@ -39,7 +39,7 @@ class ConfigMgr : public QObject {
     Q_OBJECT
 
 public:
-    ConfigMgr(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr, PosLogMgr& posLogMgr);
+    ConfigMgr(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr);
 
     void setMainWindow(MainWindow* mainWindow);
 
@@ -58,10 +58,10 @@ private:
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
 
-    ScreenInfo& m_screenInfo;
-    UnitsMgr& m_unitsMgr;
-    ToolMgr& m_toolMgr;
-    PosLogMgr& m_posLogMgr;
+    ScreenInfo* m_screenInfo;
+    UnitsMgr* m_unitsMgr;
+    ToolMgr* m_toolMgr;
+    PosLogMgr* m_posLogMgr;
     MainWindow* m_mainWindow { nullptr };
     QString m_exportPathname;
     QString m_importPathname;

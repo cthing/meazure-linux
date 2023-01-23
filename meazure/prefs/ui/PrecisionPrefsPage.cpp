@@ -22,8 +22,8 @@
 #include <QGridLayout>
 
 
-PrecisionPrefsPage::PrecisionPrefsPage(UnitsMgr& unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
-        m_unitsMgr(unitsMgr),
+PrecisionPrefsPage::PrecisionPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        PrefsPage(screenInfo, unitsMgr),
         m_model(new PrecisionPrefsModel(unitsMgr, this)) {
     createUI();
     configure();
@@ -112,19 +112,19 @@ void PrecisionPrefsPage::configure() {
 
     // Units combo
 
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(PixelsId)->getLengthLabel(), PixelsId);
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(PointsId)->getLengthLabel(), PointsId);
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(TwipsId)->getLengthLabel(), TwipsId);
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(InchesId)->getLengthLabel(), InchesId);
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(CentimetersId)->getLengthLabel(), CentimetersId);
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(MillimetersId)->getLengthLabel(), MillimetersId);
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(PicasId)->getLengthLabel(), PicasId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(PixelsId)->getLengthLabel(), PixelsId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(PointsId)->getLengthLabel(), PointsId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(TwipsId)->getLengthLabel(), TwipsId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(InchesId)->getLengthLabel(), InchesId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(CentimetersId)->getLengthLabel(), CentimetersId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(MillimetersId)->getLengthLabel(), MillimetersId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(PicasId)->getLengthLabel(), PicasId);
     m_unitsCombo->addItem(tr("custom"), CustomId);
 
     m_unitsCombo->insertSeparator(200);
 
-    m_unitsCombo->addItem(m_unitsMgr.getAngularUnits(DegreesId)->getLabel(), k_angularIdMask | DegreesId);
-    m_unitsCombo->addItem(m_unitsMgr.getAngularUnits(RadiansId)->getLabel(), k_angularIdMask | RadiansId);
+    m_unitsCombo->addItem(m_unitsMgr->getAngularUnits(DegreesId)->getLabel(), k_angularIdMask | DegreesId);
+    m_unitsCombo->addItem(m_unitsMgr->getAngularUnits(RadiansId)->getLabel(), k_angularIdMask | RadiansId);
 
     connect(m_unitsCombo, &QComboBox::activated, this, &PrecisionPrefsPage::unitsSelected);
 

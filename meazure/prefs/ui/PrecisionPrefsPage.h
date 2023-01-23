@@ -24,6 +24,7 @@
 #include <meazure/prefs/models/PrecisionPrefsModel.h>
 #include <meazure/ui/fields/IntegerDataField.h>
 #include <meazure/units/UnitsMgr.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <QComboBox>
 #include <QPushButton>
 #include <QLabel>
@@ -35,7 +36,7 @@
 class PrecisionPrefsPage : public PrefsPage {
 
 public:
-    explicit PrecisionPrefsPage(UnitsMgr& unitsMgr);
+    explicit PrecisionPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::PrecisionPage;
@@ -71,7 +72,6 @@ private:
     void precisionModelChanged(LinearUnitsId unitsId, QVariant& value);
     void precisionModelChanged(AngularUnitsId unitsId, QVariant& value);
 
-    UnitsMgr& m_unitsMgr;
     PrecisionPrefsModel* m_model;
     QComboBox* m_unitsCombo;
     QPushButton* m_defaultButton;

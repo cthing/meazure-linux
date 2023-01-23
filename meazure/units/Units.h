@@ -572,7 +572,7 @@ protected:
     /// @param[in] unitsStr Name for the units.
     /// @param[in] screenInfoProvider Provides information about screen resolution
     ///
-    LinearUnits(LinearUnitsId unitsId, const QString& unitsStr, const ScreenInfoProvider& screenInfoProvider);
+    LinearUnits(LinearUnitsId unitsId, const QString& unitsStr, const ScreenInfoProvider* screenInfoProvider);
 
     LinearUnits(const LinearUnits&) = default;
     LinearUnits(LinearUnits&&) = default;
@@ -625,7 +625,7 @@ protected:
 private:
     QPoint m_originOffset { 0, 0 };                 ///< Offset of the origin from the system origin, in pixels.
     bool m_invertY { false };                       ///< Indicates if the y-axis direction is inverted.
-    const ScreenInfoProvider& m_screenInfoProvider; ///< Display screen information
+    const ScreenInfoProvider* m_screenInfoProvider; ///< Display screen information
     LinearUnitsId m_unitsId;                        ///< Linear units identifier.
 };
 
@@ -639,7 +639,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Information about display screens
     ///
-    explicit PixelUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit PixelUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~PixelUnits() override = default;
 
@@ -693,7 +693,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Information about display screens
     ///
-    explicit PointUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit PointUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~PointUnits() override = default;
 
@@ -726,7 +726,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Information about display screens
     ///
-    explicit PicaUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit PicaUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~PicaUnits() override = default;
 
@@ -759,7 +759,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Screen information provider
     ///
-    explicit TwipUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit TwipUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~TwipUnits() override = default;
 
@@ -790,7 +790,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Screen information provider
     ///
-    explicit InchUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit InchUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~InchUnits() override = default;
 
@@ -823,7 +823,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Screen information provider
     ///
-    explicit CentimeterUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit CentimeterUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~CentimeterUnits() override = default;
 
@@ -856,7 +856,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Screen information provider
     ///
-    explicit MillimeterUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit MillimeterUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~MillimeterUnits() override = default;
 

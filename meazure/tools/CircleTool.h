@@ -44,7 +44,7 @@ class CircleTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"CircleTool" };
 
-    explicit CircleTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit CircleTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~CircleTool() override;
 

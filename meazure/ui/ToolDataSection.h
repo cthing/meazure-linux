@@ -35,7 +35,7 @@ class ToolDataSection : public QGroupBox {
     Q_OBJECT
 
 public:
-    ToolDataSection(const UnitsMgr& unitsMgr, const ToolMgr& toolMgr);
+    ToolDataSection(const UnitsMgr* unitsMgr, const ToolMgr* toolMgr);
 
 private slots:
     /// Called when a radio tool has been selected.
@@ -111,7 +111,7 @@ private:
     ///
     void createFields();
 
-    const UnitsMgr& m_unitsMgr;
+    const UnitsMgr* m_unitsMgr;
 
     QLabel* m_x1Label;
     QLabel* m_y1Label;

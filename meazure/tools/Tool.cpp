@@ -20,7 +20,7 @@
 #include "Tool.h"
 
 
-Tool::Tool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject *parent) :
+Tool::Tool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject *parent) :
         QObject(parent), m_screenInfo(screenInfo), m_unitsProvider(unitsProvider) {
 }
 

@@ -32,13 +32,13 @@ class Graphic : public QWidget {
     Q_OBJECT
 
 public:
-    explicit Graphic(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QWidget* parent);
+    explicit Graphic(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QWidget* parent);
 
     static bool isGraphicWindow(unsigned long windowId);
 
     bool event(QEvent* ev) override;
 
 protected:
-    const ScreenInfo& m_screenInfo;
-    const UnitsProvider& m_unitsProvider;
+    const ScreenInfo* m_screenInfo;
+    const UnitsProvider* m_unitsProvider;
 };

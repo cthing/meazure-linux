@@ -23,7 +23,7 @@
 #include <QBrush>
 
 
-OriginMarker::OriginMarker(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+OriginMarker::OriginMarker(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                             QWidget* parent, QRgb lineColor, int lineWidth) :
         Graphic(screenInfo, unitsProvider, parent),
         m_pen(QBrush(lineColor), lineWidth) {
@@ -34,7 +34,7 @@ OriginMarker::OriginMarker(const ScreenInfo& screenInfo, const UnitsProvider& un
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &OriginMarker::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this,
             &OriginMarker::setLineWidth);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         setPosition(m_origin, m_inverted);
         repaint();
     });
@@ -63,9 +63,9 @@ void OriginMarker::setPosition(const QPoint& origin, bool inverted) {
     // The length of the axes are expressed in inches and are converted to pixels based on the resolution of the
     // display containing the origin.
     //
-    const int screenIdx = m_screenInfo.screenForPoint(m_origin);
-    const QSizeF res = m_screenInfo.getScreenRes(screenIdx);
-    m_axisLength = m_unitsProvider.convertToPixels(InchesId, res, k_axesLength, k_axesLengthMin);
+    const int screenIdx = m_screenInfo->screenForPoint(m_origin);
+    const QSizeF res = m_screenInfo->getScreenRes(screenIdx);
+    m_axisLength = m_unitsProvider->convertToPixels(InchesId, res, k_axesLength, k_axesLengthMin);
 
     if (inverted) {
         setGeometry(m_origin.x(), m_origin.y() - m_axisLength.height(), m_axisLength.width(), m_axisLength.height());

@@ -28,7 +28,7 @@
 #include <QGraphicsOpacityEffect>
 
 
-Crosshair::Crosshair(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+Crosshair::Crosshair(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                      QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb highlightColor,
                      QRgb borderColor, QRgb opacity) :
         Graphic(screenInfo, unitsProvider, parent),
@@ -53,7 +53,7 @@ Crosshair::Crosshair(const ScreenInfo& screenInfo, const UnitsProvider& unitsPro
     }
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Crosshair::colorChanged);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         init();
         setPosition(m_position);
     });
@@ -64,11 +64,11 @@ Crosshair::Crosshair(const ScreenInfo& screenInfo, const UnitsProvider& unitsPro
 }
 
 void Crosshair::init() {
-    const QPoint screenCenter = m_screenInfo.getCenter();
-    const int screenIndex = m_screenInfo.screenForPoint(screenCenter);
-    const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+    const QPoint screenCenter = m_screenInfo->getCenter();
+    const int screenIndex = m_screenInfo->screenForPoint(screenCenter);
+    const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
-    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, k_outerSize, k_outerSizeMin);
+    QSize actualSize = m_unitsProvider->convertToPixels(InchesId, screenRes, k_outerSize, k_outerSizeMin);
     actualSize.rwidth() = MathUtils::makeOddUp(actualSize.width());       // Must be odd
     actualSize.rheight() = MathUtils::makeOddUp(actualSize.height());
 
@@ -195,11 +195,11 @@ void Crosshair::mouseMoveEvent(QMouseEvent* event) {
 QPoint Crosshair::findCenter(const QPoint& point) const {
     const QPoint center(point - (m_initialGrabPosition - m_centerOffset));
     const QPoint globalCenter(mapToGlobal(center));
-    return m_screenInfo.constrainPosition(globalCenter);
+    return m_screenInfo->constrainPosition(globalCenter);
 }
 
 QPainterPath Crosshair::generateCrosshair(const QSizeF& screenRes, const QSize& size) const {
-    QSize actualPetalWidth = m_unitsProvider.convertToPixels(InchesId, screenRes, k_petalWidth, k_petalWidthMin);
+    QSize actualPetalWidth = m_unitsProvider->convertToPixels(InchesId, screenRes, k_petalWidth, k_petalWidthMin);
     actualPetalWidth.rwidth() = MathUtils::makeOddUp(actualPetalWidth.width());       // Must be odd
     actualPetalWidth.rheight() = MathUtils::makeOddUp(actualPetalWidth.height());
 

@@ -19,7 +19,7 @@
 
 #include "PosLogWriter.h"
 
-PosLogWriter::PosLogWriter(const UnitsProvider& unitsProvider) : PosLogIO(unitsProvider) {
+PosLogWriter::PosLogWriter(const UnitsProvider* unitsProvider) : PosLogIO(unitsProvider) {
 }
 
 void PosLogWriter::write(std::ostream& out, const PosLogArchive& archive) {
@@ -74,8 +74,8 @@ void PosLogWriter::writeDesktopsSection(XMLWriter& writer, const PosLogArchive& 
               .addAttribute(k_idAttr, desktop->getId());
 
         writer.startElement(k_unitsElem)
-              .addAttribute(k_lengthAttr, m_units.getLinearUnits(desktop->getLinearUnitsId())->getUnitsStr())
-              .addAttribute(k_angleAttr, m_units.getAngularUnits(desktop->getAngularUnitsId())->getUnitsStr())
+              .addAttribute(k_lengthAttr, m_units->getLinearUnits(desktop->getLinearUnitsId())->getUnitsStr())
+              .addAttribute(k_angleAttr, m_units->getAngularUnits(desktop->getAngularUnitsId())->getUnitsStr())
               .endElement();
 
         if (desktop->getLinearUnitsId() == CustomId) {
@@ -123,7 +123,7 @@ void PosLogWriter::writeDesktopsSection(XMLWriter& writer, const PosLogArchive& 
         writer.endElement();        // screens
 
         if (desktop->getLinearUnitsId() == CustomId) {
-            const LinearUnits* customUnits = m_units.getLinearUnits(desktop->getLinearUnitsId());
+            const LinearUnits* customUnits = m_units->getLinearUnits(desktop->getLinearUnitsId());
 
             writer.startElement(k_displayPrecisionsElem);
 

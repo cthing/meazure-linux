@@ -35,7 +35,7 @@ class OriginTool : public Tool {
 public:
     static constexpr const char* k_toolName { "OriginTool" };
 
-    OriginTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    OriginTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~OriginTool() override;
 

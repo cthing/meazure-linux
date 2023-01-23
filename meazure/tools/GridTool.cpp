@@ -21,7 +21,7 @@
 #include <meazure/utils/Geometry.h>
 #include <algorithm>
 
-GridTool::GridTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :   // NOLINT(cppcoreguidelines-pro-type-member-init)
+GridTool::GridTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent) :   // NOLINT(cppcoreguidelines-pro-type-member-init)
         Tool(screenInfo, unitsProvider, parent),
         m_grid(new Grid(screenInfo, unitsProvider)) {
     init();
@@ -33,7 +33,7 @@ GridTool::~GridTool() {
 }
 
 void GridTool::init() {
-    const QRect screenRect = m_screenInfo.getVirtualRect();
+    const QRect screenRect = m_screenInfo->getVirtualRect();
     m_x = screenRect.left();
     m_y = screenRect.top();
     m_width = screenRect.width();
@@ -65,7 +65,7 @@ void GridTool::writeConfig(Config& config) const {
     config.writeDbl("ScrnGridSpaceX", m_hSpacing);
     config.writeDbl("ScrnGridSpaceY", m_vSpacing);
     config.writeBool("ScrnGridLinked", m_linkedSpacing);
-    config.writeStr("ScrnGridUnits", m_unitsProvider.getLinearUnits(m_units)->getUnitsStr());
+    config.writeStr("ScrnGridUnits", m_unitsProvider->getLinearUnits(m_units)->getUnitsStr());
 }
 
 void GridTool::readConfig(const Config& config) {
@@ -78,8 +78,8 @@ void GridTool::readConfig(const Config& config) {
     m_vSpacing = config.readDbl("ScrnGridSpaceY", m_vSpacing);
     m_linkedSpacing = config.readBool("ScrnGridLinked", m_linkedSpacing);
 
-    const QString defaultUnits = m_unitsProvider.getLinearUnits(PixelsId)->getUnitsStr();
-    m_units = m_unitsProvider.getLinearUnits(config.readStr("ScrnGridUnits", defaultUnits))->getUnitsId();
+    const QString defaultUnits = m_unitsProvider->getLinearUnits(PixelsId)->getUnitsStr();
+    m_units = m_unitsProvider->getLinearUnits(config.readStr("ScrnGridUnits", defaultUnits))->getUnitsId();
 
     refresh();
     setEnabled(config.readBool("ScrnGrid", false));

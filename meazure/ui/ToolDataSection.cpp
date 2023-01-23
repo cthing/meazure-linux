@@ -24,38 +24,38 @@
 #include <QGridLayout>
 
 
-ToolDataSection::ToolDataSection(const UnitsMgr& unitsMgr, const ToolMgr& toolMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+ToolDataSection::ToolDataSection(const UnitsMgr* unitsMgr, const ToolMgr* toolMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
         m_unitsMgr(unitsMgr) {
     createFields();
 
-    connect(&toolMgr, &ToolMgr::radioToolSelected, this, &ToolDataSection::radioToolSelected);
-    connect(&toolMgr, &ToolMgr::xy1PositionChanged, this, &ToolDataSection::xy1PositionChanged);
-    connect(&toolMgr, &ToolMgr::xy2PositionChanged, this, &ToolDataSection::xy2PositionChanged);
-    connect(&toolMgr, &ToolMgr::xyvPositionChanged, this, &ToolDataSection::xyvPositionChanged);
-    connect(&toolMgr, &ToolMgr::widthHeightChanged, this, &ToolDataSection::widthHeightChanged);
-    connect(&toolMgr, &ToolMgr::distanceChanged, this, &ToolDataSection::distanceChanged);
-    connect(&toolMgr, &ToolMgr::angleChanged, this, &ToolDataSection::angleChanged);
-    connect(&toolMgr, &ToolMgr::aspectChanged, this, &ToolDataSection::aspectChanged);
-    connect(&toolMgr, &ToolMgr::areaChanged, this, &ToolDataSection::areaChanged);
+    connect(toolMgr, &ToolMgr::radioToolSelected, this, &ToolDataSection::radioToolSelected);
+    connect(toolMgr, &ToolMgr::xy1PositionChanged, this, &ToolDataSection::xy1PositionChanged);
+    connect(toolMgr, &ToolMgr::xy2PositionChanged, this, &ToolDataSection::xy2PositionChanged);
+    connect(toolMgr, &ToolMgr::xyvPositionChanged, this, &ToolDataSection::xyvPositionChanged);
+    connect(toolMgr, &ToolMgr::widthHeightChanged, this, &ToolDataSection::widthHeightChanged);
+    connect(toolMgr, &ToolMgr::distanceChanged, this, &ToolDataSection::distanceChanged);
+    connect(toolMgr, &ToolMgr::angleChanged, this, &ToolDataSection::angleChanged);
+    connect(toolMgr, &ToolMgr::aspectChanged, this, &ToolDataSection::aspectChanged);
+    connect(toolMgr, &ToolMgr::areaChanged, this, &ToolDataSection::areaChanged);
 
-    connect(m_x1Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setX1Position);
-    connect(m_y1Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setY1Position);
-    connect(m_x2Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setX2Position);
-    connect(m_y2Field, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setY2Position);
-    connect(m_xvField, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setXVPosition);
-    connect(m_yvField, &DoubleDataField::valueChanged, &toolMgr, &ToolMgr::setYVPosition);
+    connect(m_x1Field, &DoubleDataField::valueChanged, toolMgr, &ToolMgr::setX1Position);
+    connect(m_y1Field, &DoubleDataField::valueChanged, toolMgr, &ToolMgr::setY1Position);
+    connect(m_x2Field, &DoubleDataField::valueChanged, toolMgr, &ToolMgr::setX2Position);
+    connect(m_y2Field, &DoubleDataField::valueChanged, toolMgr, &ToolMgr::setY2Position);
+    connect(m_xvField, &DoubleDataField::valueChanged, toolMgr, &ToolMgr::setXVPosition);
+    connect(m_yvField, &DoubleDataField::valueChanged, toolMgr, &ToolMgr::setYVPosition);
 
-    connect(m_x1Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepX1Position);
-    connect(m_y1Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepY1Position);
-    connect(m_x2Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepX2Position);
-    connect(m_y2Field, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepY2Position);
-    connect(m_xvField, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepXVPosition);
-    connect(m_yvField, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepYVPosition);
+    connect(m_x1Field, &DoubleDataField::stepRequested, toolMgr, &ToolMgr::stepX1Position);
+    connect(m_y1Field, &DoubleDataField::stepRequested, toolMgr, &ToolMgr::stepY1Position);
+    connect(m_x2Field, &DoubleDataField::stepRequested, toolMgr, &ToolMgr::stepX2Position);
+    connect(m_y2Field, &DoubleDataField::stepRequested, toolMgr, &ToolMgr::stepY2Position);
+    connect(m_xvField, &DoubleDataField::stepRequested, toolMgr, &ToolMgr::stepXVPosition);
+    connect(m_yvField, &DoubleDataField::stepRequested, toolMgr, &ToolMgr::stepYVPosition);
 
-    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
-    connect(&m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::linearUnitsChanged);
-    connect(&m_unitsMgr, &UnitsMgr::angularUnitsChanged, this, &ToolDataSection::angularUnitsChanged);
-    connect(&m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::angularUnitsChanged);
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
+    connect(m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::linearUnitsChanged);
+    connect(m_unitsMgr, &UnitsMgr::angularUnitsChanged, this, &ToolDataSection::angularUnitsChanged);
+    connect(m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::angularUnitsChanged);
 }
 
 void ToolDataSection::createFields() {
@@ -197,7 +197,7 @@ void ToolDataSection::radioToolSelected(RadioTool& tool) {
 }
 
 void ToolDataSection::linearUnitsChanged() {
-    const LinearUnits* linearUnits = m_unitsMgr.getLinearUnits();
+    const LinearUnits* linearUnits = m_unitsMgr->getLinearUnits();
 
     const QString lengthLabel = linearUnits->getLengthLabel();
     m_y1Units->setText(lengthLabel);
@@ -221,7 +221,7 @@ void ToolDataSection::linearUnitsChanged() {
 }
 
 void ToolDataSection::angularUnitsChanged() {
-    const AngularUnits* angularUnits = m_unitsMgr.getAngularUnits();
+    const AngularUnits* angularUnits = m_unitsMgr->getAngularUnits();
 
     m_aUnits->setText(angularUnits->getLabel());
 

@@ -92,8 +92,8 @@ protected:
     static constexpr const char* k_yAttr { "y" };
     static constexpr const char* k_yoffsetAttr { "yoffset" };
 
-    explicit PosLogIO(const UnitsProvider& unitsProvider) : m_units(unitsProvider) {
+    explicit PosLogIO(const UnitsProvider* unitsProvider) : m_units(unitsProvider) {
     }
 
-    const UnitsProvider& m_units;
+    const UnitsProvider* m_units;
 };

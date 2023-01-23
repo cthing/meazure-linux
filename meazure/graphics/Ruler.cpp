@@ -25,7 +25,7 @@
 #include <utility>
 
 
-Ruler::Ruler(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, bool flip,
+Ruler::Ruler(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, bool flip,
              QWidget* parent, QRgb backgroundColor, QRgb borderColor, QRgb opacity) :
         Graphic(screenInfo, unitsProvider, parent),
         m_backgroundBrush(backgroundColor),
@@ -46,7 +46,7 @@ Ruler::Ruler(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, b
     }
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Ruler::colorChanged);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         setPosition(m_origin, m_length, m_angle);
         repaint();
     });
@@ -92,8 +92,8 @@ void Ruler::setPosition(const QPoint& origin, int length, int angle) {
     m_length = length;
     m_angleFraction = (m_angle % 90) / 90.0;
 
-    const int screenIdx = m_screenInfo.screenForPoint(origin);
-    const QSizeF res = m_screenInfo.getScreenRes(screenIdx);
+    const int screenIdx = m_screenInfo->screenForPoint(origin);
+    const QSizeF res = m_screenInfo->getScreenRes(screenIdx);
 
     m_majorTickHeight = convertToPixels(InchesId, res, m_angleFraction, k_majorTickHeight, k_majorTickMinHeight);
     m_minorTickHeight = convertToPixels(InchesId, res, m_angleFraction, k_minorTickHeight, k_minorTickMinHeight);
@@ -114,12 +114,12 @@ void Ruler::setPosition(const QPoint& origin, int length, int angle) {
 }
 
 int Ruler::convertToPixels(LinearUnitsId unitsId, const QSizeF& res, double angleFrac, double value, int minValue) {
-    const QSize convertedValue = m_unitsProvider.convertToPixels(unitsId, res, value, minValue);
+    const QSize convertedValue = m_unitsProvider->convertToPixels(unitsId, res, value, minValue);
     return MathUtils::linearInterpolate(convertedValue.height(), convertedValue.width(), angleFrac);
 }
 
 int Ruler::convertToPixels(const QSizeF& res, double angleFrac, double value, int minValue) {
-    return convertToPixels(m_unitsProvider.getLinearUnitsId(), res, angleFrac, value, minValue);
+    return convertToPixels(m_unitsProvider->getLinearUnitsId(), res, angleFrac, value, minValue);
 }
 
 void Ruler::setIndicator(int indicatorIdx, int position) {
@@ -135,16 +135,16 @@ void Ruler::paintEvent(QPaintEvent*) {
     painter.setPen(m_linePen);
     painter.setBrush(m_backgroundBrush);
 
-    const int majorTickCount = m_unitsProvider.getMajorTickCount();
+    const int majorTickCount = m_unitsProvider->getMajorTickCount();
 
-    for (int idx = 0; idx < m_screenInfo.getNumScreens(); idx++) {
-        const QRect intersectRect = m_screenInfo.getScreenRect(idx).intersected(geometry());
+    for (int idx = 0; idx < m_screenInfo->getNumScreens(); idx++) {
+        const QRect intersectRect = m_screenInfo->getScreenRect(idx).intersected(geometry());
         if (intersectRect.isEmpty()) {
             return;
         }
 
-        const QSizeF res = m_screenInfo.getScreenRes(idx);
-        const QSizeF minorTickIncr = m_unitsProvider.getMinorTickIncr(intersectRect);
+        const QSizeF res = m_screenInfo->getScreenRes(idx);
+        const QSizeF minorTickIncr = m_unitsProvider->getMinorTickIncr(intersectRect);
         const double effectiveMinorTickIncr = MathUtils::linearInterpolate(minorTickIncr.width(),
                                                                            minorTickIncr.height(),
                                                                            m_angleFraction);
@@ -169,7 +169,7 @@ void Ruler::paintEvent(QPaintEvent*) {
 
             // Labels
             if (isMajorTick && p > 0.0) {
-                labels.emplace_back(x, m_unitsProvider.format(Width, p));
+                labels.emplace_back(x, m_unitsProvider->format(Width, p));
             }
         }
 

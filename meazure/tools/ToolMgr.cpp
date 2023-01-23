@@ -31,7 +31,7 @@
 #include "RulerTool.h"
 
 
-ToolMgr::ToolMgr(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider) {
+ToolMgr::ToolMgr(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider) {
     // Radio tools
     //
     auto* cursorTool = new CursorTool(screenInfo, unitsProvider, this);
@@ -132,7 +132,7 @@ ToolMgr::ToolMgr(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvide
 
     connect(this, &ToolMgr::activePositionChanged, this, [this](QPoint pos) { m_activePosition = pos; });
 
-    connect(&screenInfo, &ScreenInfo::resolutionChanged, this, &ToolMgr::refresh);
+    connect(screenInfo, &ScreenInfo::resolutionChanged, this, &ToolMgr::refresh);
 }
 
 void ToolMgr::writeConfig(Config& config) const {

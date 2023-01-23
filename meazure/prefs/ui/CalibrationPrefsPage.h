@@ -33,7 +33,7 @@
 class CalibrationPrefsPage : public PrefsPage {
 
 public:
-    CalibrationPrefsPage(ScreenInfo& screenInfo, const UnitsMgr& unitsMgr);
+    CalibrationPrefsPage(ScreenInfo* screenInfo, const UnitsMgr* unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::CalibrationPage;
@@ -62,8 +62,6 @@ private:
     void createUI();
     void configure();
 
-    const ScreenInfo& m_screenInfo;
-    const UnitsMgr& m_unitsMgr;
     CalibrationPrefsModel* m_model;
     QComboBox* m_screenCombo;
     QRadioButton* m_systemRadio;

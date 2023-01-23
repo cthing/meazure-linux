@@ -42,7 +42,7 @@ public:
     static constexpr int k_maxSize { 100000 };                      ///< Maximum grid width and height, pixels
     static constexpr LinearUnitsId k_defaultUnits { PixelsId };     ///< Default units for the grid spacing
 
-    explicit GridTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit GridTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~GridTool() override;
 

@@ -38,7 +38,7 @@ public:
     using LinearPrecisions = std::map<LinearUnitsId, Preference<Units::DisplayPrecisions>*>;
     using AngularPrecisions = std::map<AngularUnitsId, Preference<Units::DisplayPrecisions>*>;
 
-    explicit PrecisionPrefsModel(UnitsMgr& unitsMgr, QObject* parent);
+    explicit PrecisionPrefsModel(UnitsMgr* unitsMgr, QObject* parent);
 
     void initialize();
 
@@ -56,5 +56,5 @@ signals:
     void dirtyChanged(bool dirty);
 
 private:
-    UnitsMgr& m_unitsMgr;
+    UnitsMgr* m_unitsMgr;
 };

@@ -43,7 +43,7 @@ class LineTool : public RadioTool {
 public:
     static constexpr const char* k_toolName { "LineTool" };
 
-    explicit LineTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit LineTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~LineTool() override;
 

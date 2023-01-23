@@ -40,7 +40,7 @@ class RulerTool : public Tool {
 public:
     static constexpr const char* k_toolName { "RulerTool" };
 
-    explicit RulerTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit RulerTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~RulerTool() override;
 

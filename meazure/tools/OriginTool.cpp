@@ -20,7 +20,7 @@
 #include "OriginTool.h"
 #include <QPoint>
 
-OriginTool::OriginTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+OriginTool::OriginTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent) :
         Tool(screenInfo, unitsProvider, parent),
         m_marker(new OriginMarker(screenInfo, unitsProvider)) {
 }
@@ -51,11 +51,11 @@ void OriginTool::readConfig(const Config& config) {
 }
 
 void OriginTool::setPosition() {
-    QPoint origin = m_unitsProvider.getOrigin();
-    const bool inverted = m_unitsProvider.isInvertY();
+    QPoint origin = m_unitsProvider->getOrigin();
+    const bool inverted = m_unitsProvider->isInvertY();
 
     if (inverted && (origin.x() == 0) && (origin.y() == 0)) {
-        origin.ry() = m_screenInfo.getVirtualRect().height() - 1;
+        origin.ry() = m_screenInfo->getVirtualRect().height() - 1;
     }
 
     m_marker->setPosition(origin, inverted);

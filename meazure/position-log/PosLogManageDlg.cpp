@@ -23,7 +23,7 @@
 #include <QSignalBlocker>
 
 
-PosLogManageDlg::PosLogManageDlg(PosLogMgr& posLogMgr, QWidget* parent) :     // NOLINT(cppcoreguidelines-pro-type-member-init)
+PosLogManageDlg::PosLogManageDlg(PosLogMgr* posLogMgr, QWidget* parent) :     // NOLINT(cppcoreguidelines-pro-type-member-init)
         QDialog(parent),
         m_posLogMgr(posLogMgr) {
     setWindowTitle(tr("Positions"));
@@ -31,7 +31,7 @@ PosLogManageDlg::PosLogManageDlg(PosLogMgr& posLogMgr, QWidget* parent) :     //
     createUI();
     configure();
 
-    posLogMgr.refresh();
+    posLogMgr->refresh();
     positionSelected(m_currentPositionIndex);
 }
 
@@ -105,31 +105,31 @@ void PosLogManageDlg::createUI() {
 }
 
 void PosLogManageDlg::configure() {
-    connect(&m_posLogMgr, &PosLogMgr::positionsLoaded, this, &PosLogManageDlg::positionsLoaded);
-    connect(&m_posLogMgr, &PosLogMgr::positionsChanged, this, &PosLogManageDlg::positionsChanged);
-    connect(&m_posLogMgr, &PosLogMgr::positionAdded, this, &PosLogManageDlg::positionAdded);
+    connect(m_posLogMgr, &PosLogMgr::positionsLoaded, this, &PosLogManageDlg::positionsLoaded);
+    connect(m_posLogMgr, &PosLogMgr::positionsChanged, this, &PosLogManageDlg::positionsChanged);
+    connect(m_posLogMgr, &PosLogMgr::positionAdded, this, &PosLogManageDlg::positionAdded);
 
-    connect(m_logTitleField, &QLineEdit::textEdited, &m_posLogMgr, &PosLogMgr::changeTitle);
+    connect(m_logTitleField, &QLineEdit::textEdited, m_posLogMgr, &PosLogMgr::changeTitle);
     connect(m_logDescField, &QPlainTextEdit::textChanged, this, [this]() {
-        m_posLogMgr.changeDescription(m_logDescField->toPlainText());
+        m_posLogMgr->changeDescription(m_logDescField->toPlainText());
     });
 
     connect(m_positionSelector, &QScrollBar::valueChanged, this, &PosLogManageDlg::positionSelected);
     connect(m_positionDescField, &QPlainTextEdit::textChanged, this, [this]() {
-        m_posLogMgr.changePositionDescription(m_currentPositionIndex, m_positionDescField->toPlainText());
+        m_posLogMgr->changePositionDescription(m_currentPositionIndex, m_positionDescField->toPlainText());
     });
 
-    connect(m_addButton, &QPushButton::clicked, &m_posLogMgr, &PosLogMgr::addPosition);
+    connect(m_addButton, &QPushButton::clicked, m_posLogMgr, &PosLogMgr::addPosition);
     connect(m_insertButton, &QPushButton::clicked, this, [this]() {
-        m_posLogMgr.insertPosition(m_currentPositionIndex);
+        m_posLogMgr->insertPosition(m_currentPositionIndex);
     });
     connect(m_deleteButton, &QPushButton::clicked, this, [this]() {
-        m_posLogMgr.deletePosition(m_currentPositionIndex);
+        m_posLogMgr->deletePosition(m_currentPositionIndex);
     });
-    connect(m_deleteAllButton, &QPushButton::clicked, &m_posLogMgr, &PosLogMgr::deletePositions);
-    connect(m_loadButton, &QPushButton::clicked, &m_posLogMgr, &PosLogMgr::loadPositions);
-    connect(m_saveButton, &QPushButton::clicked, &m_posLogMgr, &PosLogMgr::savePositions);
-    connect(m_saveAsButton, &QPushButton::clicked, &m_posLogMgr, &PosLogMgr::saveAsPositions);
+    connect(m_deleteAllButton, &QPushButton::clicked, m_posLogMgr, &PosLogMgr::deletePositions);
+    connect(m_loadButton, &QPushButton::clicked, m_posLogMgr, &PosLogMgr::loadPositions);
+    connect(m_saveButton, &QPushButton::clicked, m_posLogMgr, &PosLogMgr::savePositions);
+    connect(m_saveAsButton, &QPushButton::clicked, m_posLogMgr, &PosLogMgr::saveAsPositions);
     connect(m_closeButton, &QPushButton::clicked, this, &PosLogManageDlg::hide);
 }
 
@@ -165,8 +165,8 @@ void PosLogManageDlg::positionsLoaded() {
     const QSignalBlocker titleBlocker(m_logTitleField);
     const QSignalBlocker descBlocker(m_logDescField);
 
-    m_logTitleField->setText(m_posLogMgr.getTitle());
-    m_logDescField->setPlainText(m_posLogMgr.getDescription());
+    m_logTitleField->setText(m_posLogMgr->getTitle());
+    m_logDescField->setPlainText(m_posLogMgr->getDescription());
 
     positionAdded(0);
     positionSelected(0);
@@ -185,8 +185,8 @@ void PosLogManageDlg::positionAdded(unsigned int positionIndex) {
 void PosLogManageDlg::positionSelected(unsigned int positionIndex) {
     m_currentPositionIndex = positionIndex;
 
-    if (positionIndex < m_posLogMgr.getNumPositions()) {
-        m_posLogMgr.showPosition(m_currentPositionIndex);
+    if (positionIndex < m_posLogMgr->getNumPositions()) {
+        m_posLogMgr->showPosition(m_currentPositionIndex);
     }
 
     updatePositionInfo();
@@ -195,12 +195,12 @@ void PosLogManageDlg::positionSelected(unsigned int positionIndex) {
 void PosLogManageDlg::updatePositionInfo() {
     const QSignalBlocker descBlocker(m_positionDescField);
 
-    const unsigned int numPositions = m_posLogMgr.getNumPositions();
+    const unsigned int numPositions = m_posLogMgr->getNumPositions();
     if (m_currentPositionIndex < numPositions) {
         m_positionNumberLabel->setText(tr("%1 of %2").arg(m_currentPositionIndex + 1).arg(numPositions));
-        const QDateTime recorded(m_posLogMgr.getPositionRecorded(m_currentPositionIndex));
+        const QDateTime recorded(m_posLogMgr->getPositionRecorded(m_currentPositionIndex));
         m_recordedTimestampLabel->setText(recorded.toLocalTime().toString(Qt::TextDate));
-        m_positionDescField->setPlainText(m_posLogMgr.getPositionDescription(m_currentPositionIndex));
+        m_positionDescField->setPlainText(m_posLogMgr->getPositionDescription(m_currentPositionIndex));
     } else {
         m_positionNumberLabel->clear();
         m_recordedTimestampLabel->clear();

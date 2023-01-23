@@ -35,7 +35,7 @@
 class RulerPrefsPage : public PrefsPage {
 
 public:
-    RulerPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr);
+    RulerPrefsPage(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::RulerPage;
@@ -63,8 +63,6 @@ private:
     void createUI();
     void configure();
 
-    const ScreenInfo& m_screenInfo;
-    const UnitsMgr& m_unitsMgr;
     RulerPrefsModel* m_model;
     Ruler* m_ruler1;
     Ruler* m_ruler2;

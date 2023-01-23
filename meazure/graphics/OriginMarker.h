@@ -37,7 +37,7 @@ class OriginMarker : public Graphic {
     Q_OBJECT
 
 public:
-    explicit OriginMarker(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+    explicit OriginMarker(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                           QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore),
                           int lineWidth = Dimensions::getLineWidth());
 

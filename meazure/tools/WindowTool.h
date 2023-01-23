@@ -37,7 +37,7 @@ class WindowTool : public RadioTool {
 public:
     static constexpr const char* k_toolName { "WindowTool" };
 
-    explicit WindowTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit WindowTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~WindowTool() override;
 

@@ -51,7 +51,7 @@ public:
     using ScreenModels = std::vector<ScreenModel>;
 
 
-    explicit CalibrationPrefsModel(ScreenInfo& screenInfo, QObject* parent);
+    explicit CalibrationPrefsModel(ScreenInfo* screenInfo, QObject* parent);
 
     void initialize(int screenIndex);
 
@@ -95,5 +95,5 @@ signals:
     void dirtyChanged(bool dirty);
 
 private:
-    ScreenInfo& m_screenInfo;
+    ScreenInfo* m_screenInfo;
 };

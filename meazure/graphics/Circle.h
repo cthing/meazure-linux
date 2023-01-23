@@ -45,7 +45,7 @@ public:
     /// @param[in] lineColor Line foreground color
     /// @param[in] lineWidth Width of line, in pixels
     ///
-    explicit Circle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+    explicit Circle(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                     double gap = 0.0, QWidget* parent = nullptr, QRgb lineColor = Colors::get(Colors::LineFore),
                     int lineWidth = Dimensions::getLineWidth());
 

@@ -47,7 +47,7 @@ class Ruler : public Graphic {
 public:
     static constexpr int k_unusedIndicator { -1000000 };
 
-    explicit Ruler(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, bool flip,
+    explicit Ruler(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, bool flip,
                    QWidget* parent = nullptr, QRgb backgroundColor = Colors::get(Colors::RulerBack),
                    QRgb borderColor = Colors::get(Colors::RulerBorder),
                    QRgb opacity = Colors::get(Colors::RulerOpacity));

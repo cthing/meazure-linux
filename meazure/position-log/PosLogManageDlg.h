@@ -34,7 +34,7 @@ class PosLogManageDlg : public QDialog {
     Q_OBJECT
 
 public:
-    PosLogManageDlg(PosLogMgr& posLogMgr, QWidget* parent);
+    PosLogManageDlg(PosLogMgr* posLogMgr, QWidget* parent);
 
 private slots:
     void positionsLoaded();
@@ -50,7 +50,7 @@ private:
 
     void updatePositionInfo();
 
-    PosLogMgr& m_posLogMgr;
+    PosLogMgr* m_posLogMgr;
     QLineEdit* m_logTitleField;
     TextField* m_logDescField;
     QScrollBar* m_positionSelector;

@@ -42,7 +42,7 @@ class Magnifier : public QWidget {
 public:
     using ZoomFactors = std::array<int, 8>;
 
-    Magnifier(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr);
+    Magnifier(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr);
 
     static constexpr const ZoomFactors& getZoomFactors() {
         return k_zoomFactors;
@@ -79,7 +79,7 @@ private:
 
     void grabScreen();
 
-    const ScreenInfoProvider& m_screenInfo;
+    const ScreenInfoProvider* m_screenInfo;
     QPoint m_curPos { -1, -1 };
     QImage m_image;
     QPen m_gridPen;

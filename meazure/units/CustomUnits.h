@@ -51,7 +51,7 @@ public:
     ///
     /// @param[in] screenInfoProvider Screen information provider
     ///
-    explicit CustomUnits(const ScreenInfoProvider& screenInfoProvider);
+    explicit CustomUnits(const ScreenInfoProvider* screenInfoProvider);
 
     ~CustomUnits() override = default;
 

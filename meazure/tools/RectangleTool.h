@@ -43,7 +43,7 @@ class RectangleTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"RectTool" };
 
-    explicit RectangleTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit RectangleTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~RectangleTool() override;
 

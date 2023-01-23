@@ -29,7 +29,7 @@
 #include <algorithm>
 
 
-PrefsDialog::PrefsDialog(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, QWidget *parent) :
+PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, QWidget *parent) :
         QDialog(parent),
         m_tabs(new QTabWidget()) {
     setWindowTitle(tr("Preferences"));
@@ -42,8 +42,8 @@ PrefsDialog::PrefsDialog(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, QWidget *pa
     m_prefsPages.push_back(new CalibrationPrefsPage(screenInfo, unitsMgr));
     m_prefsPages.push_back(new ToolPrefsPage(screenInfo, unitsMgr));
     m_prefsPages.push_back(new RulerPrefsPage(screenInfo, unitsMgr));
-    m_prefsPages.push_back(new PrecisionPrefsPage(unitsMgr));
-    m_prefsPages.push_back(new UnitsPrefsPage(unitsMgr));
+    m_prefsPages.push_back(new PrecisionPrefsPage(screenInfo, unitsMgr));
+    m_prefsPages.push_back(new UnitsPrefsPage(screenInfo, unitsMgr));
 
     for (PrefsPage* page : m_prefsPages) {
         m_tabs->addTab(page, page->getName());

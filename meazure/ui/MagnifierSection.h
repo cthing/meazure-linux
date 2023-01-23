@@ -37,7 +37,7 @@ class MagnifierSection : public QWidget {
     Q_OBJECT
 
 public:
-    MagnifierSection(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr);
+    MagnifierSection(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr);
 
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);

@@ -41,7 +41,7 @@
 class ToolPrefsPage : public PrefsPage {
 
 public:
-    ToolPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr);
+    ToolPrefsPage(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::ToolPage;
@@ -71,8 +71,6 @@ private:
     void createUI();
     void configure();
 
-    const ScreenInfo& m_screenInfo;
-    const UnitsMgr& m_unitsMgr;
     ToolPrefsModel* m_model;
     Crosshair* m_normalCrosshair1;
     Crosshair* m_normalCrosshair2;

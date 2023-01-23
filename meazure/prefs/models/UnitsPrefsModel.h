@@ -32,7 +32,7 @@ class UnitsPrefsModel : public QObject {
     Q_OBJECT
 
 public:
-    explicit UnitsPrefsModel(UnitsMgr& unitsMgr, QObject* parent);
+    explicit UnitsPrefsModel(UnitsMgr* unitsMgr, QObject* parent);
 
     void initialize();
 

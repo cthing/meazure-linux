@@ -20,7 +20,7 @@
 #include "CustomUnits.h"
 
 
-CustomUnits::CustomUnits(const ScreenInfoProvider& screenInfoProvider) :
+CustomUnits::CustomUnits(const ScreenInfoProvider* screenInfoProvider) :
         LinearUnits(CustomId, "custom", screenInfoProvider),
         m_scaleBasis(k_defScaleBasis),
         m_scaleFactor(k_defScaleFactor) {

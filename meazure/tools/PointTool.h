@@ -41,7 +41,7 @@ class PointTool : public RadioTool {
 public:
     static constexpr const char* k_toolName {"PointTool" };
 
-    explicit PointTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit PointTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~PointTool() override;
 

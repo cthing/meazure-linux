@@ -31,19 +31,10 @@ Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
 
 
-App::App(int &argc, char **argv):
-        QApplication(argc, argv),
-        m_screenInfo(screens()),
-        m_unitsMgr(m_screenInfo),
-        m_toolMgr(m_screenInfo, m_unitsMgr),
-        m_posLogMgr(m_screenInfo, m_unitsMgr, m_toolMgr),
-        m_configMgr(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr),
-        m_mainWindow(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, m_configMgr) {
+App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppcoreguidelines-pro-type-member-init)
     // Because the ICU library is statically compiled, its data file is not available at runtime. The data file is
     // distributed with the application in the "icu" subdirectory. Point the ICU library at this directory.
     u_setDataDirectory(findAppDataDir(k_icuDir).toUtf8().constData());
-
-    m_configMgr.setMainWindow(&m_mainWindow);
 
     setApplicationName("meazure");
     setApplicationVersion(appVersion);
@@ -71,15 +62,33 @@ App::App(int &argc, char **argv):
         });
     parser.process(*this);
 
-    m_mainWindow.setAttribute(Qt::WA_QuitOnClose, true);
-    m_mainWindow.show();
+    m_screenInfo = new ScreenInfo(screens());                                                     // NOLINT(cppcoreguidelines-prefer-member-initializer)
+    m_unitsMgr = new UnitsMgr(m_screenInfo);                                                      // NOLINT(cppcoreguidelines-prefer-member-initializer)
+    m_toolMgr = new ToolMgr(m_screenInfo, m_unitsMgr);                                            // NOLINT(cppcoreguidelines-prefer-member-initializer)
+    m_posLogMgr = new PosLogMgr(m_screenInfo, m_unitsMgr, m_toolMgr);                             // NOLINT(cppcoreguidelines-prefer-member-initializer)
+    m_configMgr = new ConfigMgr(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr);                // NOLINT(cppcoreguidelines-prefer-member-initializer)
+    m_mainWindow = new MainWindow(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, m_configMgr); // NOLINT(cppcoreguidelines-prefer-member-initializer)
+
+    m_configMgr->setMainWindow(m_mainWindow);
+
+    m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
+    m_mainWindow->show();
 
     if (parser.isSet("positions")) {
-        m_posLogMgr.load(parser.value("positions"));
+        m_posLogMgr->load(parser.value("positions"));
     }
     if (parser.isSet("config")) {
-        m_configMgr.import(parser.value("config"));
+        m_configMgr->import(parser.value("config"));
     }
+}
+
+App::~App() {
+    delete m_configMgr;
+    delete m_mainWindow;
+    delete m_posLogMgr;
+    delete m_toolMgr;
+    delete m_unitsMgr;
+    delete m_screenInfo;
 }
 
 QString App::findAppDataDir(const QString& subdir) {

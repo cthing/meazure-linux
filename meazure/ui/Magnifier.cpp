@@ -23,7 +23,7 @@
 #include <QColor>
 
 
-Magnifier::Magnifier(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr) :
+Magnifier::Magnifier(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr) :
         m_screenInfo(screenInfo),
         m_gridPen(QBrush(QColor(0, 0, 0)), 1),
         m_centerMarkerPen(QBrush(QColor(255, 0, 0)), 1) {
@@ -33,7 +33,7 @@ Magnifier::Magnifier(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMg
     m_grabTimer.setInterval(k_updateRate);
     connect(&m_grabTimer, &QTimer::timeout, this, &Magnifier::periodicGrab);
 
-    connect(&toolMgr, &ToolMgr::activePositionChanged, this, &Magnifier::setCurPos);
+    connect(toolMgr, &ToolMgr::activePositionChanged, this, &Magnifier::setCurPos);
 
     setZoom(m_zoomIndex);
     setGrid(m_showGrid);
@@ -123,7 +123,7 @@ void Magnifier::grabScreen() {
     const int c = k_size / 2;
     const int x = m_curPos.x() - c;
     const int y = m_curPos.y() - c;
-    m_image = m_screenInfo.grabScreen(x, y, k_size, k_size);
+    m_image = m_screenInfo->grabScreen(x, y, k_size, k_size);
 
     const QRgb color = m_image.pixel(c, c);
     if (color != m_currentColor) {

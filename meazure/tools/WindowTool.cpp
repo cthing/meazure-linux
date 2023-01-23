@@ -22,7 +22,7 @@
 #include <meazure/utils/Cloaker.h>
 #include <meazure/graphics/Dimensions.h>
 
-WindowTool::WindowTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+WindowTool::WindowTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent) :
         RadioTool(screenInfo, unitsProvider, parent),
         m_rectangle(new Rectangle(screenInfo, unitsProvider)),
         m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, WHReadOnly)) {
@@ -66,7 +66,7 @@ QImage WindowTool::grabRegion() const {
     const Cloaker cloak(m_rectangle, m_dataWindow);
 
     const QRect regionRect = m_rectangle->geometry();
-    return m_screenInfo.grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
+    return m_screenInfo->grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
 void WindowTool::refresh() {
@@ -98,8 +98,8 @@ void WindowTool::setPosition(const QPoint& position) {
 
     QRect windowRect = m_windowFinder->find(position);
     if (windowRect.isEmpty()) {
-        const int screenIdx = m_screenInfo.screenForPoint(position);
-        windowRect = m_screenInfo.getScreenRect(screenIdx);
+        const int screenIdx = m_screenInfo->screenForPoint(position);
+        windowRect = m_screenInfo->getScreenRect(screenIdx);
     }
 
     const QPoint point1 = windowRect.topLeft();
@@ -108,13 +108,13 @@ void WindowTool::setPosition(const QPoint& position) {
     m_rectangle->setPosition(point1, point2);
     m_rectangle->show();
 
-    const QPointF coord1 = m_unitsProvider.convertCoord(point1);
-    const QPointF coord2 = m_unitsProvider.convertCoord(point2);
-    const QSizeF wh = m_unitsProvider.getWidthHeight(point1, point2);
+    const QPointF coord1 = m_unitsProvider->convertCoord(point1);
+    const QPointF coord2 = m_unitsProvider->convertCoord(point2);
+    const QSizeF wh = m_unitsProvider->getWidthHeight(point1, point2);
     const double distance = Geometry::hypot(wh);
     const double aspect = Geometry::aspectRatio(wh);
     const double area = Geometry::area(wh);
-    const double angle = m_unitsProvider.convertAngle(Geometry::angle(coord1, coord2));
+    const double angle = m_unitsProvider->convertAngle(Geometry::angle(coord1, coord2));
 
     m_dataWindow->widthHeightChanged(wh);
     m_dataWindow->moveNear(point1);

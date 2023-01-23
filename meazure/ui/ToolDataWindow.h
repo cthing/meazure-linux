@@ -50,7 +50,7 @@ public:
     /// @param[in] parent Parent widget for the window or nullptr for a top level window
     /// @param[in] opacity Crosshair opacity
     ///
-    explicit ToolDataWindow(const ScreenInfoProvider& screenInfoProvider, const UnitsProvider& unitsProvider,
+    explicit ToolDataWindow(const ScreenInfoProvider* screenInfoProvider, const UnitsProvider* unitsProvider,
                             RadioToolTraits traits, QWidget* parent = nullptr,
                             QRgb opacity = Colors::get(Colors::CrosshairOpacity));
 
@@ -144,8 +144,8 @@ private:
     ///
     void setColors();
 
-    const ScreenInfoProvider& m_screenInfo;
-    const UnitsProvider& m_units;
+    const ScreenInfoProvider* m_screenInfo;
+    const UnitsProvider* m_units;
     QTimer m_flashTimer;
     int m_flashCountDown { -1 };
     bool m_showText { true };

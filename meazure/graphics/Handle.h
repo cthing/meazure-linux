@@ -38,7 +38,7 @@ class Handle : public Graphic {
     Q_OBJECT
 
 public:
-    explicit Handle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+    explicit Handle(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                     QWidget* parent = nullptr, const QString& tooltip = "", int id = -1,
                     QRgb backgroundColor = Colors::get(Colors::CrosshairBack),
                     QRgb highlightColor = Colors::get(Colors::CrosshairHighlight),

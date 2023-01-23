@@ -21,9 +21,9 @@
 #include <meazure/utils/Geometry.h>
 #include <QTransform>
 
-RulerTool::RulerTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent) :
+RulerTool::RulerTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent) :
         Tool(screenInfo, unitsProvider, parent),
-        m_origin(screenInfo.getCenter() - QPoint(200, 200)),
+        m_origin(screenInfo->getCenter() - QPoint(200, 200)),
         m_moveAnchorPoint(m_origin),
         m_hRuler(new Ruler(screenInfo, unitsProvider, false)),
         m_vRuler(new Ruler(screenInfo, unitsProvider, true)),
@@ -186,7 +186,7 @@ bool RulerTool::setPosition() {
     }
 
     const QRect boundingRect = constructBoundingRect();
-    return m_screenInfo.getAvailableVirtualRect().contains(boundingRect);
+    return m_screenInfo->getAvailableVirtualRect().contains(boundingRect);
 }
 
 QRect RulerTool::constructBoundingRect() {
@@ -343,10 +343,10 @@ void RulerTool::moved(Handle&, int id, QPoint) {
             m_vLengthDataWin->distanceChanged(m_vLength);
             break;
         case k_moveId:
-            m_moveDataWin->xyvPositionChanged(m_unitsProvider.convertCoord(m_origin), m_origin);
+            m_moveDataWin->xyvPositionChanged(m_unitsProvider->convertCoord(m_origin), m_origin);
             break;
         case k_rotateId:
-            m_rotateDataWin->angleChanged(m_unitsProvider.convertAngle(qDegreesToRadians(m_angle)));
+            m_rotateDataWin->angleChanged(m_unitsProvider->convertAngle(qDegreesToRadians(m_angle)));
             break;
         default:
             break;

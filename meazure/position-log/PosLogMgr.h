@@ -118,7 +118,7 @@ private:
     static constexpr const char* k_fileFilter { "Meazure Position Log Files (*.mpl);;All Files (*.*)" };
     static constexpr const char* k_fileSuffix { ".mpl" };
 
-    explicit PosLogMgr(const ScreenInfoProvider& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr);
+    explicit PosLogMgr(const ScreenInfoProvider* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr);
 
     bool save(const QString& pathname);
 
@@ -134,9 +134,9 @@ private:
         emit dirtyChanged(m_dirty);
     }
 
-    ToolMgr& m_toolMgr;
-    const ScreenInfoProvider& m_screenInfo;
-    UnitsMgr& m_units;
+    ToolMgr* m_toolMgr;
+    const ScreenInfoProvider* m_screenInfo;
+    UnitsMgr* m_units;
     PosLogToolData m_currentToolData;
     PosLogDesktopWeakPtrVector m_desktopCache;
     PosLogPositionVector m_positions;

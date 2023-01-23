@@ -44,8 +44,8 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr, PosLogMgr& posLogMgr,
-               ConfigMgr& configMgr);
+    MainWindow(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr,
+               ConfigMgr* configMgr);
 
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
@@ -138,11 +138,11 @@ private:
 
     [[nodiscard]] bool isAlwaysVisible() const;
 
-    ScreenInfo& m_screenInfo;
-    UnitsMgr& m_unitsMgr;
-    ToolMgr& m_toolMgr;
-    PosLogMgr& m_posLogMgr;
-    ConfigMgr& m_configMgr;
+    ScreenInfo* m_screenInfo;
+    UnitsMgr* m_unitsMgr;
+    ToolMgr* m_toolMgr;
+    PosLogMgr* m_posLogMgr;
+    ConfigMgr* m_configMgr;
 
     MainView* m_mainView;
 

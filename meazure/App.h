@@ -41,7 +41,7 @@ public:
     ///
     App(int& argc, char** argv);
 
-    ~App() override = default;
+    ~App() override;
 
     App(const App&) = delete;
     App(App&&) = delete;
@@ -52,10 +52,10 @@ public:
 private:
     static constexpr const char* k_icuDir { "icu" };
 
-    ScreenInfo m_screenInfo;
-    UnitsMgr m_unitsMgr;
-    ToolMgr m_toolMgr;
-    PosLogMgr m_posLogMgr;
-    ConfigMgr m_configMgr;
-    MainWindow m_mainWindow;
+    ScreenInfo* m_screenInfo;
+    UnitsMgr* m_unitsMgr;
+    ToolMgr* m_toolMgr;
+    PosLogMgr* m_posLogMgr;
+    ConfigMgr* m_configMgr;
+    MainWindow* m_mainWindow;
 };

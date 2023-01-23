@@ -238,10 +238,10 @@ QString positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     archive.setPositions(positions);
 
     const MockScreenInfoProvider screenProvider;
-    const MockUnitsProvider unitsProvider(screenProvider);
+    const MockUnitsProvider unitsProvider(&screenProvider);
 
     std::ostringstream stream;
-    PosLogWriter logWriter(unitsProvider);
+    PosLogWriter logWriter(&unitsProvider);
     logWriter.write(stream, archive);
 
     //std::cerr << stream.str();
@@ -292,9 +292,9 @@ QString positionLog = R"HERE(<?xml version="1.0" encoding="UTF-8"?>
     archiveFile.open("/_missing/_missing/junk.mpl");
 
     const MockScreenInfoProvider screenProvider;
-    const MockUnitsProvider unitsProvider(screenProvider);
+    const MockUnitsProvider unitsProvider(&screenProvider);
 
-    PosLogWriter logWriter(unitsProvider);
+    PosLogWriter logWriter(&unitsProvider);
 
     try {
         logWriter.write(archiveFile, archive);

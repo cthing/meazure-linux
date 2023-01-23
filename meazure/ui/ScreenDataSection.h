@@ -39,7 +39,7 @@ class ScreenDataSection : public QGroupBox {
     Q_OBJECT
 
 public:
-    explicit ScreenDataSection(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr,
+    explicit ScreenDataSection(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr, const ToolMgr* toolMgr,
                                PrefsDialog* prefsDialog);
 
 private slots:
@@ -55,8 +55,8 @@ private:
 
     void refresh();
 
-    const ScreenInfo& m_screenInfo;
-    const UnitsMgr& m_unitsMgr;
+    const ScreenInfo* m_screenInfo;
+    const UnitsMgr* m_unitsMgr;
     int m_currentScreenIdx { -1 };
     DoubleDataField* m_wField;
     DoubleDataField* m_hField;

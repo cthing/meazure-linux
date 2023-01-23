@@ -23,7 +23,7 @@
 #include <QLine>
 
 
-Rectangle::Rectangle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, double offset,
+Rectangle::Rectangle(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, double offset,
                      QWidget* parent, QRgb lineColor, int lineWidth) :
         Graphic(screenInfo, unitsProvider, parent),
         m_offset(offset),
@@ -38,7 +38,7 @@ Rectangle::Rectangle(const ScreenInfo& screenInfo, const UnitsProvider& unitsPro
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Rectangle::colorChanged);
     connect(Dimensions::getChangeNotifier(), &Dimensions::ChangeNotifier::lineWidthChanged, this,
             &Rectangle::setLineWidth);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         setPosition(m_start, m_end);
         repaint();
     });
@@ -73,8 +73,8 @@ void Rectangle::setPosition(const QPoint& start, const QPoint& end) {
     QPoint normalizedStart(std::min(start.x(), end.x()), std::min(start.y(), end.y()));
     QPoint normalizedEnd(std::max(start.x(), end.x()), std::max(start.y(), end.y()));
 
-    normalizedStart = m_screenInfo.constrainPosition(normalizedStart);
-    normalizedEnd = m_screenInfo.constrainPosition(normalizedEnd);
+    normalizedStart = m_screenInfo->constrainPosition(normalizedStart);
+    normalizedEnd = m_screenInfo->constrainPosition(normalizedEnd);
     QRect windowRect(normalizedStart, normalizedEnd);
 
     // Grow the window by the line thickness so that it is not clipped by the window edge when vertical or horizontal.
@@ -90,10 +90,10 @@ void Rectangle::paintEvent(QPaintEvent*) {
     QSize offset(0, 0);
 
     if (m_offset > 0.0) {
-        const int screenIndex = m_screenInfo.screenForPoint(m_start);
-        const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+        const int screenIndex = m_screenInfo->screenForPoint(m_start);
+        const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
-        offset = m_unitsProvider.convertToPixels(InchesId, screenRes, m_offset, 0.0);
+        offset = m_unitsProvider->convertToPixels(InchesId, screenRes, m_offset, 0.0);
     }
 
     QPainter painter(this);

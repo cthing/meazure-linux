@@ -23,7 +23,7 @@
 #include <QPainter>
 
 
-Handle::Handle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
+Handle::Handle(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider,
                QWidget *parent, const QString& tooltip, int id, const QRgb backgroundColor, QRgb highlightColor,
                QRgb borderColor, QRgb opacity) :
         Graphic(screenInfo, unitsProvider, parent),
@@ -44,7 +44,7 @@ Handle::Handle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
     }
 
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Handle::colorChanged);
-    connect(&m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
+    connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         init();
         setPosition(m_position);
     });
@@ -56,11 +56,11 @@ Handle::Handle(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider,
 
 void Handle::init() {
 
-    const QPoint screenCenter = m_screenInfo.getCenter();
-    const int screenIndex = m_screenInfo.screenForPoint(screenCenter);
-    const QSizeF screenRes = m_screenInfo.getScreenRes(screenIndex);
+    const QPoint screenCenter = m_screenInfo->getCenter();
+    const int screenIndex = m_screenInfo->screenForPoint(screenCenter);
+    const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
-    QSize actualSize = m_unitsProvider.convertToPixels(InchesId, screenRes, k_size, k_sizeMin);
+    QSize actualSize = m_unitsProvider->convertToPixels(InchesId, screenRes, k_size, k_sizeMin);
     actualSize.rwidth() = MathUtils::makeOddUp(actualSize.width());       // Must be odd
     actualSize.rheight() = MathUtils::makeOddUp(actualSize.height());
     setFixedSize(actualSize);
@@ -173,5 +173,5 @@ void Handle::mouseMoveEvent(QMouseEvent* event) {
 QPoint Handle::findCenter(const QPoint& point) const {
     const QPoint center(point - (m_initialGrabPosition - m_centerOffset));
     const QPoint globalCenter(mapToGlobal(center));
-    return m_screenInfo.constrainPosition(globalCenter);
+    return m_screenInfo->constrainPosition(globalCenter);
 }

@@ -111,7 +111,7 @@ double RadianUnits::convertAngle(double angle) const {
 // LinearUnits
 //*************************************************************************
 
-LinearUnits::LinearUnits(LinearUnitsId unitsId, const QString& unitsStr, const ScreenInfoProvider& screenInfoProvider) :
+LinearUnits::LinearUnits(LinearUnitsId unitsId, const QString& unitsStr, const ScreenInfoProvider* screenInfoProvider) :
         Units(unitsStr), m_screenInfoProvider(screenInfoProvider), m_unitsId(unitsId) {
     addPrecisionName("x");
     addPrecisionName("y");
@@ -140,15 +140,15 @@ QString LinearUnits::getResLabel() const {
 }
 
 QPointF LinearUnits::convertCoord(const QPoint& pos) const {
-    const int screenIndex = m_screenInfoProvider.screenForPoint(pos);
-    const QSizeF from = fromPixels(m_screenInfoProvider.getScreenRes(screenIndex));
+    const int screenIndex = m_screenInfoProvider->screenForPoint(pos);
+    const QSizeF from = fromPixels(m_screenInfoProvider->getScreenRes(screenIndex));
     QPointF fpos;
 
     fpos.rx() = from.width() * (pos.x() - m_originOffset.x());
 
     if (m_invertY) {
         if ((m_originOffset.x() == 0) && (m_originOffset.y() == 0)) {
-            fpos.ry() = from.height() * (m_screenInfoProvider.getVirtualRect().height() - 1 - pos.y());
+            fpos.ry() = from.height() * (m_screenInfoProvider->getVirtualRect().height() - 1 - pos.y());
         } else {
             fpos.ry() = from.height() * (m_originOffset.y() - pos.y());
         }
@@ -160,8 +160,8 @@ QPointF LinearUnits::convertCoord(const QPoint& pos) const {
 }
 
 QPointF LinearUnits::convertPos(const QPoint& pos) const {
-    const int screenIndex = m_screenInfoProvider.screenForPoint(pos);
-    const QSizeF from = fromPixels(m_screenInfoProvider.getScreenRes(screenIndex));
+    const int screenIndex = m_screenInfoProvider->screenForPoint(pos);
+    const QSizeF from = fromPixels(m_screenInfoProvider->getScreenRes(screenIndex));
     const double x = from.width() * pos.x();
     const double y = from.height() * pos.y();
     return { x, y };
@@ -172,8 +172,8 @@ QSizeF LinearUnits::convertRes(const QSizeF& res) const {
 }
 
 double LinearUnits::unconvertCoord(ConvertDir dir, const QWidget* wnd, double pos) const {
-    const int screenIndex = m_screenInfoProvider.screenForWindow(wnd);
-    const QSizeF from = fromPixels(m_screenInfoProvider.getScreenRes(screenIndex));
+    const int screenIndex = m_screenInfoProvider->screenForWindow(wnd);
+    const QSizeF from = fromPixels(m_screenInfoProvider->getScreenRes(screenIndex));
 
     if (dir == ConvertX) {
         return pos / from.width() + m_originOffset.x();
@@ -181,7 +181,7 @@ double LinearUnits::unconvertCoord(ConvertDir dir, const QWidget* wnd, double po
 
     if (m_invertY) {
         if ((m_originOffset.x() == 0) && (m_originOffset.y() == 0)) {
-            return  (m_screenInfoProvider.getVirtualRect().height() - 1) - pos / from.height();
+            return  (m_screenInfoProvider->getVirtualRect().height() - 1) - pos / from.height();
         }
         return  m_originOffset.y() - pos / from.height();
     }
@@ -235,7 +235,7 @@ QPoint LinearUnits::unconvertCoord(const QPointF& pos) const {
 
     if (m_invertY) {
         if ((m_originOffset.x() == 0) && (m_originOffset.y() == 0)) {
-            point.ry() = qRound((m_screenInfoProvider.getVirtualRect().height() - 1) - pos.y() / from.height());
+            point.ry() = qRound((m_screenInfoProvider->getVirtualRect().height() - 1) - pos.y() / from.height());
         } else {
             point.ry() = qRound(m_originOffset.y() - pos.y() / from.height());
         }
@@ -274,8 +274,8 @@ QSizeF LinearUnits::getResFromPixels(const QSizeF& res) const {
 }
 
 double LinearUnits::convertCoord(ConvertDir dir, const QWidget* wnd, int pos) const {
-    const int screenIndex = m_screenInfoProvider.screenForWindow(wnd);
-    const QSizeF from = fromPixels(m_screenInfoProvider.getScreenRes(screenIndex));
+    const int screenIndex = m_screenInfoProvider->screenForWindow(wnd);
+    const QSizeF from = fromPixels(m_screenInfoProvider->getScreenRes(screenIndex));
 
     if (dir == ConvertX) {
         return from.width() * (pos - m_originOffset.x());
@@ -283,7 +283,7 @@ double LinearUnits::convertCoord(ConvertDir dir, const QWidget* wnd, int pos) co
 
     if (m_invertY) {
         if ((m_originOffset.x() == 0) && (m_originOffset.y() == 0)) {
-            return from.height() * (m_screenInfoProvider.getVirtualRect().height() - 1 - pos);
+            return from.height() * (m_screenInfoProvider->getVirtualRect().height() - 1 - pos);
         }
         return from.height() * (m_originOffset.y() - pos);
     }
@@ -291,14 +291,14 @@ double LinearUnits::convertCoord(ConvertDir dir, const QWidget* wnd, int pos) co
 }
 
 QSizeF LinearUnits::findResFromCoord(const QPointF& pos) const {
-    for (int i = 0; i < m_screenInfoProvider.getNumScreens(); i++) {
-        const QRect screenRect = m_screenInfoProvider.getScreenRect(i);
+    for (int i = 0; i < m_screenInfoProvider->getNumScreens(); i++) {
+        const QRect screenRect = m_screenInfoProvider->getScreenRect(i);
         const QPointF tl = convertCoord(screenRect.topLeft());
         const QPointF br = convertCoord(screenRect.bottomRight());
         const QRectF convertedScreenRect = QRectF(tl, br).normalized();
 
         if (convertedScreenRect.contains(pos)) {
-            return m_screenInfoProvider.getScreenRes(i);
+            return m_screenInfoProvider->getScreenRes(i);
         }
     }
 
@@ -306,14 +306,14 @@ QSizeF LinearUnits::findResFromCoord(const QPointF& pos) const {
 }
 
 QSizeF LinearUnits::findResFromPos(const QPointF& pos) const {
-    for (int i = 0; i < m_screenInfoProvider.getNumScreens(); i++) {
-        const QRect screenRect = m_screenInfoProvider.getScreenRect(i);
+    for (int i = 0; i < m_screenInfoProvider->getNumScreens(); i++) {
+        const QRect screenRect = m_screenInfoProvider->getScreenRect(i);
         const QPointF tl = convertPos(screenRect.topLeft());
         const QPointF br = convertPos(screenRect.bottomRight());
         const QRectF convertedScreenRect = QRectF(tl, br).normalized();
 
         if (convertedScreenRect.contains(pos)) {
-            return m_screenInfoProvider.getScreenRes(i);
+            return m_screenInfoProvider->getScreenRes(i);
         }
     }
 
@@ -325,7 +325,7 @@ QSizeF LinearUnits::findResFromPos(const QPointF& pos) const {
 // PixelUnits
 //*************************************************************************
 
-PixelUnits::PixelUnits(const ScreenInfoProvider& screenInfoProvider) : LinearUnits(PixelsId, "px", screenInfoProvider) {
+PixelUnits::PixelUnits(const ScreenInfoProvider* screenInfoProvider) : LinearUnits(PixelsId, "px", screenInfoProvider) {
     addPrecision(0);        // XCoord
     addPrecision(0);        // YCoord
     addPrecision(0);        // Width
@@ -361,7 +361,7 @@ QSizeF PixelUnits::fromPixels(const QSizeF& /*res*/) const {
 // PointUnits
 //*************************************************************************
 
-PointUnits::PointUnits(const ScreenInfoProvider& screenInfoProvider) :
+PointUnits::PointUnits(const ScreenInfoProvider* screenInfoProvider) :
         LinearUnits(PointsId, "pt", screenInfoProvider) {
     addPrecision(1);        // XCoord
     addPrecision(1);        // YCoord
@@ -386,7 +386,7 @@ QSizeF PointUnits::fromPixels(const QSizeF& res) const {
 // PicaUnits
 //*************************************************************************
 
-PicaUnits::PicaUnits(const ScreenInfoProvider& screenInfoProvider) :
+PicaUnits::PicaUnits(const ScreenInfoProvider* screenInfoProvider) :
         LinearUnits(PicasId, "pc", screenInfoProvider) {
     addPrecision(2);        // XCoord
     addPrecision(2);        // YCoord
@@ -411,7 +411,7 @@ QSizeF PicaUnits::fromPixels(const QSizeF& res) const {
 // TwipUnits
 //*************************************************************************
 
-TwipUnits::TwipUnits(const ScreenInfoProvider& screenInfoProvider) :
+TwipUnits::TwipUnits(const ScreenInfoProvider* screenInfoProvider) :
         LinearUnits(TwipsId, "tp", screenInfoProvider) {
     addPrecision(0);        // XCoord
     addPrecision(0);        // YCoord
@@ -436,7 +436,7 @@ QSizeF TwipUnits::fromPixels(const QSizeF& res) const {
 // InchUnits
 //*************************************************************************
 
-InchUnits::InchUnits(const ScreenInfoProvider& screenInfoProvider) :
+InchUnits::InchUnits(const ScreenInfoProvider* screenInfoProvider) :
         LinearUnits(InchesId, "in", screenInfoProvider) {
     addPrecision(3);        // XCoord
     addPrecision(3);        // YCoord
@@ -461,7 +461,7 @@ QSizeF InchUnits::fromPixels(const QSizeF& res) const {
 // CentimeterUnits
 //*************************************************************************
 
-CentimeterUnits::CentimeterUnits(const ScreenInfoProvider& screenInfoProvider) :
+CentimeterUnits::CentimeterUnits(const ScreenInfoProvider* screenInfoProvider) :
         LinearUnits(CentimetersId, "cm", screenInfoProvider) {
     addPrecision(2);        // XCoord
     addPrecision(2);        // YCoord
@@ -486,7 +486,7 @@ QSizeF CentimeterUnits::fromPixels(const QSizeF& res) const {
 // MillimeterUnits
 //*************************************************************************
 
-MillimeterUnits::MillimeterUnits(const ScreenInfoProvider& screenInfoProvider) :
+MillimeterUnits::MillimeterUnits(const ScreenInfoProvider* screenInfoProvider) :
         LinearUnits(MillimetersId, "mm", screenInfoProvider) {
     addPrecision(1);        // XCoord
     addPrecision(1);        // YCoord

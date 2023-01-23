@@ -37,8 +37,8 @@ class GridDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit GridDialog(GridTool* gridTool, const ScreenInfoProvider& screenInfoProvider,
-                        const UnitsMgr& unitsMgr, QWidget* parent);
+    explicit GridDialog(GridTool* gridTool, const ScreenInfoProvider* screenInfoProvider,
+                        const UnitsMgr* unitsMgr, QWidget* parent);
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -62,8 +62,8 @@ private:
     void restoreState();
 
     GridTool* m_gridTool;
-    const ScreenInfoProvider& m_screenInfo;
-    const UnitsMgr& m_unitsMgr;
+    const ScreenInfoProvider* m_screenInfo;
+    const UnitsMgr* m_unitsMgr;
     DoubleDataField* m_hSpacingField;
     DoubleDataField* m_vSpacingField;
     QComboBox* m_spacingUnitsCombo;

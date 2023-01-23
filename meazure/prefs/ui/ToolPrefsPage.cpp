@@ -29,9 +29,8 @@
 #include <QColorDialog>
 
 
-ToolPrefsPage::ToolPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
-        m_screenInfo(screenInfo),
-        m_unitsMgr(unitsMgr),
+ToolPrefsPage::ToolPrefsPage(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        PrefsPage(screenInfo, unitsMgr),
         m_model(new ToolPrefsModel(this)) {
     createUI();
     configure();

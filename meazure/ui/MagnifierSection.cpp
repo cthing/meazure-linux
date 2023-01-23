@@ -23,7 +23,7 @@
 #include <QKeySequence>
 
 
-MagnifierSection::MagnifierSection(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr) :
+MagnifierSection::MagnifierSection(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr) :
         m_magnifier(new Magnifier(screenInfo, toolMgr)),
         m_magnifierControls(new MagnifierControls(m_magnifier)),
         m_colorDisplay(new ColorDisplay()) {

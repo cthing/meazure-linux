@@ -30,7 +30,7 @@
 class MockUnitsProvider : public UnitsProvider {
 
 public:
-    explicit MockUnitsProvider(const MockScreenInfoProvider& screenProvider) :
+    explicit MockUnitsProvider(const MockScreenInfoProvider* screenProvider) :
             m_linearUnits(new PixelUnits(screenProvider)),
             m_angularUnits(new DegreeUnits()),
             m_customUnits(new CustomUnits(screenProvider)),

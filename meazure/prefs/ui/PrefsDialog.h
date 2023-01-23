@@ -35,7 +35,7 @@
 class PrefsDialog : public QDialog {
 
 public:
-    explicit PrefsDialog(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, QWidget* parent);
+    explicit PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, QWidget* parent);
 
 public slots:
     int execPage(PrefsPageId pageId);

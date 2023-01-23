@@ -23,9 +23,8 @@
 #include <QSignalBlocker>
 
 
-CalibrationPrefsPage::CalibrationPrefsPage(ScreenInfo& screenInfo, const UnitsMgr& unitsMgr) :  // NOLINT(cppcoreguidelines-pro-type-member-init)
-        m_screenInfo(screenInfo),
-        m_unitsMgr(unitsMgr),
+CalibrationPrefsPage::CalibrationPrefsPage(ScreenInfo* screenInfo, const UnitsMgr* unitsMgr) :  // NOLINT(cppcoreguidelines-pro-type-member-init)
+        PrefsPage(screenInfo, unitsMgr),
         m_model(new CalibrationPrefsModel(screenInfo, this)) {
     createUI();
     configure();
@@ -108,8 +107,8 @@ void CalibrationPrefsPage::configure() {
 
     // Screen select
 
-    for (int i = 0; i < m_screenInfo.getNumScreens(); i++) {
-        m_screenCombo->addItem(m_screenInfo.getScreenName(i), i);
+    for (int i = 0; i < m_screenInfo->getNumScreens(); i++) {
+        m_screenCombo->addItem(m_screenInfo->getScreenName(i), i);
     }
 
     connect(m_screenCombo, &QComboBox::activated, this, [this](int itemIndex) {
@@ -125,8 +124,8 @@ void CalibrationPrefsPage::configure() {
 
     // Manual resolution units
 
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(InchesId)->getLengthLabel(), InchesId);
-    m_unitsCombo->addItem(m_unitsMgr.getLinearUnits(CentimetersId)->getLengthLabel(), CentimetersId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(InchesId)->getLengthLabel(), InchesId);
+    m_unitsCombo->addItem(m_unitsMgr->getLinearUnits(CentimetersId)->getLengthLabel(), CentimetersId);
     connect(m_unitsCombo, &QComboBox::activated, this, [this](int itemIndex) {
         const LinearUnitsId unitsId = static_cast<LinearUnitsId>(m_unitsCombo->itemData(itemIndex).toUInt());
         m_model->setCalInInches(unitsId == InchesId);
@@ -188,7 +187,7 @@ void CalibrationPrefsPage::calibrationChanged() {
 
     // Only enable calipers if on the same screen as this page.
 
-    const int currentScreenIndex = m_screenInfo.screenForWindow(this);
+    const int currentScreenIndex = m_screenInfo->screenForWindow(this);
     const bool caliperEnable = enable && (m_model->m_screenIndex->getValue() == currentScreenIndex);
 
     m_hCaliper->setEnabled(caliperEnable);
@@ -259,7 +258,7 @@ void CalibrationPrefsPage::resolutionChanged() {
 }
 
 void CalibrationPrefsPage::initialize() {
-    const int currentScreenIndex = m_screenInfo.screenForWindow(this);
+    const int currentScreenIndex = m_screenInfo->screenForWindow(this);
     m_model->initialize(currentScreenIndex);
 }
 

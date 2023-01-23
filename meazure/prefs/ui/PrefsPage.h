@@ -20,6 +20,8 @@
 #pragma once
 
 #include "PrefsPageId.h"
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QWidget>
 #include <QString>
 
@@ -42,4 +44,13 @@ public:
 signals:
     void dirtyChanged(bool dirty);
     void pageRequested(PrefsPageId pageId);
+
+protected:
+    PrefsPage(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr) :
+            m_screenInfo(screenInfo),
+            m_unitsMgr(unitsMgr) {
+    }
+
+    const ScreenInfo* m_screenInfo;
+    const UnitsMgr* m_unitsMgr;
 };

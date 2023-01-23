@@ -347,9 +347,9 @@ private:
     using LinearUnitsMap = std::map<LinearUnitsId, LinearUnits*>;
     using AngularUnitsMap = std::map<AngularUnitsId, AngularUnits*>;
 
-    explicit UnitsMgr(const ScreenInfoProvider& screenInfoProvider);
+    explicit UnitsMgr(const ScreenInfoProvider* screenInfoProvider);
 
-    const ScreenInfoProvider& m_screenInfoProvider;
+    const ScreenInfoProvider* m_screenInfoProvider;
     PixelUnits m_pixelUnits;
     PointUnits m_pointUnits;
     TwipUnits m_twipUnits;

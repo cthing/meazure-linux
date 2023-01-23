@@ -24,7 +24,7 @@
 #include <cmath>
 
 
-UnitsMgr::UnitsMgr(const ScreenInfoProvider& screenInfoProvider) :
+UnitsMgr::UnitsMgr(const ScreenInfoProvider* screenInfoProvider) :
         m_screenInfoProvider(screenInfoProvider),
         m_pixelUnits(screenInfoProvider),
         m_pointUnits(screenInfoProvider),
@@ -129,7 +129,8 @@ void UnitsMgr::setLinearUnits(LinearUnitsId unitsId) {
     // - The current units require use of the resolution
     //
     if (m_currentLinearUnits->isResRequired()
-            && (m_screenInfoProvider.sizeChanged() || (!m_haveWarned && m_screenInfoProvider.isCalibrationRequired()))) {
+            && (m_screenInfoProvider->sizeChanged()
+                || (!m_haveWarned && m_screenInfoProvider->isCalibrationRequired()))) {
         m_haveWarned = true;
         emit calibrationRequired();
     }
@@ -194,11 +195,11 @@ bool UnitsMgr::isSupplementalAngle() const {
 }
 
 QSizeF UnitsMgr::getWidthHeight(const QPoint& p1, const QPoint& p2) const {
-    const int screenIndex1 = m_screenInfoProvider.screenForPoint(p1);
-    const QSizeF from1 = m_currentLinearUnits->fromPixels(m_screenInfoProvider.getScreenRes(screenIndex1));
+    const int screenIndex1 = m_screenInfoProvider->screenForPoint(p1);
+    const QSizeF from1 = m_currentLinearUnits->fromPixels(m_screenInfoProvider->getScreenRes(screenIndex1));
 
-    const int screenIndex2 = m_screenInfoProvider.screenForPoint(p2);
-    const QSizeF from2 = m_currentLinearUnits->fromPixels(m_screenInfoProvider.getScreenRes(screenIndex2));
+    const int screenIndex2 = m_screenInfoProvider->screenForPoint(p2);
+    const QSizeF from2 = m_currentLinearUnits->fromPixels(m_screenInfoProvider->getScreenRes(screenIndex2));
 
     QPoint np1(p1);
     QPoint np2(p2);
@@ -226,8 +227,8 @@ QSizeF UnitsMgr::getMinorTickIncr(const QRect& rect) const {
     // separation between the minor ticks. Start by converting
     // the resolution-independent minimum separation to pixels.
     //
-    const int screenIndex = m_screenInfoProvider.screenForRect(rect);
-    const QSizeF res = m_screenInfoProvider.getScreenRes(screenIndex);
+    const int screenIndex = m_screenInfoProvider->screenForRect(rect);
+    const QSizeF res = m_screenInfoProvider->getScreenRes(screenIndex);
     const QSize sepPixels = convertToPixels(InchesId, res, k_minSepInches, k_minSepPixels);
 
     // Convert the minimum tick separation to the current units.

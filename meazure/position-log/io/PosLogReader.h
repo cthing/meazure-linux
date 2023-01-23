@@ -38,7 +38,7 @@
 class PosLogReader : public PosLogIO, public XMLParserHandler {
 
 public:
-    explicit PosLogReader(const UnitsProvider& unitsProvider);
+    explicit PosLogReader(const UnitsProvider* unitsProvider);
 
     PosLogArchiveSharedPtr readFile(const QString& pathname);
 

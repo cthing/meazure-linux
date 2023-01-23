@@ -39,7 +39,7 @@ class CursorTool : public RadioTool {
 public:
     static constexpr const char* k_toolName { "CursorTool" };
 
-    explicit CursorTool(const ScreenInfo& screenInfo, const UnitsProvider& unitsProvider, QObject* parent = nullptr);
+    explicit CursorTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent = nullptr);
 
     ~CursorTool() override;
 

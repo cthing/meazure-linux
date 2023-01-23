@@ -24,7 +24,9 @@
 #include <limits>
 
 
-UnitsPrefsPage::UnitsPrefsPage(UnitsMgr& unitsMgr) : m_model(new UnitsPrefsModel(unitsMgr, this)) {    // NOLINT(cppcoreguidelines-pro-type-member-init)
+UnitsPrefsPage::UnitsPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        PrefsPage(screenInfo, unitsMgr),
+        m_model(new UnitsPrefsModel(unitsMgr, this)) {
     createUI();
     configure();
 

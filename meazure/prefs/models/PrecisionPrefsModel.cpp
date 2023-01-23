@@ -21,16 +21,16 @@
 #include <algorithm>
 
 
-PrecisionPrefsModel::PrecisionPrefsModel(UnitsMgr& unitsMgr, QObject *parent) :
+PrecisionPrefsModel::PrecisionPrefsModel(UnitsMgr* unitsMgr, QObject *parent) :
         QObject(parent),
         m_unitsMgr(unitsMgr) {
     for (const LinearUnitsId unitsId : LinearUnitsIdIter()) {
-        auto* pref = new Preference(m_unitsMgr.getLinearDefaultPrecisions(unitsId));
+        auto* pref = new Preference(m_unitsMgr->getLinearDefaultPrecisions(unitsId));
         m_linearPrecisions[unitsId] = pref;
         connect(pref, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
     }
     for (const AngularUnitsId unitsId : AngularUnitsIdIter()) {
-        auto* pref = new Preference(m_unitsMgr.getAngularDefaultPrecisions(unitsId));
+        auto* pref = new Preference(m_unitsMgr->getAngularDefaultPrecisions(unitsId));
         m_angularPrecisions[unitsId] = pref;
         connect(pref, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
     }
@@ -38,22 +38,22 @@ PrecisionPrefsModel::PrecisionPrefsModel(UnitsMgr& unitsMgr, QObject *parent) :
 
 void PrecisionPrefsModel::initialize() {
     for (const auto& entry : m_linearPrecisions) {
-        entry.second->initialize(m_unitsMgr.getLinearDisplayPrecisions(entry.first));
+        entry.second->initialize(m_unitsMgr->getLinearDisplayPrecisions(entry.first));
     }
     for (const auto& entry : m_angularPrecisions) {
-        entry.second->initialize(m_unitsMgr.getAngularDisplayPrecisions(entry.first));
+        entry.second->initialize(m_unitsMgr->getAngularDisplayPrecisions(entry.first));
     }
 }
 
 void PrecisionPrefsModel::apply() const {
     for (const auto& entry : m_linearPrecisions) {
         if (entry.second->isDirty()) {
-            m_unitsMgr.setLinearDisplayPrecisions(entry.first, entry.second->getValue());
+            m_unitsMgr->setLinearDisplayPrecisions(entry.first, entry.second->getValue());
         }
     }
     for (const auto& entry : m_angularPrecisions) {
         if (entry.second->isDirty()) {
-            m_unitsMgr.setAngularDisplayPrecisions(entry.first, entry.second->getValue());
+            m_unitsMgr->setAngularDisplayPrecisions(entry.first, entry.second->getValue());
         }
     }
 }

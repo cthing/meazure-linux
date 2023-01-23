@@ -26,9 +26,8 @@
 #include <QToolTip>
 
 
-RulerPrefsPage::RulerPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
-        m_screenInfo(screenInfo),
-        m_unitsMgr(unitsMgr),
+RulerPrefsPage::RulerPrefsPage(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        PrefsPage(screenInfo, unitsMgr),
         m_model(new RulerPrefsModel(this)) {
     createUI();
     configure();

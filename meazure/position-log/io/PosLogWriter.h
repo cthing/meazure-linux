@@ -31,7 +31,7 @@
 class PosLogWriter : public PosLogIO {
 
 public:
-    explicit PosLogWriter(const UnitsProvider& unitsProvider);
+    explicit PosLogWriter(const UnitsProvider* unitsProvider);
 
     void write(std::ostream& out, const PosLogArchive& archive);
 
