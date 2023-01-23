@@ -24,7 +24,7 @@
 #include <limits>
 
 
-UnitsPrefsPage::UnitsPrefsPage() : m_model(new UnitsPrefsModel(this)) {    // NOLINT(cppcoreguidelines-pro-type-member-init)
+UnitsPrefsPage::UnitsPrefsPage(UnitsMgr& unitsMgr) : m_model(new UnitsPrefsModel(unitsMgr, this)) {    // NOLINT(cppcoreguidelines-pro-type-member-init)
     createUI();
     configure();
 

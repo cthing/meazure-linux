@@ -18,12 +18,11 @@
  */
 
 #include "UnitsPrefsModel.h"
-#include <meazure/App.h>
 
 
-UnitsPrefsModel::UnitsPrefsModel(QObject *parent) :
+UnitsPrefsModel::UnitsPrefsModel(UnitsMgr& unitsMgr, QObject *parent) :
         QObject(parent),
-        m_customUnits(App::instance()->getUnitsMgr().getCustomUnits()) {
+        m_customUnits(unitsMgr.getCustomUnits()) {
     m_name = new Preference<QString>(m_customUnits->getName());
     m_abbrev = new Preference<QString>(m_customUnits->getAbbrev());
     m_scaleBasis = new Preference<CustomUnits::ScaleBasis>(m_customUnits->getScaleBasis());

@@ -19,9 +19,6 @@
 
 #include "ToolPrefsPage.h"
 #include "CheckerBoard.h"
-#include <meazure/App.h>
-#include <meazure/units/UnitsMgr.h>
-#include <meazure/environment/ScreenInfo.h>
 #include <meazure/tools/RadioToolTraits.h>
 #include <meazure/utils/LayoutUtils.h>
 #include <QGridLayout>
@@ -32,16 +29,16 @@
 #include <QColorDialog>
 
 
-ToolPrefsPage::ToolPrefsPage() : m_model(new ToolPrefsModel(this)) {    // NOLINT(cppcoreguidelines-pro-type-member-init)
+ToolPrefsPage::ToolPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        m_screenInfo(screenInfo),
+        m_unitsMgr(unitsMgr),
+        m_model(new ToolPrefsModel(this)) {
     createUI();
     configure();
 }
 
 void ToolPrefsPage::createUI() {
     using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
-
-    const ScreenInfo& screenInfo = App::instance()->getScreenInfo();
-    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
 
     auto* crosshairLabel = new QLabel(tr("<b>Crosshairs and Data Windows</b>"));
     m_backColorButton = new QPushButton(tr("Background..."));
@@ -60,21 +57,21 @@ void ToolPrefsPage::createUI() {
     auto* minOpacityLabel = new QLabel(tr("%1%").arg(k_minOpacity));
     auto* maxOpacityLabel = new QLabel(tr("%1%").arg(k_maxOpacity));
     m_opacitySlider = new QSlider(Qt::Horizontal);
-    m_normalCrosshair1 = new Crosshair(screenInfo, unitsMgr, this, "Normal", -1,
+    m_normalCrosshair1 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Normal", -1,
                                        m_model->m_crosshairBackColor->getValue(),
                                        m_model->m_crosshairBackColor->getValue());
-    m_normalCrosshair2 = new Crosshair(screenInfo, unitsMgr, this, "Normal", -1,
+    m_normalCrosshair2 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Normal", -1,
                                        m_model->m_crosshairBackColor->getValue(),
                                        m_model->m_crosshairBackColor->getValue());
-    m_highlightCrosshair1 = new Crosshair(screenInfo, unitsMgr, this, "Highlight", -1,
+    m_highlightCrosshair1 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Highlight", -1,
                                           m_model->m_crosshairHighlightColor->getValue(),
                                           m_model->m_crosshairHighlightColor->getValue());
-    m_highlightCrosshair2 = new Crosshair(screenInfo, unitsMgr, this, "Highlight", -1,
+    m_highlightCrosshair2 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Highlight", -1,
                                           m_model->m_crosshairHighlightColor->getValue(),
                                           m_model->m_crosshairHighlightColor->getValue());
-    m_dataWindow1 = new ToolDataWindow(screenInfo, unitsMgr, XY1ReadOnly, this);
+    m_dataWindow1 = new ToolDataWindow(m_screenInfo, m_unitsMgr, XY1ReadOnly, this);
     m_dataWindow1->xy1PositionChanged(QPointF(100, 200), QPoint(100, 200));
-    m_dataWindow2 = new ToolDataWindow(screenInfo, unitsMgr, XY1ReadOnly, this);
+    m_dataWindow2 = new ToolDataWindow(m_screenInfo, m_unitsMgr, XY1ReadOnly, this);
     m_dataWindow2->xy1PositionChanged(QPointF(100, 200), QPoint(100, 200));
 
     auto* checkerBoardLight = new CheckerBoard(CheckerBoard::Light);
@@ -101,8 +98,8 @@ void ToolPrefsPage::createUI() {
     lineSampleDark->setAutoFillBackground(true);
     lineSampleDark->setPalette(QPalette(QPalette::Window, QColorConstants::Black));
 
-    m_line1 = new Line(screenInfo, unitsMgr, 0.0, lineSampleLight);
-    m_line2 = new Line(screenInfo, unitsMgr, 0.0, lineSampleDark);
+    m_line1 = new Line(m_screenInfo, m_unitsMgr, 0.0, lineSampleLight);
+    m_line2 = new Line(m_screenInfo, m_unitsMgr, 0.0, lineSampleDark);
 
     m_line1->setPosition(QPoint(k_lineSampleMargin, k_lineSampleMargin),
                          QPoint(lineSampleLight->width() - k_lineSampleMargin - 1,

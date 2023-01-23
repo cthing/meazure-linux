@@ -20,6 +20,7 @@
 #pragma once
 
 #include "Preference.h"
+#include <meazure/environment/ScreenInfo.h>
 #include <QObject>
 #include <QSizeF>
 #include <QVariant>
@@ -50,7 +51,7 @@ public:
     using ScreenModels = std::vector<ScreenModel>;
 
 
-    explicit CalibrationPrefsModel(QObject* parent);
+    explicit CalibrationPrefsModel(ScreenInfo& screenInfo, QObject* parent);
 
     void initialize(int screenIndex);
 
@@ -92,4 +93,7 @@ signals:
     void calInInchesChanged(bool calInInches);
     void manualResChanged(QSizeF res);
     void dirtyChanged(bool dirty);
+
+private:
+    ScreenInfo& m_screenInfo;
 };

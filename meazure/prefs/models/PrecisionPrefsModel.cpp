@@ -18,47 +18,42 @@
  */
 
 #include "PrecisionPrefsModel.h"
-#include <meazure/App.h>
 #include <algorithm>
 
 
-PrecisionPrefsModel::PrecisionPrefsModel(QObject *parent) : QObject(parent) {
-    const UnitsMgr& mgr = App::instance()->getUnitsMgr();
-
+PrecisionPrefsModel::PrecisionPrefsModel(UnitsMgr& unitsMgr, QObject *parent) :
+        QObject(parent),
+        m_unitsMgr(unitsMgr) {
     for (const LinearUnitsId unitsId : LinearUnitsIdIter()) {
-        auto* pref = new Preference(mgr.getLinearDefaultPrecisions(unitsId));
+        auto* pref = new Preference(m_unitsMgr.getLinearDefaultPrecisions(unitsId));
         m_linearPrecisions[unitsId] = pref;
         connect(pref, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
     }
     for (const AngularUnitsId unitsId : AngularUnitsIdIter()) {
-        auto* pref = new Preference(mgr.getAngularDefaultPrecisions(unitsId));
+        auto* pref = new Preference(m_unitsMgr.getAngularDefaultPrecisions(unitsId));
         m_angularPrecisions[unitsId] = pref;
         connect(pref, SIGNAL(dirtyChanged(bool)), this, SIGNAL(dirtyChanged(bool)));
     }
 }
 
 void PrecisionPrefsModel::initialize() {
-    const UnitsMgr& mgr = App::instance()->getUnitsMgr();
-
     for (const auto& entry : m_linearPrecisions) {
-        entry.second->initialize(mgr.getLinearDisplayPrecisions(entry.first));
+        entry.second->initialize(m_unitsMgr.getLinearDisplayPrecisions(entry.first));
     }
     for (const auto& entry : m_angularPrecisions) {
-        entry.second->initialize(mgr.getAngularDisplayPrecisions(entry.first));
+        entry.second->initialize(m_unitsMgr.getAngularDisplayPrecisions(entry.first));
     }
 }
 
 void PrecisionPrefsModel::apply() const {
-    UnitsMgr& mgr = App::instance()->getUnitsMgr();
-
     for (const auto& entry : m_linearPrecisions) {
         if (entry.second->isDirty()) {
-            mgr.setLinearDisplayPrecisions(entry.first, entry.second->getValue());
+            m_unitsMgr.setLinearDisplayPrecisions(entry.first, entry.second->getValue());
         }
     }
     for (const auto& entry : m_angularPrecisions) {
         if (entry.second->isDirty()) {
-            mgr.setAngularDisplayPrecisions(entry.first, entry.second->getValue());
+            m_unitsMgr.setAngularDisplayPrecisions(entry.first, entry.second->getValue());
         }
     }
 }

@@ -29,7 +29,9 @@
 #include <algorithm>
 
 
-PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent), m_tabs(new QTabWidget()) {
+PrefsDialog::PrefsDialog(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, QWidget *parent) :
+        QDialog(parent),
+        m_tabs(new QTabWidget()) {
     setWindowTitle(tr("Preferences"));
 
     auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
@@ -37,11 +39,11 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent), m_tabs(new QTabWidg
     connect(buttonBox, &QDialogButtonBox::accepted, this, &PrefsDialog::accept);
     connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &PrefsDialog::apply);
 
-    m_prefsPages.push_back(new CalibrationPrefsPage());
-    m_prefsPages.push_back(new ToolPrefsPage());
-    m_prefsPages.push_back(new RulerPrefsPage());
-    m_prefsPages.push_back(new PrecisionPrefsPage());
-    m_prefsPages.push_back(new UnitsPrefsPage());
+    m_prefsPages.push_back(new CalibrationPrefsPage(screenInfo, unitsMgr));
+    m_prefsPages.push_back(new ToolPrefsPage(screenInfo, unitsMgr));
+    m_prefsPages.push_back(new RulerPrefsPage(screenInfo, unitsMgr));
+    m_prefsPages.push_back(new PrecisionPrefsPage(unitsMgr));
+    m_prefsPages.push_back(new UnitsPrefsPage(unitsMgr));
 
     for (PrefsPage* page : m_prefsPages) {
         m_tabs->addTab(page, page->getName());

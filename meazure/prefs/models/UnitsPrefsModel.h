@@ -21,6 +21,7 @@
 
 #include "Preference.h"
 #include <meazure/units/CustomUnits.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QObject>
 
 
@@ -31,7 +32,7 @@ class UnitsPrefsModel : public QObject {
     Q_OBJECT
 
 public:
-    explicit UnitsPrefsModel(QObject* parent);
+    explicit UnitsPrefsModel(UnitsMgr& unitsMgr, QObject* parent);
 
     void initialize();
 

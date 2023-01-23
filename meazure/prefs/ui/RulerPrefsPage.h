@@ -23,6 +23,8 @@
 #include "PrefsPageId.h"
 #include <meazure/prefs/models/RulerPrefsModel.h>
 #include <meazure/graphics/Ruler.h>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/environment/ScreenInfo.h>
 #include <QWidget>
 #include <QPushButton>
 #include <QSlider>
@@ -33,7 +35,7 @@
 class RulerPrefsPage : public PrefsPage {
 
 public:
-    RulerPrefsPage();
+    RulerPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::RulerPage;
@@ -61,6 +63,8 @@ private:
     void createUI();
     void configure();
 
+    const ScreenInfo& m_screenInfo;
+    const UnitsMgr& m_unitsMgr;
     RulerPrefsModel* m_model;
     Ruler* m_ruler1;
     Ruler* m_ruler2;

@@ -46,7 +46,7 @@
 #include <vector>
 
 
-MainWindow::MainWindow(const ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+MainWindow::MainWindow(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
         m_screenInfo(screenInfo),
         m_unitsMgr(unitsMgr),
         m_toolMgr(toolMgr) {
@@ -571,7 +571,7 @@ void MainWindow::createDialogs() {
     auto* gridTool = dynamic_cast<GridTool*>(m_toolMgr.getTool(GridTool::k_toolName));
     m_gridDialog = new GridDialog(gridTool, m_screenInfo, m_unitsMgr, this);
 
-    m_prefsDialog = new PrefsDialog(this);
+    m_prefsDialog = new PrefsDialog(m_screenInfo, m_unitsMgr, this);
 
     m_positionDialog = new PosLogManageDlg(App::instance()->getPosLogMgr(), this);
 }

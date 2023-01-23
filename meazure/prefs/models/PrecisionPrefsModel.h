@@ -21,6 +21,7 @@
 
 #include "Preference.h"
 #include <meazure/units/Units.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QObject>
 #include <map>
 #include <vector>
@@ -37,7 +38,7 @@ public:
     using LinearPrecisions = std::map<LinearUnitsId, Preference<Units::DisplayPrecisions>*>;
     using AngularPrecisions = std::map<AngularUnitsId, Preference<Units::DisplayPrecisions>*>;
 
-    explicit PrecisionPrefsModel(QObject* parent);
+    explicit PrecisionPrefsModel(UnitsMgr& unitsMgr, QObject* parent);
 
     void initialize();
 
@@ -53,4 +54,7 @@ public:
 
 signals:
     void dirtyChanged(bool dirty);
+
+private:
+    UnitsMgr& m_unitsMgr;
 };

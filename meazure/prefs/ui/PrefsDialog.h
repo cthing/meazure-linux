@@ -21,6 +21,8 @@
 
 #include "PrefsPage.h"
 #include "PrefsPageId.h"
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QDialog>
 #include <QWidget>
 #include <QShowEvent>
@@ -33,7 +35,7 @@
 class PrefsDialog : public QDialog {
 
 public:
-    explicit PrefsDialog(QWidget* parent);
+    explicit PrefsDialog(ScreenInfo& screenInfo, UnitsMgr& unitsMgr, QWidget* parent);
 
 public slots:
     int execPage(PrefsPageId pageId);

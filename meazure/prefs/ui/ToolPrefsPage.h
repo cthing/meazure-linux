@@ -26,6 +26,8 @@
 #include <meazure/graphics/Line.h>
 #include <meazure/ui/ToolDataWindow.h>
 #include <meazure/ui/fields/IntegerDataField.h>
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QWidget>
 #include <QMargins>
 #include <QSlider>
@@ -39,7 +41,7 @@
 class ToolPrefsPage : public PrefsPage {
 
 public:
-    ToolPrefsPage();
+    ToolPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::ToolPage;
@@ -69,6 +71,8 @@ private:
     void createUI();
     void configure();
 
+    const ScreenInfo& m_screenInfo;
+    const UnitsMgr& m_unitsMgr;
     ToolPrefsModel* m_model;
     Crosshair* m_normalCrosshair1;
     Crosshair* m_normalCrosshair2;

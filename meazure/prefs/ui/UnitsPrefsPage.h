@@ -23,6 +23,7 @@
 #include "PrefsPageId.h"
 #include <meazure/prefs/models/UnitsPrefsModel.h>
 #include <meazure/ui/fields/DoubleDataField.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QLabel>
@@ -34,7 +35,7 @@
 class UnitsPrefsPage : public PrefsPage {
 
 public:
-    UnitsPrefsPage();
+    explicit UnitsPrefsPage(UnitsMgr& unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::UnitsPage;

@@ -23,6 +23,8 @@
 #include "Caliper.h"
 #include <meazure/prefs/models/CalibrationPrefsModel.h>
 #include <meazure/ui/fields/DoubleDataField.h>
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/units/UnitsMgr.h>
 #include <QComboBox>
 #include <QRadioButton>
 #include <QLabel>
@@ -31,7 +33,7 @@
 class CalibrationPrefsPage : public PrefsPage {
 
 public:
-    CalibrationPrefsPage();
+    CalibrationPrefsPage(ScreenInfo& screenInfo, const UnitsMgr& unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::CalibrationPage;
@@ -60,6 +62,8 @@ private:
     void createUI();
     void configure();
 
+    const ScreenInfo& m_screenInfo;
+    const UnitsMgr& m_unitsMgr;
     CalibrationPrefsModel* m_model;
     QComboBox* m_screenCombo;
     QRadioButton* m_systemRadio;

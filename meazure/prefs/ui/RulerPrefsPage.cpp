@@ -19,25 +19,23 @@
 
 #include "RulerPrefsPage.h"
 #include "CheckerBoard.h"
-#include <meazure/App.h>
-#include <meazure/units/UnitsMgr.h>
-#include <meazure/environment/ScreenInfo.h>
 #include <meazure/utils/LayoutUtils.h>
+#include <QLabel>
 #include <QGridLayout>
 #include <QColorDialog>
 #include <QToolTip>
 
 
-RulerPrefsPage::RulerPrefsPage() : m_model(new RulerPrefsModel(this)) {    // NOLINT(cppcoreguidelines-pro-type-member-init)
+RulerPrefsPage::RulerPrefsPage(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        m_screenInfo(screenInfo),
+        m_unitsMgr(unitsMgr),
+        m_model(new RulerPrefsModel(this)) {
     createUI();
     configure();
 }
 
 void RulerPrefsPage::createUI() {
     using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
-
-    const ScreenInfo& screenInfo = App::instance()->getScreenInfo();
-    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
 
     m_backColorButton = new QPushButton(tr("Background..."));
     m_backColorButton->setFixedWidth(k_buttonWidth);
@@ -55,9 +53,9 @@ void RulerPrefsPage::createUI() {
     auto* checkerBoardLight = new CheckerBoard(CheckerBoard::Light);
     auto* checkerBoardDark = new CheckerBoard(CheckerBoard::Dark);
 
-    m_ruler1 = new Ruler(screenInfo, unitsMgr, false, checkerBoardLight, *m_model->m_rulerBackColor,
+    m_ruler1 = new Ruler(m_screenInfo, m_unitsMgr, false, checkerBoardLight, *m_model->m_rulerBackColor,
                          *m_model->m_rulerBorderColor, Colors::opacityFromPercent(*m_model->m_rulerOpacity));
-    m_ruler2 = new Ruler(screenInfo, unitsMgr, false, checkerBoardDark, *m_model->m_rulerBackColor,
+    m_ruler2 = new Ruler(m_screenInfo, m_unitsMgr, false, checkerBoardDark, *m_model->m_rulerBackColor,
                          *m_model->m_rulerBorderColor, Colors::opacityFromPercent(*m_model->m_rulerOpacity));
 
     m_ruler1->setPosition(QPoint(0, 0), 200, 90);
