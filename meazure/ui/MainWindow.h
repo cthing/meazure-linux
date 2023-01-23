@@ -21,6 +21,9 @@
 
 #include "MainView.h"
 #include "GridDialog.h"
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/tools/ToolMgr.h>
 #include <meazure/tools/RadioTool.h>
 #include <meazure/units/Units.h>
 #include <meazure/units/CustomUnits.h>
@@ -39,7 +42,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow();
+    MainWindow(const ScreenInfo& screenInfo, UnitsMgr& unitsMgr, ToolMgr& toolMgr);
 
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
@@ -59,7 +62,7 @@ protected:
 private slots:
     void radioToolSelected(RadioTool& tool);
 
-    static void copyRegion();
+    void copyRegion();
 
 private:
     void adjustGrid();
@@ -131,6 +134,10 @@ private:
     void createKeyboardControl();
 
     [[nodiscard]] bool isAlwaysVisible() const;
+
+    const ScreenInfo& m_screenInfo;
+    UnitsMgr& m_unitsMgr;
+    ToolMgr& m_toolMgr;
 
     MainView* m_mainView;
 

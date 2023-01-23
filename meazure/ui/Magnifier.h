@@ -21,6 +21,7 @@
 
 #include <meazure/environment/ScreenInfoProvider.h>
 #include <meazure/config/Config.h>
+#include <meazure/tools/ToolMgr.h>
 #include <QWidget>
 #include <QPoint>
 #include <QImage>
@@ -41,7 +42,7 @@ class Magnifier : public QWidget {
 public:
     using ZoomFactors = std::array<int, 8>;
 
-    Magnifier();
+    Magnifier(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr);
 
     static constexpr const ZoomFactors& getZoomFactors() {
         return k_zoomFactors;

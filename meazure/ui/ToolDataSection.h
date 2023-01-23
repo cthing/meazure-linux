@@ -21,7 +21,9 @@
 
 #include "fields/DoubleDataField.h"
 #include <meazure/tools/RadioTool.h>
+#include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
+#include <meazure/tools/ToolMgr.h>
 #include <QGroupBox>
 #include <QLabel>
 
@@ -33,7 +35,7 @@ class ToolDataSection : public QGroupBox {
     Q_OBJECT
 
 public:
-    ToolDataSection();
+    ToolDataSection(const UnitsMgr& unitsMgr, const ToolMgr& toolMgr);
 
 private slots:
     /// Called when a radio tool has been selected.
@@ -108,6 +110,8 @@ private:
     /// Creates the text fields that provide the tool measurement display.
     ///
     void createFields();
+
+    const UnitsMgr& m_unitsMgr;
 
     QLabel* m_x1Label;
     QLabel* m_y1Label;

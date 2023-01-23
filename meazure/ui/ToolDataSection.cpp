@@ -18,19 +18,16 @@
  */
 
 #include "ToolDataSection.h"
-#include <meazure/tools/ToolMgr.h>
 #include <meazure/tools/RadioToolTraits.h>
-#include <meazure/units/UnitsMgr.h>
 #include <meazure/units/Units.h>
 #include <meazure/utils/LayoutUtils.h>
-#include <meazure/App.h>
 #include <QGridLayout>
 
 
-ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type-member-init)
+ToolDataSection::ToolDataSection(const UnitsMgr& unitsMgr, const ToolMgr& toolMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+        m_unitsMgr(unitsMgr) {
     createFields();
 
-    const ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::radioToolSelected, this, &ToolDataSection::radioToolSelected);
     connect(&toolMgr, &ToolMgr::xy1PositionChanged, this, &ToolDataSection::xy1PositionChanged);
     connect(&toolMgr, &ToolMgr::xy2PositionChanged, this, &ToolDataSection::xy2PositionChanged);
@@ -55,11 +52,10 @@ ToolDataSection::ToolDataSection() {        // NOLINT(cppcoreguidelines-pro-type
     connect(m_xvField, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepXVPosition);
     connect(m_yvField, &DoubleDataField::stepRequested, &toolMgr, &ToolMgr::stepYVPosition);
 
-    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
-    connect(&unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
-    connect(&unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::linearUnitsChanged);
-    connect(&unitsMgr, &UnitsMgr::angularUnitsChanged, this, &ToolDataSection::angularUnitsChanged);
-    connect(&unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::angularUnitsChanged);
+    connect(&m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, &ToolDataSection::linearUnitsChanged);
+    connect(&m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::linearUnitsChanged);
+    connect(&m_unitsMgr, &UnitsMgr::angularUnitsChanged, this, &ToolDataSection::angularUnitsChanged);
+    connect(&m_unitsMgr, &UnitsMgr::precisionsChanged, this, &ToolDataSection::angularUnitsChanged);
 }
 
 void ToolDataSection::createFields() {
@@ -201,8 +197,7 @@ void ToolDataSection::radioToolSelected(RadioTool& tool) {
 }
 
 void ToolDataSection::linearUnitsChanged() {
-    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
-    const LinearUnits* linearUnits = unitsMgr.getLinearUnits();
+    const LinearUnits* linearUnits = m_unitsMgr.getLinearUnits();
 
     const QString lengthLabel = linearUnits->getLengthLabel();
     m_y1Units->setText(lengthLabel);
@@ -226,8 +221,7 @@ void ToolDataSection::linearUnitsChanged() {
 }
 
 void ToolDataSection::angularUnitsChanged() {
-    const UnitsMgr& unitsMgr = App::instance()->getUnitsMgr();
-    const AngularUnits* angularUnits = unitsMgr.getAngularUnits();
+    const AngularUnits* angularUnits = m_unitsMgr.getAngularUnits();
 
     m_aUnits->setText(angularUnits->getLabel());
 

@@ -36,7 +36,8 @@ App::App(int &argc, char **argv):
         m_screenInfo(screens()),
         m_unitsMgr(m_screenInfo),
         m_toolMgr(m_screenInfo, m_unitsMgr),
-        m_posLogMgr(m_toolMgr, m_screenInfo, m_unitsMgr) {
+        m_posLogMgr(m_toolMgr, m_screenInfo, m_unitsMgr),
+        m_mainWindow(m_screenInfo, m_unitsMgr, m_toolMgr) {
     // Because the ICU library is statically compiled, its data file is not available at runtime. The data file is
     // distributed with the application in the "icu" subdirectory. Point the ICU library at this directory.
     u_setDataDirectory(findAppDataDir(k_icuDir).toUtf8().constData());

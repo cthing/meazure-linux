@@ -23,8 +23,8 @@
 #include <QKeySequence>
 
 
-MagnifierSection::MagnifierSection() :
-        m_magnifier(new Magnifier()),
+MagnifierSection::MagnifierSection(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr) :
+        m_magnifier(new Magnifier(screenInfo, toolMgr)),
         m_magnifierControls(new MagnifierControls(m_magnifier)),
         m_colorDisplay(new ColorDisplay()) {
     auto* layout = new QVBoxLayout();

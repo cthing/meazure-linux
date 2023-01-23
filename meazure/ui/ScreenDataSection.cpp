@@ -18,19 +18,17 @@
  */
 
 #include "ScreenDataSection.h"
-#include <meazure/tools/ToolMgr.h>
 #include <meazure/utils/LayoutUtils.h>
-#include <meazure/App.h>
 #include <QGridLayout>
 #include <QIcon>
 
 
-ScreenDataSection::ScreenDataSection(PrefsDialog* prefsDialog) : // NOLINT(cppcoreguidelines-pro-type-member-init)
-        m_screenInfo(App::instance()->getScreenInfo()),
-        m_unitsMgr(App::instance()->getUnitsMgr()) {
+ScreenDataSection::ScreenDataSection(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr, // NOLINT(cppcoreguidelines-pro-type-member-init)
+                                     PrefsDialog* prefsDialog) :
+        m_screenInfo(screenInfo),
+        m_unitsMgr(unitsMgr) {
     createFields();
 
-    const ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::xy1PositionChanged, this, &ScreenDataSection::update);
     connect(&toolMgr, &ToolMgr::xy2PositionChanged, this, &ScreenDataSection::update);
     connect(&toolMgr, &ToolMgr::xyvPositionChanged, this, &ScreenDataSection::update);

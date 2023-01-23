@@ -21,10 +21,11 @@
 #include <QVBoxLayout>
 
 
-MainView::MainView(PrefsDialog* prefsDialog) :
-        m_toolDataSection(new ToolDataSection()),
-        m_screenDataSection(new ScreenDataSection(prefsDialog)),
-        m_magnifierSection(new MagnifierSection) {
+MainView::MainView(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr,
+                   PrefsDialog* prefsDialog) :
+        m_toolDataSection(new ToolDataSection(unitsMgr, toolMgr)),
+        m_screenDataSection(new ScreenDataSection(screenInfo, unitsMgr, toolMgr, prefsDialog)),
+        m_magnifierSection(new MagnifierSection(screenInfo, toolMgr)) {
     auto* layout = new QVBoxLayout();
     setLayout(layout);
 

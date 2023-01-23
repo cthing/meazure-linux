@@ -24,6 +24,9 @@
 #include "MagnifierSection.h"
 #include <meazure/prefs/ui/PrefsDialog.h>
 #include <meazure/config/Config.h>
+#include <meazure/units/UnitsMgr.h>
+#include <meazure/environment/ScreenInfo.h>
+#include <meazure/tools/ToolMgr.h>
 #include <QWidget>
 #include <QAction>
 #include <vector>
@@ -36,7 +39,8 @@ class MainView : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MainView(PrefsDialog* prefsDialog);
+    explicit MainView(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr,
+                      PrefsDialog* prefsDialog);
 
     [[nodiscard]] QAction* getMagnifierZoomInAction() const;
     [[nodiscard]] QAction* getMagnifierZoomOutAction() const;

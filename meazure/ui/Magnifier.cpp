@@ -18,15 +18,13 @@
  */
 
 #include "Magnifier.h"
-#include <meazure/App.h>
-#include <meazure/tools/ToolMgr.h>
 #include <QPainter>
 #include <QBrush>
 #include <QColor>
 
 
-Magnifier::Magnifier() :
-        m_screenInfo(App::instance()->getScreenInfo()),
+Magnifier::Magnifier(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr) :
+        m_screenInfo(screenInfo),
         m_gridPen(QBrush(QColor(0, 0, 0)), 1),
         m_centerMarkerPen(QBrush(QColor(255, 0, 0)), 1) {
     setFixedSize(k_size, k_size);
@@ -35,7 +33,6 @@ Magnifier::Magnifier() :
     m_grabTimer.setInterval(k_updateRate);
     connect(&m_grabTimer, &QTimer::timeout, this, &Magnifier::periodicGrab);
 
-    const ToolMgr& toolMgr = App::instance()->getToolMgr();
     connect(&toolMgr, &ToolMgr::activePositionChanged, this, &Magnifier::setCurPos);
 
     setZoom(m_zoomIndex);

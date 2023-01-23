@@ -22,6 +22,8 @@
 #include "Magnifier.h"
 #include "MagnifierControls.h"
 #include "ColorDisplay.h"
+#include <meazure/environment/ScreenInfoProvider.h>
+#include <meazure/tools/ToolMgr.h>
 #include <meazure/config/Config.h>
 #include <QWidget>
 #include <QAction>
@@ -35,7 +37,7 @@ class MagnifierSection : public QWidget {
     Q_OBJECT
 
 public:
-    MagnifierSection();
+    MagnifierSection(const ScreenInfoProvider& screenInfo, const ToolMgr& toolMgr);
 
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);

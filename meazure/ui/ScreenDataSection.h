@@ -22,6 +22,7 @@
 #include <meazure/units/Units.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/environment/ScreenInfo.h>
+#include <meazure/tools/ToolMgr.h>
 #include <meazure/prefs/ui/PrefsDialog.h>
 #include "fields/DoubleDataField.h"
 #include <QGroupBox>
@@ -38,7 +39,8 @@ class ScreenDataSection : public QGroupBox {
     Q_OBJECT
 
 public:
-    explicit ScreenDataSection(PrefsDialog* prefsDialog);
+    explicit ScreenDataSection(const ScreenInfo& screenInfo, const UnitsMgr& unitsMgr, const ToolMgr& toolMgr,
+                               PrefsDialog* prefsDialog);
 
 private slots:
     void linearUnitsChanged();
