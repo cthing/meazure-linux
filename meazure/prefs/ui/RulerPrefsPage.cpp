@@ -57,8 +57,8 @@ void RulerPrefsPage::createUI() {
     m_ruler2 = new Ruler(m_screenInfo, m_unitsMgr, false, checkerBoardDark, *m_model->m_rulerBackColor,
                          *m_model->m_rulerBorderColor, Colors::opacityFromPercent(*m_model->m_rulerOpacity));
 
-    m_ruler1->setPosition(QPoint(0, 0), 200, 90);
-    m_ruler2->setPosition(QPoint(0, 0), 200, 90);
+    m_ruler1->setPosition(k_rulerOrigin, k_rulerLength, 90);
+    m_ruler2->setPosition(k_rulerOrigin, k_rulerLength, 90);
 
     auto* layout = new QGridLayout();
     setLayout(layout);
@@ -86,16 +86,6 @@ void RulerPrefsPage::createUI() {
 
     layout->addWidget(checkerBoardLight, k_row0, k_col3, k_rowspan4, k_colspan1);
     layout->addWidget(checkerBoardDark,  k_row0, k_col4, k_rowspan4, k_colspan1);
-
-    auto* rulerLayoutLight = new QVBoxLayout();
-    rulerLayoutLight->setContentsMargins(k_rulerMargin);
-    rulerLayoutLight->addWidget(m_ruler1);
-    checkerBoardLight->setLayout(rulerLayoutLight);
-
-    auto* rulerLayoutDark = new QVBoxLayout();
-    rulerLayoutDark->setContentsMargins(k_rulerMargin);
-    rulerLayoutDark->addWidget(m_ruler2);
-    checkerBoardDark->setLayout(rulerLayoutDark);
 }
 
 void RulerPrefsPage::configure() {

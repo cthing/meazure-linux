@@ -42,6 +42,12 @@ class Crosshair : public Graphic {
     Q_OBJECT
 
 public:
+    enum ColorMode {
+        Auto,
+        AlwaysBackground,
+        AlwaysHighlight
+    };
+
     /// Constructs a crosshair.
     ///
     /// @param[in] screenInfo Information about the display screens
@@ -82,6 +88,16 @@ public:
     /// @param[in] opacityPercent Opacity of the crosshair ranging from 0 (transparent) to 100 (opaque)
     ///
     void setOpacity(int opacityPercent);
+
+    /// Sets the mode for displaying the crosshair background color. By default (Auto), the normal background color
+    /// is used when the pointer is not over the crosshair and the highlight color is used when the pointer is over
+    /// the crosshair. In AlwaysBackground mode, the normal background color is used regardless of the pointer
+    /// position. In AlwaysHighlight mode, the highlight color is used regardless of the pointer position. This
+    /// is used by the sample crosshairs on the tools preference page.
+    ///
+    /// @param[in] mode Show the crosshair background color according to the specified mode.
+    ///
+    void setColorMode(ColorMode mode);
 
     /// Sets the position of the crosshair. Emits the moved signal.
     ///
@@ -208,4 +224,5 @@ private:
     QPoint m_initialGrabPosition;
     QTimer m_flashTimer;
     int m_flashCountDown { -1 };
+    ColorMode m_colorMode { Auto };
 };

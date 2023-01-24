@@ -28,6 +28,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QSlider>
+#include <QPoint>
 
 
 /// Ruler preferences user interface.
@@ -53,7 +54,8 @@ public:
 private:
     static constexpr int k_buttonWidth { 130 };                     // Width of buttons, pixels
     static constexpr QMargins k_contentMargin { 10, 10, 10, 10 };   // Page margin, pixels
-    static constexpr QMargins k_rulerMargin { 25, 15, 0, 0 };       // Margin around sample rulers, pixels
+    static constexpr QPoint k_rulerOrigin { 10, 10 };               // Sample rulers origin on checkerboards, pixels
+    static constexpr int k_rulerLength { 200 };                     // Sample rulers length, pixels
     static constexpr int k_columnSpacer { 10 };                     // Column spacing, pixels
     static constexpr int k_verticalSpacing { 15 };                  // Vertical space between rows, pixels
     static constexpr int k_opacitySpace { 5 };                      // Space between opacity slider items

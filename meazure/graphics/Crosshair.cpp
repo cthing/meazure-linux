@@ -55,7 +55,7 @@ Crosshair::Crosshair(const ScreenInfo* screenInfo, const UnitsProvider* unitsPro
     connect(Colors::getChangeNotifier(), &Colors::ChangeNotifier::colorChanged, this, &Crosshair::colorChanged);
     connect(m_screenInfo, &ScreenInfo::resolutionChanged, this, [this]() {
         init();
-        setPosition(m_position);
+        setPosition(geometry().center());
     });
 
     m_flashTimer.setTimerType(Qt::PreciseTimer);
@@ -115,6 +115,11 @@ void Crosshair::setOpacity(int opacityPercent) {
     }
 }
 
+void Crosshair::setColorMode(ColorMode mode) {
+    m_colorMode = mode;
+    repaint();
+}
+
 void Crosshair::setPosition(const QPoint &center) {
     m_position = center;
     const QPoint topLeft = m_position - m_centerOffset;
@@ -147,7 +152,10 @@ void Crosshair::flashHandler() {
 void Crosshair::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
-    painter.fillRect(rect(), m_pointerOver ? m_highlightBrush : m_backgroundBrush);
+    const QBrush& fillBrush = (m_colorMode == Auto)
+            ? (m_pointerOver ? m_highlightBrush : m_backgroundBrush)
+            : ((m_colorMode == AlwaysBackground) ? m_backgroundBrush : m_highlightBrush);
+    painter.fillRect(rect(), fillBrush);
 
     const QPen& outlinePen = m_highlight ? m_highlightPen : m_borderPen;
     painter.strokePath(m_crosshair, outlinePen);
