@@ -20,27 +20,13 @@
 #include "ConfigMgr.h"
 #include "ExportedConfig.h"
 #include "PersistentConfig.h"
-#include <meazure/App.h>
-#include <meazure/graphics/Colors.h>
-#include <meazure/graphics/Dimensions.h>
-#include <meazure/ui/MainWindow.h>
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QCoreApplication>
 
 
-ConfigMgr::ConfigMgr(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr, bool devMode) :
-        m_screenInfo(screenInfo),
-        m_unitsMgr(unitsMgr),
-        m_toolMgr(toolMgr),
-        m_posLogMgr(posLogMgr),
-        m_initialDir(QDir::homePath()),
-        m_devMode(devMode) {
-}
-
-void ConfigMgr::setMainWindow(MainWindow* mainWindow) {
-    m_mainWindow = mainWindow;
+ConfigMgr::ConfigMgr(bool devMode) : m_devMode(devMode) {
 }
 
 void ConfigMgr::exportConfig() {
@@ -117,13 +103,9 @@ QString ConfigMgr::getDevSettingsPathname() {
 }
 
 void ConfigMgr::writeConfig(Config& config) const {
-    m_mainWindow->writeConfig(config);
-    m_posLogMgr->writeConfig(config);
-    m_toolMgr->writeConfig(config);
-    m_unitsMgr->writeConfig(config);
-    m_screenInfo->writeConfig(config);
-    Colors::writeConfig(config);
-    Dimensions::writeConfig(config);
+    for (const WriteConfig& writer : m_writers) {
+        writer(config);
+    }
 
     if (config.isPersistent()) {
         config.writeStr("LastConfigDir", m_initialDir);
@@ -131,13 +113,9 @@ void ConfigMgr::writeConfig(Config& config) const {
 }
 
 void ConfigMgr::readConfig(const Config& config) {
-    Dimensions::readConfig(config);
-    Colors::readConfig(config);
-    m_screenInfo->readConfig(config);
-    m_unitsMgr->readConfig(config);
-    m_toolMgr->readConfig(config);
-    m_posLogMgr->readConfig(config);
-    m_mainWindow->readConfig(config);
+    for (const ReadConfig& reader : m_readers) {
+        reader(config);
+    }
 
     if (config.isPersistent()) {
         m_initialDir = config.readStr("LastConfigDir", m_initialDir);

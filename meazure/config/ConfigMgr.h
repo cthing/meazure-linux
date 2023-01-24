@@ -26,6 +26,8 @@
 #include <meazure/position-log/PosLogMgr.h>
 #include <QObject>
 #include <QString>
+#include <vector>
+#include <functional>
 
 
 class MainWindow;
@@ -39,9 +41,20 @@ class ConfigMgr : public QObject {
     Q_OBJECT
 
 public:
-    ConfigMgr(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr, bool devMode);
+    using WriteConfig = std::function<void(Config&)>;
+    using ReadConfig = std::function<void(const Config&)>;
 
-    void setMainWindow(MainWindow* mainWindow);
+    explicit ConfigMgr(bool devMode);
+
+    template <class ...WRITERS>
+    void registerWriter(const WRITERS&... writers) {
+        m_writers = { writers... };
+    };
+
+    template <class ...READERS>
+    void registerReader(const READERS&... readers) {
+        m_readers = { readers... };
+    }
 
 public slots:
     void exportConfig();
@@ -61,13 +74,10 @@ private:
 
     [[nodiscard]] static QString getDevSettingsPathname();
 
-    ScreenInfo* m_screenInfo;
-    UnitsMgr* m_unitsMgr;
-    ToolMgr* m_toolMgr;
-    PosLogMgr* m_posLogMgr;
-    MainWindow* m_mainWindow { nullptr };
     QString m_exportPathname;
     QString m_importPathname;
     QString m_initialDir;
     bool m_devMode;
+    std::vector<WriteConfig> m_writers;
+    std::vector<ReadConfig> m_readers;
 };

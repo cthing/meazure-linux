@@ -27,6 +27,7 @@
 #include "config/ConfigMgr.h"
 #include <QApplication>
 #include <QString>
+#include <QCommandLineParser>
 
 
 /// Represents the application.
@@ -50,7 +51,21 @@ public:
     static QString findAppDataDir(const QString& subdir = QString());
 
 private:
+    // Command-line options
+    static constexpr const char* k_devmodeOpt { "devmode" };
+    static constexpr const char* k_positionsLongOpt { "positions" };
+    static constexpr const char* k_positionsShortOpt { "p" };
+    static constexpr const char* k_configLongOpt { "config" };
+    static constexpr const char* k_configShortOpt { "c" };
+
+    static constexpr const char* k_devmodeMarkerFilename { "meadevmode" };
     static constexpr const char* k_icuDir { "icu" };
+
+    void parseCommandLine(QCommandLineParser& parser);
+
+    static bool findDevMode(const QCommandLineParser& parser);
+
+    void populateConfigMgr();
 
     ScreenInfo* m_screenInfo;
     UnitsMgr* m_unitsMgr;

@@ -20,7 +20,6 @@
 #include "App.h"
 #include "AppVersion.h"
 #include <QtPlugin>
-#include <QCommandLineParser>
 #include <QStyleFactory>
 #include <QPixmap>
 #include <QDir>
@@ -30,86 +29,51 @@
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
 
-// Command-line options
-static constexpr const char* k_devmodeOpt { "devmode" };
-static constexpr const char* k_positionsLongOpt { "positions" };
-static constexpr const char* k_positionsShortOpt { "p" };
-static constexpr const char* k_configLongOpt { "config" };
-static constexpr const char* k_configShortOpt { "c" };
-
-static constexpr const char* k_devmodeMarkerFilename { "meadevmode" };
-
-
-static bool findDevMode(const QCommandLineParser& parser) {
-    bool mode = false;
-    if (QFileInfo(QCoreApplication::applicationDirPath() + "/" + k_devmodeMarkerFilename).exists()) {
-        mode = true;
-    }
-    if (parser.isSet(k_devmodeOpt)) {
-        const QString value = parser.value(k_devmodeOpt).toLower();
-        if (value == "true" || value == "t" || value == "enable") {
-            mode = true;
-        } else if (value == "false" || value == "f" || value == "disable") {
-            mode = false;
-        }
-    }
-    return mode;
-}
-
 
 App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppcoreguidelines-pro-type-member-init)
     // Because the ICU library is statically compiled, its data file is not available at runtime. The data file is
     // distributed with the application in the "icu" subdirectory. Point the ICU library at this directory.
     u_setDataDirectory(findAppDataDir(k_icuDir).toUtf8().constData());
 
+    // Set application metadata.
     setApplicationName("meazure");
     setApplicationVersion(appVersion);
-
     setOrganizationName("C Thing Software");
     setOrganizationDomain("cthing.com");
-
     setWindowIcon(QPixmap(":/images/Meazure.png"));
 
-    QCommandLineOption devModeOption(k_devmodeOpt, tr("Enable or disable development mode <bool>."),
-                                     tr("bool"), "false");
-    devModeOption.setFlags(QCommandLineOption::HiddenFromHelp);
-
+    // Parse the command-line.
     QCommandLineParser parser;
-    parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.addOptions({
-        {
-            { k_positionsShortOpt, k_positionsLongOpt },
-            tr("Load the position log file <filename>."),
-            tr("filename")
-        }, {
-            { k_configShortOpt, k_configLongOpt },
-            tr("Load the configuration file <filename>."),
-            tr("filename")
-        }
-    });
-    parser.addOption(devModeOption);
-    parser.process(*this);
+    parseCommandLine(parser);
 
+    // Determine if running in development mode.
     const bool devMode = findDevMode(parser);
 
+    // Create the singleton objects.
     m_screenInfo = new ScreenInfo(screens());                                                     // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_unitsMgr = new UnitsMgr(m_screenInfo);                                                      // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_toolMgr = new ToolMgr(m_screenInfo, m_unitsMgr);                                            // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_posLogMgr = new PosLogMgr(m_screenInfo, m_unitsMgr, m_toolMgr);                             // NOLINT(cppcoreguidelines-prefer-member-initializer)
-    m_configMgr = new ConfigMgr(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, devMode);       // NOLINT(cppcoreguidelines-prefer-member-initializer)
+    m_configMgr = new ConfigMgr(devMode);                                                         // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_mainWindow = new MainWindow(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, m_configMgr); // NOLINT(cppcoreguidelines-prefer-member-initializer)
 
-    m_configMgr->setMainWindow(m_mainWindow);
+    // Populate the configuration manager with the objects that will participate in saving, restoring
+    // and resetting the application configuration.
+    populateConfigMgr();
+
+    // Restore the save application state.
     m_configMgr->restoreConfig();
 
+    // Display the application window.
     m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
     m_mainWindow->show();
 
+    // Load a position log file, if one was specified on the command-line
     if (parser.isSet("positions")) {
         m_posLogMgr->load(parser.value("positions"));
     }
+
+    // Load a configuration file, if one was specified on the command-line
     if (parser.isSet("config")) {
         m_configMgr->import(parser.value("config"));
     }
@@ -122,6 +86,62 @@ App::~App() {
     delete m_toolMgr;
     delete m_unitsMgr;
     delete m_screenInfo;
+}
+
+void App::parseCommandLine(QCommandLineParser& parser) {
+    QCommandLineOption devModeOption(k_devmodeOpt, tr("Enable or disable development mode <bool>."),
+                                     tr("bool"), "false");
+    devModeOption.setFlags(QCommandLineOption::HiddenFromHelp);
+
+    parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addOptions({
+        {
+            { k_positionsShortOpt, k_positionsLongOpt }, tr("Load the position log file <filename>."), tr("filename")
+        }, {
+            { k_configShortOpt, k_configLongOpt }, tr("Load the configuration file <filename>."), tr("filename")
+        }
+    });
+    parser.addOption(devModeOption);
+    parser.process(*this);
+}
+
+bool App::findDevMode(const QCommandLineParser& parser) {
+    bool mode = false;
+
+    if (QFileInfo(QCoreApplication::applicationDirPath() + "/" + k_devmodeMarkerFilename).exists()) {
+        mode = true;
+    }
+
+    if (parser.isSet(k_devmodeOpt)) {
+        const QString value = parser.value(k_devmodeOpt).toLower();
+        if (value == "true" || value == "t" || value == "enable") {
+            mode = true;
+        } else if (value == "false" || value == "f" || value == "disable") {
+            mode = false;
+        }
+    }
+
+    return mode;
+}
+
+void App::populateConfigMgr() {
+    m_configMgr->registerWriter([this](Config& config) { m_mainWindow->writeConfig(config); },
+                                [this](Config& config) { m_posLogMgr->writeConfig(config); },
+                                [this](Config& config) { m_toolMgr->writeConfig(config); },
+                                [this](Config& config) { m_unitsMgr->writeConfig(config); },
+                                [this](Config& config) { m_screenInfo->writeConfig(config); },
+                                &Colors::writeConfig,
+                                &Dimensions::writeConfig);
+
+    m_configMgr->registerReader(&Dimensions::readConfig,
+                                &Colors::readConfig,
+                                [this](const Config& config) { m_screenInfo->readConfig(config); },
+                                [this](const Config& config) { m_unitsMgr->readConfig(config); },
+                                [this](const Config& config) { m_toolMgr->readConfig(config); },
+                                [this](const Config& config) { m_posLogMgr->readConfig(config); },
+                                [this](const Config& config) { m_mainWindow->readConfig(config); });
 }
 
 QString App::findAppDataDir(const QString& subdir) {
