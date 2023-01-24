@@ -59,15 +59,19 @@ void ToolPrefsPage::createUI() {
     m_normalCrosshair1 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Normal", -1,
                                        m_model->m_crosshairBackColor->getValue(),
                                        m_model->m_crosshairBackColor->getValue());
+    m_normalCrosshair1->setColorMode(Crosshair::AlwaysBackground);
     m_normalCrosshair2 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Normal", -1,
                                        m_model->m_crosshairBackColor->getValue(),
                                        m_model->m_crosshairBackColor->getValue());
+    m_normalCrosshair2->setColorMode(Crosshair::AlwaysBackground);
     m_highlightCrosshair1 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Highlight", -1,
                                           m_model->m_crosshairHighlightColor->getValue(),
                                           m_model->m_crosshairHighlightColor->getValue());
+    m_highlightCrosshair1->setColorMode(Crosshair::AlwaysHighlight);
     m_highlightCrosshair2 = new Crosshair(m_screenInfo, m_unitsMgr, this, "Highlight", -1,
                                           m_model->m_crosshairHighlightColor->getValue(),
                                           m_model->m_crosshairHighlightColor->getValue());
+    m_highlightCrosshair2->setColorMode(Crosshair::AlwaysHighlight);
     m_dataWindow1 = new ToolDataWindow(m_screenInfo, m_unitsMgr, XY1ReadOnly, this);
     m_dataWindow1->xy1PositionChanged(QPointF(100, 200), QPoint(100, 200));
     m_dataWindow2 = new ToolDataWindow(m_screenInfo, m_unitsMgr, XY1ReadOnly, this);
