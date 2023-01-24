@@ -27,14 +27,16 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCoreApplication>
 
 
-ConfigMgr::ConfigMgr(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr) :
+ConfigMgr::ConfigMgr(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr, bool devMode) :
         m_screenInfo(screenInfo),
         m_unitsMgr(unitsMgr),
         m_toolMgr(toolMgr),
         m_posLogMgr(posLogMgr),
-        m_initialDir(QDir::homePath()) {
+        m_initialDir(QDir::homePath()),
+        m_devMode(devMode) {
 }
 
 void ConfigMgr::setMainWindow(MainWindow* mainWindow) {
@@ -101,13 +103,17 @@ void ConfigMgr::import(const QString& pathname) {
 }
 
 void ConfigMgr::saveConfig() {
-    PersistentConfig config;
+    PersistentConfig config = m_devMode ? PersistentConfig(getDevSettingsPathname()) : PersistentConfig();
     writeConfig(config);
 }
 
 void ConfigMgr::restoreConfig() {
-    const PersistentConfig config;
+    const PersistentConfig& config = m_devMode ? PersistentConfig(getDevSettingsPathname()) : PersistentConfig();
     readConfig(config);
+}
+
+QString ConfigMgr::getDevSettingsPathname() {
+    return QCoreApplication::applicationDirPath() + "/" + k_devSettingsFilename;
 }
 
 void ConfigMgr::writeConfig(Config& config) const {

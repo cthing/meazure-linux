@@ -299,3 +299,12 @@ add_custom_command(TARGET meazure POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E make_directory icu
                    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ICU_RES_DIRS}/*" icu
                    )
+
+# When the app is run from the build directory, it should run in development mode. One aspect of running in
+# development mode is that the application state is persisted in the build directory rather than the user's home
+# directory or registry. The app will run in development mode if the "meadevmode" marker file is present in the
+# same directory as the executable. In addition, regardless of the presence or absence of the marker file,
+# development mode can be explicitly enabled or disabled using the "devmode" command line option.
+add_custom_command(TARGET libmeazure POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E touch meadevmode
+                   )

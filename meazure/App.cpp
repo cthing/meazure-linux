@@ -30,6 +30,32 @@
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 Q_IMPORT_PLUGIN(QSvgIconPlugin)
 
+// Command-line options
+static constexpr const char* k_devmodeOpt { "devmode" };
+static constexpr const char* k_positionsLongOpt { "positions" };
+static constexpr const char* k_positionsShortOpt { "p" };
+static constexpr const char* k_configLongOpt { "config" };
+static constexpr const char* k_configShortOpt { "c" };
+
+static constexpr const char* k_devmodeMarkerFilename { "meadevmode" };
+
+
+static bool findDevMode(const QCommandLineParser& parser) {
+    bool mode = false;
+    if (QFileInfo(QCoreApplication::applicationDirPath() + "/" + k_devmodeMarkerFilename).exists()) {
+        mode = true;
+    }
+    if (parser.isSet(k_devmodeOpt)) {
+        const QString value = parser.value(k_devmodeOpt).toLower();
+        if (value == "true" || value == "t" || value == "enable") {
+            mode = true;
+        } else if (value == "false" || value == "f" || value == "disable") {
+            mode = false;
+        }
+    }
+    return mode;
+}
+
 
 App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppcoreguidelines-pro-type-member-init)
     // Because the ICU library is statically compiled, its data file is not available at runtime. The data file is
@@ -44,32 +70,39 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppco
 
     setWindowIcon(QPixmap(":/images/Meazure.png"));
 
+    QCommandLineOption devModeOption(k_devmodeOpt, tr("Enable or disable development mode <bool>."),
+                                     tr("bool"), "false");
+    devModeOption.setFlags(QCommandLineOption::HiddenFromHelp);
+
     QCommandLineParser parser;
     parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOptions({
         {
-            { "p", "positions" },
+            { k_positionsShortOpt, k_positionsLongOpt },
             tr("Load the position log file <filename>."),
-            tr("filename")},
-        });
-    parser.addOptions({
-        {
-            { "c", "config" },
+            tr("filename")
+        }, {
+            { k_configShortOpt, k_configLongOpt },
             tr("Load the configuration file <filename>."),
-            tr("filename")},
-        });
+            tr("filename")
+        }
+    });
+    parser.addOption(devModeOption);
     parser.process(*this);
+
+    const bool devMode = findDevMode(parser);
 
     m_screenInfo = new ScreenInfo(screens());                                                     // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_unitsMgr = new UnitsMgr(m_screenInfo);                                                      // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_toolMgr = new ToolMgr(m_screenInfo, m_unitsMgr);                                            // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_posLogMgr = new PosLogMgr(m_screenInfo, m_unitsMgr, m_toolMgr);                             // NOLINT(cppcoreguidelines-prefer-member-initializer)
-    m_configMgr = new ConfigMgr(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr);                // NOLINT(cppcoreguidelines-prefer-member-initializer)
+    m_configMgr = new ConfigMgr(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, devMode);       // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_mainWindow = new MainWindow(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, m_configMgr); // NOLINT(cppcoreguidelines-prefer-member-initializer)
 
     m_configMgr->setMainWindow(m_mainWindow);
+    m_configMgr->restoreConfig();
 
     m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
     m_mainWindow->show();

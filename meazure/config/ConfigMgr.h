@@ -39,7 +39,7 @@ class ConfigMgr : public QObject {
     Q_OBJECT
 
 public:
-    ConfigMgr(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr);
+    ConfigMgr(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ToolMgr* toolMgr, PosLogMgr* posLogMgr, bool devMode);
 
     void setMainWindow(MainWindow* mainWindow);
 
@@ -54,9 +54,12 @@ public slots:
 private:
     static constexpr const char* k_fileFilter { "Meazure Configuration Files (*.mea);;All Files (*.*)" };
     static constexpr const char* k_fileSuffix { ".mea" };
+    static constexpr const char* k_devSettingsFilename { "MeaDevSettings.conf" };
 
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
+
+    [[nodiscard]] static QString getDevSettingsPathname();
 
     ScreenInfo* m_screenInfo;
     UnitsMgr* m_unitsMgr;
@@ -66,4 +69,5 @@ private:
     QString m_exportPathname;
     QString m_importPathname;
     QString m_initialDir;
+    bool m_devMode;
 };

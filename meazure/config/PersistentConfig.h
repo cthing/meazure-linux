@@ -37,7 +37,7 @@ public:
 
     /// @internal
     /// Creates a persistent configuration using the specified pathname. If the pathname does not exist,
-    /// it will be created. This method is used for testing purposes.
+    /// it will be created. This method is used for development and testing purposes.
     ///
     /// @param[in] pathname Pathname of the settings file
     ///

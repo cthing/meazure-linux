@@ -792,5 +792,9 @@ void MainWindow::closeEvent(QCloseEvent* event) {
         }
     }
 
+    if (accept) {
+        m_configMgr->saveConfig();
+    }
+
     event->setAccepted(accept);
 }
