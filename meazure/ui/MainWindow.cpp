@@ -265,7 +265,7 @@ void MainWindow::createActions() {
         }
     });
 
-    m_gridAdjustAction = new QAction(tr("Screen &Grid Spacing..."), this);
+    m_gridAdjustAction = new QAction(tr("Screen &Grid Settings..."), this);
     connect(m_gridAdjustAction, &QAction::triggered, this, &MainWindow::adjustGrid);
 
     // Units actions
