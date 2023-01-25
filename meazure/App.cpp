@@ -127,21 +127,29 @@ bool App::findDevMode(const QCommandLineParser& parser) {
 }
 
 void App::populateConfigMgr() {
-    m_configMgr->registerWriter([this](Config& config) { m_mainWindow->writeConfig(config); },
-                                [this](Config& config) { m_posLogMgr->writeConfig(config); },
-                                [this](Config& config) { m_toolMgr->writeConfig(config); },
-                                [this](Config& config) { m_unitsMgr->writeConfig(config); },
-                                [this](Config& config) { m_screenInfo->writeConfig(config); },
-                                &Colors::writeConfig,
-                                &Dimensions::writeConfig);
+    m_configMgr->registerWriters([this](Config& config) { m_mainWindow->writeConfig(config); },
+                                 [this](Config& config) { m_posLogMgr->writeConfig(config); },
+                                 [this](Config& config) { m_toolMgr->writeConfig(config); },
+                                 [this](Config& config) { m_unitsMgr->writeConfig(config); },
+                                 [this](Config& config) { m_screenInfo->writeConfig(config); },
+                                 &Colors::writeConfig,
+                                 &Dimensions::writeConfig);
 
-    m_configMgr->registerReader(&Dimensions::readConfig,
-                                &Colors::readConfig,
-                                [this](const Config& config) { m_screenInfo->readConfig(config); },
-                                [this](const Config& config) { m_unitsMgr->readConfig(config); },
-                                [this](const Config& config) { m_toolMgr->readConfig(config); },
-                                [this](const Config& config) { m_posLogMgr->readConfig(config); },
-                                [this](const Config& config) { m_mainWindow->readConfig(config); });
+    m_configMgr->registerReaders(&Dimensions::readConfig,
+                                 &Colors::readConfig,
+                                 [this](const Config& config) { m_screenInfo->readConfig(config); },
+                                 [this](const Config& config) { m_unitsMgr->readConfig(config); },
+                                 [this](const Config& config) { m_toolMgr->readConfig(config); },
+                                 [this](const Config& config) { m_posLogMgr->readConfig(config); },
+                                 [this](const Config& config) { m_mainWindow->readConfig(config); });
+
+    m_configMgr->registerResets(&Dimensions::hardReset,
+                                &Colors::hardReset,
+                                [this]() { m_screenInfo->hardReset(); },
+                                [this]() { m_unitsMgr->hardReset(); },
+                                [this]() { m_toolMgr->hardReset(); },
+                                [this]() { m_posLogMgr->hardRest(); },
+                                [this]() { m_mainWindow->hardReset(); });
 }
 
 QString App::findAppDataDir(const QString& subdir) {

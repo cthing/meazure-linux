@@ -23,6 +23,7 @@
 #include "PrefsPageId.h"
 #include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsMgr.h>
+#include <meazure/config/ConfigMgr.h>
 #include <QDialog>
 #include <QWidget>
 #include <QShowEvent>
@@ -35,7 +36,7 @@
 class PrefsDialog : public QDialog {
 
 public:
-    explicit PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, QWidget* parent);
+    explicit PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ConfigMgr* configMgr, QWidget* parent);
 
 public slots:
     int execPage(PrefsPageId pageId);
@@ -47,10 +48,12 @@ protected:
 private slots:
     void apply();
     void accept() override;
+    void reset();
 
 private:
     [[nodiscard]] bool isDirty() const;
 
     QTabWidget* m_tabs;
     std::vector<PrefsPage*> m_prefsPages;
+    ConfigMgr* m_configMgr;
 };

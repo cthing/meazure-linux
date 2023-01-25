@@ -87,6 +87,8 @@ public:
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
 
+    void hardRest();
+
 signals:
     void positionsLoaded();
     void positionsChanged(unsigned int numPositions);

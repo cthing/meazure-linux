@@ -288,9 +288,11 @@ void PosLogMgr::writeConfig(Config& config) const {
 }
 
 void PosLogMgr::readConfig(const Config& config) {
-    if (config.isPersistent()) {
-        m_initialDir = config.readStr("LastLogDir", m_initialDir);
-    }
+    m_initialDir = config.readStr("LastLogDir", m_initialDir);
+}
+
+void PosLogMgr::hardRest() {
+    m_initialDir.clear();
 }
 
 void PosLogMgr::showPosition(unsigned int positionIndex) {

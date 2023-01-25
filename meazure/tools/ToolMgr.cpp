@@ -162,6 +162,8 @@ void ToolMgr::hardReset() {
     }
 
     selectRadioTool(CursorTool::k_toolName);
+    setCrosshairsEnabled(true);
+    setDataWinEnabled(true);
 }
 
 Tool* ToolMgr::getTool(const char *toolName) const {

@@ -154,7 +154,7 @@ namespace Colors {
 
     /// Resets all colors to their default values.
     ///
-    void reset();
+    void hardReset();
 
     /// Persists the color settings to the specified configuration.
     ///

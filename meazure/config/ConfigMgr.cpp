@@ -98,6 +98,14 @@ void ConfigMgr::restoreConfig() {
     readConfig(config);
 }
 
+void ConfigMgr::hardReset() {
+    for (const HardReset& reset : m_resets) {
+        reset();
+    }
+
+    m_initialDir.clear();
+}
+
 QString ConfigMgr::getDevSettingsPathname() {
     return QCoreApplication::applicationDirPath() + "/" + k_devSettingsFilename;
 }
@@ -117,7 +125,5 @@ void ConfigMgr::readConfig(const Config& config) {
         reader(config);
     }
 
-    if (config.isPersistent()) {
-        m_initialDir = config.readStr("LastConfigDir", m_initialDir);
-    }
+    m_initialDir = config.readStr("LastConfigDir", m_initialDir);
 }

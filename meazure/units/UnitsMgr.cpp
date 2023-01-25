@@ -113,6 +113,8 @@ void UnitsMgr::hardReset() {
     for (const auto& unitsEntry : m_angularUnitsMap) {
         unitsEntry.second->hardReset();
     }
+
+    emit precisionsChanged();
 }
 
 void UnitsMgr::setLinearUnits(LinearUnitsId unitsId) {

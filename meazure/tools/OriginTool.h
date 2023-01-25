@@ -52,6 +52,8 @@ public:
     void writeConfig(Config& config) const override;
     void readConfig(const Config& config) override;
 
+    void hardReset() override;
+
     void refresh() override;
 
 private:

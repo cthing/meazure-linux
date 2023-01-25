@@ -50,6 +50,10 @@ void OriginTool::readConfig(const Config& config) {
     setPosition();
 }
 
+void OriginTool::hardReset() {
+    setEnabled(true);
+}
+
 void OriginTool::setPosition() {
     QPoint origin = m_unitsProvider->getOrigin();
     const bool inverted = m_unitsProvider->isInvertY();

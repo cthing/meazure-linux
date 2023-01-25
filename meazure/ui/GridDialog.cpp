@@ -96,10 +96,11 @@ void GridDialog::createUI() {
     angleLayout->addWidget(m_angleField);
     angleLayout->addWidget(angleUnitLabel);
 
-    auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset);
+    auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel
+            | QDialogButtonBox::RestoreDefaults);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &GridDialog::reject);
-    connect(buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &GridDialog::reset);
+    connect(buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, this, &GridDialog::softReset);
 
     auto* layout = new QGridLayout();
 
@@ -278,8 +279,8 @@ void GridDialog::restoreState() {
     m_gridTool->setSpacing(m_origSpacingH, m_origSpacingV, m_origLinkedSpacing, m_origUnits);
 }
 
-void GridDialog::reset() {
-    m_gridTool->hardReset();
+void GridDialog::softReset() {
+    m_gridTool->softReset();
     updateUI();
 }
 

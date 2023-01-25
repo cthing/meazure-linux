@@ -26,15 +26,19 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
+#include <QMessageBox>
 #include <algorithm>
 
 
-PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, QWidget *parent) :
+PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ConfigMgr* configMgr, QWidget *parent) :
         QDialog(parent),
-        m_tabs(new QTabWidget()) {
+        m_tabs(new QTabWidget()),
+        m_configMgr(configMgr) {
     setWindowTitle(tr("Preferences"));
 
     auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
+    auto* resetButton = buttonBox->addButton(tr("Hard Reset"), QDialogButtonBox::ButtonRole::ResetRole);
+    connect(resetButton, &QPushButton::clicked, this, &PrefsDialog::reset);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &PrefsDialog::accept);
     connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &PrefsDialog::apply);
@@ -95,4 +99,18 @@ void PrefsDialog::apply() {
 void PrefsDialog::accept() {
     apply();
     QDialog::accept();
+}
+
+void PrefsDialog::reset() {
+    const QMessageBox::StandardButton response =
+            QMessageBox::question(this, tr("Confirm Reset"),
+                                  tr("A hard reset restores all factory default settings.\n"
+                                     "All customizations will be lost, including resolution\n"
+                                     "calibration, custom units settings and color selections.\n"
+                                     "A hard reset cannot be undone.\n\nPerform a hard reset?"),
+                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    if (response == QMessageBox::Yes) {
+        m_configMgr->hardReset();
+        QDialog::accept();
+    }
 }

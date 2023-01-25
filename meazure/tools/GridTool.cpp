@@ -85,9 +85,14 @@ void GridTool::readConfig(const Config& config) {
     setEnabled(config.readBool("ScrnGrid", false));
 }
 
-void GridTool::hardReset() {
+void GridTool::softReset() {
     init();
     refresh();
+}
+
+void GridTool::hardReset() {
+    softReset();
+    setEnabled(false);
 }
 
 void GridTool::refresh() {

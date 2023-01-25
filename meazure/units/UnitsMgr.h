@@ -58,7 +58,7 @@ public:
     ///
     void readConfig(const Config& config);
 
-    /// Called when the master application reset is initiated. The units manager is setToDefaultValue to its default state.
+    /// Called when the master application hardReset is initiated. The units manager is setToDefaultValue to its default state.
     ///
     void hardReset();
 

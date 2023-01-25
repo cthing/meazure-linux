@@ -31,8 +31,8 @@ Dimensions::ChangeNotifier* Dimensions::getChangeNotifier() {
     return &changeNotifier;
 }
 
-void Dimensions::reset() {
-    lineWidth = k_defaultLineWidth;
+void Dimensions::hardReset() {
+    setLineWidth(k_defaultLineWidth);
 }
 
 void Dimensions::writeConfig(Config& config) {

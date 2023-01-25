@@ -50,6 +50,8 @@ public:
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
 
+    void hardReset();
+
 signals:
     void alwaysVisibleChanged(bool alwaysVisible);
     void toolBarVisibilityChanged(bool visible);

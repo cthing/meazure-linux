@@ -43,17 +43,23 @@ class ConfigMgr : public QObject {
 public:
     using WriteConfig = std::function<void(Config&)>;
     using ReadConfig = std::function<void(const Config&)>;
+    using HardReset = std::function<void(void)>;
 
     explicit ConfigMgr(bool devMode);
 
     template <class ...WRITERS>
-    void registerWriter(const WRITERS&... writers) {
+    void registerWriters(const WRITERS&... writers) {
         m_writers = { writers... };
     };
 
     template <class ...READERS>
-    void registerReader(const READERS&... readers) {
+    void registerReaders(const READERS&... readers) {
         m_readers = { readers... };
+    }
+
+    template <class ...RESETS>
+    void registerResets(const RESETS&... resets) {
+        m_resets = { resets... };
     }
 
 public slots:
@@ -63,6 +69,8 @@ public slots:
 
     void saveConfig();
     void restoreConfig();
+
+    void hardReset();
 
 private:
     static constexpr const char* k_fileFilter { "Meazure Configuration Files (*.mea);;All Files (*.*)" };
@@ -80,4 +88,5 @@ private:
     bool m_devMode;
     std::vector<WriteConfig> m_writers;
     std::vector<ReadConfig> m_readers;
+    std::vector<HardReset> m_resets;
 };

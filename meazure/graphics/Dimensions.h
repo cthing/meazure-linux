@@ -42,7 +42,7 @@ namespace Dimensions {
 
     /// Resets all dimensions to their default values.
     ///
-    void reset();
+    void hardReset();
 
     /// Persists the dimensions to the specified configuration.
     ///

@@ -56,6 +56,8 @@ public:
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);
 
+    void hardReset();
+
 private:
     ToolDataSection* m_toolDataSection;
     ScreenDataSection* m_screenDataSection;

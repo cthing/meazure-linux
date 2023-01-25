@@ -570,7 +570,7 @@ void MainWindow::createDialogs() {
     auto* gridTool = dynamic_cast<GridTool*>(m_toolMgr->getTool(GridTool::k_toolName));
     m_gridDialog = new GridDialog(gridTool, m_screenInfo, m_unitsMgr, this);
 
-    m_prefsDialog = new PrefsDialog(m_screenInfo, m_unitsMgr, this);
+    m_prefsDialog = new PrefsDialog(m_screenInfo, m_unitsMgr, m_configMgr, this);
 
     m_positionDialog = new PosLogManageDlg(m_posLogMgr, this);
 }
@@ -645,6 +645,13 @@ void MainWindow::readConfig(const Config& config) {
         geom.setY(config.readInt("WindowTop", geom.y()));
         setGeometry(geom);
     }
+}
+
+void MainWindow::hardReset() {
+    m_mainView->hardReset();
+
+    setAlwaysVisible();
+    setAllVisible(true);
 }
 
 void MainWindow::radioToolSelected(RadioTool& tool) {

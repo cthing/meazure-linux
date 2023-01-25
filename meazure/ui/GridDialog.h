@@ -47,7 +47,7 @@ private slots:
     void linkSpacing(bool link);
     void unitsSelected(int index);
     void spacingChanged(double hspace, double vspace, bool linkSpacing, LinearUnitsId units);
-    void reset();
+    void softReset();
     void reject() override;
     void customUnitsChanged();
 

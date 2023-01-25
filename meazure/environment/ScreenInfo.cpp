@@ -225,11 +225,11 @@ void ScreenInfo::readConfig(const Config& config) {
     }
 }
 
-void ScreenInfo::hardReset() const {
-    for (auto* screen : m_screens) {
+void ScreenInfo::hardReset() {
+    for (int idx = 0; idx < m_numScreens; idx++) {
         const QSizeF manualRes(0.0, 0.0);
-        screen->setScreenRes(k_defUseManualRes, &manualRes);
-        screen->setCalInInches(k_defCalInInches);
+        setScreenRes(idx, k_defUseManualRes, &manualRes);
+        setCalInInches(idx, k_defCalInInches);
     }
 }
 

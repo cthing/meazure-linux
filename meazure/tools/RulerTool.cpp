@@ -125,6 +125,10 @@ void RulerTool::readConfig(const Config& config) {
     setEnabled(config.readBool("Rulers", false));
 }
 
+void RulerTool::hardReset() {
+    setEnabled(false);
+}
+
 void RulerTool::setPositionConstrained(const QPoint &origin, int angle, int hLength, int vLength) {
     const QPoint originalOrigin(m_origin);
     const int originalAngle = m_angle;

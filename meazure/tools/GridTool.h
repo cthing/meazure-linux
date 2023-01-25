@@ -60,6 +60,7 @@ public:
 
     void readConfig(const Config& config) override;
 
+    void softReset();
     void hardReset() override;
 
     void refresh() override;

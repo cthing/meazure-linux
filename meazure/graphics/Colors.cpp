@@ -216,8 +216,10 @@ Colors::ChangeNotifier* Colors::getChangeNotifier() {
     return &colorChangeNotifier;
 }
 
-void Colors::reset() {
-    colors = defaultColors;
+void Colors::hardReset() {
+    for (auto const& [item, color] : defaultColors) {
+        set(item, color);
+    }
 }
 
 void Colors::writeConfig(Config& config) {

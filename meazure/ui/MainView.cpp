@@ -77,3 +77,7 @@ void MainView::writeConfig(Config& config) const {
 void MainView::readConfig(const Config& config) {
     m_magnifierSection->readConfig(config);
 }
+
+void MainView::hardReset() {
+    m_magnifierSection->hardReset();
+}
