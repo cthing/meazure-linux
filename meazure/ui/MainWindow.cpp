@@ -457,6 +457,11 @@ void MainWindow::createActions() {
     m_alwaysVisibleAction->setCheckable(true);
     connect(m_alwaysVisibleAction, &QAction::triggered, this, &MainWindow::setAlwaysVisible);
     connect(this, &MainWindow::alwaysVisibleChanged, m_alwaysVisibleAction, &QAction::setChecked);
+
+    // Help actions
+
+    m_aboutAction = new QAction(tr("&About"), this);
+    connect(m_aboutAction, &QAction::triggered, m_aboutDialog, &AboutDialog::exec);
 }
 
 void MainWindow::createMenus() {
@@ -549,6 +554,11 @@ void MainWindow::createMenus() {
     viewMenu->addAction(m_resetOriginAction);
     viewMenu->addSeparator();
     viewMenu->addAction(m_alwaysVisibleAction);
+
+    // Help menu
+
+    QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(m_aboutAction);
 }
 
 void MainWindow::createToolBar() {
@@ -573,6 +583,8 @@ void MainWindow::createDialogs() {
     m_prefsDialog = new PrefsDialog(m_screenInfo, m_unitsMgr, m_configMgr, this);
 
     m_positionDialog = new PosLogManageDlg(m_posLogMgr, this);
+
+    m_aboutDialog = new AboutDialog(this);
 }
 
 void MainWindow::createKeyboardControl() {

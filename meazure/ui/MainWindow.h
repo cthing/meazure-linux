@@ -21,6 +21,7 @@
 
 #include "MainView.h"
 #include "GridDialog.h"
+#include "AboutDialog.h"
 #include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsMgr.h>
 #include <meazure/tools/ToolMgr.h>
@@ -202,9 +203,12 @@ private:
     QAction* m_resetOriginAction;
     QAction* m_alwaysVisibleAction;
 
+    QAction* m_aboutAction;
+
     GridDialog* m_gridDialog;
     PrefsDialog* m_prefsDialog;
     PosLogManageDlg* m_positionDialog;
+    AboutDialog* m_aboutDialog;
 
     SectionVisibility m_sectionVisibility;
 };

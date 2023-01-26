@@ -5,6 +5,8 @@ set(TOP_SOURCES
 source_group(App FILES ${TOP_SOURCES})
 
 set(UI_SOURCES
+    ui/AboutDialog.cpp
+    ui/AboutDialog.h
     ui/ColorDisplay.cpp
     ui/ColorDisplay.h
     ui/fields/AbstractDataField.h
@@ -231,6 +233,7 @@ set(MEAZURE_RESOURCES
     resources/images/CalWarning.svg
     resources/images/CircleTool.svg
     resources/images/Clipboard.svg
+    resources/images/CThingSoftware.svg
     resources/images/CursorTool.svg
     resources/images/GridTool.svg
     resources/images/LineTool.svg
