@@ -23,7 +23,7 @@
 #include <QSpinBox>
 
 
-/// Test field for presenting an integer measurement value.
+/// Text field for presenting an integer measurement value.
 ///
 class IntegerDataField : public AbstractDataField<QSpinBox, int> {
 

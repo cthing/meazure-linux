@@ -31,7 +31,5 @@ void DoubleDataField::setDecimalsQuietly(int precision) {
 }
 
 void DoubleDataField::emitSteps(int numSteps) {
-    if (isEnabled() && !isReadOnly() && buttonSymbols() != NoButtons) {
-        emit stepRequested(numSteps);
-    }
+    emit stepRequested(numSteps);
 }

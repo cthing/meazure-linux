@@ -26,7 +26,5 @@ IntegerDataField::IntegerDataField(int charWidth, bool showButtons, bool readOnl
 }
 
 void IntegerDataField::emitSteps(int numSteps) {
-    if (isEnabled() && !isReadOnly() && buttonSymbols() != NoButtons) {
-        emit stepRequested(numSteps);
-    }
+    emit stepRequested(numSteps);
 }
