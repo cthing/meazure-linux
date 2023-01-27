@@ -274,8 +274,8 @@ target_include_directories(meazure PRIVATE
                            "${CMAKE_CURRENT_BINARY_DIR}"
                            )
 target_link_directories(meazure PRIVATE
-                        "${Qt6_RES_DIRS}/archdatadir/plugins/platforms"
-                        "${Qt6_RES_DIRS}/archdatadir/plugins/iconengines"
+                        "${Qt6_QXcbIntegrationPlugin_LIB_DIRS}"
+                        "${Qt6_QXcbIntegrationPlugin_LIB_DIRS}/../iconengines"
                         ${Qt6_Core_LIB_DIRS}
                         )
 target_link_libraries(meazure PRIVATE
