@@ -22,7 +22,7 @@ include(${DEV_DIR}/conan/cthing-conan.cmake)
 
 conan_cmake_configure(REQUIRES
                       qt/6.3.1
-                      xerces-c/3.2.3
+                      xerces-c/3.2.4
                       OPTIONS qt:qtsvg=True xerces-c:char_type=char16_t
                       GENERATORS ${CTHING_CONAN_GENERATOR})
 
