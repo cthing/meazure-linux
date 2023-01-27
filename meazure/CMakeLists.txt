@@ -273,9 +273,12 @@ target_include_directories(meazure PRIVATE
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_CURRENT_BINARY_DIR}"
                            )
+
+cmake_path(GET Qt6_QXcbIntegrationPlugin_LIB_DIRS PARENT_PATH PLUGINS_DIR)
+
 target_link_directories(meazure PRIVATE
                         "${Qt6_QXcbIntegrationPlugin_LIB_DIRS}"
-                        "${Qt6_QXcbIntegrationPlugin_LIB_DIRS}/../iconengines"
+                        "${PLUGINS_DIR}/iconengines"
                         ${Qt6_Core_LIB_DIRS}
                         )
 target_link_libraries(meazure PRIVATE
