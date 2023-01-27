@@ -38,6 +38,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent) {
     auto* infoLabel = new QLabel(getInfo());
     auto* cthingLabel = new QLabel("<a href='https://www.cthing.com'>www.cthing.com</a>");
     cthingLabel->setOpenExternalLinks(true);
+    auto* copyrightLabel = new QLabel("Copyright 2001 C Thing Software");
     auto* contributeMsg = new QLabel(tr("We hope Meazure is a valuable addition\n"
                                         "to your software toolbox. Please consider\n"
                                         "making a financial contribution.\n\nThank you!"));
@@ -51,7 +52,8 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent) {
     infoLayout->addWidget(meazureIcon, k_row0, k_col0, k_rowspan2, k_colspan1, Qt::AlignTop);
     infoLayout->addWidget(cthingIcon, k_row0, k_col2, k_rowspan2, k_colspan1, Qt::AlignTop);
     infoLayout->addWidget(infoLabel, k_row0, k_col1);
-    infoLayout->addWidget(cthingLabel, k_row1, k_col1);
+    infoLayout->addWidget(cthingLabel, k_row1, k_col0, k_rowspan1, k_colspan2);
+    infoLayout->addWidget(copyrightLabel, k_row2, k_col0, k_rowspan1, k_colspan2);
     infoLayout->setColumnStretch(k_col1, k_stretch1);
 
     auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);

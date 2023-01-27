@@ -43,6 +43,7 @@
 #include <QCursor>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QDesktopServices>
 #include <vector>
 
 
@@ -460,6 +461,16 @@ void MainWindow::createActions() {
 
     // Help actions
 
+    m_releasesAction = new QAction(tr("&Releases"), this);
+    connect(m_releasesAction, &QAction::triggered, this, []() {
+        QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure/releases"));
+    });
+
+    m_reportIssueAction = new QAction(tr("Report an &Issue"), this);
+    connect(m_reportIssueAction, &QAction::triggered, this, []() {
+        QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure/issues"));
+    });
+
     m_aboutAction = new QAction(tr("&About"), this);
     connect(m_aboutAction, &QAction::triggered, m_aboutDialog, &AboutDialog::exec);
 }
@@ -558,6 +569,8 @@ void MainWindow::createMenus() {
     // Help menu
 
     QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(m_releasesAction);
+    helpMenu->addAction(m_reportIssueAction);
     helpMenu->addAction(m_aboutAction);
 }
 

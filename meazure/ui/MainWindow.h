@@ -203,6 +203,8 @@ private:
     QAction* m_resetOriginAction;
     QAction* m_alwaysVisibleAction;
 
+    QAction* m_releasesAction;
+    QAction* m_reportIssueAction;
     QAction* m_aboutAction;
 
     GridDialog* m_gridDialog;
