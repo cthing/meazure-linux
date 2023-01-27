@@ -21,7 +21,7 @@ set(DOCS_DIR "${PROJECT_SOURCE_DIR}/docs")
 include(${DEV_DIR}/conan/cthing-conan.cmake)
 
 conan_cmake_configure(REQUIRES
-                      qt/6.3.2
+                      qt/6.4.2
                       libffi/3.4.3   # Resolve Qt conflict between wayland and glib even though wayland is excluded
                       xerces-c/3.2.4
                       OPTIONS qt:qtsvg=True qt:with_glib=True qt:qtwayland=False xerces-c:char_type=char16_t
