@@ -24,7 +24,7 @@
 CursorTool::CursorTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject *parent) :
         RadioTool(screenInfo, unitsProvider, parent),
         m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly)) {
-    connect(m_pointerTracker, &PointerTracker::motion, this, &CursorTool::pointerMotion);
+    connect(m_pointerTracker, &CursorTracker::motion, this, &CursorTool::cursorMotion);
 }
 
 CursorTool::~CursorTool() {
@@ -66,8 +66,8 @@ bool CursorTool::hasCrosshairs() const {
     return false;
 }
 
-void CursorTool::pointerMotion(int16_t x, int16_t y) {
-    emitMeasurement(QPoint(x, y));
+void CursorTool::cursorMotion(QPoint pos) {
+    emitMeasurement(pos);
 }
 
 void CursorTool::placeDataWin(const QPoint &position) {

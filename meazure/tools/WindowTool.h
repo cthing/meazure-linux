@@ -21,7 +21,7 @@
 
 #include "RadioTool.h"
 #include <meazure/environment/WindowFinder.h>
-#include <meazure/environment/PointerTracker.h>
+#include <meazure/environment/CursorTracker.h>
 #include <meazure/environment/WindowTracker.h>
 #include <meazure/graphics/Rectangle.h>
 #include <meazure/ui/ToolDataWindow.h>
@@ -79,7 +79,7 @@ signals:
     void areaChanged(double area);
 
 private slots:
-    void pointerMotion(int16_t x, int16_t y);
+    void cursorMotion(QPoint pos);
     void windowChanged(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height);
 
 private:
@@ -89,7 +89,7 @@ private:
     void setPosition(const QPoint& position);
 
     WindowFinder* m_windowFinder { new WindowFinder() };
-    PointerTracker* m_pointerTracker { new PointerTracker(this) };
+    CursorTracker* m_pointerTracker { new CursorTracker(this) };
     WindowTracker* m_windowTracker { new WindowTracker(this) };
     Rectangle* m_rectangle;
     ToolDataWindow* m_dataWindow;

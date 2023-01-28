@@ -28,7 +28,7 @@ WindowTool::WindowTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsP
         m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, WHReadOnly)) {
     m_rectangle->setLineWidth(2 * Dimensions::getLineWidth());
 
-    connect(m_pointerTracker, &PointerTracker::motion, this, &WindowTool::pointerMotion);
+    connect(m_pointerTracker, &CursorTracker::motion, this, &WindowTool::cursorMotion);
     connect(m_windowTracker, &WindowTracker::windowChanged, this, &WindowTool::windowChanged);
 }
 
@@ -85,9 +85,9 @@ void WindowTool::windowChanged(unsigned long, int16_t, int16_t, uint16_t, uint16
     m_windowFinder->refresh();
 }
 
-void WindowTool::pointerMotion(int16_t x, int16_t y) {
+void WindowTool::cursorMotion(QPoint pos) {
     if (isEnabled()) {
-        setPosition(QPoint(x, y));
+        setPosition(pos);
     }
 }
 

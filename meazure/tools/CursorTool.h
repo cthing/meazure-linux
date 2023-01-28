@@ -21,7 +21,7 @@
 
 #include "RadioTool.h"
 #include "RadioToolTraits.h"
-#include <meazure/environment/PointerTracker.h>
+#include <meazure/environment/CursorTracker.h>
 #include <meazure/environment/ScreenInfo.h>
 #include <meazure/units/UnitsProvider.h>
 #include <meazure/ui/ToolDataWindow.h>
@@ -73,7 +73,7 @@ signals:
     void xy1PositionChanged(QPointF coord, QPoint rawPos);
 
 private slots:
-    void pointerMotion(int16_t x, int16_t y);
+    void cursorMotion(QPoint pos);
 
 private:
     static constexpr RadioToolTraits k_traits { XY1ReadOnly };
@@ -82,6 +82,6 @@ private:
 
     void emitMeasurement(QPoint position);
 
-    PointerTracker* m_pointerTracker { new PointerTracker(this) };
+    CursorTracker* m_pointerTracker { new CursorTracker(this) };
     ToolDataWindow* m_dataWindow;
 };

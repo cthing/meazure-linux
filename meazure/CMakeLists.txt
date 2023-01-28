@@ -190,8 +190,8 @@ source_group(UTILS FILES ${UTILS_SOURCES})
 set(ENVIRONMENT_SOURCES
     environment/DesktopDetector.cpp
     environment/DesktopDetector.h
-    environment/PointerTracker.cpp
-    environment/PointerTracker.h
+    environment/CursorTracker.cpp
+    environment/CursorTracker.h
     environment/ScreenInfo.cpp
     environment/ScreenInfo.h
     environment/ScreenInfoProvider.h
