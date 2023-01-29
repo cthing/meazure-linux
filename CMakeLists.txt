@@ -24,7 +24,7 @@ conan_cmake_configure(REQUIRES
                       qt/6.4.2
                       libffi/3.4.3   # Resolve Qt conflict between wayland and glib even though wayland is excluded
                       xerces-c/3.2.4
-                      OPTIONS qt:qtsvg=True qt:with_glib=True qt:qtwayland=False xerces-c:char_type=char16_t
+                      OPTIONS qt:shared=False qt:qtsvg=True qt:qttools=True qt:qtwayland=False harfbuzz:with_glib=False xerces-c:char_type=char16_t
                       GENERATORS ${CTHING_CONAN_GENERATOR})
 
 CTHING_CONAN_INSTALL()
@@ -32,7 +32,6 @@ CTHING_CONAN_INSTALL()
 find_package(Qt6 COMPONENTS Core Gui Widgets Svg Network Test REQUIRED)
 find_package(ICU COMPONENTS uc REQUIRED)
 find_package(XercesC REQUIRED)
-find_package(glib REQUIRED)
 find_package(Doxygen REQUIRED)
 find_program(CMAKE_LINT_PROGRAM "cmake-lint" REQUIRED)
 

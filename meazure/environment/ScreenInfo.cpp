@@ -20,7 +20,6 @@
 #include "ScreenInfo.h"
 #include "DesktopDetector.h"
 #include <meazure/utils/Geometry.h>
-#include <meazure/utils/GnomeUtils.h>
 #include <meazure/utils/StringUtils.h>
 #include <QScreen>
 #include <QRect>
@@ -36,8 +35,9 @@
 class ScreenInfo::Screen : public QRect {
 
 public:
-    // Default implementation of QPlatformCursor::size() returns QSize(16, 16)
-    static constexpr QSize k_defaultCursorSize = QSize(16, 16);
+    // Default implementation of QPlatformCursor::size() returns QSize(16, 16) which is too small.
+    static constexpr int k_minCursorSize = 24;
+    static constexpr QSize k_defaultCursorSize = QSize(k_minCursorSize, k_minCursorSize);
 
     Screen(const QScreen* screen, bool primary) :
             QRect(screen->geometry()),
@@ -48,18 +48,10 @@ public:
             m_useManualRes(ScreenInfo::k_defUseManualRes),
             m_calInInches(ScreenInfo::k_defCalInInches),
             m_currentRes(m_platformRes) {
-
-        if (DesktopDetector::isGnome()) {
-            const int cursorSize = GnomeUtils::cursorSize();
-            if (cursorSize > 0) {
-                m_cursorSize.rwidth() = cursorSize;
-                m_cursorSize.rheight() = cursorSize;
-            }
-        }
-        if (m_cursorSize.isEmpty()) {
-            const QPlatformCursor* platformCursor = screen->handle()->cursor();
-            m_cursorSize = (platformCursor == nullptr) ? k_defaultCursorSize : platformCursor->size();
-        }
+        const QPlatformCursor* platformCursor = screen->handle()->cursor();
+        m_cursorSize = (platformCursor == nullptr) ? k_defaultCursorSize : platformCursor->size();
+        m_cursorSize.rwidth() = std::min(k_minCursorSize, m_cursorSize.width());
+        m_cursorSize.rheight() = std::min(k_minCursorSize, m_cursorSize.height());
     }
 
     /// Returns the descriptive name for the screen.

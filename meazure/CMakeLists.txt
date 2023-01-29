@@ -1,3 +1,6 @@
+set(QT_BIN_DIR "${CONAN_QT_ROOT}/bin")
+set(QT_PLUGINS_DIR "${CONAN_QT_ROOT}/res/archdatadir/plugins")
+
 set(TOP_SOURCES
     App.cpp
     App.h
@@ -173,8 +176,6 @@ set(UTILS_SOURCES
     utils/Cloaker.h
     utils/EnumIterator.h
     utils/Geometry.h
-    utils/GnomeUtils.cpp
-    utils/GnomeUtils.h
     utils/LayoutUtils.h
     utils/MathUtils.h
     utils/StringUtils.cpp
@@ -255,7 +256,6 @@ target_compile_options(libmeazure PRIVATE -fPIC)
 target_include_directories(libmeazure PRIVATE
                            ${Qt6_INCLUDE_DIRS}
                            ${Qt6_Gui_Platform_INCLUDE_DIRS}
-                           ${glib_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
                            ${ICU_INCLUDE_DIRS}
                            "${CMAKE_SOURCE_DIR}"
@@ -267,18 +267,15 @@ qt6_add_executable(meazure main.cpp)
 target_include_directories(meazure PRIVATE
                            ${Qt6_INCLUDE_DIRS}
                            ${Qt6_Gui_Platform_INCLUDE_DIRS}
-                           ${glib_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
                            ${ICU_INCLUDE_DIRS}
                            "${CMAKE_SOURCE_DIR}"
                            "${CMAKE_CURRENT_BINARY_DIR}"
                            )
 
-cmake_path(GET Qt6_QXcbIntegrationPlugin_LIB_DIRS PARENT_PATH PLUGINS_DIR)
-
 target_link_directories(meazure PRIVATE
                         "${Qt6_QXcbIntegrationPlugin_LIB_DIRS}"
-                        "${PLUGINS_DIR}/iconengines"
+                        "${QT_PLUGINS_DIR}/iconengines"
                         ${Qt6_Core_LIB_DIRS}
                         )
 target_link_libraries(meazure PRIVATE
@@ -304,6 +301,12 @@ configure_file(AppVersion.h.in AppVersion.h @ONLY)
 add_custom_command(TARGET meazure POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E make_directory icu
                    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ICU_RES_DIRS}/*" icu
+                   )
+
+# Copy Qt Assistant to the build directory so that it can be used during development of the app and packaged
+# with it for deployment.
+add_custom_command(TARGET meazure POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_if_different "${QT_BIN_DIR}/assistant" assistant
                    )
 
 # When the app is run from the build directory, it should run in development mode. One aspect of running in
