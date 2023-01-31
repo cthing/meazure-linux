@@ -40,6 +40,12 @@ class Magnifier : public QWidget {
     Q_OBJECT
 
 public:
+    enum GridType {
+        None = 0,
+        Dark = 1,
+        Light = 2
+    };
+
     using ZoomFactors = std::array<int, 8>;
 
     Magnifier(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr);
@@ -56,12 +62,12 @@ public slots:
     void zoomIn();
     void zoomOut();
     void setFreeze(bool frozen);
-    void setGrid(bool show);
+    void setGridType(GridType type);
 
 signals:
     void zoomChanged(int zoomIndex);
     void freezeChanged(bool frozen);
-    void gridChanged(bool shown);
+    void gridTypeChanged(GridType type);
     void currentColorChanged(QRgb color);
 
 protected:
@@ -76,19 +82,22 @@ private:
     static constexpr int k_updateRate { 50 };   ///< Magnifier refresh rate, in milliseconds.
     static constexpr ZoomFactors k_zoomFactors { 1, 2, 3, 4, 6, 8, 16, 32 };
     static constexpr int k_gridMinIndex { 4 };
+    static constexpr QRgb k_darkGridColor { qRgb(0, 0, 0) };
+    static constexpr QRgb k_lightGridColor { qRgb(255, 255, 255) };
 
     void grabScreen();
 
     const ScreenInfoProvider* m_screenInfo;
     QPoint m_curPos { -1, -1 };
     QImage m_image;
-    QPen m_gridPen;
+    QPen m_darkGridPen;
+    QPen m_lightGridPen;
     QPen m_centerMarkerPen;
     QRect m_centerMarker;
     QTimer m_grabTimer;
     int m_zoomIndex { 0 };
     QTransform m_zoomTransform;
     std::vector<QLine> m_gridLines;
-    bool m_showGrid { true };
+    GridType m_gridType { Dark };
     QRgb m_currentColor { 1 };
 };

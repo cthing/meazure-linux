@@ -25,7 +25,8 @@
 
 Magnifier::Magnifier(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr) :
         m_screenInfo(screenInfo),
-        m_gridPen(QBrush(QColor(0, 0, 0)), 1),
+        m_darkGridPen(QBrush(QColor(k_darkGridColor)), 1),
+        m_lightGridPen(QBrush(QColor(k_lightGridColor)), 1),
         m_centerMarkerPen(QBrush(QColor(255, 0, 0)), 1) {
     setFixedSize(k_size, k_size);
 
@@ -39,19 +40,19 @@ Magnifier::Magnifier(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMg
     connect(toolMgr, &ToolMgr::activePositionChanged, this, &Magnifier::setCurPos);
 
     setZoom(m_zoomIndex);
-    setGrid(m_showGrid);
+    setGridType(m_gridType);
 
     m_grabTimer.start();
 }
 
 void Magnifier::writeConfig(Config& config) const {
     config.writeInt("ZoomIndex", m_zoomIndex);
-    config.writeBool("MagGrid", m_showGrid);
+    config.writeInt("MagGridType", m_gridType);
 }
 
 void Magnifier::readConfig(const Config& config) {
     setZoom(config.readInt("ZoomIndex", m_zoomIndex));
-    setGrid(config.readBool("MagGrid", m_showGrid));
+    setGridType(static_cast<GridType>(config.readInt("MagGridType", m_gridType)));
 }
 
 void Magnifier::zoomIn() {
@@ -106,11 +107,11 @@ void Magnifier::setFreeze(bool frozen) {
     emit freezeChanged(frozen);
 }
 
-void Magnifier::setGrid(bool show) {
-    m_showGrid = show;
+void Magnifier::setGridType(GridType type) {
+    m_gridType = type;
     repaint();
 
-    emit gridChanged(show);
+    emit gridTypeChanged(type);
 }
 
 void Magnifier::setCurPos(QPoint rawPos) {
@@ -145,8 +146,8 @@ void Magnifier::paintEvent(QPaintEvent*) {
     painter.restore();
 
     // Grid
-    if (m_showGrid && (m_zoomIndex >= k_gridMinIndex)) {
-        painter.setPen(m_gridPen);
+    if (m_gridType != None && (m_zoomIndex >= k_gridMinIndex)) {
+        painter.setPen(m_gridType == Dark ? m_darkGridPen : m_lightGridPen);
         painter.drawLines(m_gridLines.data(), static_cast<int>(m_gridLines.size()));
     }
 
@@ -155,6 +156,6 @@ void Magnifier::paintEvent(QPaintEvent*) {
     painter.drawRect(m_centerMarker);
 
     // Border
-    painter.setPen(m_gridPen);
+    painter.setPen(m_darkGridPen);
     painter.drawRect(0, 0, k_size - 1, k_size - 1);
 }

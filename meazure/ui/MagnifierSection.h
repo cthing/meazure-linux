@@ -52,8 +52,8 @@ public:
         return m_zoomOutAction;
     }
 
-    [[nodiscard]] QAction* getGridAction() const {
-        return m_gridAction;
+    [[nodiscard]] std::vector<QAction*> getGridActions() const {
+        return m_gridActions;
     }
 
     [[nodiscard]] QAction* getFreezeAction() const {
@@ -69,7 +69,7 @@ public:
     }
 
 private:
-    static constexpr bool k_initialShowGrid { true };
+    static constexpr Magnifier::GridType k_initialGridType { Magnifier::GridType::Dark };
     static constexpr int k_initialZoomIndex { 1 };
     static constexpr bool k_initialFreeze { false };
     static constexpr ColorFormatId k_initialColorFmt { RGBFmt };
@@ -79,5 +79,5 @@ private:
     ColorDisplay* m_colorDisplay;
     QAction* m_zoomInAction;
     QAction* m_zoomOutAction;
-    QAction* m_gridAction;
+    std::vector<QAction*> m_gridActions;
 };

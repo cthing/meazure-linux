@@ -664,8 +664,12 @@ void MainWindow::createMenus() {
     viewMenu->addSeparator();
     viewMenu->addAction(m_mainView->getMagnifierZoomInAction());
     viewMenu->addAction(m_mainView->getMagnifierZoomOutAction());
-    viewMenu->addAction(m_mainView->getMagnifierGridAction());
     viewMenu->addAction(m_mainView->getMagnifierFreezeAction());
+
+    QMenu* magGridMenu = viewMenu->addMenu("Magnifier &Grid");
+    for (QAction* gridType : m_mainView->getMagnifierGridActions()) {
+        magGridMenu->addAction(gridType);
+    }
 
     QMenu* colorMenu = viewMenu->addMenu("&Color Format");
     for (QAction* colorFormat : m_mainView->getColorFormatActions()) {

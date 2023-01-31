@@ -21,6 +21,7 @@
 #include "MagnifierControls.h"
 #include <QHBoxLayout>
 #include <QKeySequence>
+#include <QActionGroup>
 
 
 MagnifierSection::MagnifierSection(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr) :
@@ -56,17 +57,35 @@ MagnifierSection::MagnifierSection(const ScreenInfoProvider* screenInfo, const T
         m_zoomOutAction->setEnabled(zoomIndex > 0);
     });
 
-    m_gridAction = new QAction(tr("Magnifier &Grid"), this);
-    m_gridAction->setCheckable(true);
-    m_gridAction->setStatusTip(tr("Toggle magnifier grid visibility"));
-    m_gridAction->setWhatsThis(tr("Toggles the display of a grid in the magnifier image."));
-    connect(m_gridAction, &QAction::triggered, m_magnifier, &Magnifier::setGrid);
-    connect(m_magnifier, &Magnifier::gridChanged, m_gridAction, &QAction::setChecked);
+    auto* gridTypeGroup = new QActionGroup(this);
+    gridTypeGroup->setExclusive(true);
+
+    auto createGridAction = [this, gridTypeGroup](const QString& text, const QString& statusTip,
+            const QString& whatsThis, Magnifier::GridType gridType) {
+        auto* action = new QAction(text, gridTypeGroup);
+        action->setCheckable(true);
+        action->setStatusTip(statusTip);
+        action->setWhatsThis(whatsThis);
+        connect(action, &QAction::triggered, this, [this, gridType]() {
+            m_magnifier->setGridType(gridType);
+        });
+        connect(m_magnifier, &Magnifier::gridTypeChanged, this, [action, gridType](Magnifier::GridType type) {
+            action->setChecked(type == gridType);
+        });
+        m_gridActions.push_back(action);
+    };
+
+    createGridAction(tr("&None"), tr("No magnifier grid"), tr("Do not show a grid in the magnifier."),
+                     Magnifier::GridType::None);
+    createGridAction(tr("&Dark"), tr("Dark colored grid"), tr("Use a dark colored grid in the magnifier."),
+                     Magnifier::GridType::Dark);
+    createGridAction(tr("&Light"), tr("Light colored grid"), tr("Use a light colored grid in the magnifier."),
+                     Magnifier::GridType::Light);
 
     layout->addWidget(m_colorDisplay);
     connect(m_magnifier, &Magnifier::currentColorChanged, m_colorDisplay, &ColorDisplay::setColor);
 
-    m_magnifier->setGrid(k_initialShowGrid);
+    m_magnifier->setGridType(k_initialGridType);
     m_magnifier->setFreeze(k_initialFreeze);
     m_magnifier->setZoom(k_initialZoomIndex);
     m_colorDisplay->setColorFormat(k_initialColorFmt);
@@ -83,7 +102,7 @@ void MagnifierSection::readConfig(const Config& config) {
 }
 
 void MagnifierSection::hardReset() {
-    m_magnifier->setGrid(k_initialShowGrid);
+    m_magnifier->setGridType(k_initialGridType);
     m_magnifier->setFreeze(k_initialFreeze);
     m_magnifier->setZoom(k_initialZoomIndex);
     m_colorDisplay->setColorFormat(RGBFmt);

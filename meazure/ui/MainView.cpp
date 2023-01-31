@@ -42,8 +42,8 @@ QAction* MainView::getMagnifierZoomOutAction() const {
     return m_magnifierSection->getZoomOutAction();
 }
 
-QAction* MainView::getMagnifierGridAction() const {
-    return m_magnifierSection->getGridAction();
+std::vector<QAction*> MainView::getMagnifierGridActions() const {
+    return m_magnifierSection->getGridActions();
 }
 
 QAction* MainView::getMagnifierFreezeAction() const {

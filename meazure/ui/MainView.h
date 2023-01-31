@@ -44,7 +44,7 @@ public:
 
     [[nodiscard]] QAction* getMagnifierZoomInAction() const;
     [[nodiscard]] QAction* getMagnifierZoomOutAction() const;
-    [[nodiscard]] QAction* getMagnifierGridAction() const;
+    [[nodiscard]] std::vector<QAction*> getMagnifierGridActions() const;
     [[nodiscard]] QAction* getMagnifierFreezeAction() const;
     [[nodiscard]] std::vector<QAction*> getColorFormatActions() const;
     [[nodiscard]] QAction* getCopyColorAction() const;
