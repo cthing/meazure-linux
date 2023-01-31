@@ -68,5 +68,6 @@ private:
     QPushButton* m_saveButton;
     QPushButton* m_saveAsButton;
     QPushButton* m_closeButton;
+    QPushButton* m_helpButton;
     unsigned int m_currentPositionIndex { 0 };
 };

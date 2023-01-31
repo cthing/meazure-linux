@@ -38,19 +38,35 @@ void UnitsPrefsPage::createUI() {
 
     auto* nameLabel = new QLabel(tr("Display Name:"));
     m_nameField = new QLineEdit();
+    m_nameField->setWhatsThis(tr("Sets the human readable name for the custom units."));
+
     auto* nameInstr = new QLabel(tr("(%1 character limit)").arg(k_maxNameLength));
 
     auto* abbrevLabel = new QLabel(tr("Abbreviation:"));
     m_abbrevField = new QLineEdit();
+    m_abbrevField->setWhatsThis(tr("Sets the abbreviation for the custom units."));
+
     auto* abbrevInstr = new QLabel(tr("(%1 character limit)").arg(k_maxAbbrevLength));
 
     auto* settingInstr = new QLabel(tr("Set a resolution dependent or independent scale factor:"));
+
     m_factorField = new DoubleDataField(k_factorWidth, false);
+    m_factorField->setWhatsThis(tr("Sets the scale factor for the custom units."));
+
     m_basisCombo = new QComboBox();
+    m_basisCombo->setToolTip(tr("Select units basis"));
+    m_basisCombo->setWhatsThis(tr("Select whether the custom units are based on resolution dependent or "
+                                  "independent units."));
+
     m_factorLabel = new QLabel();
 
     m_clearButton = new QPushButton(tr("Clear"));
+    m_clearButton->setToolTip(tr("Clear custom units settings"));
+    m_clearButton->setWhatsThis(tr("Clear all custom units settings."));
+
     m_precisionButton = new QPushButton(tr("Set Display Precision"));
+    m_precisionButton->setToolTip(tr("Set custom units decimal precisions."));
+    m_precisionButton->setWhatsThis(tr("Sets the decimal precisions for the custom units."));
 
     auto* layout = new QVBoxLayout();
     setLayout(layout);

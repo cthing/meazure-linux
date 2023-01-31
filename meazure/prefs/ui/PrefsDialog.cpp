@@ -27,6 +27,7 @@
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 #include <QMessageBox>
+#include <QWhatsThis>
 #include <algorithm>
 
 
@@ -36,12 +37,37 @@ PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ConfigMgr* 
         m_configMgr(configMgr) {
     setWindowTitle(tr("Preferences"));
 
-    auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
+    auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply
+            | QDialogButtonBox::Help);
+
     auto* resetButton = buttonBox->addButton(tr("Hard Reset"), QDialogButtonBox::ButtonRole::ResetRole);
+    resetButton->setToolTip(tr("Perform application reset"));
+    resetButton->setWhatsThis(tr("Performs a full application settings reset."));
+
+    auto* applyButton = buttonBox->button(QDialogButtonBox::Apply);
+    applyButton->setToolTip(tr("Apply all preference settings"));
+    applyButton->setWhatsThis(tr("Accepts all preference settings without closing the dialog."));
+
+    auto* okButton = buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setToolTip(tr("Accept all preference settings"));
+    okButton->setWhatsThis(tr("Accepts all preference settings and closes the dialog."));
+
+    auto* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    cancelButton->setToolTip(tr("Discard all preference changes"));
+    cancelButton->setWhatsThis(tr("Discards all preference changes and closes the dialog."));
+
+    const int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize);
+    auto* helpButton = buttonBox->button(QDialogButtonBox::Help);
+    helpButton->setText("");
+    helpButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarContextHelpButton).pixmap(iconSize, iconSize));
+
     connect(resetButton, &QPushButton::clicked, this, &PrefsDialog::reset);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &PrefsDialog::accept);
-    connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &PrefsDialog::apply);
+    connect(applyButton, &QPushButton::clicked, this, &PrefsDialog::apply);
+    connect(helpButton, &QPushButton::clicked, this, []() {
+        QWhatsThis::enterWhatsThisMode();
+    });
 
     m_prefsPages.push_back(new CalibrationPrefsPage(screenInfo, unitsMgr));
     m_prefsPages.push_back(new ToolPrefsPage(screenInfo, unitsMgr));

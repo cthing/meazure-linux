@@ -35,31 +35,54 @@ void CalibrationPrefsPage::createUI() {
 
     auto* screenLabel = new QLabel(tr("Screen:"));
     m_screenCombo = new QComboBox();
+    m_screenCombo->setToolTip(tr("Screen to calibrate"));
+    m_screenCombo->setWhatsThis(tr("Selects screen to calibrate."));
+
     m_systemRadio = new QRadioButton(tr("Use operating system resolution"));
+    m_systemRadio->setWhatsThis(tr("Uses the resolution provided by the operating system."));
+
     m_manualRadio = new QRadioButton(tr("Set manually"));
+    m_manualRadio->setWhatsThis(tr("Uses the resolution determined by manual calibration."));
+
     m_unitsLabel = new QLabel(tr("Calibration units:"));
+
     m_unitsCombo = new QComboBox();
+    m_unitsCombo->setWhatsThis(tr("Units in which the calibration is performed."));
+
     m_resXLabel = new QLabel(tr("Rx:"));
     m_resYLabel = new QLabel(tr("Ry:"));
     m_widthLabel = new QLabel(tr("W:"));
     m_heightLabel = new QLabel(tr("H:"));
+
     m_resXField = new DoubleDataField(k_charWidth, false);
+    m_resXField->setWhatsThis(tr("Horizontal resolution"));
+
     m_resYField = new DoubleDataField(k_charWidth, false);
+    m_resYField->setWhatsThis(tr("Vertical resolution"));
+
     m_widthField = new DoubleDataField(k_charWidth, false);
+    m_widthField->setWhatsThis("Screen width in the specified units.");
+
     m_heightField = new DoubleDataField(k_charWidth, false);
+    m_heightField->setWhatsThis("Screen height in the specified units.");
+
     m_resUnitsLabel = new QLabel();
     m_sizeUnitsLabel = new QLabel();
     m_calibrationInstrLabel = new QLabel(tr(
-            "Calibrate by entering the pixel pitch (Rx, Ry), or screen dimensions (W, H), or by adjusting the sliders "
+            "Calibrate by entering the pixel pitch (Rx, Ry), or screen dimensions (W, H), or by adjusting the calipers "
             "using a ruler.<br><br>Browse monitor specifications at "
             "<a href='https://www.displayspecifications.com'>DisplaySpecifications.com</a>"));
     m_calibrationInstrLabel->setTextFormat(Qt::RichText);
     m_calibrationInstrLabel->setOpenExternalLinks(true);
     m_calibrationInstrLabel->setWordWrap(true);
-    m_caliperInstr = tr("Adjust slider to the %1 mark on a ruler");
+    m_caliperInstr = tr("Adjust caliper to the %1 mark on a ruler");
     m_caliperInstrLabel = new QLabel(m_caliperInstr);
+
     m_hCaliper = new Caliper(Caliper::Horizontal, k_hCaliperLength);
+    m_hCaliper->setWhatsThis(tr("Caliper for horizontal resolution calibration."));
+
     m_vCaliper = new Caliper(Caliper::Vertical, k_vCaliperLength);
+    m_vCaliper->setWhatsThis(tr("Caliper for vertical resolution calibration."));
 
     auto* layout = new QGridLayout();
     setLayout(layout);

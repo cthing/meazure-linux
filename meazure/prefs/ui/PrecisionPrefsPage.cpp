@@ -36,10 +36,16 @@ void PrecisionPrefsPage::createUI() {
 
     auto* unitsLabel = new QLabel(tr("Units:"));
     m_unitsCombo = new QComboBox();
+    m_unitsCombo->setToolTip(tr("Units to set precisions"));
+    m_unitsCombo->setWhatsThis(tr("Select the units whose precisions are to be changed."));
+
     m_defaultButton = new QPushButton(tr("Default"));
     m_defaultButton->setToolTip(tr("Restore defaults for current units"));
+    m_defaultButton->setWhatsThis(tr("Restores the default precisions for the currently selected units."));
+
     m_defaultAllButton = new QPushButton(tr("Default All"));
     m_defaultAllButton->setToolTip(tr("Restore defaults for all units"));
+    m_defaultAllButton->setWhatsThis(tr("Restores the defaults precisions for all units."));
 
     auto createField = []() {
         auto* field = new IntegerDataField(k_charWidth, true);
@@ -49,14 +55,31 @@ void PrecisionPrefsPage::createUI() {
     };
 
     m_xCoordField = createField();
+    m_xCoordField->setWhatsThis(tr("Decimal places for the x-axis coordinate."));
+
     m_yCoordField = createField();
+    m_yCoordField->setWhatsThis(tr("Decimal places for the y-axis coordinate."));
+
     m_widthField = createField();
+    m_widthField->setWhatsThis(tr("Decimal places for the width."));
+
     m_heightField = createField();
+    m_heightField->setWhatsThis(tr("Decimal places for the height."));
+
     m_distanceField = createField();
+    m_distanceField->setWhatsThis(tr("Decimal places for the length, diagonal or radius."));
+
     m_areaField = createField();
+    m_areaField->setWhatsThis(tr("Decimal places for the area."));
+
     m_resXField = createField();
+    m_resXField->setWhatsThis(tr("Decimal places for the horizontal resolution."));
+
     m_resYField = createField();
+    m_resYField->setWhatsThis(tr("Decimal places for the vertical resolution."));
+
     m_angleField = createField();
+    m_angleField->setWhatsThis(tr("Decimal places for the angle."));
 
     m_xCoordLabel = new QLabel(tr("X:"));
     m_yCoordLabel = new QLabel(tr("Y:"));

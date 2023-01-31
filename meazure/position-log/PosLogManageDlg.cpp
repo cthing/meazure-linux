@@ -21,6 +21,8 @@
 #include <meazure/utils/LayoutUtils.h>
 #include <QGridLayout>
 #include <QSignalBlocker>
+#include <QStyle>
+#include <QWhatsThis>
 
 
 PosLogManageDlg::PosLogManageDlg(PosLogMgr* posLogMgr, QWidget* parent) :     // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -41,9 +43,11 @@ void PosLogManageDlg::createUI() {
     auto* logLabel = new QLabel(tr("<b>Log</b>"));
     auto* logTitleLabel = new QLabel(tr("Title:"));
     m_logTitleField = new QLineEdit();
+    m_logTitleField->setWhatsThis(tr("Title for the position log."));
     auto* logDescLabel = new QLabel(tr("Description:"));
     m_logDescField = new TextField();
     m_logDescField->setRows(k_numDescRows);
+    m_logDescField->setWhatsThis(tr("Description for the position log."));
 
     auto* positionLabel = new QLabel(tr("<b>Positions</b>"));
     m_positionSelector = new QScrollBar(Qt::Horizontal);
@@ -51,6 +55,8 @@ void PosLogManageDlg::createUI() {
     m_positionSelector->setPageStep(5);
     m_positionSelector->setRange(0, 0);
     m_positionSelector->setStyleSheet("QScrollBar:horizontal { border: 1px solid darkGrey; }");
+    m_positionSelector->setToolTip(tr("Replay a logged position."));
+    m_positionSelector->setWhatsThis(tr("Replays a logged position."));
     m_positionLabel = new QLabel(tr("Position:"));
     m_positionNumberLabel = new QLabel();
     m_recordedLabel = new QLabel(tr("Recorded:"));
@@ -58,15 +64,43 @@ void PosLogManageDlg::createUI() {
     m_positionDescLabel = new QLabel(tr("Description:"));
     m_positionDescField = new TextField();
     m_positionDescField->setRows(k_numDescRows);
+    m_positionDescField->setWhatsThis(tr("Description for the position."));
 
     m_addButton = new QPushButton(tr("Add"));
+    m_addButton->setToolTip(tr("Add new position"));
+    m_addButton->setWhatsThis(tr("Records the active position and adds it to the end of the recorded positions."));
+
     m_insertButton = new QPushButton(tr("Insert"));
+    m_insertButton->setToolTip(tr("Insert new position"));
+    m_insertButton->setWhatsThis(tr("Records the active position and inserts it before the current log position."));
+
     m_deleteButton = new QPushButton(tr("Delete"));
+    m_deleteButton->setToolTip(tr("Delete position"));
+    m_deleteButton->setWhatsThis(tr("Deletes the current log position."));
+
     m_deleteAllButton = new QPushButton(tr("Delete All"));
+    m_deleteAllButton->setToolTip(tr("Delete all positions"));
+    m_deleteAllButton->setWhatsThis(tr("Deletes all log positions."));
+
     m_loadButton = new QPushButton(tr("Load..."));
+    m_loadButton->setToolTip(tr("Load a position log file"));
+    m_loadButton->setWhatsThis(tr("Loads a position log file."));
+
     m_saveButton = new QPushButton(tr("Save"));
+    m_saveButton->setToolTip(tr("Save position log to file"));
+    m_saveButton->setWhatsThis(tr("Saves the position log to a file."));
+
     m_saveAsButton = new QPushButton(tr("Save As..."));
+    m_saveAsButton->setToolTip(tr("Save position log to file"));
+    m_saveAsButton->setWhatsThis(tr("Saves the position log to a file."));
+
     m_closeButton = new QPushButton(tr("Close"));
+    m_closeButton->setToolTip(tr("Close the dialog"));
+    m_closeButton->setWhatsThis(tr("Closes the dialog."));
+
+    const int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize);
+    m_helpButton =
+            new QPushButton(style()->standardIcon(QStyle::SP_TitleBarContextHelpButton).pixmap(iconSize, iconSize), "");
 
     auto* logLayout = new QGridLayout();
     logLayout->addWidget(logLabel,        k_row0, k_col0, k_rowspan1, k_colspan2);
@@ -86,14 +120,15 @@ void PosLogManageDlg::createUI() {
     positionLayout->addWidget(m_positionDescField,      k_row4, k_col1);
 
     auto* buttonLayout = new QGridLayout();
-    buttonLayout->addWidget(m_addButton,       k_row0, k_col0);
-    buttonLayout->addWidget(m_insertButton,    k_row0, k_col1);
-    buttonLayout->addWidget(m_deleteButton,    k_row0, k_col2);
-    buttonLayout->addWidget(m_deleteAllButton, k_row0, k_col3);
-    buttonLayout->addWidget(m_loadButton,      k_row1, k_col0);
-    buttonLayout->addWidget(m_saveButton,      k_row1, k_col1);
-    buttonLayout->addWidget(m_saveAsButton,    k_row1, k_col2);
-    buttonLayout->addWidget(m_closeButton,     k_row1, k_col3);
+    buttonLayout->addWidget(m_helpButton,      k_row0, k_col0, k_rowspan2, k_colspan1);
+    buttonLayout->addWidget(m_addButton,       k_row0, k_col1);
+    buttonLayout->addWidget(m_insertButton,    k_row0, k_col2);
+    buttonLayout->addWidget(m_deleteButton,    k_row0, k_col3);
+    buttonLayout->addWidget(m_deleteAllButton, k_row0, k_col4);
+    buttonLayout->addWidget(m_loadButton,      k_row1, k_col1);
+    buttonLayout->addWidget(m_saveButton,      k_row1, k_col2);
+    buttonLayout->addWidget(m_saveAsButton,    k_row1, k_col3);
+    buttonLayout->addWidget(m_closeButton,     k_row1, k_col4);
 
     auto* layout = new QVBoxLayout();
     layout->addLayout(logLayout);
@@ -131,6 +166,9 @@ void PosLogManageDlg::configure() {
     connect(m_saveButton, &QPushButton::clicked, m_posLogMgr, &PosLogMgr::savePositions);
     connect(m_saveAsButton, &QPushButton::clicked, m_posLogMgr, &PosLogMgr::saveAsPositions);
     connect(m_closeButton, &QPushButton::clicked, this, &PosLogManageDlg::hide);
+    connect(m_helpButton, &QPushButton::clicked, this, []() {
+        QWhatsThis::enterWhatsThisMode();
+    });
 }
 
 void PosLogManageDlg::positionsChanged(unsigned int numPositions) {

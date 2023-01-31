@@ -29,6 +29,9 @@ Magnifier::Magnifier(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMg
         m_centerMarkerPen(QBrush(QColor(255, 0, 0)), 1) {
     setFixedSize(k_size, k_size);
 
+    setStatusTip(tr("Magnified active position"));
+    setWhatsThis(tr("Magnifies the area around the active position"));
+
     m_grabTimer.setTimerType(Qt::PreciseTimer);
     m_grabTimer.setInterval(k_updateRate);
     connect(&m_grabTimer, &QTimer::timeout, this, &Magnifier::periodicGrab);

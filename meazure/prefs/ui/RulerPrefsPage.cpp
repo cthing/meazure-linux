@@ -38,16 +38,29 @@ void RulerPrefsPage::createUI() {
 
     m_backColorButton = new QPushButton(tr("Background..."));
     m_backColorButton->setFixedWidth(k_buttonWidth);
+    m_backColorButton->setToolTip(tr("Select ruler background color"));
+    m_backColorButton->setWhatsThis(tr("Selects the ruler background color."));
+
     m_backDefaultButton = new QPushButton(tr("Default"));
     m_backDefaultButton->setFixedWidth(k_buttonWidth);
+    m_backDefaultButton->setToolTip(tr("Restore default background color"));
+    m_backDefaultButton->setWhatsThis(tr("Restores the ruler default background color."));
+
     m_borderColorButton = new QPushButton(tr("Marks/Text..."));
     m_borderColorButton->setFixedWidth(k_buttonWidth);
+    m_borderColorButton->setToolTip(tr("Select ruler marks and text color"));
+    m_borderColorButton->setWhatsThis(tr("Selects the rule marks and text color."));
+
     m_borderDefaultButton = new QPushButton(tr("Default"));
     m_borderDefaultButton->setFixedWidth(k_buttonWidth);
+    m_borderDefaultButton->setToolTip(tr("Restore default marks and text color"));
+    m_borderDefaultButton->setWhatsThis(tr("Restores the ruler default marks and text color."));
+
     auto* opacityLabel = new QLabel(tr("Opacity:"));
     auto* minOpacityLabel = new QLabel(tr("%1%").arg(k_minOpacity));
     auto* maxOpacityLabel = new QLabel(tr("%1%").arg(k_maxOpacity));
     m_opacitySlider = new QSlider(Qt::Horizontal);
+    m_opacitySlider->setWhatsThis(tr("Selects the opacity of the ruler background, marks and text."));
 
     auto* checkerBoardLight = new CheckerBoard(CheckerBoard::Light);
     auto* checkerBoardDark = new CheckerBoard(CheckerBoard::Dark);

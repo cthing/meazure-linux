@@ -35,6 +35,8 @@ MagnifierControls::MagnifierControls(Magnifier* magnifier) {
     layout->addWidget(zoomLabel);
 
     auto* zoom = new QSlider(Qt::Horizontal);
+    zoom->setStatusTip(tr("Magnifier zoom"));
+    zoom->setWhatsThis(tr("Sets the magnification around the active position."));
     layout->addWidget(zoom);
 
     auto* factorLabel = new QLabel();
@@ -47,6 +49,8 @@ MagnifierControls::MagnifierControls(Magnifier* magnifier) {
     m_freezeAction = new QAction(tr("&Freeze Magnifier"), this);
     m_freezeAction->setCheckable(true);
     m_freezeAction->setShortcut(QKeySequence("Ctrl+M"));
+    m_freezeAction->setStatusTip(tr("Toggle freezing the magnifier"));
+    m_freezeAction->setWhatsThis(tr("Toggles freezing the magnifier image."));
     m_freezeAction->setIcon(freezeIcon);
     connect(m_freezeAction, &QAction::triggered, magnifier, &Magnifier::setFreeze);
     connect(magnifier, &Magnifier::freezeChanged, m_freezeAction, &QAction::setChecked);

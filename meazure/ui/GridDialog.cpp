@@ -25,6 +25,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QStandardItemModel>
+#include <QWhatsThis>
 #include <cmath>
 
 GridDialog::GridDialog(GridTool* gridTool, const ScreenInfoProvider* screenInfoProvider,  // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -60,21 +61,27 @@ void GridDialog::createUI() {
 
     auto* horizontalLabel = new QLabel(tr("H:"));
     m_hSpacingField = new DoubleDataField(k_fieldShortWidth, true);
+    m_hSpacingField->setWhatsThis(tr("Height of a grid cell."));
     auto* verticalLabel = new QLabel(tr("V:"));
     m_vSpacingField = new DoubleDataField(k_fieldShortWidth, true);
+    m_vSpacingField->setWhatsThis(tr("Width of a grid cell."));
     m_spacingUnitsCombo = new QComboBox();
+    m_spacingUnitsCombo->setWhatsThis(tr("Units for the grid cell width and height."));
     auto* spacingUnitsLayout = new QHBoxLayout();
     spacingUnitsLayout->addWidget(m_vSpacingField);
     spacingUnitsLayout->addWidget(m_spacingUnitsCombo);
 
     m_linkSpacingCheck = new QCheckBox(tr("Link horizontal and vertical"));
+    m_linkSpacingCheck->setWhatsThis(tr("Ensures the grid cell width is used for the cell height."));
 
     auto* orientationLabel = new QLabel(tr("<b>Grid Orientation</b>"));
 
     auto* xPositionLabel = new QLabel(tr("X:"));
     m_xPositionField = new DoubleDataField(k_fieldShortWidth, true);
+    m_xPositionField->setWhatsThis(tr("Origin of the grid along the x-axis, in pixels."));
     auto* yPositionLabel = new QLabel(tr("Y:"));
     m_yPositionField = new DoubleDataField(k_fieldShortWidth, true);
+    m_yPositionField->setWhatsThis(tr("Origin of the grid along the y-axis, in pixels."));
     auto* positionUnitsLabel = new QLabel(tr("px"));
     auto* xyLayout = new QHBoxLayout();
     xyLayout->addWidget(m_yPositionField);
@@ -82,8 +89,10 @@ void GridDialog::createUI() {
 
     auto* widthLabel = new QLabel(tr("W:"));
     m_widthField = new DoubleDataField(k_fieldShortWidth, true);
+    m_widthField->setWhatsThis(tr("Overall width of the grid, in pixels."));
     auto* heightLabel = new QLabel(tr("H:"));
     m_heightField = new DoubleDataField(k_fieldShortWidth, true);
+    m_heightField->setWhatsThis(tr("Overall height of the grid, in pixels."));
     auto* whUnitsLabel = new QLabel(tr("px"));
     auto* whLayout = new QHBoxLayout();
     whLayout->addWidget(m_heightField);
@@ -91,16 +100,39 @@ void GridDialog::createUI() {
 
     auto* angleLabel = new QLabel(tr("A:"));
     m_angleField = new DoubleDataField(k_fieldShortWidth, true);
+    m_angleField->setWhatsThis(tr("Angle of the grid, in degrees."));
     auto* angleUnitLabel = new QLabel(tr("deg"));
     auto* angleLayout = new QHBoxLayout();
     angleLayout->addWidget(m_angleField);
     angleLayout->addWidget(angleUnitLabel);
 
     auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel
-            | QDialogButtonBox::RestoreDefaults);
+            | QDialogButtonBox::RestoreDefaults | QDialogButtonBox::Help);
+
+    auto* okButton = buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setToolTip(tr("Accept grid settings"));
+    okButton->setWhatsThis(tr("Accepts the grid settings and closes the dialog."));
+
+    auto* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    cancelButton->setToolTip(tr("Discard grid settings"));
+    cancelButton->setWhatsThis(tr("Discards the grid settings and closes the dialog."));
+
+    auto* restoreButton = buttonBox->button(QDialogButtonBox::RestoreDefaults);
+    restoreButton->setText(tr("Defaults"));
+    restoreButton->setToolTip(tr("Restore default grid settings"));
+    restoreButton->setWhatsThis(tr("Restores defaults for all grid settings."));
+
+    const int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize);
+    auto* helpButton = buttonBox->button(QDialogButtonBox::Help);
+    helpButton->setText("");
+    helpButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarContextHelpButton).pixmap(iconSize, iconSize));
+
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &GridDialog::reject);
-    connect(buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, this, &GridDialog::softReset);
+    connect(restoreButton, &QPushButton::clicked, this, &GridDialog::softReset);
+    connect(helpButton, &QPushButton::clicked, this, []() {
+        QWhatsThis::enterWhatsThisMode();
+    });
 
     auto* layout = new QGridLayout();
 

@@ -44,6 +44,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QDesktopServices>
+#include <QWhatsThis>
 #include <vector>
 
 
@@ -106,10 +107,14 @@ void MainWindow::createActions() {
 
     m_loadPositionsAction = new QAction(tr("&Load Positions..."), this);
     m_loadPositionsAction->setShortcut(QKeySequence::Open);
+    m_loadPositionsAction->setStatusTip(tr("Load a position log file"));
+    m_loadPositionsAction->setWhatsThis(tr("Loads a previously saved log of tool positions so they can be replayed."));
     connect(m_loadPositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::loadPositions);
 
     m_savePositionsAction = new QAction(tr("&Save Positions"), this);
     m_savePositionsAction->setShortcut(QKeySequence::Save);
+    m_savePositionsAction->setStatusTip(tr("Save recorded positions"));
+    m_savePositionsAction->setWhatsThis(tr("Saves recorded positions to a position log file."));
     m_savePositionsAction->setEnabled(false);
     connect(m_savePositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::savePositions);
     connect(m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
@@ -118,6 +123,8 @@ void MainWindow::createActions() {
 
     m_saveAsPositionsAction = new QAction(tr("Save Positions &As..."), this);
     m_saveAsPositionsAction->setShortcut(QKeySequence::SaveAs);
+    m_saveAsPositionsAction->setStatusTip(tr("Save recorded positions"));
+    m_saveAsPositionsAction->setWhatsThis(tr("Saves recorded positions to a position log file."));
     m_saveAsPositionsAction->setEnabled(false);
     connect(m_saveAsPositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::saveAsPositions);
     connect(m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
@@ -125,24 +132,33 @@ void MainWindow::createActions() {
     });
 
     m_importConfigAction = new QAction(tr("&Import Configuration..."), this);
+    m_importConfigAction->setStatusTip(tr("Restore application settings"));
+    m_importConfigAction->setWhatsThis(tr("Restores application settings previously exported configuration file."));
     connect(m_importConfigAction, &QAction::triggered, m_configMgr, &ConfigMgr::importConfig);
 
     m_exportConfigAction = new QAction(tr("&Export Configuration..."), this);
+    m_exportConfigAction->setStatusTip(tr("Saves application settings"));
+    m_exportConfigAction->setWhatsThis(tr("Saves application settings to a configuration file."));
     connect(m_exportConfigAction, &QAction::triggered, m_configMgr, &ConfigMgr::exportConfig);
 
     m_exitAction = new QAction(tr("E&xit"), this);
     m_exitAction->setShortcuts(QKeySequence::Quit);
     m_exitAction->setStatusTip(tr("Exit Meazure"));
+    m_exitAction->setWhatsThis(tr("Exists the application."));
     connect(m_exitAction, &QAction::triggered, this, &QWidget::close);
 
     // Edit actions
 
     m_copyRegionAction = new QAction(tr("Copy &Region"), this);
     m_copyRegionAction->setShortcut(QKeySequence("Ctrl+R"));
+    m_copyRegionAction->setStatusTip(tr("Copy tool bounding box to clipboard"));
+    m_copyRegionAction->setWhatsThis(tr("Copy the current tool's bounding box to the clipboard."));
     connect(m_copyRegionAction, &QAction::triggered, this, &MainWindow::copyRegion);
 
     m_findCrosshairsAction = new QAction(tr("&Find Crosshairs"), this);
     m_findCrosshairsAction->setShortcut(QKeySequence("Ctrl+F"));
+    m_findCrosshairsAction->setStatusTip(tr("Flash tool crosshairs"));
+    m_findCrosshairsAction->setWhatsThis(tr("Flash the current tool's crosshairs."));
     connect(m_findCrosshairsAction, &QAction::triggered, this, [this]() {
         m_toolMgr->flashTool();
     });
@@ -152,12 +168,18 @@ void MainWindow::createActions() {
 
     m_recordPositionAction = new QAction(tr("R&ecord Position"), this);
     m_recordPositionAction->setShortcut(QKeySequence("Ctrl+P"));
+    m_recordPositionAction->setStatusTip(tr("Record tool position"));
+    m_recordPositionAction->setWhatsThis(tr("Record current tool's cursor or crosshair positions."));
     connect(m_recordPositionAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::addPosition);
 
     m_managePositionsAction = new QAction(tr("&Manage Positions..."), this);
+    m_managePositionsAction->setStatusTip(tr("Replay and update tool positions"));
+    m_managePositionsAction->setWhatsThis(tr("Provides a dialog to replay and update tool positions."));
     connect(m_managePositionsAction, &QAction::triggered, this, &MainWindow::managePositions);
 
     m_deletePositionsAction = new QAction(tr("De&lete Positions"), this);
+    m_deletePositionsAction->setStatusTip(tr("Delete all recorded positions"));
+    m_deletePositionsAction->setWhatsThis(tr("Delete all previously recorded tool positions."));
     m_deletePositionsAction->setEnabled(false);
     connect(m_deletePositionsAction, &QAction::triggered, m_posLogMgr, &PosLogMgr::deletePositions);
     connect(m_posLogMgr, &PosLogMgr::positionsChanged, this, [this](unsigned int numPositions) {
@@ -165,6 +187,8 @@ void MainWindow::createActions() {
     });
 
     m_preferencesAction = new QAction(tr("Pre&ferences..."), this);
+    m_preferencesAction->setStatusTip(tr("Set application preferences"));
+    m_preferencesAction->setWhatsThis(tr("Provides a dialog to review and set the application preferences."));
     connect(m_preferencesAction, &QAction::triggered, m_prefsDialog, &PrefsDialog::exec);
 
     // Tool actions
@@ -174,7 +198,9 @@ void MainWindow::createActions() {
 
     m_cursorToolAction = new QAction(QIcon(":/images/CursorTool.svg"), tr("&Cursor"), radioToolGroup);
     m_cursorToolAction->setCheckable(true);
-    m_cursorToolAction->setToolTip("Tracks cursor position");
+    m_cursorToolAction->setToolTip(tr("Tracks cursor position"));
+    m_cursorToolAction->setStatusTip(tr("Tracks cursor position"));
+    m_cursorToolAction->setWhatsThis(tr("Tracks the mouse cursor position."));
     connect(m_cursorToolAction, &QAction::triggered, this, [this] {
         m_toolMgr->selectRadioTool(CursorTool::k_toolName);
     });
@@ -184,7 +210,10 @@ void MainWindow::createActions() {
 
     m_pointToolAction = new QAction(QIcon(":/images/PointTool.svg"), tr("&Point"), radioToolGroup);
     m_pointToolAction->setCheckable(true);
-    m_pointToolAction->setToolTip("Measures a point");
+    m_pointToolAction->setToolTip(tr("Measures a point"));
+    m_pointToolAction->setStatusTip(tr("Measures a point"));
+    m_pointToolAction->setWhatsThis(tr("Measures a point. <b>Shift+drag</b> for vertical or horizontal motion. "
+                                       "<b>Ctrl+1+arrow</b> moves crosshair one pixel."));
     connect(m_pointToolAction, &QAction::triggered, this, [this] {
         m_toolMgr->selectRadioTool(PointTool::k_toolName);
     });
@@ -194,7 +223,11 @@ void MainWindow::createActions() {
 
     m_lineToolAction = new QAction(QIcon(":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
     m_lineToolAction->setCheckable(true);
-    m_lineToolAction->setToolTip("Measures using line");
+    m_lineToolAction->setToolTip(tr("Measures using line"));
+    m_lineToolAction->setStatusTip(tr("Measures using a line"));
+    m_lineToolAction->setWhatsThis(tr("Measures using a line. <b>Shift+drag</b> for vertical or horizontal crosshair "
+                                      "motion. <b>Ctrl+drag</b> moves line. <b>Ctrl+1|2+arrow</b> moves a crosshair "
+                                      "one pixel."));
     connect(m_lineToolAction, &QAction::triggered, this, [this] {
         m_toolMgr->selectRadioTool(LineTool::k_toolName);
     });
@@ -204,7 +237,11 @@ void MainWindow::createActions() {
 
     m_rectangleToolAction = new QAction(QIcon(":/images/RectangleTool.svg"), tr("&Rectangle"), radioToolGroup);
     m_rectangleToolAction->setCheckable(true);
-    m_rectangleToolAction->setToolTip("Measures using rectangle");
+    m_rectangleToolAction->setToolTip(tr("Measures using rectangle"));
+    m_rectangleToolAction->setStatusTip(tr("Measures using a rectangle"));
+    m_rectangleToolAction->setWhatsThis(tr("Measures using a rectangle. <b>Shift+drag</b> for vertical or horizontal "
+                                           "crosshair motion. <b>Ctrl+drag</b> moves rectangle. <b>Ctrl+1|2+arrow</b> "
+                                           "moves a crosshair one pixel."));
     connect(m_rectangleToolAction, &QAction::triggered, this, [this] {
         m_toolMgr->selectRadioTool(RectangleTool::k_toolName);
     });
@@ -214,7 +251,11 @@ void MainWindow::createActions() {
 
     m_circleToolAction = new QAction(QIcon(":/images/CircleTool.svg"), tr("C&ircle"), radioToolGroup);
     m_circleToolAction->setCheckable(true);
-    m_circleToolAction->setToolTip("Measures using circle");
+    m_circleToolAction->setToolTip(tr("Measures using circle"));
+    m_circleToolAction->setStatusTip(tr("Measures using a circle"));
+    m_circleToolAction->setWhatsThis(tr("Measures using a circle. <b>Shift+drag</b> for vertical or horizontal "
+                                        "crosshair motion. <b>Ctrl+drag</b> moves circle. <b>Ctrl+1|3+arrow</b> "
+                                        "moves a crosshair one pixel."));
     connect(m_circleToolAction, &QAction::triggered, this, [this] {
         m_toolMgr->selectRadioTool(CircleTool::k_toolName);
     });
@@ -224,7 +265,12 @@ void MainWindow::createActions() {
 
     m_angleToolAction = new QAction(QIcon(":/images/AngleTool.svg"), tr("&Angle"), radioToolGroup);
     m_angleToolAction->setCheckable(true);
-    m_angleToolAction->setToolTip("Measures using protractor");
+    m_angleToolAction->setToolTip(tr("Measures using protractor"));
+    m_angleToolAction->setStatusTip(tr("Measures using protractor"));
+    m_angleToolAction->setWhatsThis(tr("Measures using protractor. <b>Shift+drag</b> for vertical or horizontal "
+                                       "crosshair motion. <b>Ctrl+drag</b> moves protractor. <b>Ctrl+1|2|3+arrow</b> "
+                                       "moves a crosshair one pixel. Positive angles are clockwise from point 1 to 2. "
+                                       "Negative angles are counter-clockwise from point 1 to 2."));
     connect(m_angleToolAction, &QAction::triggered, this, [this] {
         m_toolMgr->selectRadioTool(AngleTool::k_toolName);
     });
@@ -234,7 +280,9 @@ void MainWindow::createActions() {
 
     m_windowToolAction = new QAction(QIcon(":/images/WindowTool.svg"), tr("&Window"), radioToolGroup);
     m_windowToolAction->setCheckable(true);
-    m_windowToolAction->setToolTip("Measures a window");
+    m_windowToolAction->setToolTip(tr("Measures a window"));
+    m_windowToolAction->setStatusTip(tr("Measures a window"));
+    m_windowToolAction->setWhatsThis(tr("Measures the window under the cursor."));
     connect(m_windowToolAction, &QAction::triggered, this, [this] {
         m_toolMgr->selectRadioTool(WindowTool::k_toolName);
     });
@@ -244,7 +292,10 @@ void MainWindow::createActions() {
 
     m_rulerToolAction = new QAction(QIcon(":/images/RulerTool.svg"), tr("R&uler"), this);
     m_rulerToolAction->setCheckable(true);
-    m_rulerToolAction->setToolTip("Adds screen rulers");
+    m_rulerToolAction->setToolTip(tr("Overlays rulers"));
+    m_rulerToolAction->setStatusTip(tr("Overlays rulers"));
+    m_rulerToolAction->setWhatsThis(tr("Overlays a ruler square. The ruler size, position and orientation can "
+                                       "be adjusted."));
     connect(m_rulerToolAction, &QAction::triggered, this, [this](bool checked) {
         m_toolMgr->setEnabled(RulerTool::k_toolName, checked);
     });
@@ -256,7 +307,9 @@ void MainWindow::createActions() {
 
     m_gridToolAction = new QAction(QIcon(":/images/GridTool.svg"), tr("&Screen Grid"), this);
     m_gridToolAction->setCheckable(true);
-    m_gridToolAction->setToolTip("Adds screen grid");
+    m_gridToolAction->setToolTip(tr("Overlays a grid"));
+    m_gridToolAction->setStatusTip(tr("Overlays a grid"));
+    m_gridToolAction->setWhatsThis(tr("Overlays a grid. The grid spacing, origin and angle can be adjusted."));
     connect(m_gridToolAction, &QAction::triggered, this, [this](bool checked) {
         m_toolMgr->setEnabled(GridTool::k_toolName, checked);
     });
@@ -267,6 +320,8 @@ void MainWindow::createActions() {
     });
 
     m_gridAdjustAction = new QAction(tr("Screen &Grid Settings..."), this);
+    m_gridAdjustAction->setStatusTip(tr("Adjusts grid spacing, origin and angle"));
+    m_gridAdjustAction->setWhatsThis(tr("Provides a dialog to adjust the grid spacing, origin and angle."));
     connect(m_gridAdjustAction, &QAction::triggered, this, &MainWindow::adjustGrid);
 
     // Units actions
@@ -276,6 +331,8 @@ void MainWindow::createActions() {
 
     m_pixelUnitsAction = new QAction(tr("&Pixels"), linearUnitsGroup);
     m_pixelUnitsAction->setCheckable(true);
+    m_pixelUnitsAction->setStatusTip(tr("Selects pixel units"));
+    m_pixelUnitsAction->setWhatsThis(tr("Show measurements using pixel units."));
     connect(m_pixelUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(PixelsId);
     });
@@ -285,6 +342,8 @@ void MainWindow::createActions() {
 
     m_twipUnitsAction = new QAction(tr("&Twips"), linearUnitsGroup);
     m_twipUnitsAction->setCheckable(true);
+    m_twipUnitsAction->setStatusTip(tr("Selects twip units"));
+    m_twipUnitsAction->setWhatsThis(tr("Show measurements using twip units (1440 twips per inch)."));
     connect(m_twipUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(TwipsId);
     });
@@ -294,6 +353,8 @@ void MainWindow::createActions() {
 
     m_pointUnitsAction = new QAction(tr("P&oints"), linearUnitsGroup);
     m_pointUnitsAction->setCheckable(true);
+    m_pointUnitsAction->setStatusTip(tr("Selects point units"));
+    m_pointUnitsAction->setWhatsThis(tr("Show measurements using point units (72 points per inch)."));
     connect(m_pointUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(PointsId);
     });
@@ -303,6 +364,8 @@ void MainWindow::createActions() {
 
     m_picaUnitsAction = new QAction(tr("Pic&as"), linearUnitsGroup);
     m_picaUnitsAction->setCheckable(true);
+    m_picaUnitsAction->setStatusTip(tr("Selects pica units"));
+    m_picaUnitsAction->setWhatsThis(tr("Show measurements using pica units (6 picas per inch)."));
     connect(m_picaUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(PicasId);
     });
@@ -312,6 +375,8 @@ void MainWindow::createActions() {
 
     m_inchUnitsAction = new QAction(tr("&Inches"), linearUnitsGroup);
     m_inchUnitsAction->setCheckable(true);
+    m_inchUnitsAction->setStatusTip(tr("Selects inch units"));
+    m_inchUnitsAction->setWhatsThis(tr("Show measurements using inch units."));
     connect(m_inchUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(InchesId);
     });
@@ -321,6 +386,8 @@ void MainWindow::createActions() {
 
     m_centimeterUnitsAction = new QAction(tr("&Centimeters"), linearUnitsGroup);
     m_centimeterUnitsAction->setCheckable(true);
+    m_centimeterUnitsAction->setStatusTip(tr("Selects centimeter units"));
+    m_centimeterUnitsAction->setWhatsThis(tr("Show measurements using centimeter units (2.54 centimeters per inch)."));
     connect(m_centimeterUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(CentimetersId);
     });
@@ -330,6 +397,8 @@ void MainWindow::createActions() {
 
     m_millimeterUnitsAction = new QAction(tr("&Millimeters"), linearUnitsGroup);
     m_millimeterUnitsAction->setCheckable(true);
+    m_millimeterUnitsAction->setStatusTip(tr("Selects millimeter units"));
+    m_millimeterUnitsAction->setWhatsThis(tr("Show measurements using millimeter units (25.4 millimeters per inch)."));
     connect(m_millimeterUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(MillimetersId);
     });
@@ -339,9 +408,13 @@ void MainWindow::createActions() {
 
     m_customUnitsAction = new QAction("", linearUnitsGroup);
     m_customUnitsAction->setCheckable(true);
+    m_customUnitsAction->setStatusTip(tr("Selects custom units"));
+    m_customUnitsAction->setWhatsThis(tr("Show measurements using custom units."));
     connect(m_unitsMgr, &UnitsMgr::customUnitsChanged, this, &MainWindow::customUnitsChanged);
 
     m_defineCustomUnitsAction = new QAction(tr("Define C&ustom..."), this);
+    m_defineCustomUnitsAction->setStatusTip(tr("Defines custom units"));
+    m_defineCustomUnitsAction->setWhatsThis(tr("Provides a dialog to define custom units."));
     connect(m_defineCustomUnitsAction, &QAction::triggered, this, [this]() {
         m_prefsDialog->execPage(PrefsPageId::UnitsPage);
     });
@@ -351,6 +424,8 @@ void MainWindow::createActions() {
 
     m_degreeUnitsAction = new QAction(tr("&Degrees"), angularUnitsGroup);
     m_degreeUnitsAction->setCheckable(true);
+    m_degreeUnitsAction->setStatusTip(tr("Selects degree units"));
+    m_degreeUnitsAction->setWhatsThis(tr("Shows angular measurements using degrees."));
     connect(m_degreeUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setAngularUnits(DegreesId);
     });
@@ -360,6 +435,8 @@ void MainWindow::createActions() {
 
     m_radianUnitsAction = new QAction(tr("&Radians"), angularUnitsGroup);
     m_radianUnitsAction->setCheckable(true);
+    m_radianUnitsAction->setStatusTip(tr("Selects radian units"));
+    m_radianUnitsAction->setWhatsThis(tr("Shows angular measurements using radians."));
     connect(m_radianUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setAngularUnits(RadiansId);
     });
@@ -371,6 +448,8 @@ void MainWindow::createActions() {
 
     m_collapseAction = new QAction(this);
     m_collapseAction->setShortcut(QKeySequence("Ctrl+H"));
+    m_collapseAction->setStatusTip(tr("Toggle visibility of all sections"));
+    m_collapseAction->setWhatsThis(tr("Toggle the visibility of all user interface sections."));
     connect(m_collapseAction, &QAction::triggered, this, [this]() {
         setAllVisible(!m_sectionVisibility.canCollapse());
     });
@@ -380,32 +459,44 @@ void MainWindow::createActions() {
 
     m_toolBarVisibleAction = new QAction(tr("&Tool Bar"), this);
     m_toolBarVisibleAction->setCheckable(true);
+    m_toolBarVisibleAction->setStatusTip(tr("Toggle toolbar visibility"));
+    m_toolBarVisibleAction->setWhatsThis(tr("Toggles the visibility of the toolbar."));
     connect(m_toolBarVisibleAction, &QAction::triggered, this, &MainWindow::setToolBarVisible);
     connect(this, &MainWindow::toolBarVisibilityChanged, m_toolBarVisibleAction, &QAction::setChecked);
 
     m_toolDataSectionVisibleAction = new QAction(tr("Tool &Info"), this);
     m_toolDataSectionVisibleAction->setCheckable(true);
+    m_toolDataSectionVisibleAction->setStatusTip(tr("Toggle info section visibility"));
+    m_toolDataSectionVisibleAction->setWhatsThis(tr("Toggles the visibility of the measurement information section."));
     connect(m_toolDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setToolDataSectionVisible);
     connect(this, &MainWindow::toolDataSectionVisibilityChanged, m_toolDataSectionVisibleAction, &QAction::setChecked);
 
     m_screenDataSectionVisibleAction = new QAction(tr("&Screen Info"), this);
     m_screenDataSectionVisibleAction->setCheckable(true);
+    m_screenDataSectionVisibleAction->setStatusTip(tr("Toggle screen info section visibility"));
+    m_screenDataSectionVisibleAction->setWhatsThis(tr("Toggles the visibility of the screen information section."));
     connect(m_screenDataSectionVisibleAction, &QAction::triggered, this, &MainWindow::setScreenDataSectionVisible);
     connect(this, &MainWindow::screenDataSectionVisibilityChanged, m_screenDataSectionVisibleAction, &QAction::setChecked);
 
     m_magnifierSectionVisibleAction = new QAction(tr("&Magnifier"), this);
     m_magnifierSectionVisibleAction->setCheckable(true);
+    m_magnifierSectionVisibleAction->setStatusTip(tr("Toggle magnifier visibility"));
+    m_magnifierSectionVisibleAction->setWhatsThis(tr("Toggles the visibility of the magnifier."));
     connect(m_magnifierSectionVisibleAction, &QAction::triggered, this, &MainWindow::setMagnifierSectionVisible);
     connect(this, &MainWindow::magnifierSectionVisibilityChanged, m_magnifierSectionVisibleAction, &QAction::setChecked);
 
     m_statusBarVisibleAction = new QAction(tr("Status &Bar"), this);
     m_statusBarVisibleAction->setCheckable(true);
+    m_statusBarVisibleAction->setStatusTip(tr("Toggle status bar visibility"));
+    m_statusBarVisibleAction->setWhatsThis(tr("Toggles the visibility of the status bar."));
     connect(m_statusBarVisibleAction, &QAction::triggered, this, &MainWindow::setStatusBarVisible);
     connect(this, &MainWindow::statusBarVisibilityChanged, m_statusBarVisibleAction, &QAction::setChecked);
 
     m_hideCrosshairsAction = new QAction(tr("&Hide Crosshairs"), this);
     m_hideCrosshairsAction->setShortcut(QKeySequence("Ctrl+B"));
     m_hideCrosshairsAction->setCheckable(true);
+    m_hideCrosshairsAction->setStatusTip(tr("Toggle crosshair visibility"));
+    m_hideCrosshairsAction->setWhatsThis(tr("Toggles the visibility of the tool crosshairs."));
     connect(m_hideCrosshairsAction, &QAction::triggered, this, [this](bool hide) {
         m_toolMgr->setCrosshairsEnabled(!hide);
     });
@@ -415,6 +506,8 @@ void MainWindow::createActions() {
 
     m_hideDataWindowsAction = new QAction(tr("Hide &Popup Data Windows"), this);
     m_hideDataWindowsAction->setCheckable(true);
+    m_hideDataWindowsAction->setStatusTip(tr("Toggle data window visibility"));
+    m_hideDataWindowsAction->setWhatsThis(tr("Toggles the visibility of the tool popup data windows."));
     connect(m_hideDataWindowsAction, &QAction::triggered, this, [this](bool hide) {
         m_toolMgr->setDataWinEnabled(!hide);
     });
@@ -424,6 +517,8 @@ void MainWindow::createActions() {
 
     m_hideOriginToolAction = new QAction(tr("Hide &Origin Marker"), this);
     m_hideOriginToolAction->setCheckable(true);
+    m_hideOriginToolAction->setStatusTip(tr("Toggle origin marker visibility"));
+    m_hideOriginToolAction->setWhatsThis(tr("Toggles the visibility of the origin marker."));
     connect(m_hideOriginToolAction, &QAction::triggered, this, [this](bool hide) {
         m_toolMgr->setEnabled(OriginTool::k_toolName, !hide);
     });
@@ -435,43 +530,62 @@ void MainWindow::createActions() {
 
     m_invertYAction = new QAction(tr("Invert &Y"), this);
     m_invertYAction->setCheckable(true);
+    m_invertYAction->setStatusTip(tr("Toggle direction of the y-axis"));
+    m_invertYAction->setWhatsThis(tr("Toggles the origin and direction of the y-axis. Default origin is at the top "
+                                     "of the screen with positive y pointing downward."));
     connect(m_invertYAction, &QAction::triggered, m_unitsMgr, &UnitsMgr::setInvertY);
     connect(m_unitsMgr, &UnitsMgr::invertYChanged, m_invertYAction, &QAction::setChecked);
 
     m_supplementalAngleAction = new QAction(tr("Supplemental &Angle"));
     m_supplementalAngleAction->setCheckable(true);
+    m_supplementalAngleAction->setStatusTip(tr("Toggle supplemental angle"));
+    m_supplementalAngleAction->setWhatsThis(tr("Toggles the angle display from included angle to supplemental "
+                                               "angle (180 - included angle)."));
     connect(m_supplementalAngleAction, &QAction::triggered, m_unitsMgr, &UnitsMgr::setSupplementalAngle);
     connect(m_unitsMgr, &UnitsMgr::supplementalAngleChanged, m_supplementalAngleAction, &QAction::setChecked);
 
     m_setOriginAction = new QAction(tr("Set &Origin"), this);
     m_setOriginAction->setShortcut(QKeySequence("Ctrl+N"));
+    m_setOriginAction->setStatusTip(tr("Set the origin location"));
+    m_setOriginAction->setWhatsThis(tr("Sets the origin to the current tool's active position"));
     connect(m_setOriginAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setOrigin(m_toolMgr->getActivePosition());
     });
 
     m_resetOriginAction = new QAction(tr("&Reset Origin"), this);
+    m_resetOriginAction->setStatusTip(tr("Resets origin location"));
+    m_resetOriginAction->setWhatsThis(tr("Resets the origin to the default position (top, left or bottom, left if "
+                                         "y-axis is inverted)."));
     connect(m_resetOriginAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setOrigin(QPoint(0, 0));
     });
 
     m_alwaysVisibleAction = new QAction(tr("Always &Visible"), this);
     m_alwaysVisibleAction->setCheckable(true);
+    m_alwaysVisibleAction->setStatusTip(tr("Ensures application always visible"));
+    m_alwaysVisibleAction->setWhatsThis(tr("Toggles whether the application can be hidden by other windows"));
     connect(m_alwaysVisibleAction, &QAction::triggered, this, &MainWindow::setAlwaysVisible);
     connect(this, &MainWindow::alwaysVisibleChanged, m_alwaysVisibleAction, &QAction::setChecked);
 
     // Help actions
 
     m_releasesAction = new QAction(tr("&Releases"), this);
+    m_releasesAction->setStatusTip(tr("Browse Meazure releases"));
+    m_releasesAction->setWhatsThis(tr("Opens web page showing Meazure releases."));
     connect(m_releasesAction, &QAction::triggered, this, []() {
         QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure/releases"));
     });
 
     m_reportIssueAction = new QAction(tr("Report an &Issue"), this);
+    m_reportIssueAction->setStatusTip(tr("Submit an an issue"));
+    m_reportIssueAction->setWhatsThis(tr("Opens web page to submit a bug report or feature request."));
     connect(m_reportIssueAction, &QAction::triggered, this, []() {
         QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure/issues"));
     });
 
     m_aboutAction = new QAction(tr("&About"), this);
+    m_aboutAction->setStatusTip(tr("Show application information"));
+    m_aboutAction->setWhatsThis(tr("Shows application version and other information."));
     connect(m_aboutAction, &QAction::triggered, m_aboutDialog, &AboutDialog::exec);
 }
 
@@ -569,6 +683,8 @@ void MainWindow::createMenus() {
     // Help menu
 
     QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(QWhatsThis::createAction(this));
+    helpMenu->addSeparator();
     helpMenu->addAction(m_releasesAction);
     helpMenu->addAction(m_reportIssueAction);
     helpMenu->addAction(m_aboutAction);
@@ -576,6 +692,8 @@ void MainWindow::createMenus() {
 
 void MainWindow::createToolBar() {
     m_toolBar = addToolBar("");
+    m_toolBar->setFloatable(false);
+    m_toolBar->setMovable(false);
     m_toolBar->setIconSize(QSize(k_toolBarIconSize, k_toolBarIconSize));
     m_toolBar->addAction(m_cursorToolAction);
     m_toolBar->addAction(m_pointToolAction);

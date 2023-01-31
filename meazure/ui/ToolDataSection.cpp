@@ -63,9 +63,13 @@ void ToolDataSection::createFields() {
 
     m_x1Label = new QLabel(tr("X1:"));
     m_x1Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
+    m_x1Field->setStatusTip(tr("Point 1 x-axis coordinate"));
+    m_x1Field->setWhatsThis(tr("Point 1 x-axis coordinate in the current units."));
 
     m_y1Label = new QLabel(tr("Y1:"));
     m_y1Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
+    m_y1Field->setStatusTip(tr("Point 1 y-axis coordinate"));
+    m_y1Field->setWhatsThis(tr("Point 1 y-axis coordinate in the current units."));
     m_y1Units = new QLabel();
     auto* y1Layout = new QHBoxLayout();
     y1Layout->addWidget(m_y1Field);
@@ -73,9 +77,13 @@ void ToolDataSection::createFields() {
 
     m_x2Label = new QLabel(tr("X2:"));
     m_x2Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
+    m_x2Field->setStatusTip(tr("Point 2 x-axis coordinate"));
+    m_x2Field->setWhatsThis(tr("Point 2 x-axis coordinate in the current units."));
 
     m_y2Label = new QLabel(tr("Y2:"));
     m_y2Field = new DoubleDataField(k_fieldShortWidth, true, false, false);
+    m_y2Field->setStatusTip(tr("Point 2 y-axis coordinate"));
+    m_y2Field->setWhatsThis(tr("Point 2 y-axis coordinate in the current units."));
     m_y2Units = new QLabel();
     auto* y2Layout = new QHBoxLayout();
     y2Layout->addWidget(m_y2Field);
@@ -83,9 +91,13 @@ void ToolDataSection::createFields() {
 
     m_xvLabel = new QLabel(tr("XV:"));
     m_xvField = new DoubleDataField(k_fieldShortWidth, true, false, false);
+    m_xvField->setStatusTip(tr("Vertex x-axis coordinate"));
+    m_xvField->setWhatsThis(tr("Vertex x-axis coordinate in the current units."));
 
     m_yvLabel = new QLabel(tr("YV:"));
     m_yvField = new DoubleDataField(k_fieldShortWidth, true, false, false);
+    m_yvField->setStatusTip(tr("Vertex y-axis coordinate"));
+    m_yvField->setWhatsThis(tr("Vertex y-axis coordinate in the current units."));
     m_yvUnits = new QLabel();
     auto* yvLayout = new QHBoxLayout();
     yvLayout->addWidget(m_yvField);
@@ -93,9 +105,13 @@ void ToolDataSection::createFields() {
 
     m_wLabel = new QLabel(tr("W:"));
     m_wField = new DoubleDataField(k_fieldShortWidth, false);
+    m_wField->setStatusTip(tr("Width"));
+    m_wField->setWhatsThis(tr("Width in the current units."));
 
     m_hLabel = new QLabel(tr("H:"));
     m_hField = new DoubleDataField(k_fieldShortWidth, false);
+    m_hField->setStatusTip(tr("Height"));
+    m_hField->setWhatsThis(tr("Height in the current units."));
     m_hUnits = new QLabel();
     auto* hLayout = new QHBoxLayout();
     hLayout->addWidget(m_hField);
@@ -103,6 +119,8 @@ void ToolDataSection::createFields() {
 
     m_dLabel = new QLabel(tr("D:"));
     m_dField = new DoubleDataField(k_fieldShortWidth, false);
+    m_dField->setStatusTip(tr("Line, diagonal or radius length"));
+    m_dField->setWhatsThis(tr("Line, diagonal or radius length in the current units."));
     m_dUnits = new QLabel();
     auto* dLayout = new QHBoxLayout();
     dLayout->addWidget(m_dField);
@@ -110,6 +128,8 @@ void ToolDataSection::createFields() {
 
     m_aLabel = new QLabel(tr("A:"));
     m_aField = new DoubleDataField(k_fieldShortWidth, false);
+    m_aField->setStatusTip(tr("Angle"));
+    m_aField->setWhatsThis(tr("Angle in the current angular units."));
     m_aUnits = new QLabel();
     auto* aLayout = new QHBoxLayout();
     aLayout->addWidget(m_aField);
@@ -117,9 +137,13 @@ void ToolDataSection::createFields() {
 
     m_asLabel = new QLabel(tr("As:"));
     m_asField = new DoubleDataField(k_fieldLongWidth, false);
+    m_asField->setStatusTip(tr("Aspect ratio"));
+    m_asField->setWhatsThis(tr("Bounding box aspect ratio (width / height)."));
 
     m_arLabel = new QLabel(tr("Ar:"));
     m_arField = new DoubleDataField(k_fieldLongWidth, false);
+    m_arField->setStatusTip(tr("Area"));
+    m_arField->setWhatsThis(tr("Bounding box area (width * height)."));
     m_arUnits = new QLabel();
     auto* arLayout = new QHBoxLayout();
     arLayout->addWidget(m_arField);

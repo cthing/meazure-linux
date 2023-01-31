@@ -40,6 +40,8 @@ MagnifierSection::MagnifierSection(const ScreenInfoProvider* screenInfo, const T
 
     m_zoomInAction = new QAction(tr("Zoom In"), this);
     m_zoomInAction->setShortcut(QKeySequence(QKeySequence::ZoomIn));
+    m_zoomInAction->setStatusTip(tr("Increase magnifier zoom"));
+    m_zoomInAction->setWhatsThis(tr("Increases the magnifier zoom around the active position."));
     connect(m_zoomInAction, &QAction::triggered, m_magnifier, &Magnifier::zoomIn);
     connect(m_magnifier, &Magnifier::zoomChanged, this, [this](int zoomIndex) {
         m_zoomInAction->setEnabled(zoomIndex < static_cast<int>(Magnifier::getZoomFactors().size() - 1));
@@ -47,6 +49,8 @@ MagnifierSection::MagnifierSection(const ScreenInfoProvider* screenInfo, const T
 
     m_zoomOutAction = new QAction(tr("Zoom Out"), this);
     m_zoomOutAction->setShortcut(QKeySequence(QKeySequence::ZoomOut));
+    m_zoomOutAction->setStatusTip(tr("Decrease magnifier zoom"));
+    m_zoomOutAction->setWhatsThis(tr("Decreases the magnifier zoom around the active position."));
     connect(m_zoomOutAction, &QAction::triggered, m_magnifier, &Magnifier::zoomOut);
     connect(m_magnifier, &Magnifier::zoomChanged, this, [this](int zoomIndex) {
         m_zoomOutAction->setEnabled(zoomIndex > 0);
@@ -54,6 +58,8 @@ MagnifierSection::MagnifierSection(const ScreenInfoProvider* screenInfo, const T
 
     m_gridAction = new QAction(tr("Magnifier &Grid"), this);
     m_gridAction->setCheckable(true);
+    m_gridAction->setStatusTip(tr("Toggle magnifier grid visibility"));
+    m_gridAction->setWhatsThis(tr("Toggles the display of a grid in the magnifier image."));
     connect(m_gridAction, &QAction::triggered, m_magnifier, &Magnifier::setGrid);
     connect(m_magnifier, &Magnifier::gridChanged, m_gridAction, &QAction::setChecked);
 
