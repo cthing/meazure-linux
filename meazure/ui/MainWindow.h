@@ -203,6 +203,7 @@ private:
     QAction* m_resetOriginAction;
     QAction* m_alwaysVisibleAction;
 
+    QAction* m_helpAction;
     QAction* m_releasesAction;
     QAction* m_reportIssueAction;
     QAction* m_aboutAction;

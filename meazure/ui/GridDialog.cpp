@@ -20,6 +20,7 @@
 #include "GridDialog.h"
 #include <meazure/graphics/Grid.h>
 #include <meazure/utils/LayoutUtils.h>
+#include <meazure/utils/HelpUtils.h>
 #include <QLabel>
 #include <QGridLayout>
 #include <QDialogButtonBox>
@@ -122,10 +123,9 @@ void GridDialog::createUI() {
     restoreButton->setToolTip(tr("Restore default grid settings"));
     restoreButton->setWhatsThis(tr("Restores defaults for all grid settings."));
 
-    const int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize);
     auto* helpButton = buttonBox->button(QDialogButtonBox::Help);
     helpButton->setText("");
-    helpButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarContextHelpButton).pixmap(iconSize, iconSize));
+    helpButton->setIcon(HelpUtils::getHelpIcon(style()));
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &GridDialog::reject);

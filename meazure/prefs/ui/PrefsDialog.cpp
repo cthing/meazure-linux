@@ -23,6 +23,7 @@
 #include "UnitsPrefsPage.h"
 #include "PrecisionPrefsPage.h"
 #include "CalibrationPrefsPage.h"
+#include <meazure/utils/HelpUtils.h>
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -56,10 +57,9 @@ PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ConfigMgr* 
     cancelButton->setToolTip(tr("Discard all preference changes"));
     cancelButton->setWhatsThis(tr("Discards all preference changes and closes the dialog."));
 
-    const int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize);
     auto* helpButton = buttonBox->button(QDialogButtonBox::Help);
     helpButton->setText("");
-    helpButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarContextHelpButton).pixmap(iconSize, iconSize));
+    helpButton->setIcon(HelpUtils::getHelpIcon(style()));
 
     connect(resetButton, &QPushButton::clicked, this, &PrefsDialog::reset);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);

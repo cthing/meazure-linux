@@ -30,6 +30,7 @@
 #include <meazure/tools/AngleTool.h>
 #include <meazure/tools/WindowTool.h>
 #include <meazure/units/Units.h>
+#include <meazure/utils/HelpUtils.h>
 #include <meazure/prefs/ui/PrefsPageId.h>
 #include <meazure/position-log/PosLogMgr.h>
 #include <meazure/config/ConfigMgr.h>
@@ -569,6 +570,13 @@ void MainWindow::createActions() {
 
     // Help actions
 
+    m_helpAction = new QAction(tr("Help"), this);
+    m_helpAction->setShortcut(QKeySequence::HelpContents);
+    m_helpAction->setEnabled(HelpUtils::isHelpPresent());
+    connect(m_helpAction, &QAction::triggered, this, []() {
+        HelpUtils::openHelp();
+    });
+
     m_releasesAction = new QAction(tr("&Releases"), this);
     m_releasesAction->setStatusTip(tr("Browse Meazure releases"));
     m_releasesAction->setWhatsThis(tr("Opens web page showing Meazure releases."));
@@ -687,6 +695,7 @@ void MainWindow::createMenus() {
     // Help menu
 
     QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(m_helpAction);
     helpMenu->addAction(QWhatsThis::createAction(this));
     helpMenu->addSeparator();
     helpMenu->addAction(m_releasesAction);

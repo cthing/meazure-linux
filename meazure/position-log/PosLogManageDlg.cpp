@@ -19,9 +19,9 @@
 
 #include "PosLogManageDlg.h"
 #include <meazure/utils/LayoutUtils.h>
+#include <meazure/utils/HelpUtils.h>
 #include <QGridLayout>
 #include <QSignalBlocker>
-#include <QStyle>
 #include <QWhatsThis>
 
 
@@ -98,9 +98,7 @@ void PosLogManageDlg::createUI() {
     m_closeButton->setToolTip(tr("Close the dialog"));
     m_closeButton->setWhatsThis(tr("Closes the dialog."));
 
-    const int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize);
-    m_helpButton =
-            new QPushButton(style()->standardIcon(QStyle::SP_TitleBarContextHelpButton).pixmap(iconSize, iconSize), "");
+    m_helpButton = new QPushButton(HelpUtils::getHelpIcon(style()), "");
 
     auto* logLayout = new QGridLayout();
     logLayout->addWidget(logLabel,        k_row0, k_col0, k_rowspan1, k_colspan2);

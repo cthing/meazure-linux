@@ -1,4 +1,3 @@
-set(QT_BIN_DIR "${CONAN_QT_ROOT}/bin")
 set(QT_PLUGINS_DIR "${CONAN_QT_ROOT}/res/archdatadir/plugins")
 
 set(TOP_SOURCES
@@ -176,6 +175,7 @@ set(UTILS_SOURCES
     utils/Cloaker.h
     utils/EnumIterator.h
     utils/Geometry.h
+    utils/HelpUtils.h
     utils/LayoutUtils.h
     utils/MathUtils.h
     utils/StringUtils.cpp
@@ -294,26 +294,43 @@ target_link_libraries(meazure PRIVATE
 
 # Replace the version variables with the actual values from the project version.
 configure_file(AppVersion.h.in AppVersion.h @ONLY)
+set_target_properties(meazure PROPERTIES ADDITIONAL_CLEAN_FILES "${CMAKE_CURRENT_BINARY_DIR}/AppVersion.h")
 
 # Because the ICU library is statically compiled, its data file is not available at runtime.
 # Copy the data file to the output directory. The directory will be included in the distribution
 # package and ICU will be configured to use that directory.
-add_custom_command(TARGET meazure POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E make_directory icu
-                   COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ICU_RES_DIRS}/*" icu
-                   )
+file(GLOB_RECURSE ICU_FILES "${ICU_RES_DIRS}/*")
+list(TRANSFORM ICU_FILES REPLACE "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu")
+add_custom_target(copy_icu
+                  COMMAND ${CMAKE_COMMAND} -E copy_directory "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu"
+                  BYPRODUCTS ${ICU_FILES} "${CMAKE_CURRENT_BINARY_DIR}/icu"
+                  COMMENT "Copying icu files"
+                  )
+add_dependencies(libmeazure copy_icu)
 
-# Copy Qt Assistant to the build directory so that it can be used during development of the app and packaged
-# with it for deployment.
-add_custom_command(TARGET meazure POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_if_different "${QT_BIN_DIR}/assistant" assistant
-                   )
+# Copy the user manual for distribution.
+set(HELP_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/help")
+set(HELP_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/help")
+file(GLOB_RECURSE HELP_SOURCE_FILES "${HELP_SOURCE_DIR}/*")
+set(HELP_BINARY_FILES ${HELP_SOURCE_FILES})
+list(TRANSFORM HELP_BINARY_FILES REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}")
+add_custom_target(copy_help
+                  COMMAND ${CMAKE_COMMAND} -E copy_directory "${HELP_SOURCE_DIR}" "${HELP_BINARY_DIR}"
+                  COMMAND ${CMAKE_COMMAND} -DINFILE=${HELP_SOURCE_DIR}/help.html -DOUTFILE=${HELP_BINARY_DIR}/help.html -DMAJOR_VERSION=${meazure_linux_VERSION_MAJOR} -DMINOR_VERSION=${meazure_linux_VERSION_MINOR} -P ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
+                  DEPENDS ${HELP_SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
+                  BYPRODUCTS ${HELP_BINARY_FILES} "${HELP_BINARY_DIR}/images" "${HELP_BINARY_DIR}"
+                  COMMENT "Copying help files"
+                  )
+add_dependencies(libmeazure copy_help)
 
 # When the app is run from the build directory, it should run in development mode. One aspect of running in
 # development mode is that the application state is persisted in the build directory rather than the user's home
 # directory or registry. The app will run in development mode if the "meadevmode" marker file is present in the
 # same directory as the executable. In addition, regardless of the presence or absence of the marker file,
 # development mode can be explicitly enabled or disabled using the "devmode" command line option.
-add_custom_command(TARGET libmeazure POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E touch meadevmode
-                   )
+add_custom_target(dev_mode
+                  COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/meadevmode"
+                  BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/meadevmode"
+                  COMMENT "Creating dev mode marker"
+                  )
+add_dependencies(libmeazure dev_mode)

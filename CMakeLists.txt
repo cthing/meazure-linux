@@ -16,7 +16,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(APP_DIR "${PROJECT_SOURCE_DIR}/meazure")
 set(TEST_DIR "${PROJECT_SOURCE_DIR}/test")
 set(DEV_DIR "${PROJECT_SOURCE_DIR}/dev")
-set(DOCS_DIR "${PROJECT_SOURCE_DIR}/docs")
 
 include(${DEV_DIR}/conan/cthing-conan.cmake)
 
