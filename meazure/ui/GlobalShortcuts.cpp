@@ -59,56 +59,56 @@ bool GlobalShortcuts::eventFilter(QObject* obj, QEvent* event) {
                 case Qt::Key_Up:
                     if (m_1Pressed) {
                         emit ctrl1Up();
-                        return true;
                     }
                     if (m_2Pressed) {
                         emit ctrl2Up();
-                        return true;
                     }
                     if (m_3Pressed) {
                         emit ctrl3Up();
+                    }
+                    if (m_1Pressed || m_2Pressed || m_3Pressed) {
                         return true;
                     }
                     break;
                 case Qt::Key_Down:
                     if (m_1Pressed) {
                         emit ctrl1Down();
-                        return true;
                     }
                     if (m_2Pressed) {
                         emit ctrl2Down();
-                        return true;
                     }
                     if (m_3Pressed) {
                         emit ctrl3Down();
+                    }
+                    if (m_1Pressed || m_2Pressed || m_3Pressed) {
                         return true;
                     }
                     break;
                 case Qt::Key_Left:
                     if (m_1Pressed) {
                         emit ctrl1Left();
-                        return true;
                     }
                     if (m_2Pressed) {
                         emit ctrl2Left();
-                        return true;
                     }
                     if (m_3Pressed) {
                         emit ctrl3Left();
+                    }
+                    if (m_1Pressed || m_2Pressed || m_3Pressed) {
                         return true;
                     }
                     break;
                 case Qt::Key_Right:
                     if (m_1Pressed) {
                         emit ctrl1Right();
-                        return true;
                     }
                     if (m_2Pressed) {
                         emit ctrl2Right();
-                        return true;
                     }
                     if (m_3Pressed) {
                         emit ctrl3Right();
+                    }
+                    if (m_1Pressed || m_2Pressed || m_3Pressed) {
                         return true;
                     }
                     break;
