@@ -82,7 +82,7 @@ void Line::setPosition(const QPoint& start, const QPoint& end) {
         const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
         const double angle = Geometry::angle(normalizedStart, normalizedEnd);
-        const QSize offset = m_unitsProvider->convertToPixels(InchesId, screenRes, m_offset, 0.0);
+        const QSize offset = m_unitsProvider->convertToPixels(InchesId, screenRes, m_offset, 1);
         const int offsetX = qRound(offset.width() * std::cos(angle));
         const int offsetY = qRound(offset.height() * std::sin(angle));
 

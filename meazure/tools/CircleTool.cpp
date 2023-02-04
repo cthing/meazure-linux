@@ -30,8 +30,8 @@ CircleTool::CircleTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsP
         m_perimeter(screenInfo->getCenter() + QPoint(30, 30)),
         m_centerCH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Vertex"), k_centerId)),
         m_perimeterCH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"), k_perimeterId)),
-        m_circle(new Circle(screenInfo, unitsProvider, k_crosshairRadialOffset)),
-        m_line(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_circle(new Circle(screenInfo, unitsProvider, k_enabledCrosshairRadialOffset)),
+        m_line(new Line(screenInfo, unitsProvider, k_enabledCrosshairOffset)),
         m_dataWinCenter(new ToolDataWindow(screenInfo, unitsProvider, XYVReadOnly | DistReadOnly)),
         m_dataWinPerimeter(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | DistReadOnly)) {
     connect(m_centerCH, &Crosshair::entered, this, &CircleTool::entered);
@@ -77,13 +77,13 @@ void CircleTool::setEnabled(bool enable) {
 
 void CircleTool::setCrosshairsEnabled(bool enable) {
     if (enable) {
-        m_circle->setGap(k_crosshairRadialOffset);
-        m_line->setOffset(k_crosshairOffset);
+        m_circle->setGap(k_enabledCrosshairRadialOffset);
+        m_line->setOffset(k_enabledCrosshairOffset);
         m_centerCH->show();
         m_perimeterCH->show();
     } else {
-        m_circle->setGap(0.0);
-        m_line->setOffset(0.0);
+        m_circle->setGap(k_disabledCrosshairRadialOffset);
+        m_line->setOffset(k_disabledCrosshairOffset);
         m_centerCH->hide();
         m_perimeterCH->hide();
     }

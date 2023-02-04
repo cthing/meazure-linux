@@ -33,9 +33,9 @@ AngleTool::AngleTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsPro
         m_vertexCH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Vertex"), k_vertexId)),
         m_point1CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
         m_point2CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
-        m_lineB(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
-        m_line1(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
-        m_line2(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_lineB(new Line(screenInfo, unitsProvider, k_enabledCrosshairOffset)),
+        m_line1(new Line(screenInfo, unitsProvider, k_enabledCrosshairOffset)),
+        m_line2(new Line(screenInfo, unitsProvider, k_enabledCrosshairOffset)),
         m_dataWinV(new ToolDataWindow(screenInfo, unitsProvider, XYVReadOnly | AngleReadOnly)),
         m_dataWin1(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | AngleReadOnly)),
         m_dataWin2(new ToolDataWindow(screenInfo, unitsProvider, XY2ReadOnly | AngleReadOnly)) {
@@ -94,16 +94,16 @@ void AngleTool::setEnabled(bool enable) {
 
 void AngleTool::setCrosshairsEnabled(bool enable) {
     if (enable) {
-        m_line1->setOffset(k_crosshairOffset);
-        m_line2->setOffset(k_crosshairOffset);
-        m_lineB->setOffset(k_crosshairOffset);
+        m_line1->setOffset(k_enabledCrosshairOffset);
+        m_line2->setOffset(k_enabledCrosshairOffset);
+        m_lineB->setOffset(k_enabledCrosshairOffset);
         m_point1CH->show();
         m_point2CH->show();
         m_vertexCH->show();
     } else {
-        m_line1->setOffset(0.0);
-        m_line2->setOffset(0.0);
-        m_lineB->setOffset(0.0);
+        m_line1->setOffset(k_disabledCrosshairOffset);
+        m_line2->setOffset(k_disabledCrosshairOffset);
+        m_lineB->setOffset(k_disabledCrosshairOffset);
         m_point1CH->hide();
         m_point2CH->hide();
         m_vertexCH->hide();

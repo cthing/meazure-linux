@@ -110,7 +110,8 @@ private slots:
 private:
     /// Similar to k_crosshairOffset but for use with the perimeter crosshair to provide a bit more spacing.
     ///
-    static constexpr double k_crosshairRadialOffset {Crosshair::getDefaultSize() / 2.0 + 0.08 };
+    static constexpr double k_enabledCrosshairRadialOffset { Crosshair::getDefaultSize() / 2.0 + 0.08 };
+    static constexpr double k_disabledCrosshairRadialOffset { 0.08 };
     static constexpr RadioToolTraits k_traits { XY1ReadWrite | XYVReadWrite | WHReadOnly | DistReadOnly |
                                                 AngleReadOnly | AspectReadOnly | AreaReadOnly };
     static constexpr int k_perimeterId { 1 };   ///< ID for the perimeter crosshair

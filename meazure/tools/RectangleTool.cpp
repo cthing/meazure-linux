@@ -32,7 +32,7 @@ RectangleTool::RectangleTool(const ScreenInfo* screenInfo, const UnitsProvider* 
         m_anchorPoint2(m_point2),
         m_point1CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
         m_point2CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
-        m_rectangle(new Rectangle(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_rectangle(new Rectangle(screenInfo, unitsProvider, k_enabledCrosshairOffset)),
         m_dataWin1(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | DistReadOnly)),
         m_dataWin2(new ToolDataWindow(screenInfo, unitsProvider, XY2ReadOnly | DistReadOnly)) {
     connect(m_point1CH, &Crosshair::entered, this, &RectangleTool::entered);
@@ -75,11 +75,11 @@ void RectangleTool::setEnabled(bool enable) {
 
 void RectangleTool::setCrosshairsEnabled(bool enable) {
     if (enable) {
-        m_rectangle->setOffset(k_crosshairOffset);
+        m_rectangle->setOffset(k_enabledCrosshairOffset);
         m_point1CH->show();
         m_point2CH->show();
     } else {
-        m_rectangle->setOffset(0.0);
+        m_rectangle->setOffset(k_disabledCrosshairOffset);
         m_point1CH->hide();
         m_point2CH->hide();
     }

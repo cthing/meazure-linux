@@ -80,7 +80,7 @@ void Circle::paintEvent(QPaintEvent*) {
     const int screenIndex = m_screenInfo->screenForPoint(m_perimeter);
     const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
-    const QSize gap = m_unitsProvider->convertToPixels(InchesId, screenRes, m_gap, 0.0);
+    const QSize gap = (m_gap > 0.0) ? m_unitsProvider->convertToPixels(InchesId, screenRes, m_gap, 1) : QSize(0, 0);
     const double halfGapAngle = qRadiansToDegrees(gap.width()/m_radius);
     const double startAngle = 360.0 - qRadiansToDegrees(Geometry::angle(m_center, m_perimeter)) + halfGapAngle;
     const double spanAngle = 360.0 - 2.0 * halfGapAngle;

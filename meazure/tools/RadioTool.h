@@ -191,5 +191,11 @@ protected:
     /// When drawing lines to crosshairs, this offset will ensure that there is a bit of a margin
     /// around the crosshair such that the line will come close to but not touch the crosshair.
     ///
-    static constexpr double k_crosshairOffset { Crosshair::getDefaultSize() / 2.0 + 0.07 };
+    static constexpr double k_enabledCrosshairOffset { Crosshair::getDefaultSize() / 2.0 + 0.07 };
+
+    /// Offset, in inches, from the a given point so that there will be a margin around crosshairs.
+    /// When drawing lines to crosshairs, this offset will ensure that there is a bit of a margin
+    /// around the crosshair such that the line will come close to but not touch the crosshair.
+    ///
+    static constexpr double k_disabledCrosshairOffset { 0.07 };
 };

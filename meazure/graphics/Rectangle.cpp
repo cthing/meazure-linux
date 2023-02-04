@@ -93,7 +93,7 @@ void Rectangle::paintEvent(QPaintEvent*) {
         const int screenIndex = m_screenInfo->screenForPoint(m_start);
         const QSizeF screenRes = m_screenInfo->getScreenRes(screenIndex);
 
-        offset = m_unitsProvider->convertToPixels(InchesId, screenRes, m_offset, 0.0);
+        offset = m_unitsProvider->convertToPixels(InchesId, screenRes, m_offset, 1);
     }
 
     QPainter painter(this);

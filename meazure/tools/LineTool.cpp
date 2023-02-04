@@ -30,7 +30,7 @@ LineTool::LineTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvi
         m_point2(screenInfo->getCenter() + QPoint(30, 30)),
         m_point1CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
         m_point2CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
-        m_line(new Line(screenInfo, unitsProvider, k_crosshairOffset)),
+        m_line(new Line(screenInfo, unitsProvider, k_enabledCrosshairOffset)),
         m_dataWin1(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | DistReadOnly)),
         m_dataWin2(new ToolDataWindow(screenInfo, unitsProvider, XY2ReadOnly | DistReadOnly)) {
     connect(m_point1CH, &Crosshair::entered, this, &LineTool::entered);
@@ -73,11 +73,11 @@ void LineTool::setEnabled(bool enable) {
 
 void LineTool::setCrosshairsEnabled(bool enable) {
     if (enable) {
-        m_line->setOffset(k_crosshairOffset);
+        m_line->setOffset(k_enabledCrosshairOffset);
         m_point1CH->show();
         m_point2CH->show();
     } else {
-        m_line->setOffset(0.0);
+        m_line->setOffset(k_disabledCrosshairOffset);
         m_point1CH->hide();
         m_point2CH->hide();
     }
