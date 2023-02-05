@@ -294,7 +294,6 @@ target_link_libraries(meazure PRIVATE
 
 # Replace the version variables with the actual values from the project version.
 configure_file(AppVersion.h.in AppVersion.h @ONLY)
-set_target_properties(meazure PROPERTIES ADDITIONAL_CLEAN_FILES "${CMAKE_CURRENT_BINARY_DIR}/AppVersion.h")
 
 # Because the ICU library is statically compiled, its data file is not available at runtime.
 # Copy the data file to the output directory. The directory will be included in the distribution
@@ -303,7 +302,7 @@ file(GLOB_RECURSE ICU_FILES "${ICU_RES_DIRS}/*")
 list(TRANSFORM ICU_FILES REPLACE "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu")
 add_custom_target(copy_icu
                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu"
-                  BYPRODUCTS ${ICU_FILES} "${CMAKE_CURRENT_BINARY_DIR}/icu"
+                  BYPRODUCTS ${ICU_FILES}
                   COMMENT "Copying icu files"
                   )
 add_dependencies(libmeazure copy_icu)
@@ -318,7 +317,7 @@ add_custom_target(copy_help
                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${HELP_SOURCE_DIR}" "${HELP_BINARY_DIR}"
                   COMMAND ${CMAKE_COMMAND} -DINFILE=${HELP_SOURCE_DIR}/help.html -DOUTFILE=${HELP_BINARY_DIR}/help.html -DMAJOR_VERSION=${meazure_linux_VERSION_MAJOR} -DMINOR_VERSION=${meazure_linux_VERSION_MINOR} -P ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
                   DEPENDS ${HELP_SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
-                  BYPRODUCTS ${HELP_BINARY_FILES} "${HELP_BINARY_DIR}/images" "${HELP_BINARY_DIR}"
+                  BYPRODUCTS ${HELP_BINARY_FILES}
                   COMMENT "Copying help files"
                   )
 add_dependencies(libmeazure copy_help)
