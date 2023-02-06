@@ -298,29 +298,27 @@ configure_file(AppVersion.h.in AppVersion.h @ONLY)
 # Because the ICU library is statically compiled, its data file is not available at runtime.
 # Copy the data file to the output directory. The directory will be included in the distribution
 # package and ICU will be configured to use that directory.
-file(GLOB_RECURSE ICU_FILES "${ICU_RES_DIRS}/*")
-list(TRANSFORM ICU_FILES REPLACE "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu")
 add_custom_target(copy_icu
                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu"
-                  BYPRODUCTS ${ICU_FILES}
                   COMMENT "Copying icu files"
                   )
 add_dependencies(libmeazure copy_icu)
+
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${CMAKE_CURRENT_BINARY_DIR}/icu")
 
 # Copy the user manual for distribution.
 set(HELP_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/help")
 set(HELP_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/help")
 file(GLOB_RECURSE HELP_SOURCE_FILES "${HELP_SOURCE_DIR}/*")
-set(HELP_BINARY_FILES ${HELP_SOURCE_FILES})
-list(TRANSFORM HELP_BINARY_FILES REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}")
 add_custom_target(copy_help
                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${HELP_SOURCE_DIR}" "${HELP_BINARY_DIR}"
                   COMMAND ${CMAKE_COMMAND} -DINFILE=${HELP_SOURCE_DIR}/help.html -DOUTFILE=${HELP_BINARY_DIR}/help.html -DMAJOR_VERSION=${meazure_linux_VERSION_MAJOR} -DMINOR_VERSION=${meazure_linux_VERSION_MINOR} -P ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
                   DEPENDS ${HELP_SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
-                  BYPRODUCTS ${HELP_BINARY_FILES}
                   COMMENT "Copying help files"
                   )
 add_dependencies(libmeazure copy_help)
+
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${HELP_BINARY_DIR})
 
 # When the app is run from the build directory, it should run in development mode. One aspect of running in
 # development mode is that the application state is persisted in the build directory rather than the user's home
