@@ -393,7 +393,7 @@
           </dd>
         </dl>
         <p>
-          To select the Cursor tool choose the <strong>Cursor</strong> item on the <strong>Tools</strong> menu or
+          To select the Cursor tool, choose the <strong>Cursor</strong> item on the <strong>Tools</strong> menu or
           click on the Cursor tool icon on the toolbar.
         </p>
       </section>
@@ -417,7 +417,7 @@
           </dd>
         </dl>
         <p>
-          To select the Point tool choose the <strong>Point</strong> item on the <strong>Tools</strong> menu or
+          To select the Point tool, choose the <strong>Point</strong> item on the <strong>Tools</strong> menu or
           click on the Point tool icon on the toolbar.
         </p>
       </section>
@@ -505,7 +505,7 @@
           <strong>Ctrl</strong> key while dragging one of the crosshairs.
         </p>
         <p>
-          To select the Line tool choose the <strong>Line</strong> item on the <strong>Tools</strong> menu or click on
+          To select the Line tool, choose the <strong>Line</strong> item on the <strong>Tools</strong> menu or click on
           the Line tool icon on the toolbar.
         </p>
       </section>
@@ -596,7 +596,7 @@
           <strong>Ctrl</strong> key while dragging one of the crosshairs.
         </p>
         <p class="Para">
-          To select the Rectangle tool choose the <strong>Rectangle</strong> item on the <strong>Tools</strong> menu or
+          To select the Rectangle tool, choose the <strong>Rectangle</strong> item on the <strong>Tools</strong> menu or
           click on the Rectangle tool icon on the toolbar.
         </p>
       </section>
@@ -667,25 +667,211 @@
           <strong>Ctrl</strong> key while dragging one of the crosshairs.
         </p>
         <p class="Para">
-          To select the Circle tool choose the <strong>Circle</strong> item on the <strong>Tools</strong> menu or
+          To select the Circle tool, choose the <strong>Circle</strong> item on the <strong>Tools</strong> menu or
           click on the Circle tool icon on the toolbar.
         </p>
       </section>
       <section id="angle-tool">
         <h3>3.10 Angle Tool</h3>
-        <p>...</p>
+        <p>
+          <img src="images/AngleTool.png" width="100" height="123" class="image-top-left" alt="Angle tool">
+          The Angle tool provides a protractor for measuring arbitrary angles on the screen. The tool provides three
+          <a href="#crosshairs">crosshairs</a> that can be positioned anywhere on the screen. One crosshair is located
+          at the vertex of the angle and the other two crosshairs define the angle. The measured angle is on the same
+          side as the angle bisector line. Both the data window attached to the crosshairs and the
+          <a href="#tool-information">tool information section</a> display the angle measurement information. The
+          <a href="#magnifier">magnifier</a> shows the area around the crosshair that is being moved as well as the
+          color of the pixel at the center of that crosshair.
+        </p>
+        <p>
+          The tool information section displays the following measurements for the Angle tool:
+        </p>
+        <dl>
+          <dt>X1, Y1</dt>
+          <dd>
+            The position of the Point 1 crosshair
+          </dd>
+          <dt>X2, Y2</dt>
+          <dd>
+            The position of the Point 2 crosshair
+          </dd>
+          <dt>XV, YV</dt>
+          <dd>
+            The position of the angle vertex crosshair
+          </dd>
+          <dt>A</dt>
+          <dd>
+            <img src="images/ProtractorAngleDefinition.svg" width="150" height="150" class="image-top-right" alt="Angle definition">
+            The angle formed by the lines from the vertex to Point 1 and Point 2.
+            The angle is measured on the side of the tool that contains the angle bisector line. Using the
+            default coordinate system, positive angles are measured clockwise from the Point 1 line to
+            the Point 2 line
+          </dd>
+        </dl>
+        <p>
+          As described in the <a href="#crosshair-moving">Moving a Crosshair</a> section, the mouse or keyboard can be
+          used to position the crosshairs. In addtion, the entire angle can be moved by pressing the
+          <strong>Ctrl</strong> key while dragging one of the crosshairs.
+        </p>
+        <p>
+          To select the Angle tool, choose the <strong>Angle</strong> item on the <strong>Tools</strong> menu or click
+          on the Angle tool icon on the toolbar.
+        </p>
       </section>
       <section id="window-tool">
         <h3>3.11 Window Tool</h3>
-        <p>...</p>
+        <p>
+          The Window tool allows you to measure the size of any top level window on the screen. In addition, the window
+          contents can be <a href="#capture">captured</a> to the clipboard. The window being measured is identified by
+          a red rectangular border. Both the data window attached to the window border and the
+          <a href="#tool-information">tool information section</a> display the window measurement information.
+          Note that the position of a cannot be changed using the position text fields.
+        </p>
+        <p>
+          The tool information section displays the following measurements for the Window tool:
+        </p>
+        <dl>
+          <dt>X1, Y1</dt>
+          <dd>
+            The position of the upper left corner of the window
+          </dd>
+          <dt>X2, Y2</dt>
+          <dd>
+            The position of the lower right corner of the window
+          </dd>
+          <dt>W, H</dt>
+          <dd>
+            The width and height of the window, defined as
+            <math xmlns = "http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>W</mi><mo>=</mo><mo>|</mo><mi>X2</mi><mo>-</mo><mi>X1</mi><mo>|</mo><mo>+</mo><mn>1</mn>
+              </mrow>
+            </math>
+            and
+            <math xmlns = "http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>H</mi><mo>=</mo><mo>|</mo><mi>Y2</mi><mo>-</mo><mi>Y1</mi><mo>|</mo><mo>+</mo><mn>1</mn>
+              </mrow>
+            </math>
+            respectively
+          </dd>
+          <dt>D<dt>
+          <dd>
+            The length of the window diagonal, defined as
+            <math xmlns = "http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>D</mi><mo>=</mo><msqrt><msup><mi>W</mi><mn>2</mn></msup><mo>+</mo><msup><mi>H</mi><mn>2</mn></msup></msqrt>
+              </mrow>
+            </math>
+          </dd>
+          <dt>A</dt>
+          <dd>
+            <img src="images/AngleDefinition.svg" width="150" height="150" class="image-top-right" alt="Angle definition">
+            The angle of the diagonal relative to the x-axis. Using the default coordinate system, positive angles are
+            measured clockwise from the positive x-axis
+          </dd>
+          <dt>As</dt>
+          <dd>
+            The aspect ratio of the window, defined as
+            <math xmlns = "http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>As</mi><mo>=</mo><mi>W</mi><mo>/</mo><mi>H</mi>
+              </mrow>
+            </math>
+          </dd>
+          <dt>Ar</dt>
+          <dd>
+            The area of the window, defined as
+            <math xmlns = "http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>Ar</mi><mo>=</mo><mi>W</mi><mo>x</mo><mi>H</mi>
+              </mrow>
+            </math>
+          </dd>
+        </dl>
+        <p>
+          Note that the calculation of <strong>W</strong>, <strong>H</strong>, <strong>D</strong> and
+          <strong>Ar</strong> is always performed in pixel units and the result is converted to the currently
+          selected display units.
+        </p>
+        <p>
+          To capture the window contents see <a href="#capture">Screen Capture</a>.
+        </p>
+        <p>
+          To select the Window tool, choose the <strong>Window</strong> item on the <strong>Tools</strong> menu or
+          click on the Window tool icon on the toolbar.
+        </p>
       </section>
       <section id="rulers">
         <h3>3.12 Rulers</h3>
-        <p>...</p>
+        <p>
+          <img src="images/RulerTool.png" width="490" height="472" style="float: left; shape-outside: url(images/RulerToolShape.png);" alt="Ruler tool">
+          To assist in measuring items on the screen, a set of horizontal and vertical rulers can be displayed.
+          Rulers can be used in conjunction with any other measurement tool. The rulers provide indicators that
+          show the positions of the current measurement tool. For example, when the
+          <a href="#cursor-tool">Cursor tool</a> is selected, the ruler indicators will show the current position of
+          the mouse cursor when it moves within the area contained by the rulers.
+        </p>
+        <p>
+          The postion, length and angular orientation of the rulers can be changed using the circular grab handles
+          located around the rulers.
+        </p>
+        <p>
+          <strong>Position:</strong> The rulers can be dragged to a new position on the screen using the circular
+          grab handle at the origin between the two rulers.
+        </p>
+        <p>
+          <strong>Length:</strong> The length of each ruler can be changed by dragging the circular grab handle at the
+          end of each ruler.
+        </p>
+        <p>
+          <strong>Rotation:</strong> The rulers can be rotated by dragging the circuler grab handle at the end corner
+          of the horizontal ruler.
+        </p>
+        <p>
+          The colors and opacity of the rulers can be changed using the
+          <a href="#ruler-prefs">Ruler preferences</a>.
+        </p>
+        <p class="clearfix">
+          To select the rulers choose the <strong>Rulers</strong> item on the <strong>Tools</strong> menu or click
+          on the rulers icon on the toolbar.
+        </p>
       </section>
       <section id="grid">
         <h3>3.13 Screen Grid</h3>
-        <p>...</p>
+        <p>
+          A rectangular grid can be overlaid on the screen to assist in measuring. The grid will not affect mouse
+          cursor interaction with other windows. By default, the grid cover all screens and the cells of the grid are
+          square. The cell spacing, grid size, origin and orientation can be adjusted by selecting the
+          <strong>Screen Grid Settings</strong> item from the <strong>Tools</strong> menu.
+        </p>
+        <p>
+          To select the screen grid, choose the <strong>Screen Grid</strong> item on the <strong>Tools</strong> menu or
+          click on the screen grid icon on the toolbar.
+        </p>
+        <section id="grid-settings">
+          <h4>3.13.1 Screen Grid Settings</h4>
+          <p>
+            The screen grid visual parameters can be adjusted by selecting the  <strong>Screen Grid Settings</strong>
+            item from the <strong>Tools</strong> menu.
+          </p>
+          <dl>
+            <dt>Cell spacing</dt>
+            <dd>
+              The size of a grid cell can be adjusted using the <strong>Cell Spacing</strong> section of the grid
+              settings dialog. The width and height of the cells can be adjusted using the corresponding text fields.
+              The units for the cell size can be specified using the units drop down menu. If the horizontal and
+              vertical dimensions are linked, the cell height will be kept the same as the cell width.
+            </dd>
+            <dt>Grid Orientation</dt>
+            <dd>
+              The origin of the screen grid can be changed using the <strong>X</strong> and <strong>Y</strong> fields.
+              The overall width and height of the grid can be changes using the <strong>W</strong> and
+              <strong>H</strong> fields. The grid can be rotated using the <strong>A</strong> field to specify the
+              rotation angle in degrees relative to the x-axis.
+            </dd>
+          </dl>
+        </section>
       </section>
     </section>
     <section id="units">
