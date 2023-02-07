@@ -204,6 +204,7 @@ private:
     QAction* m_alwaysVisibleAction;
 
     QAction* m_helpAction;
+    QAction* m_whatsThisAction;
     QAction* m_releasesAction;
     QAction* m_reportIssueAction;
     QAction* m_aboutAction;

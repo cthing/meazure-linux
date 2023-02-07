@@ -18,6 +18,7 @@
  */
 
 #include "Caliper.h"
+#include <meazure/utils/Geometry.h>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QTransform>
@@ -34,8 +35,8 @@ Caliper::Caliper(Caliper::Orientation orientation, int length, QWidget *parent) 
         setFixedSize(length, k_thk);
 
         m_originJawPath.moveTo(0, 0);
+        m_originJawPath.lineTo(k_jawThk, 0);
         m_originJawPath.lineTo(0, k_thk);
-        m_originJawPath.lineTo(k_jawThk, k_thk);
     } else {
         setFixedSize(k_thk, length);
 
@@ -67,7 +68,7 @@ void Caliper::paintEvent(QPaintEvent*) {
 
         std::vector<QLine> tics;
         for (int x = -1; x < m_length; x += k_tickInterval) {
-            tics.emplace_back(x, k_thk, x, k_thk - k_ticHeight);
+            tics.emplace_back(x, 0, x, k_ticHeight);
         }
         painter.drawLines(tics.data(), static_cast<int>(tics.size()));
 
@@ -75,15 +76,15 @@ void Caliper::paintEvent(QPaintEvent*) {
 
         QPainterPath movingJawPath;
         movingJawPath.moveTo(m_jawPosition, 0);
+        movingJawPath.lineTo(m_jawPosition - k_jawThk, 0);
         movingJawPath.lineTo(m_jawPosition, k_thk);
-        movingJawPath.lineTo(m_jawPosition - k_jawThk, k_thk);
         painter.fillPath(movingJawPath, palette().text());
 
         if (m_mouseDown) {
             const QString positionStr(QString::number(m_jawPosition));
             const QRect numberRect = m_positionFontMetrics.boundingRect(positionStr);
             const int x = (m_jawPosition - numberRect.width()) / 2;
-            const int y = qRound(k_ticHeight  + numberRect.height() / 2.0) - m_positionFontMetrics.descent();
+            const int y = qRound((k_thk + k_ticHeight + numberRect.height() - m_positionFontMetrics.descent()) / 2.0);
             painter.drawText(x, y, positionStr);
         }
     } else {
@@ -108,17 +109,12 @@ void Caliper::paintEvent(QPaintEvent*) {
         if (m_mouseDown) {
             const QString positionStr(QString::number(m_jawPosition));
             const QRect numberRect = m_positionFontMetrics.boundingRect(positionStr);
-            const int x = qRound(k_ticHeight  + numberRect.height() / 2.0) - m_positionFontMetrics.descent();
+            const int x = qRound((k_thk - k_ticHeight + numberRect.height()) / 2.0 - m_positionFontMetrics.descent());
             const int y = (m_jawPosition + numberRect.width()) / 2;
-            QTransform transform;
-            transform.translate(x, y);
-            transform.rotate(-90);
-            transform.translate(-x, -y);
+
             painter.save();
-
-            painter.setTransform(transform);
+            painter.setTransform(Geometry::rotateAround(-90, x, y));
             painter.drawText(x, y, positionStr);
-
             painter.restore();
         }
     }

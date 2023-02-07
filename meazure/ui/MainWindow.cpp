@@ -332,7 +332,7 @@ void MainWindow::createActions() {
 
     m_pixelUnitsAction = new QAction(tr("&Pixels"), linearUnitsGroup);
     m_pixelUnitsAction->setCheckable(true);
-    m_pixelUnitsAction->setStatusTip(tr("Selects pixel units"));
+    m_pixelUnitsAction->setStatusTip(tr("Native pixel units"));
     m_pixelUnitsAction->setWhatsThis(tr("Show measurements using pixel units."));
     connect(m_pixelUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(PixelsId);
@@ -343,7 +343,7 @@ void MainWindow::createActions() {
 
     m_twipUnitsAction = new QAction(tr("&Twips"), linearUnitsGroup);
     m_twipUnitsAction->setCheckable(true);
-    m_twipUnitsAction->setStatusTip(tr("Selects twip units"));
+    m_twipUnitsAction->setStatusTip(tr("1 twip = 1/1440 inch"));
     m_twipUnitsAction->setWhatsThis(tr("Show measurements using twip units (1440 twips per inch)."));
     connect(m_twipUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(TwipsId);
@@ -354,7 +354,7 @@ void MainWindow::createActions() {
 
     m_pointUnitsAction = new QAction(tr("P&oints"), linearUnitsGroup);
     m_pointUnitsAction->setCheckable(true);
-    m_pointUnitsAction->setStatusTip(tr("Selects point units"));
+    m_pointUnitsAction->setStatusTip(tr("1 point = 1/72 inch"));
     m_pointUnitsAction->setWhatsThis(tr("Show measurements using point units (72 points per inch)."));
     connect(m_pointUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(PointsId);
@@ -365,7 +365,7 @@ void MainWindow::createActions() {
 
     m_picaUnitsAction = new QAction(tr("Pic&as"), linearUnitsGroup);
     m_picaUnitsAction->setCheckable(true);
-    m_picaUnitsAction->setStatusTip(tr("Selects pica units"));
+    m_picaUnitsAction->setStatusTip(tr("1 pica = 1/6 inch"));
     m_picaUnitsAction->setWhatsThis(tr("Show measurements using pica units (6 picas per inch)."));
     connect(m_picaUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(PicasId);
@@ -387,7 +387,7 @@ void MainWindow::createActions() {
 
     m_centimeterUnitsAction = new QAction(tr("&Centimeters"), linearUnitsGroup);
     m_centimeterUnitsAction->setCheckable(true);
-    m_centimeterUnitsAction->setStatusTip(tr("Selects centimeter units"));
+    m_centimeterUnitsAction->setStatusTip(tr("2.54 centimeters = 1 inch"));
     m_centimeterUnitsAction->setWhatsThis(tr("Show measurements using centimeter units (2.54 centimeters per inch)."));
     connect(m_centimeterUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(CentimetersId);
@@ -398,7 +398,7 @@ void MainWindow::createActions() {
 
     m_millimeterUnitsAction = new QAction(tr("&Millimeters"), linearUnitsGroup);
     m_millimeterUnitsAction->setCheckable(true);
-    m_millimeterUnitsAction->setStatusTip(tr("Selects millimeter units"));
+    m_millimeterUnitsAction->setStatusTip(tr("25.4 millimeters = 1 inch"));
     m_millimeterUnitsAction->setWhatsThis(tr("Show measurements using millimeter units (25.4 millimeters per inch)."));
     connect(m_millimeterUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setLinearUnits(MillimetersId);
@@ -425,7 +425,7 @@ void MainWindow::createActions() {
 
     m_degreeUnitsAction = new QAction(tr("&Degrees"), angularUnitsGroup);
     m_degreeUnitsAction->setCheckable(true);
-    m_degreeUnitsAction->setStatusTip(tr("Selects degree units"));
+    m_degreeUnitsAction->setStatusTip(tr("360 degrees = 2\u03C0 radians"));
     m_degreeUnitsAction->setWhatsThis(tr("Shows angular measurements using degrees."));
     connect(m_degreeUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setAngularUnits(DegreesId);
@@ -436,7 +436,7 @@ void MainWindow::createActions() {
 
     m_radianUnitsAction = new QAction(tr("&Radians"), angularUnitsGroup);
     m_radianUnitsAction->setCheckable(true);
-    m_radianUnitsAction->setStatusTip(tr("Selects radian units"));
+    m_radianUnitsAction->setStatusTip(tr("2\u03C0 radians = 360 degrees"));
     m_radianUnitsAction->setWhatsThis(tr("Shows angular measurements using radians."));
     connect(m_radianUnitsAction, &QAction::triggered, this, [this] {
         m_unitsMgr->setAngularUnits(RadiansId);
@@ -572,10 +572,16 @@ void MainWindow::createActions() {
 
     m_helpAction = new QAction(tr("Help"), this);
     m_helpAction->setShortcut(QKeySequence::HelpContents);
+    m_helpAction->setStatusTip(tr("Opens the user manual"));
+    m_helpAction->setWhatsThis(tr("Opens the user manual in a web browser"));
     m_helpAction->setEnabled(HelpUtils::isHelpPresent());
     connect(m_helpAction, &QAction::triggered, this, []() {
         HelpUtils::openHelp();
     });
+
+    m_whatsThisAction = QWhatsThis::createAction(this);
+    m_whatsThisAction->setStatusTip(tr("Provides context-sensitive help"));
+    m_whatsThisAction->setWhatsThis(tr("Provides context-sensitive help by clicking on user interface items"));
 
     m_releasesAction = new QAction(tr("&Releases"), this);
     m_releasesAction->setStatusTip(tr("Browse Meazure releases"));
@@ -696,7 +702,7 @@ void MainWindow::createMenus() {
 
     QMenu* helpMenu = menuBar()->addMenu(tr("&Help"));
     helpMenu->addAction(m_helpAction);
-    helpMenu->addAction(QWhatsThis::createAction(this));
+    helpMenu->addAction(m_whatsThisAction);
     helpMenu->addSeparator();
     helpMenu->addAction(m_releasesAction);
     helpMenu->addAction(m_reportIssueAction);
