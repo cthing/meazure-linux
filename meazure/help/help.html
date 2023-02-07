@@ -852,8 +852,9 @@
         <section id="grid-settings">
           <h4>3.13.1 Screen Grid Settings</h4>
           <p>
-            The screen grid visual parameters can be adjusted by selecting the  <strong>Screen Grid Settings</strong>
-            item from the <strong>Tools</strong> menu.
+            The screen grid visual parameters can be adjusted by selecting the <strong>Screen Grid Settings</strong>
+            item from the <strong>Tools</strong> menu. Note that the screen grid is displayed when the screen
+            grid setting dialogs is opened.
           </p>
           <dl>
             <dt>Cell spacing</dt>
@@ -878,20 +879,284 @@
       <h2>4. Units</h2>
       <section id="units-overview">
         <h3>4.1 Working With Units</h3>
-        <p>...</p>
+        <p>
+          Meazure offers a broad selection of units in which to display measurements. In addition, custom units
+          can be defined. When selecting measurement units, it is important to understand the difference between
+          resolution independent and resolution dependent units. For the purposes of this manual, screen resolution
+          is defined as the number of pixels per physical distance on the screen (e.g pixels per inch). A pixel is
+          assumed to be square in shape.
+        </p>
+        <p>
+          Resolution independent units do not depend on a physical distance along the screen. The only resolution
+          independent units offered by Meazure are pixels. Because they are resolution independent, pixel units
+          require no calibration.
+        </p>
+        <p>
+          Resolution dependent units depend on a physical distance along the screen. All units offered by Meazure
+          other than pixels, are resolution dependent and require <a href="#calibration">calibration</a> to ensure
+          accuracy.
+        </p>
+        <p>
+          The following units are provided to for length measurements.
+        </p>
+        <dl>
+          <dt>Pixels</dt>
+          <dd>
+            The screen coordinates reported by the operating system are in pixels. These are resolution independent
+            units are therefore require no calibration.
+          </dd>
+          <dt>Twips</dt>
+          <dd>
+            A twip is a resolution dependent unit defined as 1/1440 of an inch. These units are used by Microsoft,
+            OpenOffice and LibreOffice.
+          </dd>
+          <dt>Points</dt>
+          <dd>
+            A point is a resolution dependent unit defined as 1/72 of an inch. These units are typically used to
+            specify font sizes.
+          </dd>
+          <dt>Picas</dt>
+          <dd>
+            A pica is a resolution dependent unit defined as 1/6 of an inch. These units are typically used in
+            text layout programs.
+          </dd>
+          <dt>Inches</dt>
+          <dd>
+            The British imperial and US customary system unit of length measurement. This is a resolution dependent
+            unit.
+          </dd>
+          <dt>Centimeters</dt>
+          <dd>
+            A centimeter is a resolution dependent unit in the Metric system. One 2.54 centimeters equal 1 inch.
+          </dd>
+          <dt>Millimeters</dt>
+          <dd>
+            A millimeter is a resolution dependent unit in the Metric system. One 25.4 millimeters equal 1 inch.
+          </dd>
+          <dt>Custom</dt>
+          <dd>
+            If the above units do not meet your measurement needs, custom units can be defined. See the
+            <a href="#calibration">calibration seciton</a> for instructions on how to define custom units.
+          </dd>
+        </dl>
+        <p>
+          The following units are provided to for angle measurements.
+        </p>
+        <dl>
+          <dt>Degrees</dt>
+          <dd>
+            One complete rotation around a circle is equal to 360 degrees.
+          </dd>
+          <dt>Radians</dt>
+          <dd>
+            One complete rotation around a circle is equal to
+            <math xmlns = "http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>2</mn><mi>&pi;</mi>
+              </mrow>
+            </math>
+            radians.
+          </dd>
+        </dl>
+        <p>
+          Length and angle units are selected using the <strong>Units</strong> menu. The first time a resolution
+          dependent unit is selected, you will be prompted to perform a <a href="#calibration">resolution
+          calibration</a>, if one has not already been done.
+        </p>
+        <p>
+          Note that regardless of the currently selected measurement units, interally all measurements are
+          performed using pixels and then converted into the current units.
+        </p>
       </section>
       <section id="calibration">
         <h3>4.2 Calibration</h3>
-        <p>...</p>
+        <p>
+          As described in the <a href="#units-overview">Working with Units</a> seciton, all units except pixels are
+          resolution dependent. This means that the screen resolution (pixels per physical distance) must be used to
+          calculate measurements. By default, the screen resolution reported by the computer's operating system is
+          used. Typically, this resolution is an approximation of the actual screen resolution, which results in
+          resolution dependent measreuments being inaccurate. To address this inaccuracy, Meazure provides the
+          capability to manually set the screen resolution.
+        </p>
+        <p>
+          Calibration should be performed the first time Meazure is used or whenever the display monitors are
+          replaced. Meazure displays a warning the first time resolution dependent units (e.g. inches) are selected
+          if clabiration has not been performed. In addition, a warning button is displayed in the
+          <a href="#screen-information">Screen Information</a> section if the operating system screen resolution is
+          being used. There are a number of ways to open the calibration preferences page.
+        </p>
+        <dl>
+          <dt>Preferences</dt>
+          <dd>
+            Select <strong>Preferences</strong> from the <strong>Edit</strong> menu. Once the preferences dialog is
+            open, click on the <strong>Calibration</strong> tab.
+          </dd>
+          <dt>Calibration warning dialog</dt>
+          <dd>
+            A warning dialog is displayed the first time resolution dependent units are selected if calibration is
+            required on any screen. Press the <strong>Calibrate</strong> button to open the calibration preference
+            page.
+          </dd>
+          <dt>Calibration warning button</dt>
+          <dd>
+            <img src="images/CalibrationButton.png" width="250" height="87" class="image-top-left" alt="Calibration warning button">
+            If the resolution reported by the operating system is being used on any screen, a button with a warning
+            icon is displayed in the upper right corner of the <a href="#screen-information">Screen Information</a>
+            section. Press that button to open the calibration preference page. The button is no longer displayed when
+            a manually calibrated resolution is being used on all screens.
+          </dd>
+        </dl>
+        <p>
+          <img src="images/CalibrationPrefs.png" width="559" height="367" alt="Calibration preferences">
+        </p>
+        <p>
+          Once the calibration preference page is open, use the <strong>Screen</strong> drop down menu to select the
+          display screen to calibarte. Select <strong>Set manually</strong> and perform calibration in one of two ways.
+        </p>
+        <dl>
+          <dt>Direct Entry</dt>
+          <dd>
+            Using this method of calibration, the resolution of the selected screen can be directly entered either
+            as the pixel pitch (pixels per specified calibration units, e.g. px/in) or the overall screen dimensions
+            in the specified calibration units. Either the pixel pitch <strong>or</strong> the screen dimension needs
+            to be specified because one can be calculated from the other. An excellent source of screen hardware
+            specifications can be found at <a href="https://www.displayspecifications.com">DisplaySpecifications.com</a>.
+          </dd>
+          <dt>Ruler</dt>
+          <dd>
+            Obtain a physical ruler. If you are using a ruler marked in inches, select <strong>in</strong> on
+            the <strong>Calibration units</strong> drop down menu. If the ruler is in centimeters, select
+            <strong>cm</strong> for the units.
+            <p>
+              <img src="images/RulerPhoto.png" width="200" height="183" class="image-top-left" alt="Ruler photo">
+              Hold the ruler against the screen such that it is directly below the horizontal calipers. Using the
+              mouse, drag the right caliper such that the distance from the left caliper is one inch or two centimeters
+              according to the ruler. Use one inch if inches were selected for calibration units. Use two centimeters
+              if centimeters were selected for the calibration units. The value displayed between the calipers during
+              the drag is the pixel pitch (e.g. pixels / inch). Repeat this process for the vertical caliper.
+            </p>
+            <p class="clearfix">
+              Move the preferences dialog to any other screens and repeat this process.
+            </p>
+            <p class="warning">
+              Calibration using a ruler should only be performed on the display screen showing the calibration
+              preference page.
+            </p>
+            <p class="warning">
+              Do not use the Ruler tool to calibrate the resolution. The Ruler tool relies on the calibration to
+              display its markings. Similarly, do not use any other computer generated ruler to perform the
+              calibration. Always use a physical ruler.
+            </p>
+          </dd>
+        </dl>
+        <p>
+          Once the screens have been calibrated, press <strong>OK</strong> to apply all preference settings and dismiss
+          the dialog, or press <strong>Apply</strong> to only apply the settings but leave the dialog open.
+        </p>
       </section>
       <section id="custom-units">
         <h3>4.3 Custom Units</h3>
-        <p>...</p>
+        <p>
+          <img src="images/CustomUnitsPrefs.png" width="559" height="367" alt="Custom units preferences">
+        </p>
+        <p>
+          Meazure provides many units in which to perform measurements. However, measurement units other than those
+          provided (e.g. yards), custom units can be defined. To define custom units either select the <strong>Define
+          Custom</strong> item on the <strong>Units</strong> menu, or select the <strong>Preferences</strong> item on
+          the <strong>Edit</strong> menu and then click on the <strong>Custom Units</strong> tab.
+        </p>
+        <p>
+          Only one set of custom units may be defined at a time. To define custom units, perform the following steps:
+        </p>
+        <ol>
+          <li>Enter a name for the units in the <strong>Displayable Name</strong> text field. This name is used
+            on the <strong>Units</strong> menu. For example, to define yards as a custom unit, enter <em>Yards</em>
+            for the name of the units.</li>
+          <li>Enter an abbreviation for the units in the <strong>Abbreviation</strong> field. The abbreviation
+            for yards could be <em>yd</em>.</li>
+          <li>Custom units can be defined as resolution independent (i.e. based on pixels) or resolution dependent
+            (i.e. based on inches or centimeters). Use the units drop down menu to select the basis for the custom
+            units. The basis units for yards would be inches.</li>
+          <li>Enter a scale factor for converting from the custom units to the basis units. The scale factor for
+            yards would be 36 because there are 36 inches to a yard.</li>
+          <li>Press the <strong>Set Display Precision</strong> button to set the number of decimal places for
+            various types of measurements using the custom units. See <a href="#precision-prefs">Precision
+            Preferences</a> for details on specifying display precisions.</li>
+          <li>Press <strong>OK</strong> to apply all preference settings and dismiss the dialog, or press
+            <strong>Apply</strong> to only apply the settings but leave the dialog open.</li>
+        </ol>
+        <p>
+          Once custom units have been defined, they can be select on the <strong>Units</strong> menu.
+        </p>
+        <p>
+          To remove custom units, open the custom units preference page and press the <strong>Clear</strong> button
+          followed by the <strong>OK</strong> or <strong>Apply</strong> button. The custom units item on the
+          <strong>Units</strong> menu will be disabled.
+        </p>
+        <div class="warning">
+          Loading a <a href="#configuration">configuration</a> or reviewing positions from a
+          <a href="#positions">position log</a> may overwrite any previously defined custom units.
+        </div>
       </section>
     </section>
     <section id="coordinates">
-      <h2>5. Coordinate Systems</h2>
-      <p>...</p>
+      <h2>5. Screen Coordinate System</h2>
+      <section id="coordinates-default">
+        <h3>5.1 Default Coordinate System</h3>
+        <p class="clearfix">
+          <img src="images/DefaultCoordinates.svg" width="60" height="56" class="image-top-left" alt="Default coordinate system">
+          The operating system reports screen coordinates to Meazure using its coordinate system. The origin of
+          this coordinate system (i.e. x=0, y=0) is located in the top left corner of the screen. The positive
+          x-axis points to the right and the positive y-axis points down from the origin. This is the default
+          coordinate system used by Meazure for all coordinate measurements.
+        </p>
+        <p>
+          <img src="images/OriginMarker.svg" width="30" height="30" class="image-top-left" alt="Origin marker">
+          A marker is placed at the origin of the coordinate system to visually identify its location and
+          indicate the direction of the positive x and y axes. The origin marker can be hidden by selecting the
+          <strong>Hide Origin Marker</strong> item on the <strong>View</strong> menu.
+        </p>
+      </section>
+      <section id="coordinates-y-axis">
+        <h3>5.2 Inverting the Y-Axis</h3>
+        <p class="clearfix">
+          <img src="images/InvertedYCoordinates.svg" width="60" height="56" class="image-top-left" alt="Inverted coordinate system">
+          The coordinate system can be changed to the traditional Cartesion orientation where the origin is in the
+          bottom left corner of the screen, the positive y-axis point up, and the x-axis points to the right from the
+          origin. To change to this coordinate system, select the <strong>Invert Y</strong> item from the
+          <strong>View</strong> menu. Meazure will present all coordinate measurements using this coordinate system.
+        </p>
+      </section>
+      <section id="coordinates-origin">
+        <h3>5.3 Moving the Origin</h3>
+        <p>
+          The origin of the coordinate system can be moved to anywhere on the screen. To set a new origin position,
+          move Point 1 of any tool to the desired position and either select <strong>Set Origin</strong> from the
+          <strong>View</strong> menu or use the shortcut <strong>Ctrl+N</strong>. If the Cursor tool is being used,
+          the origin is set to the current mouse cursor position. The origin marker is shown at the new location. To
+          restore the origin to its default position, select <strong>Reset Origin</strong> from the
+          <strong>View</strong> menu.
+        </p>
+      </section>
+      <section id="supplemental-angle">
+        <h3>5.4 Supplemental Angle</h3>
+        <p class="clearfix">
+          <img src="images/SupplementalAngleDefinition.svg" width="219" height="139" class="image-top-left" alt="Supplemental angle definition">
+          By default, angles are measured clockwise from the positive x-axis. Selecting the
+          <strong>Supplemental Angle</strong> item from the <strong>View</strong> menu changes the angle measurements
+          to
+          <math xmlns = "http://www.w3.org/1998/Math/MathML">
+            <mrow>
+              <mi>S</mi>
+            </mrow>
+          </math>, where
+          <math xmlns = "http://www.w3.org/1998/Math/MathML">
+            <mrow>
+              <mi>S</mi><mo>=</mo><mn>180&deg;</mn><mo>-</mo><mi>A</mi>
+            </mrow>
+          </math>.
+        </p>
+      </section>
     </section>
     <section id="screen-information">
       <h2>6. Screen Information</h2>
@@ -914,7 +1179,10 @@
       <p>...</p>
       <section id="calibartion-prefs">
         <h3>10.1 Calibration Preferences</h3>
-        <p>...</p>
+        <p>
+          For details on the calibration preferences and how to perform units calibration, see the
+          <a href="#calibration">Calibration</a> section.
+        </p>
       </section>
       <section id="tool-prefs">
         <h3>10.2 Tool Preferences</h3>
@@ -930,6 +1198,12 @@
       </section>
       <section id="custom-units-prefs">
         <h3>10.5 Custom Units Preferences</h3>
+        <p>
+          For details on defining custom units, see the <a href="#custom-units">Custom Units</a> section.
+        </p>
+      </section>
+      <section id="hard-reset">
+        <h3>10.6 Hard Reset</h3>
         <p>...</p>
       </section>
     </section>
@@ -975,7 +1249,14 @@
           <li><a href="#custom-units">4.3 Custom Units</a></li>
         </ul>
       </li>
-      <li><a href="#coordinates">5. Coordinate Systems</a></li>
+      <li><a href="#coordinates">5. Screen Coordinate System</a>
+        <ul>
+          <li><a href="#coordinates-default">5.1 Default Coordinate System</a></li>
+          <li><a href="#coordinates-y-axis">5.2 Inverting the Y-Axis</a></li>
+          <li><a href="#coordinates-origin">5.3 Moving the Origin</a></li>
+          <li><a href="#supplemental-angle">5.4 Supplemental Angle</a></li>
+        </ul>
+      </li>
       <li><a href="#screen-information">6. Screen Information</a></li>
       <li><a href="#magnifier">7. Magnifier</a></li>
       <li><a href="#color-information">8. Color Information</a></li>
@@ -987,6 +1268,7 @@
           <li><a href="#ruler-prefs">10.3 Ruler Preferences</a></li>
           <li><a href="#precision-prefs">10.4 Precision Preferences</a></li>
           <li><a href="#custom-units-prefs">10.5 Custom Units Preferences</a></li>
+          <li><a href="#hard-reset">10.6 Hard Reset</a></li>
         </ul>
       </li>
       <li><a href="#configuration">11. Configuration Files</a></li>

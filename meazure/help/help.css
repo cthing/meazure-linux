@@ -11,6 +11,11 @@ main > nav {
     margin-left: 3rem;
 }
 
+.section-nav li {
+    margin-top: 0;
+    line-height: 1.2;
+}
+
 /* ScrollSpy active styles */
 .section-nav li.active > a {
     color: #333333;
@@ -21,6 +26,7 @@ main > nav {
 .section-nav {
     padding-left: 0;
     border-left: 1px solid #dddddd;
+    font-size: 90%;
 }
 
 .section-nav a {
@@ -63,8 +69,8 @@ main {
     display: grid;
     grid-template-columns: 1fr 25em;
     max-width: 100em;
-    width: 80%;
-    margin: 0 auto;
+    margin-left: 8rem;
+    margin-right: 0;
 }
 
 h2 {
@@ -78,9 +84,13 @@ h3 {
     margin-top: 2rem;
 }
 
-p, dd {
+p, li, dd {
     line-height: 1.4;
     text-align: justify;
+}
+
+li {
+    margin-top: 0.5rem;
 }
 
 dl {
@@ -140,4 +150,19 @@ a:active {
     float: right;
     margin-left: 1rem;
     margin-bottom: 1rem;
+}
+
+div.warning, p.warning {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    background-color: rgba(231, 111, 81, 0.1);
+    background-image: url(images/Warning.svg);
+    background-size: 32px;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    border: solid 1px #e76f51;
+    border-radius: 6px;
+    line-height: 1.4;
+    overflow: hidden;
+    padding: 15px 15px 15px 60px;
 }
