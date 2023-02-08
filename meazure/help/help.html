@@ -184,58 +184,56 @@
       </section>
       <section id="tool-information">
         <h3>3.2 Tool Information</h3>
-        <div class="clearfix">
-          <p>
-            <img src="images/ToolInformation.png" width="319" height="257" class="image-top-left" alt="Tool Information">
-            All tool measurements are displayed in the tool information section of the user interface. The information
-            is displayed in text fields some of which have adjacent up and down buttons to change the displayed value.
-            Depending on the currently selected measurement tool, the text fields are shown in one of three states.
-            The value in fields with white backgrounds can be changed by editing the value, pressing the up or down
-            buttons, or pressing the up or down arrow keys while the field has the keyboard focus. The value in fields
-            with gray backgrounds and flack text are read-only. Fields where the text and labels are gray and barely
-            readable, are disabled.
-          </p>
-          <p>
-            Each text field has a label identifying the type of measurement (e.g. X1) and, if applicable, the units
-            for the measurement (e.g. px). The measurements displayed depend on the currently selected measurement
-            tool. The following are the general description of the measurements. See the individual tool sections for
-            the measurements provided by that tool and their specific descriptions.
-          </p>
-          <dl>
-            <dt>X1, Y1 - Coordinate</dt>
-            <dd>
-              The x and y coordinates of the measurement tool's point 1.
-            </dd>
-            <dt>X2, Y2 - Coordinate</dt>
-            <dd>
-              The x and y coordinates of the measurement tool's point 2.
-            </dd>
-            <dt>XV, YV - Coordinate</dt>
-            <dd>
-              The x and y coordinates of the measurement tool's vertex or center point.
-            </dd>
-            <dt>W, H - Width, Height</dt>
-            <dd>
-              The width and height of a bounding rectangle around the measurement tool.
-            </dd>
-            <dt>D - Distance</dt>
-            <dd>
-              The distance along a line, diagonal, or radius.
-            </dd>
-            <dt>A - Angle</dt>
-            <dd>
-              The angle of a line, diagonal, radius, or protactor measurement.
-            </dd>
-            <dt>As - Aspect Ratio</dt>
-            <dd>
-              The aspect ratio of a bounding rectangle around the measurement tool.
-            </dd>
-            <dt>Ar - Area</dt>
-            <dd>
-              The area of a circle or bounding rectangle around the measurement tool.
-            </dd>
-          </dl>
-        </div>
+        <p>
+          <img src="images/ToolInformation.png" width="319" height="257" class="image-top-left" alt="Tool Information">
+          All tool measurements are displayed in the tool information section of the user interface. The information
+          is displayed in text fields some of which have adjacent up and down buttons to change the displayed value.
+          Depending on the currently selected measurement tool, the text fields are shown in one of three states.
+          The value in fields with white backgrounds can be changed by editing the value, pressing the up or down
+          buttons, or pressing the up or down arrow keys while the field has the keyboard focus. The value in fields
+          with gray backgrounds and flack text are read-only. Fields where the text and labels are gray and barely
+          readable, are disabled.
+        </p>
+        <p class="clearfix">
+          Each text field has a label identifying the type of measurement (e.g. X1) and, if applicable, the units
+          for the measurement (e.g. px). The measurements displayed depend on the currently selected measurement
+          tool. The following are the general description of the measurements. See the individual tool sections for
+          the measurements provided by that tool and their specific descriptions.
+        </p>
+        <dl>
+          <dt>X1, Y1 - Coordinate</dt>
+          <dd>
+            The x and y coordinates of the measurement tool's point 1.
+          </dd>
+          <dt>X2, Y2 - Coordinate</dt>
+          <dd>
+            The x and y coordinates of the measurement tool's point 2.
+          </dd>
+          <dt>XV, YV - Coordinate</dt>
+          <dd>
+            The x and y coordinates of the measurement tool's vertex or center point.
+          </dd>
+          <dt>W, H - Width, Height</dt>
+          <dd>
+            The width and height of a bounding rectangle around the measurement tool.
+          </dd>
+          <dt>D - Distance</dt>
+          <dd>
+            The distance along a line, diagonal, or radius.
+          </dd>
+          <dt>A - Angle</dt>
+          <dd>
+            The angle of a line, diagonal, radius, or protactor measurement.
+          </dd>
+          <dt>As - Aspect Ratio</dt>
+          <dd>
+            The aspect ratio of a bounding rectangle around the measurement tool.
+          </dd>
+          <dt>Ar - Area</dt>
+          <dd>
+            The area of a circle or bounding rectangle around the measurement tool.
+          </dd>
+        </dl>
       </section>
       <section id="crosshairs">
         <h3>3.3 Crosshairs</h3>
@@ -883,7 +881,7 @@
           Meazure offers a broad selection of units in which to display measurements. In addition, custom units
           can be defined. When selecting measurement units, it is important to understand the difference between
           resolution independent and resolution dependent units. For the purposes of this manual, screen resolution
-          is defined as the number of pixels per physical distance on the screen (e.g pixels per inch). A pixel is
+          is defined as the number of pixels per physical distance on the screen (e.g. pixels per inch). A pixel is
           assumed to be square in shape.
         </p>
         <p>
@@ -1160,15 +1158,160 @@
     </section>
     <section id="screen-information">
       <h2>6. Screen Information</h2>
-      <p>...</p>
+      <p>
+        <img src="images/ScreenInformation.png" width="319" height="111" class="image-top-left" alt="Screen Information">
+        The size and resolution of the screen is displayed in the Screen Information section. In a multiple screen
+        environment, the information displayed is for the screen containing the active measurement position
+        (e.g. last moved crosshair). The name of the screen is displayed at the top of the section. The size and
+        resolution are shown in the currently selected <a href="#units">units</a>.
+      </p>
+      <dl>
+        <dt>W, H</dt>
+        <dd>Width and height of the screen</dd>
+        <dt>Rx, Ry</dt>
+        <dd>Horizontal and vertical resolution of the screen</dd>
+      </dl>
+      <p>
+        If the resolution of any screen has not been calibrated, a warning button is displayed in the top right corner
+        of the section. Press the button to perform <a href="#calibration">screen calibration</a>. Calibartion is
+        highly encouraged so that measurement using resolution dependent units (e.g. inches) are accurate.
+      </p>
     </section>
     <section id="magnifier">
       <h2>7. Magnifier</h2>
-      <p>...</p>
+      <p>
+        <img src="images/Magnifier.png" width="319" height="325" class="image-top-left" alt="Magnifier">
+        The magnifier provides a view of the area around an active measurement (e.g. positioning a crosshair, mouse
+        cursor movement). The magnifier consists of the magnification window, a zoom level constrol and a pause
+        button.
+      </p>
+      <p>
+        The magnification window is always centered on the point being measured. A red square at the center of the
+        window indicates the measurement point. The amount of magnification is controled either by the zoom slider or
+        the <strong>Zoom In (Ctrl++)</strong> and <strong>Zoom Out (Ctrl+-)</strong> items on the <strong>View</strong>
+        menu. Starting at 6X zoom, a grid is displayed in the mangification window to help identify individual pixels.
+        The visibility and color of the grid can be controled using the <strong>Magnifier Grid</strong> submenu on the
+        <strong>View</strong> menu.
+      </p>
+      <p class="clearfix">
+        By default, the magnifier tracks the current point being meazured. This tracking can be paused by pressing the
+        <strong>puase</strong> button, selecting the <strong>Freeze Magnifier</strong> item on the
+        <strong>View</strong> menu or using the shortcut <strong>Ctrl+M</strong>.
+      </p>
     </section>
     <section id="color-information">
       <h2>8. Color Information</h2>
-      <p>...</p>
+      <p>
+        <img src="images/ColorInformation.png" width="319" height="39" class="image-top-left" alt="Color information">
+        Information about the color of the pixel at the center of the magnifier is shown below the magnifier. The
+        read-only field on the left shows the color value and the rectangle on the right if filled with that color.
+      </p>
+      <p>
+        The color information operates in one of two modes: direct display or color matching. Direct display shows
+        the color information exactly as read from the pixel on the screen. Color matching finds the web safe color
+        visually closest to the actual color of the pixel and displays information about the matched color. The color
+        shown in the rectangle is the best match <strong>not the actual color</strong>. All color values are read from
+        the screen in the RGB color space. Display of the color in formats other than RGB is done using conversion
+        formulas.
+      </p>
+      <p>
+        The following direct display formats are availble from the <strong>Color Format</strong> submenu on the
+        <strong>View</strong> menu:
+      </p>
+      <dl>
+        <dt>RGB</dt>
+        <dd>
+          The color is displayed in the <a href="https://simple.wikipedia.org/wiki/RGB_color_model">RGB color model</a>
+          as separate red, green, and blue values each between 0 and 255 inclusive. For example, a display of
+          <em>128 14 255</em> corresponds to a red value of 128, a green value of 14 and a blue value of 255.
+        </dd>
+        <dt>#RRGGBB</dt>
+        <dd>
+          The color is displayed in the <a href="https://simple.wikipedia.org/wiki/RGB_color_model">RGB color model</a>
+          as a single six digit hexadecimal number where the first two digits are the red component, the next two
+          digits are the green component and the last two digits are the blue component. The value of each component
+          is between 0 and 0xFF inclusive. For example, a display of <em>#00ACFF</em> corresponds to a red value of
+          0x00, a green value of 0xAC and a blue value of 0xFF.
+        </dd>
+        <dt>CMY</dt>
+        <dd>
+          The color is displayed in the <a href="https://simple.wikipedia.org/wiki/CMY_color_model">CMY color model</a>
+          as separate cyan, magenta, and yellow components each as a value between 0 and 255 inclusive. For example, a
+          display of <em>128 14 255</em> corresponds to a cyan value of 128, a magenta value of 14 and a yellow value
+          of 255.
+        </dd>
+        <dt>CMYK</dt>
+        <dd>
+          The color is displayed in the <a href="https://simple.wikipedia.org/wiki/CMYK_color_model">CMYK color
+          model</a> as separate cyan, magenta, yellow, and black components. The value of each component is between 0
+          and 255 inclusive.
+        </dd>
+        <dt>HSL</dt>
+        <dd>
+          The color is displayed in the <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSL color model</a>
+          as hue, saturation, and lightness values. The hue value is in degrees between 0 inclusive and 360 exclusive.
+          The saturation and lightness values are percentages between 0 and 100 inclusive.
+        </dd>
+        <dt>YCbCr</dt>
+        <dd>
+          The color is displayed in the <a href="https://en.wikipedia.org/wiki/YCbCr">YCbCr color space</a> as a
+          luminance (Y) and two chrominance values (Cb and Cr). The luminance value is between 0 and 235 inclusive.
+          The two chrominance values are between 0 and 240 inclusive.
+        </dd>
+        <dt>YIQ</dt>
+        <dd>
+          The color is displayed in the <a href="https://en.wikipedia.org/wiki/YIQ">YIQ color space</a> as a
+          luminance (Y) and two chrominance values (In-phase, Quadrature). This format corresponds to that used in
+          NTSC television broadcasting. The luminance value is between 0 and 255 inclusive. The in-phase value is
+          between -152 and 152 inclusive. The quadrature value is between -133 and 133 inclusive.
+        </dd>
+      </dl>
+      <p>
+        The following color matching formats are availble from the <strong>Color Format</strong> submenu on the
+        <strong>View</strong> menu:
+      </p>
+      <dl>
+        <dt>Extended Name</dt>
+        <dd>
+          Displays the best match of the current color to the
+          <a href="https://www.w3.org/wiki/CSS/Properties/color/keywords#Extended_colors">extended web colors</a>.
+          The name of the best matched extended web color is displayed and the color swatch shows that color.
+          The match is performed using the
+          <a href="https://en.wikipedia.org/wiki/Color_difference#CIEDE2000">CIEDE2000</a> color difference
+          algorithm.
+        </dd>
+        <dt>Extended #RRGGBB</dt>
+        <dd>
+          Displays the best match of the current color to the
+          <a href="https://www.w3.org/wiki/CSS/Properties/color/keywords#Extended_colors">extended web colors</a>.
+          The hexadecimal number representing the best matched extended web color is displayed and the color
+          swatch shows that color. The match is performed using the
+          <a href="https://en.wikipedia.org/wiki/Color_difference#CIEDE2000">CIEDE2000</a> color difference
+          algorithm.
+        </dd>
+        <dt>Basic Name</dt>
+        <dd>
+          Displays the best match of the current color to the
+          <a href="https://www.w3.org/wiki/CSS/Properties/color/keywords#Basic_Colors">basic web colors</a>.
+          The name of the best matched basic web color is displayed and the color swatch shows that color.
+          The match is performed using the
+          <a href="https://en.wikipedia.org/wiki/Color_difference#CIEDE2000">CIEDE2000</a> color difference
+          algorithm.
+        </dd>
+        <dt>Basic #RRGGBB</dt>
+        <dd>
+          Displays the best match of the current color to the
+          <a href="https://www.w3.org/wiki/CSS/Properties/color/keywords#Basic_Colors">basic web colors</a>.
+          The hexadecimal number representing the best matched basic web color is displayed and the color
+          swatch shows that color. The match is performed using the
+          <a href="https://en.wikipedia.org/wiki/Color_difference#CIEDE2000">CIEDE2000</a> color difference
+          algorithm.
+        </dd>
+      </dl>
+      <p>
+        The color values can be copied to the clipboard by pressing the button with the clipboard icon immediately
+        to the right of the color swatch.
+      </p>
     </section>
     <section id="capture">
       <h2>9. Screen capture</h2>
