@@ -1400,7 +1400,7 @@
         <h3>10.6 Hard Reset</h3>
         <p>
           Pressing the <strong>Hard Reset</strong> button restores Meazure to a freshly installed state. All
-          customizations including calibration and tool positions are reset to their defaults.
+          customizations including calibration, tool positions and recoded positions are reset to their defaults.
         </p>
       </section>
     </section>
@@ -1413,7 +1413,7 @@
       <p>
         The configuration can be exported to a file, and imported at a later time on a different computer running
         Meazure. To export the current configuration, select the <strong>Export Configuration</strong> item on the
-        <strong>File</strong> menu. Meazure configuration files have the suffix <strong>mea</strong>. To restore a
+        <strong>File</strong> menu. Meazure configuration files have the extension <strong>mea</strong>. To restore a
         configuration, select the <strong>Import Configuration</strong> item on the <strong>File</strong> menu.
       </p>
       <p class="warning">
@@ -1422,7 +1422,114 @@
     </section>
     <section id="positions">
       <h2>12. Position Logging</h2>
-      <p>...</p>
+      <p>
+        Position logging allows the recording of successivetool positions. For example, the
+        <a href="#cursor-tool">Cursor tool</a> or <a href="#point-tool">Point tool</a> can be used to digitize
+        positions along a path. The recorded positions can be saved to a file, subsequently reloaded and played back.
+      </p>
+      <section id="position-recording">
+        <h3>12.1 Recording Positions</h3>
+        <p>
+          The position of the current measurement tool can be saved either by selecting the
+          <strong>Record Position</strong> item from the <strong>Edit</strong> menu, by pressing
+          <strong>Ctrl+P</strong>, or by using the <strong>Add</strong> button on the
+          <a href="#position-manage">position management dialog</a>. A number of supporting items are recorded along
+          with the current tool and its position. These items include a time stamp, the current screen size and
+          resolution, the location of the coordinate system origin, and the current units. Recorded positions can be
+          <a href="#position-manage">managed</a> or <a href="#position-save-load">saved</a> to a file.
+        </p>
+      </section>
+      <section id="position-save-load">
+        <h3>12.2 Saving and Loading Positions</h3>
+        <p>
+          When one or more positions have been recorded they can be saved to a position log file. To save the recorded
+          positions select either the <strong>Save Positions</strong> or <strong>Save Positions As</strong> item from
+          the <strong>File</strong> menu. In addition, the positions can be saved using the appropriate buttons on the
+          <a href="#position-manage">position management dialog</a>.
+        </p>
+        <p>
+          Positions are saved to an XML file with the extension <strong>mpl</strong>. The format of the file is
+          described by the Position Log file DTD located at
+          <a href="https://www.cthing.com/dtd/PositionLog1.dtd">https://www.cthing.com/dtd/PositionLog1.dtd</a>.
+        </p>
+        <p>
+          A position log file can be loaded by selecting the <strong>Load Positions</strong> item
+          on the <strong>File</strong> menu, using the <strong>Ctrl+O</strong> shortcut, or by using the
+          <strong>Load</strong> button on the <a href="#position-manage">position management dialog</a>. Once a
+          position log file has been loaded, the <a href="#position-manage">position management dialog</a> is
+          displayed to allow playback of the positions.
+        </p>
+        <p>
+          If there are unsaved recorded positions when attempting to exit Meazure, a dialog is displayed offering to
+          save the positions.
+        </p>
+      </section>
+      <section id="position-delete">
+        <h3>12.3 Deleting Positions</h3>
+        <p>
+          Recorded positions can be deleted selectively using the <a href="#position-manage">position management
+          dialog</a>, or can be completely deleted using either the management dialog or the <strong>Delete
+          Positions</strong> item on the <strong>Edit</strong> menu.
+        </p>
+      </section>
+      <section id="position-manage">
+        <h3>12.4 Managing Positions</h3>
+        <p>
+          <img src="images/ManagePositions.png" width="398" height="362" class="image-top-left" alt="Manage positions">
+          The position management dialog provides a one-stop shop for recording, editing, saving, loading
+          and replaying measurement tool positions. The position management dialog is non-modal and can be accessed
+          from the <strong>Manage Positions</strong> item on the <strong>Edit</strong> menu. In addition, the dialog
+          is displayed whenever a position log file is loaded.
+        </p>
+        <p>
+          At the top of the position management dialog is the <strong>Log</strong> section containing text fields for
+          specifying a title and description for the recorded positions.
+        </p>
+        <p>
+          Below the <strong>Log</strong> section is the <strong>Positions</strong> section. This section provides
+          a slider for replaying the recorded positions, information about the currently displayed position, and
+          a text area for providing a description of the position.
+        </p>
+        <p class="clearfix">
+          At the bottom of the dialog is a set of buttons that provide complete management of tool positions logging.
+        </p>
+        <dl>
+          <dt>Add</dt>
+          <dd>
+            Records the current measurement tool position.
+          </dd>
+          <dt>Insert</dt>
+          <dd>
+            Records the current measurement tool position and inserts it before the position selected by the playback
+            slider.
+          </dd>
+          <dt>Delete</dt>
+          <dd>
+            Deletes the position selected by the playback slider.
+          </dd>
+          <dt>Delete All</dt>
+          <dd>
+            Deletes all recorded positions.
+          </dd>
+          <dt>Load</dt>
+          <dd>
+            <a href="#position-save-load">Loads</a> a position log file. This replaces the currently recorded
+            positions, if any.
+          </dd>
+          <dt>Save</dt>
+          <dd>
+            <a href="#position-save-load">Saves</a> the currently recorded positions to a position log file.
+          </dd>
+          <dt>Save As</dt>
+          <dd>
+            <a href="#position-save-load">Saves</a> the currently recorded positions to a position log file.
+          </dd>
+          <dt>Close</dt>
+          <dd>
+            Dismisses the dialog.
+          </dd>
+        </dl>
+      </section>
     </section>
     <section id="menus">
       <h2>13. Menus</h2>
@@ -1481,7 +1588,14 @@
         </ul>
       </li>
       <li><a href="#configuration">11. Configuration Files</a></li>
-      <li><a href="#positions">12. Position Logging</a></li>
+      <li><a href="#positions">12. Position Logging</a>
+        <ul>
+          <li><a href="#position-recording">12.1 Recording Positions</a></li>
+          <li><a href="#position-save-load">12.2 Saving and Loading Positions</a></li>
+          <li><a href="#position-delete">12.3 Deleting Positions</a></li>
+          <li><a href="#position-manage">12.4 Managing Positions</a></li>
+        </ul>
+      </li>
       <li><a href="#menus">13. Menus</a></li>
     </ol>
   </nav>
