@@ -177,6 +177,7 @@ void MainWindow::createActions() {
     m_managePositionsAction->setStatusTip(tr("Replay and update tool positions"));
     m_managePositionsAction->setWhatsThis(tr("Provides a dialog to replay and update tool positions."));
     connect(m_managePositionsAction, &QAction::triggered, this, &MainWindow::managePositions);
+    connect(m_posLogMgr, &PosLogMgr::positionsLoaded, this, &MainWindow::managePositions);
 
     m_deletePositionsAction = new QAction(tr("De&lete Positions"), this);
     m_deletePositionsAction->setStatusTip(tr("Delete all recorded positions"));
