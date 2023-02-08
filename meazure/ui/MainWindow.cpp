@@ -686,7 +686,13 @@ void MainWindow::createMenus() {
     }
 
     QMenu* colorMenu = viewMenu->addMenu("&Color Format");
+    bool inColorMatching = false;
     for (QAction* colorFormat : m_mainView->getColorFormatActions()) {
+        const bool matching = colorFormat->data().toBool();
+        if (inColorMatching != matching) {
+            inColorMatching = matching;
+            colorMenu->addSeparator();
+        }
         colorMenu->addAction(colorFormat);
     }
 

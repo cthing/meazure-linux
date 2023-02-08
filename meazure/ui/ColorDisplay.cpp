@@ -79,10 +79,11 @@ ColorDisplay::ColorDisplay() :
     colorFormatGroup->setExclusive(true);
 
     auto createFormatAction = [this, colorFormatGroup](const QString& text, const QString& statusTip,
-            ColorFormatId colorFormatId) {
+            ColorFormatId colorFormatId, bool colorMatching) {
         auto* action = new QAction(text, colorFormatGroup);
         action->setCheckable(true);
         action->setStatusTip(statusTip);
+        action->setData(colorMatching);
         connect(action, &QAction::triggered, this, [this, colorFormatId] { setColorFormat(colorFormatId); });
         connect(this, &ColorDisplay::colorFormatChanged, this, [action, colorFormatId](ColorFormatId id) {
             action->setChecked(id == colorFormatId);
@@ -90,17 +91,17 @@ ColorDisplay::ColorDisplay() :
         m_colorFormatActions.push_back(action);
     };
 
-    createFormatAction(tr("&R G B"), tr("Decimal red, green, blue"), RGBFmt);
-    createFormatAction(tr("&#RRGGBB"), tr("Hex red, green, blue"), RGBHexFmt);
-    createFormatAction(tr("&C M Y"), tr("Cyan, magenta, yellow"), CMYFmt);
-    createFormatAction(tr("C &M Y K"), tr("Cyan, magenta, yellow, black"), CMYKFmt);
-    createFormatAction(tr("&H S L"), tr("Hue, saturation, lightness"), HSLFmt);
-    createFormatAction(tr("&Y Cb Cr"), tr("Luminance, blue diff, red diff"), YCbCrFmt);
-    createFormatAction(tr("Y &I Q"), tr("Luminance, in-phase, quadrature"), YIQFmt);
-    createFormatAction(tr("&Extended Name"), tr("Match to extended web color name"), ExtendedNameFmt);
-    createFormatAction(tr("Extended #RRGGBB"), tr("Match to extended web color"), ExtendedHexFmt);
-    createFormatAction(tr("&Basic Name"), tr("Match to basic web color name"), BasicNameFmt);
-    createFormatAction(tr("Basic #RRGGBB"), tr("Match to basic web color"), BasicHexFmt);
+    createFormatAction(tr("&R G B"), tr("Decimal red, green, blue"), RGBFmt, false);
+    createFormatAction(tr("&#RRGGBB"), tr("Hex red, green, blue"), RGBHexFmt, false);
+    createFormatAction(tr("&C M Y"), tr("Cyan, magenta, yellow"), CMYFmt, false);
+    createFormatAction(tr("C &M Y K"), tr("Cyan, magenta, yellow, black"), CMYKFmt, false);
+    createFormatAction(tr("&H S L"), tr("Hue, saturation, lightness"), HSLFmt, false);
+    createFormatAction(tr("&Y Cb Cr"), tr("Luminance, blue diff, red diff"), YCbCrFmt, false);
+    createFormatAction(tr("Y &I Q"), tr("Luminance, in-phase, quadrature"), YIQFmt, false);
+    createFormatAction(tr("&Extended Name"), tr("Match to extended web color name"), ExtendedNameFmt, true);
+    createFormatAction(tr("Extended #RRGGBB"), tr("Match to extended web color"), ExtendedHexFmt, true);
+    createFormatAction(tr("&Basic Name"), tr("Match to basic web color name"), BasicNameFmt, true);
+    createFormatAction(tr("Basic #RRGGBB"), tr("Match to basic web color"), BasicHexFmt, true);
 }
 
 void ColorDisplay::writeConfig(Config& config) const {
