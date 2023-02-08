@@ -1326,10 +1326,10 @@
     <section id="preferences">
       <h2>10. Preferences</h2>
       <p>
-        Preferences provide the ability to customize the appearance and behavior of the program. To open the preferences
-        dialog, select the <strong>Preferences</strong> item from the <strong>Edit</strong> menu. The dialog consists
-        of a set of tabbed pages, one for each preference category. The following sections describe each preference
-        category.
+        Preferences provide the ability to customize the appearance and behavior of the program. To open the
+        preferences dialog, select the <strong>Preferences</strong> item from the <strong>Edit</strong> menu. The
+        dialog consists of a set of tabbed pages, one for each preference category. The following sections describe
+        each preference category.
       </p>
       <section id="calibartion-prefs">
         <h3>10.1 Calibration Preferences</h3>
@@ -1533,7 +1533,350 @@
     </section>
     <section id="menus">
       <h2>13. Menus</h2>
-      <p>...</p>
+      <p>
+        This section describes all menus in the Meazure program.
+      </p>
+      <section id="file-menu">
+        <h3>13.1 File Menu</h3>
+        <dl>
+          <dt>Load Positions... (Ctrl+O)</dt>
+          <dd>
+            Loads a <a href="#positions">position log file</a>.
+          </dd>
+          <dt>Save Positions (Ctrl+S)</dt>
+          <dd>
+            Saves the currently recorded positions to a <a href="#positions">position log file</a>. If a name for
+            the file was previously specified, this item saves the positions without prompting. Otherwise, the
+            file save dialog is opened.
+          </dd>
+          <dt>Save Positions As... (Ctrl+Shift+S)</dt>
+          <dd>
+            Opens the file save dialog to save the currently recorded positions to a <a href="#positions">position log
+            file</a>.
+          </dd>
+          <dt>Import Configuration...</dt>
+          <dd>
+            Imports a <a href="#configuration">program configuration file</a>.
+          </dd>
+          <dt>Export Configuration...</dt>
+          <dd>
+            Exports the current <a href="#configuration">configuration of the program</a>.
+          </dd>
+          <dt>Exit (Ctrl+Q)</dt>
+          <dd>
+            Ends the execution of the program. If there are unsaved positions recorded, a dialog is displayed to
+            allow saving the positions.
+          </dd>
+        </dl>
+      </section>
+      <section id="edit-menu">
+        <h3>13.2 Edit Menu</h3>
+        <dl>
+          <dt>Copy Region (Ctrl+R)</dt>
+          <dd>
+            This item is enabled if the currently selected tool supports <a href="#capture">screen capture</a>. When
+            enabled, saves the portion of the screen in the tool's region to the clipboard.
+          </dd>
+          <dt>Copy Color (Ctrl+L)</dt>
+          <dd>
+            Copies the textual specification of the <a href="#color-information">current color</a> to the clipboard.
+          </dd>
+          <dt>Find Crosshairs (Ctrl+F)</dt>
+          <dd>
+            If the currently selected measurement tool uses crosshairs, selecting this menu item causes the crosshairs
+            to flash temporarily to make them easier to find.
+          </dd>
+          <dt>Record Position (Ctrl+P)</dt>
+          <dd>
+            <a href="#position-recording">Records</a> the current tool's position.
+          </dd>
+          <dt>Manage Positions...</dt>
+          <dd>
+            Opens the <a href="#position-manage">position log management</a> dialog.
+          </dd>
+          <dt>Delete Positions</dt>
+          <dd>
+            Deletes all recorded positions.
+          </dd>
+          <dt>Preferences...</dt>
+          <dd>
+            Opens the <a href="#preferences">program preferences</a> dialog.
+          </dd>
+        </dl>
+      </section>
+      <section id="tools-menu">
+        <h3>13.3 Tools Menu</h3>
+        <dl>
+          <dt>Cursor</dt>
+          <dd>
+            Selects the <a href="#cursor-tool">Cursor tool</a> for measuring.
+          </dd>
+          <dt>Point</dt>
+          <dd>
+            Selects the <a href="#point-tool">Point tool</a> for measuring.
+          </dd>
+          <dt>Line</dt>
+          <dd>
+            Selects the <a href="#line-tool">Line tool</a> for measuring.
+          </dd>
+          <dt>Rectangle</dt>
+          <dd>
+            Selects the <a href="#rectangle-tool">Rectangle tool</a> for measuring.
+          </dd>
+          <dt>Circle</dt>
+          <dd>
+            Selects the <a href="#circle-tool">Circle tool</a> for measuring.
+          </dd>
+          <dt>Angle</dt>
+          <dd>
+            Selects the <a href="#angle-tool">Angle tool</a> for measuring.
+          </dd>
+          <dt>Window</dt>
+          <dd>
+            Selects the <a href="#window-tool">Window tool</a> for measuring.
+          </dd>
+          <dt>Ruler</dt>
+          <dd>
+            Toggles the dispaly of a <a href="#rulers">pair of rulers</a>.
+          </dd>
+          <dt>Screen Grid</dt>
+          <dd>
+            Toggles the display of a <a href="#grid">grid</a> across the screen.
+          </dd>
+          <dt>Screen Grid Settings...</dt>
+          <dd>
+            Opens the dialog for adjusting the appearance of the <a href="#grid-settings">screen grid</a>. Note that
+            selecting this menu item also displays the screen grid.
+          </dd>
+        </dl>
+      </section>
+      <section id="units-menu">
+        <h3>13.4 Units Menu</h3>
+        <dl>
+          <dt>Pixels</dt>
+          <dd>
+            Selects measurement using <a href="#units">pixel units</a>.
+          </dd>
+          <dt>Twips</dt>
+          <dd>
+            Selects measurement using <a href="#units">twip units</a>.
+          </dd>
+          <dt>Points</dt>
+          <dd>
+            Selects measurement using <a href="#units">point units</a>.
+          </dd>
+          <dt>Picas</dt>
+          <dd>
+            Selects measurement using <a href="#units">pica units</a>.
+          </dd>
+          <dt>Inches</dt>
+          <dd>
+            Selects measurement using <a href="#units">inch units</a>.
+          </dd>
+          <dt>Centimeters</dt>
+          <dd>
+            Selects measurement using <a href="#units">centimeter units</a>.
+          </dd>
+          <dt>Millimeters</dt>
+          <dd>
+            Selects measurement using <a href="#units">millimeter units</a>.
+          </dd>
+          <dt>[custom]</dt>
+          <dd>
+            Selects measurement using <a href="#custom-units">custom units</a>, if they have been defined.
+          </dd>
+          <dt>Define Custom...</dt>
+          <dd>
+            Opens the dialog to <a href="#custom-units-prefs">define custom units</a>.
+          </dd>
+          <dt>Degrees</dt>
+          <dd>
+            Selects angular measurement using <a href="#units">degree units</a>.
+          </dd>
+          <dt>Radians</dt>
+          <dd>
+            Selects angular measurement using <a href="#units">radian units</a>.
+          </dd>
+        </dl>
+      </section>
+      <section id="view-menu">
+        <h3>13.5 View Menu</h3>
+        <dl>
+          <dt>Collapse (Ctrl+H)</dt>
+          <dd>
+            Toggles the visibility of the Meazure user interface. When collapsed, only the menu bar is displayed.
+          </dd>
+          <dt>Tool Bar</dt>
+          <dd>
+            Toggles the visibility of the program toolbar.
+          </dd>
+          <dt>Tool Info</dt>
+          <dd>
+            Toggles the visibility of the <a href="#tool-information">Tool Information</a> section.
+          </dd>
+          <dt>Screen Info</dt>
+          <dd>
+            Toggles the visibility of the <a href="#screen-information">Screen Information</a> section.
+          </dd>
+          <dt>Magnifier</dt>
+          <dd>
+            Toggles the visibility of the <a href="#magnifier">Magnifier</a>.
+          </dd>
+          <dt>Status Bar</dt>
+          <dd>
+            Toggles the visibility of the program status bar.
+          </dd>
+          <dt>Hide Crosshairs (Ctrl+B)</dt>
+          <dd>
+            Toggles the visibility of the tool <a href="#crosshairs">crosshairs</a>.
+          </dd>
+          <dt>Hide Popup Data Windows</dt>
+          <dd>
+            Toggles the visibility of the popup <a href="#data-window">data windows</a>.
+          </dd>
+          <dt>Hide Origin Marker</dt>
+          <dd>
+            Toggles the visibility of the coordinate system <a href="#coordinates-origin">origin marker</a>.
+          </dd>
+          <dt>Zoom In (Ctrl++)</dt>
+          <dd>
+            Increases the magnifaction of the <a href="#magnifier">magnifier</a>.
+          </dd>
+          <dt>Zoom Out (Ctrl+-)</dt>
+          <dd>
+            Descreases the magnifaction of the <a href="#magnifier">magnifier</a>.
+          </dd>
+          <dt>Freeze Magnifier (Ctrl+M)</dt>
+          <dd>
+            Toggles whether the <a href="#magnifier">magnifier</a> tracks the current measurement position.
+          </dd>
+          <dt>Magnifier Grid</dt>
+          <dd>
+            <dl>
+              <dt>None</dt>
+              <dd>
+                Never show a grid in the <a href="#magnifier">magnifier</a>.
+              </dd>
+              <dt>Dark</dt>
+              <dd>
+                Show a dark-colored grid in the <a href="#magnifier">magnifier</a> when the magnification is greater
+                than 4X.
+              </dd>
+              <dt>Light</dt>
+              <dd>
+                Show a light-colored grid in the <a href="#magnifier">magnifier</a> when the magnification is greater
+                than 4X.
+              </dd>
+            </dl>
+          </dd>
+          <dt>Color Format</dt>
+          <dd>
+            <dl>
+              <dt>R G B</dt>
+              <dd>
+                Formats the <a href="#color-information">color display</a> as individual red, green and blue values.
+              </dd>
+              <dt>#RRGGBB</dt>
+              <dd>
+                Formats the <a href="#color-information">color display</a> as a hexidecimal value representing the red,
+                green and blue components.
+              </dd>
+              <dt>C M Y</dt>
+              <dd>
+                Formats the <a href="#color-information">color display</a> as individual cyan, magenta and yellow
+                values.
+              </dd>
+              <dt>C M Y K</dt>
+              <dd>
+                Formats the <a href="#color-information">color display</a> as individual cyan, magenta and yellow
+                and black values.
+              </dd>
+              <dt>H S L</dt>
+              <dd>
+                Formats the <a href="#color-information">color display</a> as individual hue, saturation and lightness
+                values.
+              </dd>
+              <dt>Y Cb Cr</dt>
+              <dd>
+                Formats the <a href="#color-information">color display</a> as individual luminance, and chrominance
+                values.
+              </dd>
+              <dt>Y I Q</dt>
+              <dd>
+                Formats the <a href="#color-information">color display</a> as individual luminance, in-phase and
+                quadrature values.
+              </dd>
+              <dt>Extended Name</dt>
+              <dd>
+                Displayes the name of the extended web color that most closely <a href="#color-information">matches</a>
+                the current pixel color.
+              </dd>
+              <dt>Extended #RRGGBB</dt>
+              <dd>
+                Displayes the value of the extended web color that most closely <a href="#color-information">matches</a>
+                the current pixel color.
+              </dd>
+              <dt>Basic Name</dt>
+              <dd>
+                Displayes the name of the basic web color that most closely <a href="#color-information">matches</a>
+                the current pixel color.
+              </dd>
+              <dt>Basic #RRGGBB</dt>
+              <dd>
+                Displayes the value of the basic web color that most closely <a href="#color-information">matches</a>
+                the current pixel color.
+              </dd>
+            </dl>
+          </dd>
+          <dt>Invert Y</dt>
+          <dd>
+            Toggles whether the <a href="#coordinates-y-axis">orientation of the y-axis</a> and the origin location.
+          </dd>
+          <dt>Supplemental Angle</dt>
+          <dd>
+            Toggles whether the displayed angle measurement is the actual angle or the
+            <a href="#supplemental-angle">supplemental angle</a>.
+          </dd>
+          <dt>Set Origin (Ctrl+N)</dt>
+          <dd>
+            Moves the <a href="#coordinates-origin">origin</a> of the measurement coordinate system to a new location.
+          </dd>
+          <dt>Reset Origin</dt>
+          <dd>
+            Restores the <a href="#coordinates-origin">origin</a> of the measurement coordinate system to its default
+            location.
+          </dd>
+          <dt>Always Visible</dt>
+          <dd>
+            Toggles whether the program should remain on top of all other windows on the screen.
+          </dd>
+        </dl>
+      </section>
+      <section id="help-menu">
+        <h3>13.6 Help Menu</h3>
+        <dl>
+          <dt>Help (F1)</dt>
+          <dd>
+            Opens a browser containing this user manual.
+          </dd>
+          <dt>What's This? (Shift+F1)</dt>
+          <dd>
+            Provides <a href="#help">context-senstive help</a>.
+          </dd>
+          <dt>Releases</dt>
+          <dd>
+            Opens a browser to a page listing the releases of the Meazure program.
+          </dd>
+          <dt>Report an Issue</dt>
+          <dd>
+            Opens a browser to a page where bugs and feature requests can be reported.
+          </dd>
+          <dt>About</dt>
+          <dd>
+            Opens a dialog containing version and other information about the Meazure program.
+          </dd>
+        </dl>
+      </section>
     </section>
   </div>
   <nav class="section-nav">
@@ -1596,7 +1939,16 @@
           <li><a href="#position-manage">12.4 Managing Positions</a></li>
         </ul>
       </li>
-      <li><a href="#menus">13. Menus</a></li>
+      <li><a href="#menus">13. Menus</a>
+        <ul>
+          <li><a href="#file-menu">13.1 File Menu</a></li>
+          <li><a href="#edit-menu">13.2 Edit Menu</a></li>
+          <li><a href="#tools-menu">13.3 Tools Menu</a></li>
+          <li><a href="#units-menu">13.4 Units Menu</a></li>
+          <li><a href="#view-menu">13.5 View Menu</a></li>
+          <li><a href="#help-menu">13.6 Help Menu</a></li>
+        </ul>
+      </li>
     </ol>
   </nav>
 </main>
