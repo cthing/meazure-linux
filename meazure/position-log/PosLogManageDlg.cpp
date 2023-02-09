@@ -134,6 +134,7 @@ void PosLogManageDlg::createUI() {
     layout->addLayout(positionLayout);
     layout->addSpacing(15);
     layout->addLayout(buttonLayout);
+    layout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(layout);
 }
 

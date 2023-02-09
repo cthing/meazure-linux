@@ -239,6 +239,7 @@ set(MEAZURE_RESOURCES
     resources/images/GridTool.svg
     resources/images/LineTool.svg
     resources/images/Meazure.png
+    resources/images/Meazure.svg
     resources/images/PauseOff.svg
     resources/images/PauseOn.svg
     resources/images/PointTool.svg

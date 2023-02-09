@@ -43,7 +43,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent) {
                                         "to your software toolbox. Please consider\n"
                                         "making a financial contribution.\n\nThank you!"));
     auto* meazureIcon = new QLabel();
-    meazureIcon->setPixmap(QPixmap(":/images/Meazure.png"));
+    meazureIcon->setPixmap(QIcon(":/images/Meazure.svg").pixmap(k_logoSize, k_logoSize));
     auto* cthingIcon = new QLabel();
     cthingIcon->setPixmap(QIcon(":/images/CThingSoftware.svg").pixmap(QSize(k_cthingSize, k_cthingSize)));
 
@@ -72,6 +72,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent) {
     aboutLayout->addWidget(contributeMsg);
     aboutLayout->addSpacing(k_vspacing);
     aboutLayout->addWidget(buttonBox);
+    aboutLayout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(aboutLayout);
 }
 

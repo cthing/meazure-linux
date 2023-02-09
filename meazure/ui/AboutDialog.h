@@ -37,6 +37,7 @@ private slots:
 private:
     static constexpr int k_vspacing { 10 };
     static constexpr int k_hspacing { 20 };
+    static constexpr int k_logoSize { 32 };
     static constexpr int k_cthingSize { 70 };
 
     static QString getInfo();
