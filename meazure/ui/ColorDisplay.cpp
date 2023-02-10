@@ -28,7 +28,7 @@
 #include <QClipboard>
 
 
-ColorDisplay::ColorDisplay() :
+ColorDisplay::ColorDisplay(const ScreenInfoProvider* screenInfo) :
         m_colorSpaceLabel(new QLabel()),
         m_colorField(new QLineEdit()),
         m_colorSwatch(new QFrame()),
@@ -48,7 +48,6 @@ ColorDisplay::ColorDisplay() :
     m_colorField->setPalette(palette);
     layout->addWidget(m_colorField, Qt::AlignVCenter);
 
-    m_colorSwatch->setFixedSize(70, 20);
     m_colorSwatch->setStatusTip(tr("Active position color"));
     m_colorSwatch->setWhatsThis(tr("Color of the active position."));
     m_colorSwatch->setAutoFillBackground(true);
@@ -64,9 +63,14 @@ ColorDisplay::ColorDisplay() :
         QGuiApplication::clipboard()->setText(m_colorField->text());
     });
 
+    const int screenIdx = screenInfo->screenForWindow(this);
+    const QSizeF& platformScale = screenInfo->getPlatformScale(screenIdx);
+
     auto* copyButton = new QPushButton(QIcon(":/images/Clipboard.svg"), "");
-    copyButton->setIconSize(QSize(k_copyButtonIconSize, k_copyButtonIconSize));
-    copyButton->setFixedSize(QSize(k_copyButtonSize, k_copyButtonSize));
+    copyButton->setIconSize(QSize(qRound(platformScale.width() * k_copyButtonIconSize),
+                                  qRound(platformScale.height() * k_copyButtonIconSize)));
+    copyButton->setFixedSize(QSize(qRound(platformScale.width() * k_copyButtonSize),
+                                   qRound(platformScale.height() * k_copyButtonSize)));
     copyButton->setToolTip(tr("Copy color to clipboard"));
     copyButton->setStatusTip(tr("Copy color to clipboard"));
     copyButton->setWhatsThis(tr("Copies the active position color to the clipboard."));

@@ -88,6 +88,8 @@ private:
     void grabScreen();
 
     const ScreenInfoProvider* m_screenInfo;
+    int m_width { 0 };
+    int m_height { 0 };
     QPoint m_curPos { -1, -1 };
     QImage m_image;
     QPen m_darkGridPen;

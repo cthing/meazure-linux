@@ -57,7 +57,6 @@ public:
     [[nodiscard]] bool isDirty() const override;
 
 private:
-    static constexpr int k_buttonWidth { 130 };                     // Width of buttons, pixels
     static constexpr QMargins k_contentMargin { 10, 10, 10, 10 };   // Page margin, pixels
     static constexpr int k_verticalSpacer { 10 };                   // Spacing column, pixels
     static constexpr int k_hoirzontalSpacer { 10 };                 // Spacing row, pixels

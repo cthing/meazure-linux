@@ -20,6 +20,7 @@
 #pragma once
 
 #include <meazure/config/Config.h>
+#include <meazure/environment/ScreenInfoProvider.h>
 #include <QWidget>
 #include <QFrame>
 #include <QLineEdit>
@@ -54,7 +55,7 @@ class ColorDisplay : public QWidget {
     Q_OBJECT
 
 public:
-    ColorDisplay();
+    explicit ColorDisplay(const ScreenInfoProvider* screenInfo);
 
     void writeConfig(Config& config) const;
     void readConfig(const Config& config);

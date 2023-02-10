@@ -103,7 +103,6 @@ private:
     };
 
 
-    static constexpr int k_toolBarIconSize { 20 };
     static constexpr bool k_defAlwaysVisible { true };
     static constexpr bool k_defToolBarVisible { true };
     static constexpr bool k_defToolDataSectionVisible { true };

@@ -32,8 +32,11 @@
 #include <QClipboard>
 
 
-AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent) {
+AboutDialog::AboutDialog(const ScreenInfoProvider* screenInfo, QWidget* parent) : QDialog(parent) {
     using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
+
+    const int screenIdx = screenInfo->screenForWindow(this);
+    const QSizeF platformScale = screenInfo->getPlatformScale(screenIdx);
 
     auto* infoLabel = new QLabel(getInfo());
     auto* cthingLabel = new QLabel("<a href='https://www.cthing.com'>www.cthing.com</a>");
@@ -42,10 +45,16 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent) {
     auto* contributeMsg = new QLabel(tr("We hope Meazure is a valuable addition\n"
                                         "to your software toolbox. Please consider\n"
                                         "making a financial contribution.\n\nThank you!"));
+
+    const int logoWidth = qRound(platformScale.width() * k_logoSize);
+    const int logoHeight = qRound(platformScale.height() * k_logoSize);
     auto* meazureIcon = new QLabel();
-    meazureIcon->setPixmap(QIcon(":/images/Meazure.svg").pixmap(k_logoSize, k_logoSize));
+    meazureIcon->setPixmap(QIcon(":/images/Meazure.svg").pixmap(logoWidth, logoHeight));
+
+    const int cthingWidth = qRound(platformScale.width() * k_cthingSize);
+    const int cthingHeight = qRound(platformScale.height() * k_cthingSize);
     auto* cthingIcon = new QLabel();
-    cthingIcon->setPixmap(QIcon(":/images/CThingSoftware.svg").pixmap(QSize(k_cthingSize, k_cthingSize)));
+    cthingIcon->setPixmap(QIcon(":/images/CThingSoftware.svg").pixmap(cthingWidth, cthingHeight));
 
     auto* infoLayout = new QGridLayout();
     infoLayout->setHorizontalSpacing(k_hspacing);

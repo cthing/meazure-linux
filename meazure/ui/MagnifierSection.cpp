@@ -26,8 +26,8 @@
 
 MagnifierSection::MagnifierSection(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMgr) :
         m_magnifier(new Magnifier(screenInfo, toolMgr)),
-        m_magnifierControls(new MagnifierControls(m_magnifier)),
-        m_colorDisplay(new ColorDisplay()) {
+        m_magnifierControls(new MagnifierControls(m_magnifier, screenInfo)),
+        m_colorDisplay(new ColorDisplay(screenInfo)) {
     auto* layout = new QVBoxLayout();
     layout->setContentsMargins(0, 5, 0, 0);
     setLayout(layout);

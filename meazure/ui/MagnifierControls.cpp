@@ -26,7 +26,7 @@
 #include <QIcon>
 
 
-MagnifierControls::MagnifierControls(Magnifier* magnifier) {
+MagnifierControls::MagnifierControls(Magnifier* magnifier, const ScreenInfoProvider* screenInfo) {
     auto* layout = new QHBoxLayout();
     layout->setContentsMargins(0, 5, 0, 5);
     setLayout(layout);
@@ -55,10 +55,15 @@ MagnifierControls::MagnifierControls(Magnifier* magnifier) {
     connect(m_freezeAction, &QAction::triggered, magnifier, &Magnifier::setFreeze);
     connect(magnifier, &Magnifier::freezeChanged, m_freezeAction, &QAction::setChecked);
 
+    const int screenIdx = screenInfo->screenForWindow(this);
+    const QSizeF& platformScale = screenInfo->getPlatformScale(screenIdx);
+
     auto* freezeButton = new QToolButton();
     freezeButton->setDefaultAction(m_freezeAction);
-    freezeButton->setIconSize(QSize(k_freezeButtonIconSize, k_freezeButtonIconSize));
-    freezeButton->setFixedSize(QSize(k_freezeButtonSize, k_freezeButtonSize));
+    freezeButton->setIconSize(QSize(qRound(platformScale.width() * k_freezeButtonIconSize),
+                                    qRound(platformScale.height() * k_freezeButtonIconSize)));
+    freezeButton->setFixedSize(QSize(qRound(platformScale.width() * k_freezeButtonSize),
+                                     qRound(platformScale.height() * k_freezeButtonSize)));
     freezeButton->setToolTip(tr("Freeze magnifier"));
     layout->addWidget(freezeButton);
 

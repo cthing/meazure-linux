@@ -37,22 +37,18 @@ void RulerPrefsPage::createUI() {
     using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
 
     m_backColorButton = new QPushButton(tr("Background..."));
-    m_backColorButton->setFixedWidth(k_buttonWidth);
     m_backColorButton->setToolTip(tr("Select ruler background color"));
     m_backColorButton->setWhatsThis(tr("Selects the ruler background color."));
 
     m_backDefaultButton = new QPushButton(tr("Default"));
-    m_backDefaultButton->setFixedWidth(k_buttonWidth);
     m_backDefaultButton->setToolTip(tr("Restore default background color"));
     m_backDefaultButton->setWhatsThis(tr("Restores the ruler default background color."));
 
     m_borderColorButton = new QPushButton(tr("Marks/Text..."));
-    m_borderColorButton->setFixedWidth(k_buttonWidth);
     m_borderColorButton->setToolTip(tr("Select ruler marks and text color"));
     m_borderColorButton->setWhatsThis(tr("Selects the rule marks and text color."));
 
     m_borderDefaultButton = new QPushButton(tr("Default"));
-    m_borderDefaultButton->setFixedWidth(k_buttonWidth);
     m_borderDefaultButton->setToolTip(tr("Restore default marks and text color"));
     m_borderDefaultButton->setWhatsThis(tr("Restores the ruler default marks and text color."));
 
@@ -70,8 +66,12 @@ void RulerPrefsPage::createUI() {
     m_ruler2 = new Ruler(m_screenInfo, m_unitsMgr, false, checkerBoardDark, *m_model->m_rulerBackColor,
                          *m_model->m_rulerBorderColor, Colors::opacityFromPercent(*m_model->m_rulerOpacity));
 
-    m_ruler1->setPosition(k_rulerOrigin, k_rulerLength, 90);
-    m_ruler2->setPosition(k_rulerOrigin, k_rulerLength, 90);
+    const int screenIdx = m_screenInfo->screenForWindow(this);
+    const QSizeF platformScale = m_screenInfo->getPlatformScale(screenIdx);
+    const int rulerLength = qRound(platformScale.height() * k_rulerLength);
+
+    m_ruler1->setPosition(k_rulerOrigin, rulerLength, 90);
+    m_ruler2->setPosition(k_rulerOrigin, rulerLength, 90);
 
     auto* layout = new QGridLayout();
     setLayout(layout);
@@ -79,10 +79,10 @@ void RulerPrefsPage::createUI() {
     layout->setContentsMargins(k_contentMargin);
     layout->setVerticalSpacing(k_verticalSpacing);
 
-    layout->addWidget(m_backColorButton,     k_row0, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_backDefaultButton,   k_row0, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_borderColorButton,   k_row1, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_borderDefaultButton, k_row1, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(m_backColorButton,     k_row0, k_col0);
+    layout->addWidget(m_backDefaultButton,   k_row0, k_col1);
+    layout->addWidget(m_borderColorButton,   k_row1, k_col0);
+    layout->addWidget(m_borderDefaultButton, k_row1, k_col1);
 
     auto* opacityLayout = new QHBoxLayout();
     opacityLayout->addWidget(opacityLabel);

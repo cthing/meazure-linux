@@ -21,6 +21,10 @@
 
 
 int main(int argc, char *argv[]) {
+    // Because Meazure relies on the interaction with physical pixels, disable the Qt logical pixels. Handling
+    // HiDPI in the user interface is addressed on a case by case basis.
+    qputenv("QT_USE_PHYSICAL_DPI", "1");
+
     const App app(argc, argv);
     return App::exec();
 }

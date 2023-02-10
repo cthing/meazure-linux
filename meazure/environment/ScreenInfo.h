@@ -76,6 +76,8 @@ public:
 
     [[nodiscard]] QRect getScreenRect(int screenIndex) const override;
 
+    [[nodiscard]] QSizeF getPlatformScale(int screenIndex) const override;
+
     void getScreenRes(int screenIndex, bool& useManualRes, QSizeF& manualRes) const override;
 
     [[nodiscard]] QSizeF getScreenRes(int screenIndex) const override;

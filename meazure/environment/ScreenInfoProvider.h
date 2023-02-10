@@ -92,6 +92,12 @@ struct ScreenInfoProvider {
     ///
     [[nodiscard]] virtual QRect getScreenRect(int screenIndex) const = 0;
 
+    /// Returns the scale factor applied by the window system to compensate for high DPI screens.
+    ///
+    /// @return Scale factor to accommodate high DPI screens.
+    ///
+    [[nodiscard]] virtual QSizeF getPlatformScale(int screenIndex) const = 0;
+
     /// Returns the manually set screen resolution for the screen pointed to by the specified iterator.
     ///
     /// @param[in] screenIndex Screen whose manual resolution is desired.

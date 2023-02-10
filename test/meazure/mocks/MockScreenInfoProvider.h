@@ -67,6 +67,10 @@ public:
         return m_rect;
     }
 
+    [[nodiscard]] QSizeF getPlatformScale(int /* screenIndex */) const override {
+        return { 1.0, 1.0 };
+    }
+
     void getScreenRes(int /* screenIndex */, bool& useManualRes, QSizeF& manualRes) const override {
         useManualRes = false;
         manualRes = m_res;

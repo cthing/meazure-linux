@@ -720,7 +720,6 @@ void MainWindow::createToolBar() {
     m_toolBar = addToolBar("");
     m_toolBar->setFloatable(false);
     m_toolBar->setMovable(false);
-    m_toolBar->setIconSize(QSize(k_toolBarIconSize, k_toolBarIconSize));
     m_toolBar->addAction(m_cursorToolAction);
     m_toolBar->addAction(m_pointToolAction);
     m_toolBar->addAction(m_lineToolAction);
@@ -741,7 +740,7 @@ void MainWindow::createDialogs() {
 
     m_positionDialog = new PosLogManageDlg(m_posLogMgr, this);
 
-    m_aboutDialog = new AboutDialog(this);
+    m_aboutDialog = new AboutDialog(m_screenInfo, this);
 }
 
 void MainWindow::createKeyboardControl() {

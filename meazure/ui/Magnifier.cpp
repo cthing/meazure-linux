@@ -18,6 +18,7 @@
  */
 
 #include "Magnifier.h"
+#include <meazure/utils/MathUtils.h>
 #include <QPainter>
 #include <QBrush>
 #include <QColor>
@@ -28,7 +29,12 @@ Magnifier::Magnifier(const ScreenInfoProvider* screenInfo, const ToolMgr* toolMg
         m_darkGridPen(QBrush(QColor(k_darkGridColor)), 1),
         m_lightGridPen(QBrush(QColor(k_lightGridColor)), 1),
         m_centerMarkerPen(QBrush(QColor(255, 0, 0)), 1) {
-    setFixedSize(k_size, k_size);
+    const int screenIdx = m_screenInfo->screenForWindow(this);
+    const QSizeF& platformScale = m_screenInfo->getPlatformScale(screenIdx);
+    m_width = MathUtils::makeOddDown(qRound(k_size * platformScale.width()));
+    m_height = MathUtils::makeOddDown(qRound(k_size * platformScale.height()));
+
+    setFixedSize(m_width, m_height);
 
     setStatusTip(tr("Magnified active position"));
     setWhatsThis(tr("Magnifies the area around the active position"));
@@ -68,27 +74,28 @@ void Magnifier::setZoom(int zoomIndex) {
         m_zoomIndex = zoomIndex;
 
         const int zoomFactor = k_zoomFactors[zoomIndex];
-        const int origin = k_size * (1 - zoomFactor) / 2;
-        m_zoomTransform = QTransform::fromTranslate(origin, origin).scale(zoomFactor, zoomFactor);
+        const int originX = m_width * (1 - zoomFactor) / 2;
+        const int originY = m_height * (1 - zoomFactor) / 2;
+        m_zoomTransform = QTransform::fromTranslate(originX, originY).scale(zoomFactor, zoomFactor);
 
-        const int pixelWidth = zoomFactor + 1;
-
-        const int markerCoord = (k_size - zoomFactor) / 2;
-        m_centerMarker = QRect(markerCoord, markerCoord, pixelWidth, pixelWidth);
+        const int markerCoordX = (m_width - zoomFactor) / 2;
+        const int markerCoordY = (m_height - zoomFactor) / 2;
+        m_centerMarker = QRect(markerCoordX, markerCoordY, zoomFactor, zoomFactor);
 
         m_gridLines.clear();
-        const int coordMax = k_size - 1;
-        for (int x = markerCoord; x > 0; x -= pixelWidth) {
-            m_gridLines.emplace_back(x, 0, x, coordMax);
+        const int coordMaxX = m_width - 1;
+        const int coordMaxY = m_height - 1;
+        for (int x = markerCoordX; x > 0; x -= zoomFactor) {
+            m_gridLines.emplace_back(x, 0, x, coordMaxX);
         }
-        for (int x = markerCoord + pixelWidth; x < k_size; x += pixelWidth) {
-            m_gridLines.emplace_back(x, 0, x, coordMax);
+        for (int x = markerCoordX + zoomFactor; x < m_width; x += zoomFactor) {
+            m_gridLines.emplace_back(x, 0, x, coordMaxX);
         }
-        for (int y = markerCoord; y > 0; y -= pixelWidth) {
-            m_gridLines.emplace_back(0, y, coordMax, y);
+        for (int y = markerCoordY; y > 0; y -= zoomFactor) {
+            m_gridLines.emplace_back(0, y, coordMaxY, y);
         }
-        for (int y = markerCoord + pixelWidth; y < k_size; y += pixelWidth) {
-            m_gridLines.emplace_back(0, y, coordMax, y);
+        for (int y = markerCoordY + zoomFactor; y < m_height; y += zoomFactor) {
+            m_gridLines.emplace_back(0, y, coordMaxY, y);
         }
 
         repaint();
@@ -124,12 +131,13 @@ void Magnifier::periodicGrab() {
 }
 
 void Magnifier::grabScreen() {
-    const int c = k_size / 2;
-    const int x = m_curPos.x() - c;
-    const int y = m_curPos.y() - c;
-    m_image = m_screenInfo->grabScreen(x, y, k_size, k_size);
+    const int cx = m_width / 2;
+    const int cy = m_height / 2;
+    const int x = m_curPos.x() - cx;
+    const int y = m_curPos.y() - cy;
+    m_image = m_screenInfo->grabScreen(x, y, m_width, m_height);
 
-    const QRgb color = m_image.pixel(c, c);
+    const QRgb color = m_image.pixel(cx, cy);
     if (color != m_currentColor) {
         m_currentColor = color;
         emit currentColorChanged(color);
@@ -157,5 +165,5 @@ void Magnifier::paintEvent(QPaintEvent*) {
 
     // Border
     painter.setPen(m_darkGridPen);
-    painter.drawRect(0, 0, k_size - 1, k_size - 1);
+    painter.drawRect(0, 0, m_width - 1, m_height - 1);
 }

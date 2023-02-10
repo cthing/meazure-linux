@@ -41,32 +41,26 @@ void ToolPrefsPage::createUI() {
 
     auto* crosshairLabel = new QLabel(tr("<b>Crosshairs</b>"));
     m_backColorButton = new QPushButton(tr("Background..."));
-    m_backColorButton->setFixedWidth(k_buttonWidth);
     m_backColorButton->setToolTip(tr("Select crosshair background color"));
     m_backColorButton->setWhatsThis(tr("Selects background color for crosshairs."));
 
     m_backDefaultButton = new QPushButton(tr("Default"));
-    m_backDefaultButton->setFixedWidth(k_buttonWidth);
     m_backDefaultButton->setToolTip(tr("Restore crosshair default background color"));
     m_backDefaultButton->setWhatsThis(tr("Restores the crosshair default background color."));
 
     m_highlightColorButton = new QPushButton(tr("Highlight..."));
-    m_highlightColorButton->setFixedWidth(k_buttonWidth);
     m_highlightColorButton->setToolTip(tr("Select crosshair highlight color"));
     m_highlightColorButton->setWhatsThis(tr("Selects highlight color for crosshairs."));
 
     m_highlightDefaultButton = new QPushButton(tr("Default"));
-    m_highlightDefaultButton->setFixedWidth(k_buttonWidth);
     m_highlightDefaultButton->setToolTip(tr("Restore crosshair default highlight color"));
     m_highlightDefaultButton->setWhatsThis(tr("Restores the crosshair default highlight color."));
 
     m_borderColorButton = new QPushButton(tr("Border..."));
-    m_borderColorButton->setFixedWidth(k_buttonWidth);
     m_borderColorButton->setToolTip(tr("Select crosshair border color"));
     m_borderColorButton->setWhatsThis(tr("Selects border color for crosshairs."));
 
     m_borderDefaultButton = new QPushButton(tr("Default"));
-    m_borderDefaultButton->setFixedWidth(k_buttonWidth);
     m_borderDefaultButton->setToolTip(tr("Restore crosshair default border color"));
     m_borderDefaultButton->setWhatsThis(tr("Restores the crosshair default border color."));
 
@@ -102,12 +96,10 @@ void ToolPrefsPage::createUI() {
 
     auto* linesLabel = new QLabel(tr("<b>Lines</b>"));
     m_lineColorButton = new QPushButton(tr("Color..."));
-    m_lineColorButton->setFixedWidth(k_buttonWidth);
     m_lineColorButton->setToolTip(tr("Select line color"));
     m_lineColorButton->setWhatsThis(tr("Selects the color for lines."));
 
     m_lineDefaultButton = new QPushButton(tr("Default"));
-    m_lineDefaultButton->setFixedWidth(k_buttonWidth);
     m_lineDefaultButton->setToolTip(tr("Restore line default color"));
     m_lineDefaultButton->setWhatsThis(tr("Restores the default color for lines."));
 
@@ -144,13 +136,13 @@ void ToolPrefsPage::createUI() {
 
     layout->setContentsMargins(k_contentMargin);
 
-    layout->addWidget(crosshairLabel,           k_row0, k_col0, k_rowspan1, k_colspan5, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_backColorButton,        k_row1, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_backDefaultButton,      k_row1, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_highlightColorButton,   k_row2, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_highlightDefaultButton, k_row2, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_borderColorButton,      k_row3, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_borderDefaultButton,    k_row3, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(crosshairLabel,           k_row0, k_col0, k_rowspan1, k_colspan5);
+    layout->addWidget(m_backColorButton,        k_row1, k_col0);
+    layout->addWidget(m_backDefaultButton,      k_row1, k_col1);
+    layout->addWidget(m_highlightColorButton,   k_row2, k_col0);
+    layout->addWidget(m_highlightDefaultButton, k_row2, k_col1);
+    layout->addWidget(m_borderColorButton,      k_row3, k_col0);
+    layout->addWidget(m_borderDefaultButton,    k_row3, k_col1);
 
     auto* opacityLayout = new QHBoxLayout();
     opacityLayout->addWidget(opacityLabel);
@@ -178,9 +170,9 @@ void ToolPrefsPage::createUI() {
 
     layout->setRowMinimumHeight(k_row5, k_hoirzontalSpacer);
 
-    layout->addWidget(linesLabel,          k_row6, k_col0, k_rowspan1, k_colspan5, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_lineColorButton,   k_row7, k_col0, Qt::AlignLeft | Qt::AlignVCenter);
-    layout->addWidget(m_lineDefaultButton, k_row7, k_col1, Qt::AlignLeft | Qt::AlignVCenter);
+    layout->addWidget(linesLabel,          k_row6, k_col0, k_rowspan1, k_colspan5);
+    layout->addWidget(m_lineColorButton,   k_row7, k_col0);
+    layout->addWidget(m_lineDefaultButton, k_row7, k_col1);
 
     auto* lineLayoutLight = new QVBoxLayout();
     lineSampleLight->setLayout(lineLayoutLight);

@@ -44,6 +44,8 @@ public:
             m_availableGeom(screen->availableGeometry()),
             m_name(screen->name()),
             m_primary(primary),
+            m_platformScale(screen->logicalDotsPerInchX() / screen->physicalDotsPerInchX(),
+                            screen->logicalDotsPerInchY() / screen->physicalDotsPerInchY()),
             m_platformRes(QSizeF(screen->physicalDotsPerInchX(), screen->physicalDotsPerInchY())),
             m_useManualRes(ScreenInfo::k_defUseManualRes),
             m_calInInches(ScreenInfo::k_defCalInInches),
@@ -65,6 +67,12 @@ public:
     /// @return true if this is the primary screen.
     ///
     [[nodiscard]] bool isPrimary() const { return m_primary; }
+
+    /// Returns the scale factor applied by the window system to compensate for high DPI screens.
+    ///
+    /// @return Scale factor to accommodate high DPI screens.
+    ///
+    [[nodiscard]] const QSizeF& getPlatformScale() const { return m_platformScale; }
 
     /// Sets the resolution of the screen, in pixels per inch.
     ///
@@ -133,6 +141,7 @@ private:
     QRect m_availableGeom;  ///< Usable screen geometry (i.e. not used by window manager)
     QString m_name;         ///< Displayable name for the screen
     bool m_primary;         ///< Indicates if the screen is the primary display
+    QSizeF m_platformScale; ///< Window system scaling to compensate for high DPI
     QSizeF m_platformRes;   ///< Resolution reported by the window system.
     QSizeF m_manualRes;     ///< Manually calibrated resolution, pixels per inch.
     bool m_useManualRes;    ///< Indicates if manually calibrated resolution is used.
@@ -268,6 +277,10 @@ QRect ScreenInfo::getAvailableVirtualRect() const {
 
 QRect ScreenInfo::getScreenRect(int screenIndex) const {
     return isValidScreen(screenIndex) ? *dynamic_cast<QRect*>(m_screens[screenIndex]) : QRect();
+}
+
+QSizeF ScreenInfo::getPlatformScale(int screenIndex) const {
+    return isValidScreen(screenIndex) ? m_screens[screenIndex]->getPlatformScale() : QSizeF();
 }
 
 void ScreenInfo::getScreenRes(int screenIndex, bool& useManualRes, QSizeF& manualRes) const {

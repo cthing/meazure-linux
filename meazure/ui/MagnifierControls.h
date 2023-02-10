@@ -20,6 +20,7 @@
 #pragma once
 
 #include "Magnifier.h"
+#include <meazure/environment/ScreenInfoProvider.h>
 #include <QWidget>
 #include <QAction>
 
@@ -31,7 +32,7 @@ class MagnifierControls : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MagnifierControls(Magnifier* magnifier);
+    explicit MagnifierControls(Magnifier* magnifier, const ScreenInfoProvider* screenInfo);
 
     [[nodiscard]] QAction* getFreezeAction() const {
         return m_freezeAction;

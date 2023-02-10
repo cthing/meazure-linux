@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <meazure/environment/ScreenInfoProvider.h>
 #include <QDialog>
 #include <QWidget>
 #include <QString>
@@ -29,7 +30,7 @@ class AboutDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit AboutDialog(QWidget* parent);
+    explicit AboutDialog(const ScreenInfoProvider* screenInfo, QWidget* parent);
 
 private slots:
     static void copy();
