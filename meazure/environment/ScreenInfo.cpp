@@ -18,7 +18,6 @@
  */
 
 #include "ScreenInfo.h"
-#include "DesktopDetector.h"
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/StringUtils.h>
 #include <QScreen>

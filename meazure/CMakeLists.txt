@@ -189,8 +189,6 @@ set(UTILS_SOURCES
 source_group(UTILS FILES ${UTILS_SOURCES})
 
 set(ENVIRONMENT_SOURCES
-    environment/DesktopDetector.cpp
-    environment/DesktopDetector.h
     environment/CursorTracker.cpp
     environment/CursorTracker.h
     environment/ScreenInfo.cpp
