@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 C Thing Software
+ * Copyright 2023 C Thing Software
  *
  * This file is part of Meazure.
  *
@@ -19,34 +19,25 @@
 
 #pragma once
 
-#include <meazure/environment/WindowFinder.h>
-#include <QObject>
 #include <QPoint>
 #include <QRect>
-#include <vector>
 
 
-class Finder;
-
-
-/// Finds the geometry of X11 top level client windows on all screens. Windows that are input-only, minimized or are
-/// Meazure graphic elements are not included.
+/// Finds the geometry of top level windows on all screens.
 ///
-class X11WindowFinder : public WindowFinder {
+struct WindowFinder {
 
-public:
-    X11WindowFinder();
-    ~X11WindowFinder() override;
+    WindowFinder() = default;
+    virtual ~WindowFinder() = default;
 
-    X11WindowFinder(const X11WindowFinder&) = delete;
-    X11WindowFinder(X11WindowFinder&&) = delete;
-    X11WindowFinder& operator=(const X11WindowFinder&) = delete;
+    WindowFinder(const WindowFinder&) = delete;
+    WindowFinder(WindowFinder&&) = delete;
+    WindowFinder& operator=(const WindowFinder&) = delete;
 
-    /// Refreshes the internal list of top level windows. Windows that are input-only, minimized or are Meazure
-    /// graphic elements are not included. Typically, this method should be called whenever there is a relevant change
-    /// to the windows on the screen.
+    /// Refreshes the internal list of top level windows. Typically, this method should be called whenever there
+    /// is a relevant change to the windows on the screen.
     ///
-    void refresh() override;
+    virtual void refresh() = 0;
 
     /// Attempts to find geometry of a visible window at the specified position.
     ///
@@ -56,10 +47,5 @@ public:
     ///     by the window manager. In certain cases, the window manager border is reported, which includes any shadow
     ///     around that border.
     ///
-    QRect find(const QPoint& position) override;
-
-private:
-    Finder* m_updater;
-    bool m_firstUpdate { false };
-    std::vector<QRect> m_windows;
+    virtual QRect find(const QPoint& position) = 0;
 };

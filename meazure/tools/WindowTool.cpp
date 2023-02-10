@@ -18,18 +18,24 @@
  */
 
 #include "WindowTool.h"
+#include <meazure/environment/x11/X11WindowFinder.h>
+#include <meazure/environment/x11/X11WindowTracker.h>
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/Cloaker.h>
 #include <meazure/graphics/Dimensions.h>
 
 WindowTool::WindowTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent) :
         RadioTool(screenInfo, unitsProvider, parent),
+        m_windowFinder(new X11WindowFinder()),
+        m_windowTracker(new X11WindowTracker(this)),
         m_rectangle(new Rectangle(screenInfo, unitsProvider)),
         m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, WHReadOnly)) {
     m_rectangle->setLineWidth(2 * Dimensions::getLineWidth());
 
     connect(m_pointerTracker, &CursorTracker::motion, this, &WindowTool::cursorMotion);
-    connect(m_windowTracker, &X11WindowTracker::windowChanged, this, &WindowTool::windowChanged);
+    connect(dynamic_cast<const QObject*>(m_windowTracker),
+            SIGNAL(windowChanged(unsigned long, int16_t, int16_t, uint16_t, uint16_t)),
+            this, SLOT(windowChanged(unsigned long, int16_t, int16_t, uint16_t, uint16_t)));
 }
 
 WindowTool::~WindowTool() {

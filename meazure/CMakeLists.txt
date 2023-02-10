@@ -198,6 +198,8 @@ set(ENVIRONMENT_SOURCES
     environment/ScreenInfo.cpp
     environment/ScreenInfo.h
     environment/ScreenInfoProvider.h
+    environment/WindowFinder.h
+    environment/WindowTracker.h
     )
 source_group(ENVIRONMENT FILES ${ENVIRONMENT_SOURCES})
 

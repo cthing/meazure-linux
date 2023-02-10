@@ -19,37 +19,28 @@
 
 #pragma once
 
-#include <meazure/environment/WindowTracker.h>
-#include <QThread>
+#include <QObject>
 #include <cstdint>
 
 
-/// Tracks changes to the position and size of all windows on the screen. This is accomplished using the XRecord
-/// extension to capture configure notify events. The code is based on examples at
-/// https://github.com/nibrahim/showkeys/blob/master/tests/record-example.c and
-/// https://github.com/KivApple/qvkbd/blob/master/src/x11support.cpp. Note that Meazure graphics windows (e.g. the
-/// crosshair) are not tracked.
+/// Tracks changes to the position and size of all windows on the screen.
 ///
-class X11WindowTracker : public QThread, public WindowTracker {
+struct WindowTracker {
 
-    Q_OBJECT
-    Q_INTERFACES(WindowTracker)
+    WindowTracker() = default;
+    virtual ~WindowTracker() = default;
 
-public:
-    explicit X11WindowTracker(QObject* parent = nullptr);
-    ~X11WindowTracker() override;
-
-    X11WindowTracker(const X11WindowTracker&) = delete;
-    X11WindowTracker(X11WindowTracker&&) = delete;
-    X11WindowTracker& operator=(const X11WindowTracker&) = delete;
+    WindowTracker(const WindowTracker&) = delete;
+    WindowTracker(WindowTracker&&) = delete;
+    WindowTracker& operator=(const WindowTracker&) = delete;
 
     /// Starts tracking window configuration changes and emitting window changed signals.
     ///
-    void start() override;
+    virtual void start() = 0;
 
     /// Stops tracking window configuration changes.
     ///
-    void stop() override;
+    virtual void stop() = 0;
 
 signals:
     /// Emitted when a window has changed its location, size or visibility.
@@ -60,14 +51,7 @@ signals:
     /// @param width Width of the window, in pixels
     /// @param height Height of the window, in pixels
     ///
-    void windowChanged(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height) override;
-
-protected:
-    void run() override;
-
-private:
-    void handleChange(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height);
-
-    int m_stopFd[2];
-    volatile bool m_run { false };
+    virtual void windowChanged(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height) = 0;
 };
+
+Q_DECLARE_INTERFACE(WindowTracker, "WindowTracker")
