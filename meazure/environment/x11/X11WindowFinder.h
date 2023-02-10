@@ -31,15 +31,15 @@ class Finder;
 /// Finds the geometry of X11 top level client windows on all screens. Windows that are input-only, minimized or are
 /// Meazure graphic elements are not included.
 ///
-class WindowFinder {
+class X11WindowFinder {
 
 public:
-    WindowFinder();
-    ~WindowFinder();
+    X11WindowFinder();
+    ~X11WindowFinder();
 
-    WindowFinder(const WindowFinder&) = delete;
-    WindowFinder(WindowFinder&&) = delete;
-    WindowFinder& operator=(const WindowFinder&) = delete;
+    X11WindowFinder(const X11WindowFinder&) = delete;
+    X11WindowFinder(X11WindowFinder&&) = delete;
+    X11WindowFinder& operator=(const X11WindowFinder&) = delete;
 
     /// Refreshes the internal list of top level windows. Windows that are input-only, minimized or are Meazure
     /// graphic elements are not included. Typically, this method should be called whenever there is a relevant change

@@ -182,11 +182,15 @@ set(UTILS_SOURCES
     utils/StringUtils.h
     utils/TimedEventLoop.cpp
     utils/TimedEventLoop.h
-    utils/XcbUtils.h
-    utils/XlibUtils.h
-    utils/XRecordUtils.h
     )
 source_group(UTILS FILES ${UTILS_SOURCES})
+
+set(X11_UTILS_SOURCES
+    utils/x11/XcbUtils.h
+    utils/x11/XlibUtils.h
+    utils/x11/XRecordUtils.h
+    )
+source_group(X11_UTILS FILES ${X11_UTILS_SOURCES})
 
 set(ENVIRONMENT_SOURCES
     environment/CursorTracker.cpp
@@ -194,12 +198,16 @@ set(ENVIRONMENT_SOURCES
     environment/ScreenInfo.cpp
     environment/ScreenInfo.h
     environment/ScreenInfoProvider.h
-    environment/WindowFinder.cpp
-    environment/WindowFinder.h
-    environment/WindowTracker.cpp
-    environment/WindowTracker.h
     )
 source_group(ENVIRONMENT FILES ${ENVIRONMENT_SOURCES})
+
+set(X11_ENVIRONMENT_SOURCES
+    environment/x11/X11WindowFinder.cpp
+    environment/x11/X11WindowFinder.h
+    environment/x11/X11WindowTracker.cpp
+    environment/x11/X11WindowTracker.h
+    )
+source_group(X11_ENVIRONMENT FILES ${X11_ENVIRONMENT_SOURCES})
 
 set(UNITS_SOURCES
     units/CustomUnits.cpp
@@ -222,9 +230,15 @@ set(MEAZURE_SOURCES
     ${CONFIG_SOURCES}
     ${XML_SOURCES}
     ${UTILS_SOURCES}
+    ${X11_UTILS_SOURCES}
     ${ENVIRONMENT_SOURCES}
+    ${X11_ENVIRONMENT_SOURCES}
     ${UNITS_SOURCES}
     )
+
+list(APPEND MEAZURE_SOURCES
+     ${X11_UTILS_SOURCES}
+     )
 
 set(MEAZURE_RESOURCES
     resources/dtd/PositionLog1.dtd

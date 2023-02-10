@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 C Thing Software
+ * Copyright 2023 C Thing Software
  *
  * This file is part of Meazure.
  *
@@ -29,17 +29,17 @@
 /// https://github.com/KivApple/qvkbd/blob/master/src/x11support.cpp. Note that Meazure graphics windows (e.g. the
 /// crosshair) are not tracked.
 ///
-class WindowTracker : public QThread {
+class X11WindowTracker : public QThread {
 
     Q_OBJECT
 
 public:
-    explicit WindowTracker(QObject* parent = nullptr);
-    ~WindowTracker() override;
+    explicit X11WindowTracker(QObject* parent = nullptr);
+    ~X11WindowTracker() override;
 
-    WindowTracker(const WindowTracker&) = delete;
-    WindowTracker(WindowTracker&&) = delete;
-    WindowTracker& operator=(const WindowTracker&) = delete;
+    X11WindowTracker(const X11WindowTracker&) = delete;
+    X11WindowTracker(X11WindowTracker&&) = delete;
+    X11WindowTracker& operator=(const X11WindowTracker&) = delete;
 
     /// Starts tracking window configuration changes and emitting window changed signals.
     ///

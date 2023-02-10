@@ -20,9 +20,9 @@
 #pragma once
 
 #include "RadioTool.h"
-#include <meazure/environment/WindowFinder.h>
+#include <meazure/environment/x11/X11WindowFinder.h>
+#include <meazure/environment/x11/X11WindowTracker.h>
 #include <meazure/environment/CursorTracker.h>
-#include <meazure/environment/WindowTracker.h>
 #include <meazure/graphics/Rectangle.h>
 #include <meazure/ui/ToolDataWindow.h>
 
@@ -88,9 +88,9 @@ private:
 
     void setPosition(const QPoint& position);
 
-    WindowFinder* m_windowFinder { new WindowFinder() };
+    X11WindowFinder* m_windowFinder { new X11WindowFinder() };
     CursorTracker* m_pointerTracker { new CursorTracker(this) };
-    WindowTracker* m_windowTracker { new WindowTracker(this) };
+    X11WindowTracker* m_windowTracker { new X11WindowTracker(this) };
     Rectangle* m_rectangle;
     ToolDataWindow* m_dataWindow;
 };

@@ -17,8 +17,8 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "WindowFinder.h"
-#include <meazure/utils/XcbUtils.h>
+#include "X11WindowFinder.h"
+#include <meazure/utils/x11/XcbUtils.h>
 #include <meazure/graphics/Graphic.h>
 #include <algorithm>
 #include <memory>
@@ -183,19 +183,19 @@ private:
 };
 
 
-WindowFinder::WindowFinder() : m_updater(new Finder) {
+X11WindowFinder::X11WindowFinder() : m_updater(new Finder) {
 }
 
-WindowFinder::~WindowFinder() {
+X11WindowFinder::~X11WindowFinder() {
     delete m_updater;
 }
 
-void WindowFinder::refresh() {
+void X11WindowFinder::refresh() {
     m_firstUpdate = true;
     m_windows = m_updater->scan();
 }
 
-QRect WindowFinder::find(const QPoint& position) {
+QRect X11WindowFinder::find(const QPoint& position) {
     if (!m_firstUpdate) {
         refresh();
     }

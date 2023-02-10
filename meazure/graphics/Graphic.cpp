@@ -19,7 +19,7 @@
 
 #include "Graphic.h"
 #include <QEvent>
-#include <meazure/utils/XlibUtils.h>
+#include <meazure/utils/x11/XlibUtils.h>
 #include <X11/Xatom.h>
 
 

@@ -17,24 +17,24 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "WindowTracker.h"
+#include "X11WindowTracker.h"
 #include <meazure/graphics/Graphic.h>
-#include <meazure/utils/XlibUtils.h>
-#include <meazure/utils/XRecordUtils.h>
+#include <meazure/utils/x11/XlibUtils.h>
+#include <meazure/utils/x11/XRecordUtils.h>
 #include <X11/Xproto.h>
 #include <sys/select.h>
 #include <unistd.h>
 #include <fcntl.h>
 
 
-WindowTracker::WindowTracker(QObject *parent) : QThread(parent) { // NOLINT(cppcoreguidelines-pro-type-member-init)
+X11WindowTracker::X11WindowTracker(QObject *parent) : QThread(parent) { // NOLINT(cppcoreguidelines-pro-type-member-init)
 }
 
-WindowTracker::~WindowTracker() {
+X11WindowTracker::~X11WindowTracker() {
     stop();
 }
 
-void WindowTracker::start() {
+void X11WindowTracker::start() {
     // Create the pipe that is used to unblock the select to stop the tracking thread.
     if (pipe2(m_stopFd, O_NONBLOCK) == -1) {
         qCritical("Could not create pipe: %s", strerror(errno));    // NOLINT(concurrency-mt-unsafe)
@@ -48,7 +48,7 @@ void WindowTracker::start() {
     QThread::start();
 }
 
-void WindowTracker::stop() {
+void X11WindowTracker::stop() {
     if (!m_run) {
         return;
     }
@@ -70,7 +70,7 @@ void WindowTracker::stop() {
     close(m_stopFd[1]);
 }
 
-void WindowTracker::run() {
+void X11WindowTracker::run() {
     // Two display connections are recommended by the XRecord spec
     // (https://www.x.org/releases/X11R7.6/doc/libXtst/recordlib.html#record_clients). The spec also indicates which
     // display connections should be specified in a given XRecord function call. For example, the control display
@@ -91,7 +91,7 @@ void WindowTracker::run() {
     const XRecord::Context context(controlDisplay, dataDisplay, 0, XRecordAllClients, 1, range, 1);
 
     auto callback = [](XPointer priv, XRecordInterceptData *hook) {
-        auto* instance = reinterpret_cast<WindowTracker*>(priv);
+        auto* instance = reinterpret_cast<X11WindowTracker*>(priv);
 
         if (hook->category == XRecordFromServer) {
             // The data is formatted as an X Protocol event defined in Xproto.h. For a ConfigureNotify
@@ -137,6 +137,6 @@ void WindowTracker::run() {
     }
 }
 
-void WindowTracker::handleChange(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height) {
+void X11WindowTracker::handleChange(unsigned long windowId, int16_t x, int16_t y, uint16_t width, uint16_t height) {
     emit windowChanged(windowId, x, y, width, height);
 }

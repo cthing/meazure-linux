@@ -29,7 +29,7 @@ WindowTool::WindowTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsP
     m_rectangle->setLineWidth(2 * Dimensions::getLineWidth());
 
     connect(m_pointerTracker, &CursorTracker::motion, this, &WindowTool::cursorMotion);
-    connect(m_windowTracker, &WindowTracker::windowChanged, this, &WindowTool::windowChanged);
+    connect(m_windowTracker, &X11WindowTracker::windowChanged, this, &WindowTool::windowChanged);
 }
 
 WindowTool::~WindowTool() {
