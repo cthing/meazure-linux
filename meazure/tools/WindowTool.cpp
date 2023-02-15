@@ -20,17 +20,26 @@
 #include "WindowTool.h"
 #include <meazure/environment/x11/X11WindowFinder.h>
 #include <meazure/environment/x11/X11WindowTracker.h>
+#include <meazure/environment/noop/NoopWindowFinder.h>
+#include <meazure/environment/noop/NoopWindowTracker.h>
 #include <meazure/utils/Geometry.h>
 #include <meazure/utils/Cloaker.h>
+#include <meazure/utils/PlatformUtils.h>
 #include <meazure/graphics/Dimensions.h>
 
 WindowTool::WindowTool(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QObject* parent) :
         RadioTool(screenInfo, unitsProvider, parent),
-        m_windowFinder(new X11WindowFinder()),
-        m_windowTracker(new X11WindowTracker(this)),
         m_rectangle(new Rectangle(screenInfo, unitsProvider)),
         m_dataWindow(new ToolDataWindow(screenInfo, unitsProvider, WHReadOnly)) {
     m_rectangle->setLineWidth(2 * Dimensions::getLineWidth());
+
+    if (PlatformUtils::isX11()) {
+        m_windowFinder = new X11WindowFinder();
+        m_windowTracker = new X11WindowTracker(this);
+    } else {
+        m_windowFinder = new NoopWindowFinder();
+        m_windowTracker = new NoopWindowTracker(this);
+    }
 
     connect(m_pointerTracker, &CursorTracker::motion, this, &WindowTool::cursorMotion);
     connect(dynamic_cast<const QObject*>(m_windowTracker),

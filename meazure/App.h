@@ -20,6 +20,7 @@
 #pragma once
 
 #include "ui/MainWindow.h"
+#include "ui/WaylandAlert.h"
 #include "environment/ScreenInfo.h"
 #include "units/UnitsMgr.h"
 #include "tools/ToolMgr.h"
@@ -72,5 +73,6 @@ private:
     ToolMgr* m_toolMgr;
     PosLogMgr* m_posLogMgr;
     ConfigMgr* m_configMgr;
-    MainWindow* m_mainWindow;
+    MainWindow* m_mainWindow { nullptr };
+    WaylandAlert* m_waylandAlert { nullptr };
 };

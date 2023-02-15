@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 C Thing Software
+ * Copyright 2023 C Thing Software
  *
  * This file is part of Meazure.
  *
@@ -20,36 +20,25 @@
 #pragma once
 
 #include <meazure/environment/WindowFinder.h>
-#include <QObject>
 #include <QPoint>
 #include <QRect>
-#include <vector>
 
 
-class Finder;
-
-
-/// Finds the geometry of X11 top level client windows on all screens. Windows that are input-only, minimized or are
-/// Meazure graphic elements are not included.
+/// A window finder that does not do anything for use on platforms that do not support this capability (e.g. Wayland).
 ///
-class X11WindowFinder : public WindowFinder {
+class NoopWindowFinder : public WindowFinder {
 
 public:
-    X11WindowFinder();
-    ~X11WindowFinder() override;
+    NoopWindowFinder() = default;
+    ~NoopWindowFinder() override = default;
 
-    X11WindowFinder(const X11WindowFinder&) = delete;
-    X11WindowFinder(X11WindowFinder&&) = delete;
-    X11WindowFinder& operator=(const X11WindowFinder&) = delete;
+    NoopWindowFinder(const NoopWindowFinder&) = delete;
+    NoopWindowFinder(NoopWindowFinder&&) = delete;
+    NoopWindowFinder& operator=(const NoopWindowFinder&) = delete;
 
     [[nodiscard]] bool isSupported() const override;
 
     void refresh() override;
 
     QRect find(const QPoint& position) override;
-
-private:
-    Finder* m_updater;
-    bool m_firstUpdate { false };
-    std::vector<QRect> m_windows;
 };

@@ -21,9 +21,10 @@ include(${DEV_DIR}/conan/cthing-conan.cmake)
 
 conan_cmake_configure(REQUIRES
                       qt/6.4.2
-                      libffi/3.4.3   # Resolve Qt conflict between wayland and glib even though wayland is excluded
+                      libffi/3.4.3   # Resolve Qt conflict between wayland and glib
+                      expat/2.5.0    # Resolve Qt conflict between wayland and frontconfig
                       xerces-c/3.2.4
-                      OPTIONS qt:shared=False qt:qtsvg=True qt:qttools=True qt:qtwayland=False harfbuzz:with_glib=False xerces-c:char_type=char16_t
+                      OPTIONS qt:shared=False qt:qtsvg=True qt:qttools=True qt:qtwayland=True harfbuzz:with_glib=False xerces-c:char_type=char16_t
                       GENERATORS ${CTHING_CONAN_GENERATOR})
 
 CTHING_CONAN_INSTALL()

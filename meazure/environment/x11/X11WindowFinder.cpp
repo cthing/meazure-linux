@@ -190,6 +190,10 @@ X11WindowFinder::~X11WindowFinder() {
     delete m_updater;
 }
 
+bool X11WindowFinder::isSupported() const {
+    return true;
+}
+
 void X11WindowFinder::refresh() {
     m_firstUpdate = true;
     m_windows = m_updater->scan();

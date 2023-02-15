@@ -34,6 +34,12 @@ struct WindowFinder {
     WindowFinder(WindowFinder&&) = delete;
     WindowFinder& operator=(const WindowFinder&) = delete;
 
+    /// Indicates whether window finding is supported on the implementing platform.
+    ///
+    /// @return true if window finding is supported.
+    ///
+    [[nodiscard]] virtual bool isSupported() const = 0;
+
     /// Refreshes the internal list of top level windows. Typically, this method should be called whenever there
     /// is a relevant change to the windows on the screen.
     ///

@@ -34,6 +34,10 @@ X11WindowTracker::~X11WindowTracker() {
     stop();
 }
 
+bool X11WindowTracker::isSupported() const {
+    return true;
+}
+
 void X11WindowTracker::start() {
     // Create the pipe that is used to unblock the select to stop the tracking thread.
     if (pipe2(m_stopFd, O_NONBLOCK) == -1) {

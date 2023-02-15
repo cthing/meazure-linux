@@ -43,12 +43,9 @@ public:
     X11WindowTracker(X11WindowTracker&&) = delete;
     X11WindowTracker& operator=(const X11WindowTracker&) = delete;
 
-    /// Starts tracking window configuration changes and emitting window changed signals.
-    ///
-    void start() override;
+    [[nodiscard]] bool isSupported() const override;
 
-    /// Stops tracking window configuration changes.
-    ///
+    void start() override;
     void stop() override;
 
 signals:

@@ -19,6 +19,7 @@
 
 #include "App.h"
 #include "AppVersion.h"
+#include "utils/PlatformUtils.h"
 #include <QtPlugin>
 #include <QStyleFactory>
 #include <QPixmap>
@@ -55,33 +56,41 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppco
     m_toolMgr = new ToolMgr(m_screenInfo, m_unitsMgr);                                            // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_posLogMgr = new PosLogMgr(m_screenInfo, m_unitsMgr, m_toolMgr);                             // NOLINT(cppcoreguidelines-prefer-member-initializer)
     m_configMgr = new ConfigMgr(devMode);                                                         // NOLINT(cppcoreguidelines-prefer-member-initializer)
-    m_mainWindow = new MainWindow(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, m_configMgr); // NOLINT(cppcoreguidelines-prefer-member-initializer)
 
-    // Populate the configuration manager with the objects that will participate in saving, restoring
-    // and resetting the application configuration.
-    populateConfigMgr();
+    if (PlatformUtils::isWayland()) {
+        m_waylandAlert = new WaylandAlert();                                                          // NOLINT(cppcoreguidelines-prefer-member-initializer)
+        m_waylandAlert->setAttribute(Qt::WA_QuitOnClose, true);
+        m_waylandAlert->show();
+    } else {
+        m_mainWindow = new MainWindow(m_screenInfo, m_unitsMgr, m_toolMgr, m_posLogMgr, m_configMgr); // NOLINT(cppcoreguidelines-prefer-member-initializer)
 
-    // Restore the save application state.
-    m_configMgr->restoreConfig();
+        // Populate the configuration manager with the objects that will participate in saving, restoring
+        // and resetting the application configuration.
+        populateConfigMgr();
 
-    // Display the application window.
-    m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
-    m_mainWindow->show();
+        // Restore the save application state.
+        m_configMgr->restoreConfig();
 
-    // Load a position log file, if one was specified on the command-line
-    if (parser.isSet("positions")) {
-        m_posLogMgr->load(parser.value("positions"));
-    }
+        // Display the application window.
+        m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
+        m_mainWindow->show();
 
-    // Load a configuration file, if one was specified on the command-line
-    if (parser.isSet("config")) {
-        m_configMgr->import(parser.value("config"));
+        // Load a position log file, if one was specified on the command-line
+        if (parser.isSet("positions")) {
+            m_posLogMgr->load(parser.value("positions"));
+        }
+
+        // Load a configuration file, if one was specified on the command-line
+        if (parser.isSet("config")) {
+            m_configMgr->import(parser.value("config"));
+        }
     }
 }
 
 App::~App() {
     delete m_configMgr;
     delete m_mainWindow;
+    delete m_waylandAlert;
     delete m_posLogMgr;
     delete m_toolMgr;
     delete m_unitsMgr;

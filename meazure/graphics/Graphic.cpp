@@ -18,12 +18,9 @@
  */
 
 #include "Graphic.h"
+#include "x11/X11GraphicTag.h"
+#include <meazure/utils/PlatformUtils.h>
 #include <QEvent>
-#include <meazure/utils/x11/XlibUtils.h>
-#include <X11/Xatom.h>
-
-
-static Atom MEA_GFX = None;
 
 
 Graphic::Graphic(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvider, QWidget *parent) :
@@ -34,43 +31,20 @@ Graphic::Graphic(const ScreenInfo* screenInfo, const UnitsProvider* unitsProvide
         setWindowFlag(Qt::X11BypassWindowManagerHint, true);
         setAttribute(Qt::WA_QuitOnClose, false);
         setAttribute(Qt::WA_AlwaysShowToolTips, true);
-
-        if (MEA_GFX == None) {
-            MEA_GFX = XInternAtom(Xlib::qtDisplay(), "MEA_GFX", False);
-        }
     }
 }
 
 bool Graphic::isGraphicWindow(unsigned long windowId) {
-    if (windowId == None) {
-        return false;
+    if (PlatformUtils::isX11()) {
+        return X11GraphicTag::isGraphicWindow(windowId);
     }
 
-    Atom typeReturn = None;
-    int formatReturn = 0;
-    unsigned long numItemsReturn = 0;
-    unsigned long bytesAfterReturn = 0;
-    unsigned char *data = nullptr;
-    const int status = XGetWindowProperty(Xlib::qtDisplay(), windowId, MEA_GFX, 0, 1, False, XA_CARDINAL,
-                                          &typeReturn, &formatReturn, &numItemsReturn, &bytesAfterReturn, &data);
-    if (status != Success || data == nullptr) {
-        return false;
-    }
-
-    const bool found = *data == 1;
-    XFree(data);
-    return found;
+    return false;
 }
 
 bool Graphic::event(QEvent* ev) {
-    if (ev->type() == QEvent::WinIdChange) {
-        if (parent() == nullptr) {
-            const auto win = static_cast<Window>(effectiveWinId());
-            if (win != None) {
-                const uint8_t value = 1;
-                XChangeProperty(Xlib::qtDisplay(), win, MEA_GFX, XA_CARDINAL, 8, PropModeReplace, &value, 1);
-            }
-        }
+    if (PlatformUtils::isX11()) {
+        X11GraphicTag::processEvents(this, ev);
     }
 
     return QWidget::event(ev);

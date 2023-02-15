@@ -34,6 +34,12 @@ struct WindowTracker {
     WindowTracker(WindowTracker&&) = delete;
     WindowTracker& operator=(const WindowTracker&) = delete;
 
+    /// Indicates whether window tracking is supported on the implementing platform.
+    ///
+    /// @return true if window tracking is supported.
+    ///
+    [[nodiscard]] virtual bool isSupported() const = 0;
+
     /// Starts tracking window configuration changes and emitting window changed signals.
     ///
     virtual void start() = 0;

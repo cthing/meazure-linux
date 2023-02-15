@@ -1,5 +1,3 @@
-set(QT_PLUGINS_DIR "${CONAN_QT_ROOT}/res/archdatadir/plugins")
-
 set(TOP_SOURCES
     App.cpp
     App.h
@@ -39,6 +37,8 @@ set(UI_SOURCES
     ui/ToolDataSection.h
     ui/ToolDataWindow.cpp
     ui/ToolDataWindow.h
+    ui/WaylandAlert.cpp
+    ui/WaylandAlert.h
     )
 source_group(UI FILES ${UI_SOURCES})
 
@@ -121,6 +121,12 @@ set(GRAPHICS_SOURCES
     )
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 
+set(X11_GRAPHICS_SOURCES
+    graphics/x11/X11GraphicTag.cpp
+    graphics/x11/X11GraphicTag.h
+    )
+source_group(X11_GRAPHICS FILES ${X11_GRAPHICS_SOURCES})
+
 set(TOOLS_SOURCES
     tools/AngleTool.cpp
     tools/AngleTool.h
@@ -178,6 +184,7 @@ set(UTILS_SOURCES
     utils/HelpUtils.h
     utils/LayoutUtils.h
     utils/MathUtils.h
+    utils/PlatformUtils.h
     utils/StringUtils.cpp
     utils/StringUtils.h
     utils/TimedEventLoop.cpp
@@ -200,6 +207,10 @@ set(ENVIRONMENT_SOURCES
     environment/ScreenInfoProvider.h
     environment/WindowFinder.h
     environment/WindowTracker.h
+    environment/noop/NoopWindowFinder.cpp
+    environment/noop/NoopWindowFinder.h
+    environment/noop/NoopWindowTracker.cpp
+    environment/noop/NoopWindowTracker.h
     )
 source_group(ENVIRONMENT FILES ${ENVIRONMENT_SOURCES})
 
@@ -228,6 +239,7 @@ set(MEAZURE_SOURCES
     ${POSITION_LOG_SOURCES}
     ${PREFS_SOURCES}
     ${GRAPHICS_SOURCES}
+    ${X11_GRAPHICS_SOURCES}
     ${TOOLS_SOURCES}
     ${CONFIG_SOURCES}
     ${XML_SOURCES}
@@ -273,24 +285,48 @@ target_include_directories(libmeazure PRIVATE
                            ${Qt6_Gui_Platform_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
                            ${ICU_INCLUDE_DIRS}
-                           "${CMAKE_SOURCE_DIR}"
-                           "${CMAKE_CURRENT_BINARY_DIR}"
+                           ${CMAKE_SOURCE_DIR}
+                           ${CMAKE_CURRENT_BINARY_DIR}
                            )
 qt6_add_resources(libmeazure "resources" PREFIX "/" BASE "resources" FILES ${MEAZURE_RESOURCES})
 
-qt6_add_executable(meazure main.cpp)
+set(QT_PLUGINS_DIR "${CONAN_QT_ROOT}/res/archdatadir/plugins")
+
+set(QT_PLUGIN_PLATFORMS_DIR ${QT_PLUGINS_DIR}/platforms)
+set(QT_PLUGIN_PLATFORMS_OBJECTS_DIR ${QT_PLUGIN_PLATFORMS_DIR}/objects-${CMAKE_BUILD_TYPE})
+set(QT_XCB_INIT_OBJ ${QT_PLUGIN_PLATFORMS_OBJECTS_DIR}/QXcbIntegrationPlugin_init/QXcbIntegrationPlugin_init.cpp.o)
+set(QT_WAYLAND_INIT_OBJ ${QT_PLUGIN_PLATFORMS_OBJECTS_DIR}/QWaylandIntegrationPlugin_init/QWaylandIntegrationPlugin_init.cpp.o)
+
+set(QT_PLUGIN_SHELLS_DIR ${QT_PLUGINS_DIR}/wayland-shell-integration)
+set(QT_PLUGIN_SHELLS_OBJECTS_DIR ${QT_PLUGIN_SHELLS_DIR}/objects-${CMAKE_BUILD_TYPE})
+set(QT_XDGSHELL_INIT_OBJ ${QT_PLUGIN_SHELLS_OBJECTS_DIR}/QWaylandXdgShellIntegrationPlugin_init/QWaylandXdgShellIntegrationPlugin_init.cpp.o)
+
+set(QT_PLUGIN_ICONENGINES_DIR ${QT_PLUGINS_DIR}/iconengines)
+set(QT_PLUGIN_ICONENGINES_OBJECTS_DIR ${QT_PLUGIN_ICONENGINES_DIR}/objects-${CMAKE_BUILD_TYPE})
+set(QT_PLUGINS_SVGICON_INIT_OBJ ${QT_PLUGIN_ICONENGINES_OBJECTS_DIR}/QSvgIconPlugin_init/QSvgIconPlugin_init.cpp.o)
+
+add_library(pluginInits OBJECT IMPORTED)
+set_property(TARGET pluginInits PROPERTY IMPORTED_OBJECTS
+             ${QT_XCB_INIT_OBJ}
+             ${QT_WAYLAND_INIT_OBJ}
+             ${QT_XDGSHELL_INIT_OBJ}
+             ${QT_PLUGINS_SVGICON_INIT_OBJ}
+             )
+
+qt6_add_executable(meazure main.cpp $<TARGET_OBJECTS:pluginInits>)
 target_include_directories(meazure PRIVATE
                            ${Qt6_INCLUDE_DIRS}
                            ${Qt6_Gui_Platform_INCLUDE_DIRS}
                            ${XercesC_INCLUDE_DIRS}
                            ${ICU_INCLUDE_DIRS}
-                           "${CMAKE_SOURCE_DIR}"
-                           "${CMAKE_CURRENT_BINARY_DIR}"
+                           ${CMAKE_SOURCE_DIR}
+                           ${CMAKE_CURRENT_BINARY_DIR}
                            )
 
 target_link_directories(meazure PRIVATE
-                        "${Qt6_QXcbIntegrationPlugin_LIB_DIRS}"
-                        "${QT_PLUGINS_DIR}/iconengines"
+                        ${QT_PLUGIN_PLATFORMS_DIR}
+                        ${QT_PLUGIN_SHELLS_DIR}
+                        ${QT_PLUGIN_ICONENGINES_DIR}
                         ${Qt6_Core_LIB_DIRS}
                         )
 target_link_libraries(meazure PRIVATE
@@ -300,8 +336,11 @@ target_link_libraries(meazure PRIVATE
                       Qt6::Svg
                       Qt6::Network
                       qxcb
+                      qwayland-generic
                       qsvgicon
+                      xdg-shell
                       Qt6XcbQpa
+                      Qt6WaylandClient
                       Qt6::Core
                       ${ICU_uc_LIBS}
                       XercesC::XercesC
