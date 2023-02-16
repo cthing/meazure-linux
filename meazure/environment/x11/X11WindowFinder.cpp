@@ -126,7 +126,7 @@ private:
                 && !isHidden(win);
     }
 
-    void processChildWindow(xcb_window_t root, xcb_window_t parent, Commands& commands) {
+    bool processChildWindow(xcb_window_t root, xcb_window_t parent, Commands& commands) {
         Xcb::QueryTree tree(m_conn, parent);
         const xcb_window_t* children = tree.children();
         const int numChildren = tree.numChildren();
@@ -140,9 +140,15 @@ private:
                 if (!Graphic::isGraphicWindow(child)) {
                     commands.emplace_back(new TranslatedGeometryCommand(m_conn, root, child, 0, 0));
                 }
-                return;
+                return true;
+            }
+
+            if (processChildWindow(root, child, commands)) {
+                return true;
             }
         }
+
+        return false;
     }
 
     void processRootWindow(xcb_window_t root, Commands& commands) {
