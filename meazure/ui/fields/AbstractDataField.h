@@ -95,7 +95,7 @@ public:
         // Determine the pixel dimensions of the field based on the field style, cursor dimensions and text metrics.
         const QString s(m_charWidth, u'0');
         const int h = SPIN_TYPE::sizeHint().height();
-        const int w = SPIN_TYPE::fontMetrics().horizontalAdvance(s) + m_cursorWidth;
+        const int w = SPIN_TYPE::fontMetrics().horizontalAdvance(s) + m_widthPadding;
 
         QStyleOptionSpinBox opt;
         SPIN_TYPE::initStyleOption(&opt);
@@ -122,10 +122,11 @@ protected:
     ///
     AbstractDataField(int charWidth, bool showButtons, bool readOnly, bool nativeStepHandling, QWidget *parent) :
             SPIN_TYPE(parent),
-            m_cursorWidth(SPIN_TYPE::style()->pixelMetric(QStyle::PM_TextCursorWidth)),
+            m_widthPadding(2 * SPIN_TYPE::style()->pixelMetric(QStyle::PM_TextCursorWidth) + 1),
             m_charWidth(charWidth),
             m_nativeStepHandling(nativeStepHandling),
             m_defaultBackground(SPIN_TYPE::palette().color(QPalette::Base)),
+            m_readOnlyBackground(SPIN_TYPE::palette().color(QPalette::Window)),
             m_thresholdInterval(SPIN_TYPE::style()->styleHint(QStyle::SH_SpinBox_ClickAutoRepeatThreshold,
                                                               nullptr, this)),
             m_repeatInterval(SPIN_TYPE::style()->styleHint(QStyle::SH_SpinBox_ClickAutoRepeatRate, nullptr, this)),
@@ -315,11 +316,11 @@ private:
         return SPIN_TYPE::style()->hitTestComplexControl(QStyle::CC_SpinBox, &opt, event->pos(), this);
     }
 
-    int m_cursorWidth;                                  ///< Width of the text field cursor, pixel
+    int m_widthPadding;                                 ///< Padding around around the field text, pixels
     int m_charWidth;                                    ///< Number of characters to show in the text field
     bool m_nativeStepHandling;                          ///< Should the native spin box be used
     QColor m_defaultBackground;                         ///< Enabled and writable background color
-    QColor m_readOnlyBackground { 240, 240, 240 };      ///< Enabled and readonly background color
+    QColor m_readOnlyBackground;                        ///< Enabled and readonly background color
     QTimer m_thresholdTimer;                            ///< Timer for initiating the repeat
     QTimer m_repeatTimer;                               ///< Timer for the repeat
     int m_thresholdInterval;                            ///< Delay before repeating, in milliseconds

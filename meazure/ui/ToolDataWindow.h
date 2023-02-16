@@ -139,6 +139,8 @@ private slots:
 
 private:
     static constexpr QMargins k_targetMargins { 5, 5, 5, 5 };
+    static constexpr QRgb k_backgroundColor { qRgb(255, 255, 220) };
+    static constexpr QRgb k_textColor { qRgb(0, 0, 0) };
 
     /// Sets the data window's background and text colors.
     ///
@@ -149,9 +151,6 @@ private:
     QTimer m_flashTimer;
     int m_flashCountDown { -1 };
     bool m_showText { true };
-
-    QColor m_backgroundColor;
-    QColor m_textColor;
 
     QLabel* m_x1Value;
     QLabel* m_y1Value;

@@ -44,7 +44,7 @@ ColorDisplay::ColorDisplay(const ScreenInfoProvider* screenInfo) :
     m_colorField->setStatusTip(tr("Active position color"));
     m_colorField->setWhatsThis(tr("Color of the active position in the current format."));
     QPalette palette;
-    palette.setColor(QPalette::Base, QColor(240, 240, 240));
+    palette.setColor(QPalette::Base, palette.color(QPalette::Window));
     m_colorField->setPalette(palette);
     layout->addWidget(m_colorField, Qt::AlignVCenter);
 

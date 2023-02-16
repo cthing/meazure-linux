@@ -63,7 +63,7 @@ void Caliper::paintEvent(QPaintEvent*) {
 
     if (m_orientation == Horizontal) {
         if (isEnabled()) {
-            painter.fillRect(QRect(0, 0, m_jawPosition + 1, k_thk), palette().toolTipBase());
+            painter.fillRect(QRect(0, 0, m_jawPosition + 1, k_thk), palette().window());
         }
 
         std::vector<QLine> tics;
@@ -89,7 +89,7 @@ void Caliper::paintEvent(QPaintEvent*) {
         }
     } else {
         if (isEnabled()) {
-            painter.fillRect(QRect(0, 0, k_thk, m_jawPosition + 1), palette().toolTipBase());
+            painter.fillRect(QRect(0, 0, k_thk, m_jawPosition + 1), palette().window());
         }
 
         std::vector<QLine> tics;

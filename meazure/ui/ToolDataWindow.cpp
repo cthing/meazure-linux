@@ -40,9 +40,6 @@ ToolDataWindow::ToolDataWindow(const ScreenInfoProvider* screenInfoProvider, con
         setAttribute(Qt::WA_QuitOnClose, false);
     }
 
-    m_backgroundColor = palette().color(QPalette::ToolTipBase);
-    m_textColor = palette().color(QPalette::ToolTipText);
-
     setAutoFillBackground(true);
     setFrameStyle(Box | Plain);
     setLineWidth(1);
@@ -152,8 +149,8 @@ void ToolDataWindow::flashHandler() {
 
 void ToolDataWindow::setColors() {
     QPalette p;
-    p.setColor(QPalette::Window, m_backgroundColor);
-    p.setColor(QPalette::WindowText, m_showText ? m_textColor : m_backgroundColor);
+    p.setColor(QPalette::Window, k_backgroundColor);
+    p.setColor(QPalette::WindowText, m_showText ? k_textColor : k_backgroundColor);
     setPalette(p);
 
     repaint();
