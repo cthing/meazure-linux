@@ -23,8 +23,8 @@
 #include "PrefsPageId.h"
 #include <meazure/prefs/models/UnitsPrefsModel.h>
 #include <meazure/ui/fields/DoubleDataField.h>
+#include <meazure/ui/fields/LineEdit.h>
 #include <meazure/units/UnitsMgr.h>
-#include <QLineEdit>
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
@@ -69,8 +69,8 @@ private:
     void setFactorEnabled(bool enable);
 
     UnitsPrefsModel* m_model;
-    QLineEdit* m_nameField;
-    QLineEdit* m_abbrevField;
+    LineEdit* m_nameField;
+    LineEdit* m_abbrevField;
     DoubleDataField* m_factorField;
     QComboBox* m_basisCombo;
     QLabel* m_factorLabel;

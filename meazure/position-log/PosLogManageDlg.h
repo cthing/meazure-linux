@@ -21,7 +21,7 @@
 
 #include "PosLogMgr.h"
 #include <meazure/tools/ToolMgr.h>
-#include <meazure/ui/fields/TextField.h>
+#include <meazure/ui/fields/TextEdit.h>
 #include <QDialog>
 #include <QLineEdit>
 #include <QScrollBar>
@@ -52,14 +52,14 @@ private:
 
     PosLogMgr* m_posLogMgr;
     QLineEdit* m_logTitleField;
-    TextField* m_logDescField;
+    TextEdit* m_logDescField;
     QScrollBar* m_positionSelector;
     QLabel* m_positionLabel;
     QLabel* m_positionNumberLabel;
     QLabel* m_recordedLabel;
     QLabel* m_recordedTimestampLabel;
     QLabel* m_positionDescLabel;
-    TextField* m_positionDescField;
+    TextEdit* m_positionDescField;
     QPushButton* m_addButton;
     QPushButton* m_insertButton;
     QPushButton* m_deleteButton;

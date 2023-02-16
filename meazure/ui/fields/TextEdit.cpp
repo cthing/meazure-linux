@@ -17,13 +17,13 @@
  * with Meazure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TextField.h"
+#include "TextEdit.h"
 
 
-TextField::TextField(QWidget* parent) : QPlainTextEdit(parent) {
+TextEdit::TextEdit(QWidget* parent) : QPlainTextEdit(parent) {
 }
 
-void TextField::setRows(int numRows) {
+void TextEdit::setRows(int numRows) {
     QTextDocument* doc = document();
     const QFontMetrics fm(doc->defaultFont());
     const QMargins margins = contentsMargins();

@@ -37,13 +37,13 @@ void UnitsPrefsPage::createUI() {
     using namespace LayoutUtils;        // NOLINT(google-build-using-namespace)
 
     auto* nameLabel = new QLabel(tr("Display Name:"));
-    m_nameField = new QLineEdit();
+    m_nameField = new LineEdit(k_maxNameLength);
     m_nameField->setWhatsThis(tr("Sets the human readable name for the custom units."));
 
     auto* nameInstr = new QLabel(tr("(%1 character limit)").arg(k_maxNameLength));
 
     auto* abbrevLabel = new QLabel(tr("Abbreviation:"));
-    m_abbrevField = new QLineEdit();
+    m_abbrevField = new LineEdit(k_maxAbbrevLength);
     m_abbrevField->setWhatsThis(tr("Sets the abbreviation for the custom units."));
 
     auto* abbrevInstr = new QLabel(tr("(%1 character limit)").arg(k_maxAbbrevLength));
@@ -78,6 +78,7 @@ void UnitsPrefsPage::createUI() {
     auto* nameLayout = new QHBoxLayout();
     nameLayout->addWidget(m_nameField);
     nameLayout->addWidget(nameInstr);
+    nameLayout->addStretch(k_stretch1);
     nameAbbrevLayout->addLayout(nameLayout, k_row0, k_col1, Qt::AlignLeft);
 
     nameAbbrevLayout->addWidget(abbrevLabel, k_row1, k_col0, Qt::AlignRight);
@@ -85,6 +86,7 @@ void UnitsPrefsPage::createUI() {
     auto* abbrevLayout = new QHBoxLayout();
     abbrevLayout->addWidget(m_abbrevField);
     abbrevLayout->addWidget(abbrevInstr);
+    abbrevLayout->addStretch(k_stretch1);
     nameAbbrevLayout->addLayout(abbrevLayout, k_row1, k_col1, Qt::AlignLeft);
 
     layout->addLayout(nameAbbrevLayout);
@@ -119,10 +121,7 @@ void UnitsPrefsPage::configure() {
 
     // Name and abbreviation fields
 
-    const int charWidth = QFontMetrics(m_nameField->font()).maxWidth();
-
     m_nameField->setMaxLength(k_maxNameLength);
-    m_nameField->setFixedWidth((k_maxNameLength + 1) * charWidth);
     connect(m_nameField, &QLineEdit::textEdited, this, [this](const QString& abbrev) {
         m_model->m_name->setValue(abbrev);
     });
@@ -132,7 +131,6 @@ void UnitsPrefsPage::configure() {
     });
 
     m_abbrevField->setMaxLength(k_maxAbbrevLength);
-    m_abbrevField->setFixedWidth((k_maxAbbrevLength + 1) * charWidth);
     connect(m_abbrevField, &QLineEdit::textEdited, this, [this](const QString& abbrev) {
         m_model->m_abbrev->setValue(abbrev);
     });

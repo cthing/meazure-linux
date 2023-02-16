@@ -14,8 +14,10 @@ set(UI_SOURCES
     ui/fields/DoubleDataField.h
     ui/fields/IntegerDataField.cpp
     ui/fields/IntegerDataField.h
-    ui/fields/TextField.cpp
-    ui/fields/TextField.h
+    ui/fields/LineEdit.cpp
+    ui/fields/LineEdit.h
+    ui/fields/TextEdit.cpp
+    ui/fields/TextEdit.h
     ui/GlobalShortcuts.cpp
     ui/GlobalShortcuts.h
     ui/GridDialog.cpp

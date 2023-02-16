@@ -122,7 +122,7 @@ protected:
     ///
     AbstractDataField(int charWidth, bool showButtons, bool readOnly, bool nativeStepHandling, QWidget *parent) :
             SPIN_TYPE(parent),
-            m_widthPadding(2 * SPIN_TYPE::style()->pixelMetric(QStyle::PM_TextCursorWidth) + 1),
+            m_widthPadding(2 * SPIN_TYPE::style()->pixelMetric(QStyle::PM_TextCursorWidth) + k_extraPadding),
             m_charWidth(charWidth),
             m_nativeStepHandling(nativeStepHandling),
             m_defaultBackground(SPIN_TYPE::palette().color(QPalette::Base)),
@@ -287,6 +287,7 @@ private slots:
 private:
     static constexpr int k_step { 1 };              ///< Normal step value.
     static constexpr int k_increasedStep { 10 };    ///< Step value when the step modifier key is pressed.
+    static constexpr int k_extraPadding { 1 };
 
     /// Determines the step value based on whether the step modifier button is pressed.
     ///

@@ -19,16 +19,26 @@
 
 #pragma once
 
-#include <QPlainTextEdit>
-#include <QWidget>
+#include <QLineEdit>
 
 
-/// A QPlainTextEdit widget with the ability to set the number of lines.
+/// A QLineEdit whose width can be specified in terms of character. When proportional fonts are used, the
+/// width is based off the 'm' character.
 ///
-class TextField : public QPlainTextEdit {
+class LineEdit : public QLineEdit {
+
+    Q_OBJECT
 
 public:
-    explicit TextField(QWidget* parent = nullptr);
+    explicit LineEdit(int charWidth, QWidget *parent = nullptr);
 
-    void setRows(int numRows);
+    [[nodiscard]] QSize sizeHint() const override;
+
+    [[nodiscard]] QSize minimumSizeHint() const override;
+
+private:
+    static constexpr int k_extraPadding { 3 };
+
+    int m_widthPadding;
+    int m_charWidth;
 };

@@ -45,7 +45,7 @@ void PosLogManageDlg::createUI() {
     m_logTitleField = new QLineEdit();
     m_logTitleField->setWhatsThis(tr("Title for the position log."));
     auto* logDescLabel = new QLabel(tr("Description:"));
-    m_logDescField = new TextField();
+    m_logDescField = new TextEdit();
     m_logDescField->setRows(k_numDescRows);
     m_logDescField->setWhatsThis(tr("Description for the position log."));
 
@@ -62,7 +62,7 @@ void PosLogManageDlg::createUI() {
     m_recordedLabel = new QLabel(tr("Recorded:"));
     m_recordedTimestampLabel = new QLabel();
     m_positionDescLabel = new QLabel(tr("Description:"));
-    m_positionDescField = new TextField();
+    m_positionDescField = new TextEdit();
     m_positionDescField->setRows(k_numDescRows);
     m_positionDescField->setWhatsThis(tr("Description for the position."));
 
