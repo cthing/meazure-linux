@@ -20,6 +20,8 @@
 #pragma once
 
 #include <QGuiApplication>
+#include <QString>
+#include <QDir>
 
 
 /// Utility functions for obtaining information about the runtime platform.
@@ -40,5 +42,27 @@ namespace PlatformUtils {
     ///
     inline bool isX11() {
         return QGuiApplication::platformName() == "xcb";
+    }
+
+    /// Finds the specified subdirectory of the application data directory. During development, the build target
+    /// directory is treated as the application data directory. When the application is deployed, the application
+    /// data directory is the standard directory for the platform (e.g. /usr/share/<appname>).
+    ///
+    /// @param[in] subdir Subdirectory of the application data directory
+    /// @return Subdirectory of the application data directory.
+    ///
+    inline QString findAppDataDir(const QString& subdir) {
+        const QDir appDir(QGuiApplication::applicationDirPath());
+
+        // During development the data directory is in the same directory as the application.
+        const QDir appSubdir(appDir.filePath(subdir));
+        if (appSubdir.exists()) {
+            return appSubdir.filesystemPath().c_str();
+        }
+
+        // When deployed, the data directory is in a standard location.
+        const QDir shareDir("/usr/share/meazure");
+        const QDir shareSubdir(shareDir.filePath(subdir));
+        return shareSubdir.filesystemPath().c_str();
     }
 }

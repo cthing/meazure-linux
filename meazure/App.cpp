@@ -34,7 +34,7 @@ Q_IMPORT_PLUGIN(QSvgIconPlugin)
 App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppcoreguidelines-pro-type-member-init)
     // Because the ICU library is statically compiled, its data file is not available at runtime. The data file is
     // distributed with the application in the "icu" subdirectory. Point the ICU library at this directory.
-    u_setDataDirectory(findAppDataDir(k_icuDir).toUtf8().constData());
+    u_setDataDirectory(PlatformUtils::findAppDataDir(k_icuDir).toUtf8().constData());
 
     // Set application metadata.
     setApplicationName("meazure");
@@ -159,31 +159,4 @@ void App::populateConfigMgr() {
                                 [this]() { m_toolMgr->hardReset(); },
                                 [this]() { m_posLogMgr->hardRest(); },
                                 [this]() { m_mainWindow->hardReset(); });
-}
-
-QString App::findAppDataDir(const QString& subdir) {
-    const QString s(subdir.isNull() ? "" : ("/" + subdir));
-#ifdef Q_OS_LINUX
-    const QDir appDir(applicationDirPath() + s);
-    if (appDir.exists()) {
-        return appDir.filesystemPath().c_str();
-    }
-
-    const QDir shareDir("/usr/share/meazure" + s);
-    return shareDir.filesystemPath().c_str();
-#elif defined(Q_OS_WIN)
-    const QDir appDir(applicationDirPath() + s);
-    return appDir.filesystemPath().c_str();
-#elif defined(Q_OS_MACOS)
-    const QDir appDir(applicationDirPath() + s);
-    if (appDir.exists()) {
-        return appDir.filesystemPath().c_str();
-    }
-
-    const QString contentsDirStr(QDir(applicationDirPath()).filesystemPath().parent_path().c_str());
-    const QDir resourcesDir(contentsDirStr + "/Resources" + s);
-    return resourcesDir.filesystemPath().c_str();
-#else
-    return nullptr;
-#endif
 }

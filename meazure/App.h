@@ -49,8 +49,6 @@ public:
     App(App&&) = delete;
     App& operator=(const App&) = delete;
 
-    static QString findAppDataDir(const QString& subdir = QString());
-
 private:
     // Command-line options
     static constexpr const char* k_devmodeOpt { "devmode" };

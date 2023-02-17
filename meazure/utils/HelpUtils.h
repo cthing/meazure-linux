@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "PlatformUtils.h"
 #include <QIcon>
 #include <QStyle>
 #include <QApplication>
@@ -37,8 +38,8 @@ namespace HelpUtils {
     }
 
     inline QString getHelpPathname() {
-        const QString appPath = QCoreApplication::applicationDirPath();
-        return appPath + "/help/help.html";
+        const QString helpPath = PlatformUtils::findAppDataDir("help");
+        return helpPath + QDir::separator() + "help.html";
     }
 
     inline bool isHelpPresent() {
