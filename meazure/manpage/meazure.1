@@ -1,0 +1,51 @@
+.TH MEAZURE 1 "@BUILD_DATE@" "@MAJOR_VERSION@.@MINOR_VERSION@" "Meazure Manual Page"
+
+.SH NAME
+meazure - Screen measurment and capture.
+
+.SH SYNOPSIS
+.B meazure
+[\-h] [\-\-help] [\-\-help\-all] [\-v] [\-\-version] [\-p \fI<filename>\fP] [\-\-positions \fI<filename>\fP]
+[\-c \fI<filename>\fP] [\-\-config \fI<filename>\fP]
+
+.SH DESCRIPTION
+.PP
+Meazure is a tool for easily measuring and capturing portions of the screen. Tasks such as measuring the size of a
+window, capturing an image, determining the color of a pixel, and determining the screen size can all be easily
+accomplished. Meazure provides a number of different tools for measuring and capturing the screen. In addition, tool
+positions can be recorded to a file for future playback.
+.PP
+A complete user manual is available from the \fBHelp > Help (F1)\fP menu item. In addition, context-sensitive help is
+provided by the \fBHelp > What's This? (Shift+F1)\fP menu item.
+.PP
+Meazure is \fBnot supported\fP on the Wayland window system.
+
+.SH OPTIONS
+Meazure accepts the following options:
+.TP
+.B  \-h, \-\-help
+Displays help on commandline options.
+.TP
+.B \-\-help\-all
+Displays help including Qt specific options.
+.TP
+.B \-v, \-\-version
+Displays version information.
+.TP
+.B \-p, \-\-positions \fI<filename>\fP
+Load the specified position log file.
+.TP
+.B \-c, \-\-config \fI<filename>\fP
+Load the specified configuration file.
+
+.SH FILES
+\fB$XDG_CONFIG_HOME\fP/CThingSoftware/Meazure.conf - Persists the configuration of the Meazure program between runs.
+
+\fB\.mea\fP - Extension of Meazure configuration files.
+
+\fB\.mpl\fP - Extension of Meazure position log files.
+
+.SH BUG REPORTS AND FEATURE REQUESTS
+Bugs reports and feature requests can be submitted at
+.UR https://github.com/cthing/meazure-linux/issues
+.UE .

@@ -383,6 +383,20 @@ add_dependencies(libmeazure copy_help)
 
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${HELP_BINARY_DIR})
 
+# Copy the manual page for distribution.
+set(MANPAGE_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/manpage/meazure.1")
+set(MANPAGE_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/manpage")
+set(MANPAGE_BINARY_FILE "${MANPAGE_BINARY_DIR}/meazure.1")
+add_custom_target(manpage
+                  COMMAND ${CMAKE_COMMAND} -DINFILE=${MANPAGE_SOURCE_FILE} -DOUTFILE=${MANPAGE_BINARY_FILE} -DMAJOR_VERSION=${meazure_linux_VERSION_MAJOR} -DMINOR_VERSION=${meazure_linux_VERSION_MINOR} -DBUILD_DATE=${BUILD_DATE} -P ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
+                  COMMAND gzip --force ${MANPAGE_BINARY_FILE}
+                  DEPENDS ${MANPAGE_SOURCE_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
+                  COMMENT "Copying manual page"
+                  )
+add_dependencies(meazure manpage)
+
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${MANPAGE_BINARY_DIR})
+
 # When the app is run from the build directory, it should run in development mode. One aspect of running in
 # development mode is that the application state is persisted in the build directory rather than the user's home
 # directory or registry. The app will run in development mode if the "meadevmode" marker file is present in the

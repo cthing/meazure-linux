@@ -595,14 +595,14 @@ void MainWindow::createActions() {
     m_releasesAction->setStatusTip(tr("Browse Meazure releases"));
     m_releasesAction->setWhatsThis(tr("Opens web page showing Meazure releases."));
     connect(m_releasesAction, &QAction::triggered, this, []() {
-        QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure/releases"));
+        QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure-linux/releases"));
     });
 
     m_reportIssueAction = new QAction(tr("Report an &Issue"), this);
     m_reportIssueAction->setStatusTip(tr("Submit an an issue"));
     m_reportIssueAction->setWhatsThis(tr("Opens web page to submit a bug report or feature request."));
     connect(m_reportIssueAction, &QAction::triggered, this, []() {
-        QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure/issues"));
+        QDesktopServices::openUrl(QUrl("https://github.com/cthing/meazure-linux/issues"));
     });
 
     m_aboutAction = new QAction(tr("&About"), this);
