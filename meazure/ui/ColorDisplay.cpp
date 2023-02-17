@@ -66,7 +66,8 @@ ColorDisplay::ColorDisplay(const ScreenInfoProvider* screenInfo) :
     const int screenIdx = screenInfo->screenForWindow(this);
     const QSizeF& platformScale = screenInfo->getPlatformScale(screenIdx);
 
-    auto* copyButton = new QPushButton(QIcon(":/images/Clipboard.svg"), "");
+    auto* copyButton = new QPushButton(QIcon(Colors::isDarkMode()
+            ? ":/images/ClipboardDark.svg" : ":/images/Clipboard.svg"), "");
     copyButton->setIconSize(QSize(qRound(platformScale.width() * k_copyButtonIconSize),
                                   qRound(platformScale.height() * k_copyButtonIconSize)));
     copyButton->setFixedSize(QSize(qRound(platformScale.width() * k_copyButtonSize),

@@ -98,7 +98,7 @@ void PosLogManageDlg::createUI() {
     m_closeButton->setToolTip(tr("Close the dialog"));
     m_closeButton->setWhatsThis(tr("Closes the dialog."));
 
-    m_helpButton = new QPushButton(HelpUtils::getHelpIcon(style()), "");
+    m_helpButton = new QPushButton(HelpUtils::getHelpIcon(), "");
 
     auto* logLayout = new QGridLayout();
     logLayout->addWidget(logLabel,        k_row0, k_col0, k_rowspan1, k_colspan2);

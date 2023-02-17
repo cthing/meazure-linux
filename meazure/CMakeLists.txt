@@ -259,19 +259,26 @@ list(APPEND MEAZURE_SOURCES
 set(MEAZURE_RESOURCES
     resources/dtd/PositionLog1.dtd
     resources/images/AngleTool.svg
+    resources/images/AngleToolDark.svg
     resources/images/CalWarning.svg
     resources/images/CircleTool.svg
+    resources/images/CircleToolDark.svg
     resources/images/Clipboard.svg
+    resources/images/ClipboardDark.svg
     resources/images/CThingSoftware.svg
     resources/images/CursorTool.svg
+    resources/images/CursorToolDark.svg
     resources/images/GridTool.svg
     resources/images/LineTool.svg
+    resources/images/LineToolDark.svg
     resources/images/Meazure.png
     resources/images/Meazure.svg
     resources/images/PauseOff.svg
+    resources/images/PauseOffDark.svg
     resources/images/PauseOn.svg
     resources/images/PointTool.svg
     resources/images/RectangleTool.svg
+    resources/images/RectangleToolDark.svg
     resources/images/RulerTool.svg
     resources/images/WindowTool.svg
     )

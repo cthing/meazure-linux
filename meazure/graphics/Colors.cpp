@@ -19,6 +19,7 @@
 
 #include "Colors.h"
 #include <meazure/utils/MathUtils.h>
+#include <QApplication>
 #include <QColorDialog>
 #include <QColor>
 #include <map>
@@ -289,6 +290,19 @@ int Colors::getAlpha(Item item) {
 
 QRgb Colors::getDefault(Item item) {
     return defaultColors.at(item);
+}
+
+bool Colors::isDarkMode() {
+    static bool first = true;
+    static bool isDark;
+
+    if (first) {
+        first = false;
+        const int yWindow = Colors::RGBtoY(QApplication::palette().color(QPalette::Window).rgb());
+        const int yText = Colors::RGBtoY(QApplication::palette().color(QPalette::Text).rgb());
+        isDark = (yText > yWindow);
+    }
+    return isDark;
 }
 
 QRgb Colors::interpolateColor(QRgb startRGB, QRgb endRGB, int percent) {
@@ -638,6 +652,11 @@ Colors::YIQ Colors::RGBtoYIQ(QRgb rgb) {
     const int q = qRound(0.212 * r - 0.523 * g + 0.311 * b);
     return { y, i, q };
 }
+
+int Colors::RGBtoY(QRgb rgb) {
+    return qRound(0.299 * qRed(rgb) + 0.587 * qGreen(rgb) + 0.114 * qBlue(rgb));
+}
+
 
 Colors::XYZ Colors::RGBtoXYZ(QRgb rgb) {
     double r = qRed(rgb) / 255.0;

@@ -51,6 +51,8 @@ private slots:
     [[maybe_unused]] void testRGBtoYCbCr();
     [[maybe_unused]] void testRGBtoYIQ_data();
     [[maybe_unused]] void testRGBtoYIQ();
+    [[maybe_unused]] void testRGBtoY_data();
+    [[maybe_unused]] void testRGBtoY();
     [[maybe_unused]] void testRGBtoXYZ_data();
     [[maybe_unused]] void testRGBtoXYZ();
     [[maybe_unused]] void testXYZtoLab_data();
@@ -321,6 +323,29 @@ private:
     QCOMPARE(yiq.y, y);
     QCOMPARE(yiq.i, i);
     QCOMPARE(yiq.q, q);
+}
+
+[[maybe_unused]] void ColorsTest::testRGBtoY_data() {
+    QTest::addColumn<QRgb>("rgb");
+    QTest::addColumn<int>("yExpected");
+
+    QTest::newRow("0,0,0 -> 0")         << qRgb(  0,   0,   0) <<   0;
+    QTest::newRow("255,255,255 -> 255") << qRgb(255, 255, 255) << 255;
+    QTest::newRow("128,128,128 -> 128") << qRgb(128, 128, 128) << 128;
+    QTest::newRow("255,0,0 -> 76")      << qRgb(255,   0,   0) <<  76;
+    QTest::newRow("0,255,0 -> 150")     << qRgb(  0, 255,   0) << 150;
+    QTest::newRow("0,0,255 -> 29")      << qRgb(  0,   0, 255) <<  29;
+    QTest::newRow("255,255,0 -> 226")   << qRgb(255, 255,   0) << 226;
+    QTest::newRow("0,255,255 -> 179")   << qRgb(  0, 255, 255) << 179;
+    QTest::newRow("255,0,255 -> 105")   << qRgb(255,   0, 255) << 105;
+}
+
+[[maybe_unused]] void ColorsTest::testRGBtoY() {
+    const QFETCH(QRgb, rgb);
+    const QFETCH(int, yExpected);
+
+    const int y = Colors::RGBtoY(rgb);
+    QCOMPARE(y, yExpected);
 }
 
 [[maybe_unused]] void ColorsTest::testRGBtoXYZ_data() {

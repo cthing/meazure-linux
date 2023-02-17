@@ -224,6 +224,8 @@ namespace Colors {
     ///
     QRgb getDefault(Item item);
 
+    bool isDarkMode();
+
     /// Converts the specified opacity from a packed color value to a fraction.
     ///
     /// @param opacity Opacity as a package color value
@@ -358,6 +360,14 @@ namespace Colors {
     /// @return YIQ color
     ///
     YIQ RGBtoYIQ(QRgb rgb);
+
+    /// Computes the Luminance (Y) of the specified color. The input and output ranges are [0, 255]. See
+    /// https://en.wikipedia.org/wiki/Luma_(video) for more information.
+    ///
+    /// @param[in] rgb RGB color
+    /// @return Luminance value
+    ///
+    int RGBtoY(QRgb rgb);
 
     /// Converts from the RGB color space to the CIE 1931 XYZ color space. The conversion is done assuming inputs in
     /// the Standard RGB color space and a D65 2 degree standard illuminant. The input range is [0, 255]. The output is

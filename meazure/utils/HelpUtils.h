@@ -21,7 +21,7 @@
 
 #include <QIcon>
 #include <QStyle>
-#include <QCoreApplication>
+#include <QApplication>
 #include <QFileInfo>
 #include <QDesktopServices>
 #include <QUrl>
@@ -31,9 +31,9 @@
 ///
 namespace HelpUtils {
 
-    inline QIcon getHelpIcon(const QStyle* style) {
-        const int iconSize = style->pixelMetric(QStyle::PM_SmallIconSize);
-        return style->standardIcon(QStyle::SP_TitleBarContextHelpButton).pixmap(iconSize, iconSize);
+    inline QIcon getHelpIcon() {
+        const int iconSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
+        return QIcon::fromTheme("dialog-question").pixmap(iconSize, iconSize);
     }
 
     inline QString getHelpPathname() {

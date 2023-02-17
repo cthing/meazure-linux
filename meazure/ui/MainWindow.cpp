@@ -198,7 +198,8 @@ void MainWindow::createActions() {
     auto* radioToolGroup = new QActionGroup(this);
     radioToolGroup->setExclusive(true);
 
-    m_cursorToolAction = new QAction(QIcon(":/images/CursorTool.svg"), tr("&Cursor"), radioToolGroup);
+    m_cursorToolAction = new QAction(QIcon(Colors::isDarkMode()
+            ? ":/images/CursorToolDark.svg" : ":/images/CursorTool.svg"), tr("&Cursor"), radioToolGroup);
     m_cursorToolAction->setCheckable(true);
     m_cursorToolAction->setToolTip(tr("Tracks cursor position"));
     m_cursorToolAction->setStatusTip(tr("Tracks cursor position"));
@@ -223,7 +224,8 @@ void MainWindow::createActions() {
         m_pointToolAction->setChecked(tool.getName() == PointTool::k_toolName);
     });
 
-    m_lineToolAction = new QAction(QIcon(":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
+    m_lineToolAction = new QAction(QIcon(Colors::isDarkMode()
+            ? ":/images/LineToolDark.svg" : ":/images/LineTool.svg"), tr("&Line"), radioToolGroup);
     m_lineToolAction->setCheckable(true);
     m_lineToolAction->setToolTip(tr("Measures using line"));
     m_lineToolAction->setStatusTip(tr("Measures using a line"));
@@ -237,7 +239,8 @@ void MainWindow::createActions() {
         m_lineToolAction->setChecked(tool.getName() == LineTool::k_toolName);
     });
 
-    m_rectangleToolAction = new QAction(QIcon(":/images/RectangleTool.svg"), tr("&Rectangle"), radioToolGroup);
+    m_rectangleToolAction = new QAction(QIcon(Colors::isDarkMode()
+            ? ":/images/RectangleToolDark.svg" : ":/images/RectangleTool.svg"), tr("&Rectangle"), radioToolGroup);
     m_rectangleToolAction->setCheckable(true);
     m_rectangleToolAction->setToolTip(tr("Measures using rectangle"));
     m_rectangleToolAction->setStatusTip(tr("Measures using a rectangle"));
@@ -251,7 +254,8 @@ void MainWindow::createActions() {
         m_rectangleToolAction->setChecked(tool.getName() == RectangleTool::k_toolName);
     });
 
-    m_circleToolAction = new QAction(QIcon(":/images/CircleTool.svg"), tr("C&ircle"), radioToolGroup);
+    m_circleToolAction = new QAction(QIcon(Colors::isDarkMode()
+            ? ":/images/CircleToolDark.svg" : ":/images/CircleTool.svg"), tr("C&ircle"), radioToolGroup);
     m_circleToolAction->setCheckable(true);
     m_circleToolAction->setToolTip(tr("Measures using circle"));
     m_circleToolAction->setStatusTip(tr("Measures using a circle"));
@@ -265,7 +269,8 @@ void MainWindow::createActions() {
         m_circleToolAction->setChecked(tool.getName() == CircleTool::k_toolName);
     });
 
-    m_angleToolAction = new QAction(QIcon(":/images/AngleTool.svg"), tr("&Angle"), radioToolGroup);
+    m_angleToolAction = new QAction(QIcon(Colors::isDarkMode()
+            ? ":/images/AngleToolDark.svg" : ":/images/AngleTool.svg"), tr("&Angle"), radioToolGroup);
     m_angleToolAction->setCheckable(true);
     m_angleToolAction->setToolTip(tr("Measures using protractor"));
     m_angleToolAction->setStatusTip(tr("Measures using protractor"));
@@ -572,6 +577,7 @@ void MainWindow::createActions() {
     // Help actions
 
     m_helpAction = new QAction(tr("Help"), this);
+    m_helpAction->setIcon(QIcon::fromTheme("help-browser"));
     m_helpAction->setShortcut(QKeySequence::HelpContents);
     m_helpAction->setStatusTip(tr("Opens the user manual"));
     m_helpAction->setWhatsThis(tr("Opens the user manual in a web browser"));
@@ -581,6 +587,7 @@ void MainWindow::createActions() {
     });
 
     m_whatsThisAction = QWhatsThis::createAction(this);
+    m_whatsThisAction->setIcon(QIcon::fromTheme("dialog-question"));
     m_whatsThisAction->setStatusTip(tr("Provides context-sensitive help"));
     m_whatsThisAction->setWhatsThis(tr("Provides context-sensitive help by clicking on user interface items"));
 

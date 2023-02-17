@@ -59,7 +59,7 @@ PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ConfigMgr* 
 
     auto* helpButton = buttonBox->button(QDialogButtonBox::Help);
     helpButton->setText("");
-    helpButton->setIcon(HelpUtils::getHelpIcon(style()));
+    helpButton->setIcon(HelpUtils::getHelpIcon());
 
     connect(resetButton, &QPushButton::clicked, this, &PrefsDialog::reset);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);

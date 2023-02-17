@@ -125,7 +125,7 @@ void GridDialog::createUI() {
 
     auto* helpButton = buttonBox->button(QDialogButtonBox::Help);
     helpButton->setText("");
-    helpButton->setIcon(HelpUtils::getHelpIcon(style()));
+    helpButton->setIcon(HelpUtils::getHelpIcon());
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &GridDialog::reject);

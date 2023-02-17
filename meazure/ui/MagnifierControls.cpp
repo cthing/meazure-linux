@@ -43,7 +43,8 @@ MagnifierControls::MagnifierControls(Magnifier* magnifier, const ScreenInfoProvi
     layout->addWidget(factorLabel);
 
     QIcon freezeIcon;
-    freezeIcon.addFile(":/images/PauseOff.svg", QSize(), QIcon::Normal, QIcon::Off);
+    freezeIcon.addFile(Colors::isDarkMode() ? ":/images/PauseOffDark.svg" : ":/images/PauseOff.svg", QSize(),
+                       QIcon::Normal, QIcon::Off);
     freezeIcon.addFile(":/images/PauseOn.svg", QSize(), QIcon::Normal, QIcon::On);
 
     m_freezeAction = new QAction(tr("&Freeze Magnifier"), this);
