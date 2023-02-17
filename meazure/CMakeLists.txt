@@ -256,32 +256,34 @@ list(APPEND MEAZURE_SOURCES
      ${X11_UTILS_SOURCES}
      )
 
-set(MEAZURE_RESOURCES
-    resources/dtd/PositionLog1.dtd
-    resources/images/AngleTool.svg
-    resources/images/AngleToolDark.svg
-    resources/images/CalWarning.svg
-    resources/images/CircleTool.svg
-    resources/images/CircleToolDark.svg
-    resources/images/Clipboard.svg
-    resources/images/ClipboardDark.svg
-    resources/images/CThingSoftware.svg
-    resources/images/CursorTool.svg
-    resources/images/CursorToolDark.svg
-    resources/images/GridTool.svg
-    resources/images/LineTool.svg
-    resources/images/LineToolDark.svg
-    resources/images/Meazure.png
-    resources/images/Meazure.svg
-    resources/images/PauseOff.svg
-    resources/images/PauseOffDark.svg
-    resources/images/PauseOn.svg
-    resources/images/PointTool.svg
-    resources/images/RectangleTool.svg
-    resources/images/RectangleToolDark.svg
-    resources/images/RulerTool.svg
-    resources/images/WindowTool.svg
+set(INTERNAL_RESOURCES
+    resources/internal/dtd/PositionLog1.dtd
+    resources/internal/images/AngleTool.svg
+    resources/internal/images/AngleToolDark.svg
+    resources/internal/images/CalWarning.svg
+    resources/internal/images/CircleTool.svg
+    resources/internal/images/CircleToolDark.svg
+    resources/internal/images/Clipboard.svg
+    resources/internal/images/ClipboardDark.svg
+    resources/internal/images/CThingSoftware.svg
+    resources/internal/images/CursorTool.svg
+    resources/internal/images/CursorToolDark.svg
+    resources/internal/images/GridTool.svg
+    resources/internal/images/LineTool.svg
+    resources/internal/images/LineToolDark.svg
+    resources/internal/images/Meazure.png
+    resources/internal/images/Meazure.svg
+    resources/internal/images/PauseOff.svg
+    resources/internal/images/PauseOffDark.svg
+    resources/internal/images/PauseOn.svg
+    resources/internal/images/PointTool.svg
+    resources/internal/images/RectangleTool.svg
+    resources/internal/images/RectangleToolDark.svg
+    resources/internal/images/RulerTool.svg
+    resources/internal/images/WindowTool.svg
     )
+
+set(EXTERNAL_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources/external)
 
 # To provide access to the QPlatform* classes
 set(Qt6_Gui_Platform_INCLUDE_DIRS ${Qt6_Gui_INCLUDE_DIRS})
@@ -297,7 +299,7 @@ target_include_directories(libmeazure PRIVATE
                            ${CMAKE_SOURCE_DIR}
                            ${CMAKE_CURRENT_BINARY_DIR}
                            )
-qt6_add_resources(libmeazure "resources" PREFIX "/" BASE "resources" FILES ${MEAZURE_RESOURCES})
+qt6_add_resources(libmeazure "resources" PREFIX "/" BASE "resources/internal" FILES ${INTERNAL_RESOURCES})
 
 set(QT_PLUGINS_DIR "${CONAN_QT_ROOT}/res/archdatadir/plugins")
 
@@ -370,7 +372,7 @@ add_dependencies(libmeazure copy_icu)
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${CMAKE_CURRENT_BINARY_DIR}/icu")
 
 # Copy the user manual for distribution.
-set(HELP_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/help")
+set(HELP_SOURCE_DIR "${EXTERNAL_RESOURCES_DIR}/help")
 set(HELP_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/help")
 file(GLOB_RECURSE HELP_SOURCE_FILES "${HELP_SOURCE_DIR}/*")
 add_custom_target(copy_help
@@ -384,7 +386,7 @@ add_dependencies(libmeazure copy_help)
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${HELP_BINARY_DIR})
 
 # Copy the manual page for distribution.
-set(MANPAGE_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/manpage/meazure.1")
+set(MANPAGE_SOURCE_FILE "${EXTERNAL_RESOURCES_DIR}/manpage/meazure.1")
 set(MANPAGE_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/manpage")
 set(MANPAGE_BINARY_FILE "${MANPAGE_BINARY_DIR}/meazure.1")
 add_custom_target(manpage
