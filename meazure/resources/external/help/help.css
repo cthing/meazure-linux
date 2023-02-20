@@ -64,6 +64,42 @@ body {
     margin-left: 1rem;
 }
 
+/** Numbering **/
+main {
+    counter-reset: level1-section level1-contents;
+}
+main > div > section {
+    counter-reset: level2-section;
+}
+main > div > section > section {
+    counter-reset: level3-section;
+}
+main > nav > ol > li > ul {
+    counter-reset: level2-contents;
+}
+
+section > h2:before {
+    counter-increment: level1-section;
+    content: counter(level1-section)". ";
+}
+section > h3:before {
+    counter-increment: level2-section;
+    content: counter(level1-section)"."counter(level2-section)" ";
+}
+section > h4:before {
+    counter-increment: level3-section;
+    content: counter(level1-section)"."counter(level2-section)"."counter(level3-section)" ";
+}
+
+nav > ol > li > a:before {
+    counter-increment: level1-contents;
+    content: counter(level1-contents)". ";
+}
+nav > ol > li > ul > li > a:before {
+    counter-increment: level2-contents;
+    content: counter(level1-contents)"."counter(level2-contents)" ";
+}
+
 /** page layout **/
 main {
     display: grid;
