@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Meazure
+Comment=Measure and capture the desktop
+GenericName=Screen Capture
+TryExec=/usr/bin/meazure
+Exec=/usr/bin/meazure %F
+Icon=org.cthing.meazure
+StartupNotify=false
+Terminal=false
+Type=Application
+Categories=Utility;Qt;
+MimeType=application/x-meazure-config;application/x-meazure-positions

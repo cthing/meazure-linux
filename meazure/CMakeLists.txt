@@ -410,3 +410,22 @@ add_custom_target(dev_mode
                   COMMENT "Creating dev mode marker"
                   )
 add_dependencies(libmeazure dev_mode)
+
+# Validate the desktop integration files
+set(DESKTOP_RESOURCES_DIR ${EXTERNAL_RESOURCES_DIR}/desktop)
+
+set(DESKTOP_FILE ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.desktop)
+add_custom_target(validate_desktop
+                  COMMAND desktop-file-validate --warn-kde ${DESKTOP_FILE}
+                  DEPENDS ${DESKTOP_FILE}
+                  COMMENT "Validating desktop integration file"
+                  )
+add_dependencies(meazure validate_desktop)
+
+set(METAINFO_FILE ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.metainfo.xml)
+add_custom_target(validate_metainfo
+                  COMMAND appstreamcli validate --pedantic ${METAINFO_FILE}
+                  DEPENDS ${METAINFO_FILE}
+                  COMMENT "Validating metainfo file"
+                  )
+add_dependencies(meazure validate_metainfo)

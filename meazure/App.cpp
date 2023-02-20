@@ -25,6 +25,7 @@
 #include <QPixmap>
 #include <QDir>
 #include <QtGlobal>
+#include <QRegularExpression>
 #include <unicode/putil.h>
 
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
@@ -76,13 +77,15 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppco
         m_mainWindow->show();
 
         // Load a position log file, if one was specified on the command-line
-        if (parser.isSet("positions")) {
-            m_posLogMgr->load(parser.value("positions"));
+        const QStringList positionLogs = parser.positionalArguments().filter(QRegularExpression(".*\\.mpl$"));
+        if (!positionLogs.empty()) {
+            m_posLogMgr->load(positionLogs.last());
         }
 
         // Load a configuration file, if one was specified on the command-line
-        if (parser.isSet("config")) {
-            m_configMgr->import(parser.value("config"));
+        const QStringList configurations = parser.positionalArguments().filter(QRegularExpression(".*\\.mea$"));
+        if (!configurations.empty()) {
+            m_configMgr->import(configurations.last());
         }
     }
 }
@@ -105,14 +108,9 @@ void App::parseCommandLine(QCommandLineParser& parser) {
     parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addOptions({
-        {
-            { k_positionsShortOpt, k_positionsLongOpt }, tr("Load the position log file <filename>."), tr("filename")
-        }, {
-            { k_configShortOpt, k_configLongOpt }, tr("Load the configuration file <filename>."), tr("filename")
-        }
-    });
     parser.addOption(devModeOption);
+    parser.addPositionalArgument("*.mea", tr("Configuration file"), "[*.mea]");
+    parser.addPositionalArgument("*.mpl", tr("Position log file"), "[*.mpl]");
     parser.process(*this);
 }
 

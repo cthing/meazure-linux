@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>org.cthing.meazure</id>
+    <name>Meazure</name>
+    <summary>Meazure is a tool for easily measuring and capturing portions of the screen</summary>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0-or-later</project_license>
+    <description>
+        <p>
+            Tasks such as measuring the size of a window, capturing an image, determining the color of a pixel,
+            and determining the screen size can all be easily accomplished. Meazure provides a number of different
+            tools for measuring and capturing the  screen. In addition, tool positions can be recorded to a file
+            for future playback.
+        </p>
+    </description>
+    <launchable type="desktop-id">org.cthing.meazure.desktop</launchable>
+</component>

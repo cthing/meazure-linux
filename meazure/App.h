@@ -52,10 +52,6 @@ public:
 private:
     // Command-line options
     static constexpr const char* k_devmodeOpt { "devmode" };
-    static constexpr const char* k_positionsLongOpt { "positions" };
-    static constexpr const char* k_positionsShortOpt { "p" };
-    static constexpr const char* k_configLongOpt { "config" };
-    static constexpr const char* k_configShortOpt { "c" };
 
     static constexpr const char* k_devmodeMarkerFilename { "meadevmode" };
     static constexpr const char* k_icuDir { "icu" };

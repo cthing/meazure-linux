@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-meazure-config">
+        <comment>Meazure configuration file</comment>
+        <glob pattern="*.mea"/>
+        <icon name="org.cthing.meazure-config"/>
+    </mime-type>
+    <mime-type type="application/x-meazure-positions">
+        <comment>Meazure position log file</comment>
+        <glob pattern="*.mpl"/>
+        <icon name="org.cthing.meazure-positions"/>
+    </mime-type>
+</mime-info>

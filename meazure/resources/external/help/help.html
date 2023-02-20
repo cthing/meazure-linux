@@ -42,8 +42,20 @@
         </map>
       </p>
     </section>
+    <section id="launching">
+      <h2>2. Launching</h2>
+      <p>
+        The Meazure program can be launched in a number of ways:
+      </p>
+      <ul>
+        <li>Double-clicking the Meazure icon on the desktop</li>
+        <li>Entering <code>meazure</code> at a command prompt</li>
+        <li>Dragging and dropping a <a href="#positions">position log file</a> onto the Meazure desktop icon</li>
+        <li>Dragging and dropping a <a href="#configuration">configuration</a> file onto the Meazure desktop icon</li>
+      </ul>
+    </section>
     <section id="help">
-      <h2>2. Getting Help</h2>
+      <h2>3. Getting Help</h2>
       <p>
         In addition to this user manual, Meazure provides various kinds of interactive help.
       </p>
@@ -91,12 +103,19 @@
           <strong>Help</strong> menu. In addition, a financial contribution to support the continuing development
           of measure can be made from the About dialog.
         </dd>
+        <dt>Command line</dt>
+        <dd>
+          Help about the Meazure command line can be obtained by running the following from a command prompt:
+          <code>
+            meazure -h
+          </code>
+        </dd>
       </dl>
     </section>
     <section id="tools">
-      <h2>3. Measurement Tools</h2>
+      <h2>4. Measurement Tools</h2>
       <section id="tools-overview">
-        <h3>3.1 Tools Overview</h3>
+        <h3>4.1 Tools Overview</h3>
         <p>
           Meazure provides a number of tools for measuring and capturing the screen. Each tool has its own unique
           characteristics and is designed for different measurement tasks. Because each tool is independent of the
@@ -184,7 +203,7 @@
         </dl>
       </section>
       <section id="tool-information">
-        <h3>3.2 Tool Information</h3>
+        <h3>4.2 Tool Information</h3>
         <p>
           <img src="images/ToolInformation.png" width="326" height="254" class="image-top-left" alt="Tool Information">
           All tool measurements are displayed in the tool information section of the user interface. The information
@@ -237,7 +256,7 @@
         </dl>
       </section>
       <section id="crosshairs">
-        <h3>3.3 Crosshairs</h3>
+        <h3>4.3 Crosshairs</h3>
         <p class="clearfix">
           <img src="images/Crosshair.png" width="23" height="23" class="image-top-left" alt="Crosshair">
           The <a href="#point-tool">Point</a>, <a href="#line-tool">Line</a>, <a href="#rectangle-tool">Rectangle</a>,
@@ -246,7 +265,7 @@
           pointing to an open center. All measurements are based at the center of the crosshair.
         </p>
 
-        <h4>3.3.1 Crosshair Visual States</h4>
+        <h4>4.3.1 Crosshair Visual States</h4>
         <p>
           A crosshair can be in one of three visual states: default, hover and flashing.
         </p>
@@ -292,7 +311,7 @@
           <a href="#tool-prefs">Tool Preferences panel</a>.
         </p>
 
-        <h4 id="crosshair-moving">3.3.2 Moving a Crosshair</h4>
+        <h4 id="crosshair-moving">4.3.2 Moving a Crosshair</h4>
         <p>
           Measurements are taken by moving a crosshair to the desired position on the screen. There are many ways
           to position a crosshair including dragging using the mouse and single pixel movement using the keyboard.
@@ -349,7 +368,7 @@
           </dd>
         </dl>
 
-        <h4>3.3.2 Reading a Crosshair Position</h4>
+        <h4>4.3.2 Reading a Crosshair Position</h4>
         <p class="clearfix">
           <img src="images/CrosshairDWTT.png" width="155" height="71" class="image-top-left" alt="Crosshair with data window and tool tip">
           The current position of a crosshair can be read in two places. The first is in the
@@ -363,7 +382,7 @@
         </p>
       </section>
       <section id="data-window">
-        <h3>3.4 Data Window</h3>
+        <h3>4.4 Data Window</h3>
         <p>
           <img src="images/DataWindow.png" width="157" height="91" class="image-top-left" alt="Data window">
           A data window is a popup window containing tool-dependent measurement information. When the Cursor tool is
@@ -379,7 +398,7 @@
         </p>
       </section>
       <section id="cursor-tool">
-        <h3>3.5 Cursor Tool</h3>
+        <h3>4.5 Cursor Tool</h3>
         <p>
           <img src="images/CursorTool.png" width="82" height="60" class="image-top-left" alt="Cursor tool">
           The Cursor tool tracks the position of the mouse cursor. Both the data window attached to the
@@ -403,7 +422,7 @@
         </p>
       </section>
       <section id="point-tool">
-        <h3>3.6 Point Tool</h3>
+        <h3>4.6 Point Tool</h3>
         <p>
           <img src="images/PointTool.png" width="31" height="31" class="image-top-left" alt="Point tool">
           The Point tool provides a single <a href="#crosshairs">crosshair</a> to measure a position. Both the data
@@ -426,7 +445,7 @@
         </p>
       </section>
       <section id="line-tool">
-        <h3>3.7 Line Tool</h3>
+        <h3>4.7 Line Tool</h3>
         <p>
           <img src="images/LineTool.png" width="135" height="93" class="image-top-left" alt="Line tool">
           The Line tool provides two <a href="#crosshairs">crosshairs</a> to measure the distance and other information
@@ -515,7 +534,7 @@
         </p>
       </section>
       <section id="rectangle-tool">
-        <h3>3.8 Rectangle Tool</h3>
+        <h3>4.8 Rectangle Tool</h3>
         <p>
           <img src="images/RectangleTool.png" width="132" height="112" class="image-top-left" alt="Rectangle tool">
           The Rectangle tool provides two <a href="#crosshairs">crosshairs</a> to measure the enclosing rectangle.
@@ -606,7 +625,7 @@
         </p>
       </section>
       <section id="circle-tool">
-        <h3>3.9 Circle Tool</h3>
+        <h3>4.9 Circle Tool</h3>
         <p>
           <img src="images/CircleTool.png" width="125" height="122" class="image-top-left" alt="Circle tool">
           The Circle tool provides two <a href="#crosshairs">crosshairs</a>, one establishing the center of the
@@ -677,7 +696,7 @@
         </p>
       </section>
       <section id="angle-tool">
-        <h3>3.10 Angle Tool</h3>
+        <h3>4.10 Angle Tool</h3>
         <p>
           <img src="images/AngleTool.png" width="100" height="123" class="image-top-left" alt="Angle tool">
           The Angle tool provides a protractor for measuring arbitrary angles on the screen. The tool provides three
@@ -724,7 +743,7 @@
         </p>
       </section>
       <section id="window-tool">
-        <h3>3.11 Window Tool</h3>
+        <h3>4.11 Window Tool</h3>
         <p>
           The Window tool measures the size of any top level window on the screen. In addition, the window
           contents can be <a href="#capture">captured</a> to the clipboard. As the mouse cursor is moved over the
@@ -813,7 +832,7 @@
         </p>
       </section>
       <section id="rulers">
-        <h3>3.12 Rulers</h3>
+        <h3>4.12 Rulers</h3>
         <p>
           <img src="images/RulerTool.png" width="490" height="472" style="float: left; shape-outside: url(images/RulerToolShape.png);" alt="Ruler tool">
           To assist in measuring items on the screen, a set of horizontal and vertical rulers can be displayed.
@@ -847,7 +866,7 @@
         </p>
       </section>
       <section id="grid">
-        <h3>3.13 Screen Grid</h3>
+        <h3>4.13 Screen Grid</h3>
         <p>
           A rectangular grid can be overlaid on the screen to assist in measuring. The grid will not affect mouse
           cursor interaction with other windows. By default, the grid covers all screens and the cells of the grid are
@@ -859,7 +878,7 @@
           click on the screen grid icon on the toolbar.
         </p>
         <section id="grid-settings">
-          <h4>3.13.1 Screen Grid Settings</h4>
+          <h4>4.13.1 Screen Grid Settings</h4>
           <p>
             The screen grid visual parameters can be adjusted by selecting the <strong>Screen Grid Settings</strong>
             item from the <strong>Tools</strong> menu. Note that the screen grid is displayed when the screen
@@ -886,9 +905,9 @@
       </section>
     </section>
     <section id="units">
-      <h2>4. Units</h2>
+      <h2>5. Units</h2>
       <section id="units-overview">
-        <h3>4.1 Working With Units</h3>
+        <h3>5.1 Working With Units</h3>
         <p>
           Meazure offers a broad selection of units in which to display measurements. In addition, custom units
           can be defined. When selecting measurement units, it is important to understand the difference between
@@ -979,7 +998,7 @@
         </p>
       </section>
       <section id="calibration">
-        <h3>4.2 Calibration</h3>
+        <h3>5.2 Calibration</h3>
         <p>
           As described in the <a href="#units-overview">Working with Units</a> section, all units except pixels are
           resolution independent. This means that the screen resolution (pixels per physical distance) must be used to
@@ -1065,7 +1084,7 @@
         </p>
       </section>
       <section id="custom-units">
-        <h3>4.3 Custom Units</h3>
+        <h3>5.3 Custom Units</h3>
         <p>
           <img src="images/CustomUnitsPrefs.png" width="583" height="379" alt="Custom units preferences">
         </p>
@@ -1110,9 +1129,9 @@
       </section>
     </section>
     <section id="coordinates">
-      <h2>5. Screen Coordinate System</h2>
+      <h2>6. Screen Coordinate System</h2>
       <section id="coordinates-default">
-        <h3>5.1 Default Coordinate System</h3>
+        <h3>6.1 Default Coordinate System</h3>
         <p class="clearfix">
           <img src="images/DefaultCoordinates.svg" width="60" height="56" class="image-top-left" alt="Default coordinate system">
           The operating system reports screen coordinates to Meazure using its native coordinate system. The origin of
@@ -1128,7 +1147,7 @@
         </p>
       </section>
       <section id="coordinates-y-axis">
-        <h3>5.2 Inverting the Y-Axis</h3>
+        <h3>6.2 Inverting the Y-Axis</h3>
         <p class="clearfix">
           <img src="images/InvertedYCoordinates.svg" width="60" height="56" class="image-top-left" alt="Inverted coordinate system">
           The coordinate system can be changed to the traditional Cartesian orientation where the origin is in the
@@ -1138,7 +1157,7 @@
         </p>
       </section>
       <section id="coordinates-origin">
-        <h3>5.3 Moving the Origin</h3>
+        <h3>6.3 Moving the Origin</h3>
         <p>
           The origin of the coordinate system can be moved to anywhere on the screen. To set a new origin position,
           move Point 1 of any tool to the desired position and either select <strong>Set Origin</strong> from the
@@ -1149,7 +1168,7 @@
         </p>
       </section>
       <section id="supplemental-angle">
-        <h3>5.4 Supplemental Angle</h3>
+        <h3>6.4 Supplemental Angle</h3>
         <p class="clearfix">
           <img src="images/SupplementalAngleDefinition.svg" width="219" height="139" class="image-top-left" alt="Supplemental angle definition">
           By default, angles are measured clockwise from the positive x-axis. Selecting the
@@ -1169,7 +1188,7 @@
       </section>
     </section>
     <section id="screen-information">
-      <h2>6. Screen Information</h2>
+      <h2>7. Screen Information</h2>
       <p>
         <img src="images/ScreenInformation.png" width="326" height="113" class="image-top-left" alt="Screen Information">
         The size and resolution of the screen is displayed in the Screen Information section. In a multiple screen
@@ -1190,7 +1209,7 @@
       </p>
     </section>
     <section id="magnifier">
-      <h2>7. Magnifier</h2>
+      <h2>8. Magnifier</h2>
       <p>
         <img src="images/Magnifier.png" width="326" height="327" class="image-top-left" alt="Magnifier">
         The magnifier provides a view of the area around an active measurement (e.g. positioning a crosshair, mouse
@@ -1212,7 +1231,7 @@
       </p>
     </section>
     <section id="color-information">
-      <h2>8. Color Information</h2>
+      <h2>9. Color Information</h2>
       <p>
         <img src="images/ColorInformation.png" width="326" height="35" class="image-top-left" alt="Color information">
         Information about the color of the pixel at the center of the magnifier is shown below the magnifier. The
@@ -1318,7 +1337,7 @@
       </p>
     </section>
     <section id="capture">
-      <h2>9. Screen capture</h2>
+      <h2>10. Screen capture</h2>
       <p>
         The <a href="#line-tool">Line</a>, <a href="#rectangle-tool">Rectangle</a>, <a href="#circle-tool">Circle</a>
         and <a href="#window-tool">Window</a> tools provide the ability to capture a rectangular region of the screen.
@@ -1327,7 +1346,7 @@
       </p>
     </section>
     <section id="preferences">
-      <h2>10. Preferences</h2>
+      <h2>11. Preferences</h2>
       <p>
         Preferences provide the ability to customize the appearance and behavior of the program. To open the
         Preferences dialog, select the <strong>Preferences</strong> item from the <strong>Edit</strong> menu. The
@@ -1335,7 +1354,7 @@
         each preference category.
       </p>
       <section id="calibartion-prefs">
-        <h3>10.1 Calibration Preferences</h3>
+        <h3>11.1 Calibration Preferences</h3>
         <p>
           <img src="images/CalibrationPrefs.png" width="583" height="379" alt="Calibration preferences">
         </p>
@@ -1345,7 +1364,7 @@
         </p>
       </section>
       <section id="tool-prefs">
-        <h3>10.2 Tool Preferences</h3>
+        <h3>11.2 Tool Preferences</h3>
         <p>
           <img src="images/ToolsPrefs.png" width="583" height="379" alt="Tool preferences">
         </p>
@@ -1364,7 +1383,7 @@
         </p>
       </section>
       <section id="ruler-prefs">
-        <h3>10.3 Ruler Preferences</h3>
+        <h3>11.3 Ruler Preferences</h3>
         <p>
           <img src="images/RulersPrefs.png" width="583" height="379" alt="Ruler preferences">
         </p>
@@ -1377,7 +1396,7 @@
         </p>
       </section>
       <section id="precision-prefs">
-        <h3>10.4 Precision Preferences</h3>
+        <h3>11.4 Precision Preferences</h3>
         <p>
           <img src="images/PrecisionPrefs.png" width="583" height="379" alt="Precision preferences">
         </p>
@@ -1391,7 +1410,7 @@
         </p>
       </section>
       <section id="custom-units-prefs">
-        <h3>10.5 Custom Units Preferences</h3>
+        <h3>11.5 Custom Units Preferences</h3>
         <p>
           <img src="images/CustomUnitsPrefs.png" width="583" height="379" alt="Custom units preferences">
         </p>
@@ -1400,29 +1419,13 @@
         </p>
       </section>
       <section id="hard-reset">
-        <h3>10.6 Hard Reset</h3>
+        <h3>11.6 Hard Reset</h3>
         <p>
           Pressing the <strong>Hard Reset</strong> button restores Meazure to a freshly installed state. All
           customizations including calibration, custom units and recorded positions are deleted or reset to
           their defaults.
         </p>
       </section>
-    </section>
-    <section id="configuration">
-      <h2>11. Configuration Files</h2>
-      <p>
-        Meazure saves its configuration between runs. The configuration includes the currently selected measurement
-        tool, all tool positions, the measurement units and calibration, colors and custom units.
-      </p>
-      <p>
-        The configuration can be exported to a file, and imported at a later time possibly on a different computer.
-        To export the current configuration, select the <strong>Export Configuration</strong> item on the
-        <strong>File</strong> menu. Meazure configuration files have the extension <strong>mea</strong>. To restore a
-        configuration, select the <strong>Import Configuration</strong> item on the <strong>File</strong> menu.
-      </p>
-      <p class="warning">
-        Importing a configuration replaces the current units calibration and custom units.
-      </p>
     </section>
     <section id="positions">
       <h2>12. Position Logging</h2>
@@ -1457,10 +1460,18 @@
           <a href="https://www.cthing.com/dtd/PositionLog1.dtd">https://www.cthing.com/dtd/PositionLog1.dtd</a>.
         </p>
         <p>
-          A position log file can be loaded by selecting the <strong>Load Positions</strong> item
-          on the <strong>File</strong> menu, using the <strong>Ctrl+O</strong> shortcut, or by using the
-          <strong>Load</strong> button on the <a href="#position-manage">position management dialog</a>. Once a
-          position log file has been loaded, the <a href="#position-manage">position management dialog</a> is
+          A position log file can be loaded in the following ways:
+        </p>
+        <ul>
+          <li>Selecting the <strong>Load Positions</strong> item on the <strong>File</strong> menu</li>
+          <li>Using the <strong>Ctrl+O</strong> keyboard shortcut</li>
+          <li>Pressing the <strong>Load</strong> button on the <a href="#position-manage">position management
+            dialog</a></li>
+          <li>Specifying the position log file on the command line when launching meazure from a command prompt</li>
+          <li>Dragging and dropping a position log file onto the Meazure program icon</li>
+        </ul>
+        <p>
+          Once a position log file has been loaded, the <a href="#position-manage">position management dialog</a> is
           displayed to allow playback of the positions.
         </p>
         <p>
@@ -1536,13 +1547,34 @@
         </dl>
       </section>
     </section>
+    <section id="configuration">
+      <h2>13. Configuration Files</h2>
+      <p>
+        Meazure saves its configuration between runs. The configuration includes the currently selected measurement
+        tool, all tool positions, the measurement units and calibration, colors and custom units.
+      </p>
+      <p>
+        The configuration can be exported to a file, and imported at a later time possibly on a different computer.
+        To export the current configuration, select the <strong>Export Configuration</strong> item on the
+        <strong>File</strong> menu. Meazure configuration files have the extension <strong>mea</strong>. A
+        configuration can be loaded the following ways:
+      </p>
+      <ul>
+        <li>Selecting the <strong>Import Configuration</strong> item on the <strong>File</strong> menu</li>
+        <li>Specifying the configuration file on the command line when launching meazure from a command prompt</li>
+        <li>Dragging and dropping a configuration file onto the Meazure program icon</li>
+      </ul>
+      <p class="warning">
+        Importing a configuration replaces the current units calibration and custom units.
+      </p>
+    </section>
     <section id="menus">
-      <h2>13. Menus</h2>
+      <h2>14. Menus</h2>
       <p>
         This section describes all menus in the Meazure program.
       </p>
       <section id="file-menu">
-        <h3>13.1 File Menu</h3>
+        <h3>14.1 File Menu</h3>
         <dl>
           <dt>Load Positions... (Ctrl+O)</dt>
           <dd>
@@ -1575,7 +1607,7 @@
         </dl>
       </section>
       <section id="edit-menu">
-        <h3>13.2 Edit Menu</h3>
+        <h3>14.2 Edit Menu</h3>
         <dl>
           <dt>Copy Region (Ctrl+R)</dt>
           <dd>
@@ -1611,7 +1643,7 @@
         </dl>
       </section>
       <section id="tools-menu">
-        <h3>13.3 Tools Menu</h3>
+        <h3>14.3 Tools Menu</h3>
         <dl>
           <dt>Cursor</dt>
           <dd>
@@ -1657,7 +1689,7 @@
         </dl>
       </section>
       <section id="units-menu">
-        <h3>13.4 Units Menu</h3>
+        <h3>14.4 Units Menu</h3>
         <dl>
           <dt>Pixels</dt>
           <dd>
@@ -1706,7 +1738,7 @@
         </dl>
       </section>
       <section id="view-menu">
-        <h3>13.5 View Menu</h3>
+        <h3>14.5 View Menu</h3>
         <dl>
           <dt>Collapse (Ctrl+H)</dt>
           <dd>
@@ -1860,7 +1892,7 @@
         </dl>
       </section>
       <section id="help-menu">
-        <h3>13.6 Help Menu</h3>
+        <h3>14.6 Help Menu</h3>
         <dl>
           <dt>Help (F1)</dt>
           <dd>
@@ -1890,54 +1922,54 @@
     <h2>Contents</h2>
     <ol>
       <li><a href="#overview">1. Overview</a></li>
-      <li><a href="#help">2. Getting Help</a></li>
-      <li><a href="#tools">3. Measurement Tools</a>
+      <li><a href="#launching">2. Launching</a></li>
+      <li><a href="#help">3. Getting Help</a></li>
+      <li><a href="#tools">4. Measurement Tools</a>
         <ul>
-          <li><a href="#tools-overview">3.1 Tools Overview</a></li>
-          <li><a href="#tool-information">3.2 Tool Information</a></li>
-          <li><a href="#crosshairs">3.3 Crosshairs</a></li>
-          <li><a href="#data-window">3.4 Data Window</a></li>
-          <li><a href="#cursor-tool">3.5 Cursor Tool</a></li>
-          <li><a href="#point-tool">3.6 Point Tool</a></li>
-          <li><a href="#line-tool">3.7 Line Tool</a></li>
-          <li><a href="#rectangle-tool">3.8 Rectangle Tool</a></li>
-          <li><a href="#circle-tool">3.9 Circle Tool</a></li>
-          <li><a href="#angle-tool">3.10 Angle Tool</a></li>
-          <li><a href="#window-tool">3.11 Window Tool</a></li>
-          <li><a href="#rulers">3.12 Rulers</a></li>
-          <li><a href="#grid">3.13 Screen Grid</a></li>
+          <li><a href="#tools-overview">4.1 Tools Overview</a></li>
+          <li><a href="#tool-information">4.2 Tool Information</a></li>
+          <li><a href="#crosshairs">4.3 Crosshairs</a></li>
+          <li><a href="#data-window">4.4 Data Window</a></li>
+          <li><a href="#cursor-tool">4.5 Cursor Tool</a></li>
+          <li><a href="#point-tool">4.6 Point Tool</a></li>
+          <li><a href="#line-tool">4.7 Line Tool</a></li>
+          <li><a href="#rectangle-tool">4.8 Rectangle Tool</a></li>
+          <li><a href="#circle-tool">4.9 Circle Tool</a></li>
+          <li><a href="#angle-tool">4.10 Angle Tool</a></li>
+          <li><a href="#window-tool">4.11 Window Tool</a></li>
+          <li><a href="#rulers">4.12 Rulers</a></li>
+          <li><a href="#grid">4.13 Screen Grid</a></li>
         </ul>
       </li>
-      <li><a href="#units">4. Units</a>
+      <li><a href="#units">5. Units</a>
         <ul>
-          <li><a href="#units-overview">4.1 Working With Units</a></li>
-          <li><a href="#calibration">4.2 Calibration</a></li>
-          <li><a href="#custom-units">4.3 Custom Units</a></li>
+          <li><a href="#units-overview">5.1 Working With Units</a></li>
+          <li><a href="#calibration">5.2 Calibration</a></li>
+          <li><a href="#custom-units">5.3 Custom Units</a></li>
         </ul>
       </li>
-      <li><a href="#coordinates">5. Screen Coordinate System</a>
+      <li><a href="#coordinates">6. Screen Coordinate System</a>
         <ul>
-          <li><a href="#coordinates-default">5.1 Default Coordinate System</a></li>
-          <li><a href="#coordinates-y-axis">5.2 Inverting the Y-Axis</a></li>
-          <li><a href="#coordinates-origin">5.3 Moving the Origin</a></li>
-          <li><a href="#supplemental-angle">5.4 Supplemental Angle</a></li>
+          <li><a href="#coordinates-default">6.1 Default Coordinate System</a></li>
+          <li><a href="#coordinates-y-axis">6.2 Inverting the Y-Axis</a></li>
+          <li><a href="#coordinates-origin">6.3 Moving the Origin</a></li>
+          <li><a href="#supplemental-angle">6.4 Supplemental Angle</a></li>
         </ul>
       </li>
-      <li><a href="#screen-information">6. Screen Information</a></li>
-      <li><a href="#magnifier">7. Magnifier</a></li>
-      <li><a href="#color-information">8. Color Information</a></li>
-      <li><a href="#capture">9. Screen Capture</a></li>
-      <li><a href="#preferences">10. Preferences</a>
+      <li><a href="#screen-information">7. Screen Information</a></li>
+      <li><a href="#magnifier">8. Magnifier</a></li>
+      <li><a href="#color-information">9. Color Information</a></li>
+      <li><a href="#capture">10. Screen Capture</a></li>
+      <li><a href="#preferences">11. Preferences</a>
         <ul>
-          <li><a href="#calibartion-prefs">10.1 Calibration Preferences</a></li>
-          <li><a href="#tool-prefs">10.2 Tool Preferences</a></li>
-          <li><a href="#ruler-prefs">10.3 Ruler Preferences</a></li>
-          <li><a href="#precision-prefs">10.4 Precision Preferences</a></li>
-          <li><a href="#custom-units-prefs">10.5 Custom Units Preferences</a></li>
-          <li><a href="#hard-reset">10.6 Hard Reset</a></li>
+          <li><a href="#calibartion-prefs">11.1 Calibration Preferences</a></li>
+          <li><a href="#tool-prefs">11.2 Tool Preferences</a></li>
+          <li><a href="#ruler-prefs">11.3 Ruler Preferences</a></li>
+          <li><a href="#precision-prefs">11.4 Precision Preferences</a></li>
+          <li><a href="#custom-units-prefs">11.5 Custom Units Preferences</a></li>
+          <li><a href="#hard-reset">11.6 Hard Reset</a></li>
         </ul>
       </li>
-      <li><a href="#configuration">11. Configuration Files</a></li>
       <li><a href="#positions">12. Position Logging</a>
         <ul>
           <li><a href="#position-recording">12.1 Recording Positions</a></li>
@@ -1946,14 +1978,15 @@
           <li><a href="#position-manage">12.4 Managing Positions</a></li>
         </ul>
       </li>
-      <li><a href="#menus">13. Menus</a>
+      <li><a href="#configuration">13. Configuration Files</a></li>
+      <li><a href="#menus">14. Menus</a>
         <ul>
-          <li><a href="#file-menu">13.1 File Menu</a></li>
-          <li><a href="#edit-menu">13.2 Edit Menu</a></li>
-          <li><a href="#tools-menu">13.3 Tools Menu</a></li>
-          <li><a href="#units-menu">13.4 Units Menu</a></li>
-          <li><a href="#view-menu">13.5 View Menu</a></li>
-          <li><a href="#help-menu">13.6 Help Menu</a></li>
+          <li><a href="#file-menu">14.1 File Menu</a></li>
+          <li><a href="#edit-menu">14.2 Edit Menu</a></li>
+          <li><a href="#tools-menu">14.3 Tools Menu</a></li>
+          <li><a href="#units-menu">14.4 Units Menu</a></li>
+          <li><a href="#view-menu">14.5 View Menu</a></li>
+          <li><a href="#help-menu">14.6 Help Menu</a></li>
         </ul>
       </li>
     </ol>

@@ -1,12 +1,11 @@
 .TH MEAZURE 1 "@BUILD_DATE@" "@MAJOR_VERSION@.@MINOR_VERSION@" "Meazure Manual Page"
 
 .SH NAME
-meazure - Screen measurment and capture.
+meazure \- Screen measurement and capture.
 
 .SH SYNOPSIS
 .B meazure
-[\-h] [\-\-help] [\-\-help\-all] [\-v] [\-\-version] [\-p \fI<filename>\fP] [\-\-positions \fI<filename>\fP]
-[\-c \fI<filename>\fP] [\-\-config \fI<filename>\fP]
+[\-h] [\-\-help] [\-\-help\-all] [\-v] [\-\-version] [\fI*\.mea\fP] [\fI*\.mpl\fP]
 
 .SH DESCRIPTION
 .PP
@@ -15,8 +14,12 @@ window, capturing an image, determining the color of a pixel, and determining th
 accomplished. Meazure provides a number of different tools for measuring and capturing the screen. In addition, tool
 positions can be recorded to a file for future playback.
 .PP
-A complete user manual is available from the \fBHelp > Help (F1)\fP menu item. In addition, context-sensitive help is
-provided by the \fBHelp > What's This? (Shift+F1)\fP menu item.
+If a filename with the extension \fI\.mea\fP is specified, it is loaded as a configuration file. If a filename with the
+extension \fI\.mpl\fP is specified, it is loaded as a position log file. If multiple of either kind of files are
+specified, the last file of each type is loaded.
+.PP
+A complete user manual is available from the \fBHelp > Help (F1)\fP menu item. In addition, context\-sensitive help is
+provided by the \fBHelp > What\'s This? (Shift+F1)\fP menu item.
 .PP
 Meazure is \fBnot supported\fP on the Wayland window system.
 
@@ -24,19 +27,13 @@ Meazure is \fBnot supported\fP on the Wayland window system.
 Meazure accepts the following options:
 .TP
 .B  \-h, \-\-help
-Displays help on commandline options.
+Displays help on command\-line options.
 .TP
 .B \-\-help\-all
 Displays help including Qt specific options.
 .TP
 .B \-v, \-\-version
 Displays version information.
-.TP
-.B \-p, \-\-positions \fI<filename>\fP
-Load the specified position log file.
-.TP
-.B \-c, \-\-config \fI<filename>\fP
-Load the specified configuration file.
 
 .SH FILES
 \fB$XDG_CONFIG_HOME\fP/CThingSoftware/Meazure.conf - Persists the configuration of the Meazure program between runs.
