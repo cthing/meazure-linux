@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
 
+set(CMAKE_FIND_NO_INSTALL_PREFIX TRUE)
+
 project(meazure_linux
         VERSION 5.0.0.1
         DESCRIPTION "A tool for easily measuring and capturing portions of the screen."
@@ -8,6 +10,9 @@ project(meazure_linux
 if(NOT CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
     message(FATAL_ERROR "Meazure only builds on Linux")
 endif()
+
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Meazure development install directory" FORCE)
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${CMAKE_INSTALL_PREFIX})
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

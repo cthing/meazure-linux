@@ -324,6 +324,8 @@ set_property(TARGET pluginInits PROPERTY IMPORTED_OBJECTS
              ${QT_PLUGINS_SVGICON_INIT_OBJ}
              )
 
+set(CMAKE_SKIP_RPATH TRUE)
+
 qt6_add_executable(meazure main.cpp $<TARGET_OBJECTS:pluginInits>)
 target_include_directories(meazure PRIVATE
                            ${Qt6_INCLUDE_DIRS}
@@ -391,7 +393,7 @@ set(MANPAGE_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/manpage")
 set(MANPAGE_BINARY_FILE "${MANPAGE_BINARY_DIR}/meazure.1")
 add_custom_target(manpage
                   COMMAND ${CMAKE_COMMAND} -DINFILE=${MANPAGE_SOURCE_FILE} -DOUTFILE=${MANPAGE_BINARY_FILE} -DMAJOR_VERSION=${meazure_linux_VERSION_MAJOR} -DMINOR_VERSION=${meazure_linux_VERSION_MINOR} -DBUILD_DATE=${BUILD_DATE} -P ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
-                  COMMAND gzip --force ${MANPAGE_BINARY_FILE}
+                  COMMAND gzip -9 -n --force ${MANPAGE_BINARY_FILE}
                   DEPENDS ${MANPAGE_SOURCE_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
                   COMMENT "Copying manual page"
                   )
@@ -429,3 +431,38 @@ add_custom_target(validate_metainfo
                   COMMENT "Validating metainfo file"
                   )
 add_dependencies(meazure validate_metainfo)
+
+# Install
+install(TARGETS meazure RUNTIME DESTINATION "usr/bin")
+install(DIRECTORY ${HELP_BINARY_DIR} DESTINATION "usr/share/meazure")
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/icu" DESTINATION "usr/share/meazure")
+install(FILES ${MANPAGE_BINARY_FILE}.gz DESTINATION "usr/share/man/man1")
+install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.desktop DESTINATION "usr/share/applications")
+install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.metainfo.xml DESTINATION "usr/share/metainfo")
+install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.xml DESTINATION "usr/share/mime/packages")
+install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.svg DESTINATION "usr/share/icons/hicolor/scalable/apps")
+install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure-config.svg DESTINATION "usr/share/icons/hicolor/scalable/apps")
+install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure-positions.svg DESTINATION "usr/share/icons/hicolor/scalable/apps")
+install(FILES ${EXTERNAL_RESOURCES_DIR}/packaging/copyright.txt DESTINATION "usr/share/doc/meazure" RENAME copyright)
+
+# Packaging
+set(CPACK_GENERATOR DEB)
+set(CPACK_PACKAGE_NAME "meazure")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Tool for easily measuring and capturing portions of the screen")
+set(CPACK_PACKAGE_DESCRIPTION_FILE ${EXTERNAL_RESOURCES_DIR}/packaging/description.txt)
+set(CPACK_PACKAGE_VENDOR "C Thing Software")
+set(CPACK_VERBATIM_VARIABLES TRUE)
+set(CPACK_STRIP_FILES TRUE)
+set(CPACK_PACKAGING_INSTALL_PREFIX "/")
+set(CPACK_DEBIAN_PACKAGE_RELEASE ${meazure_linux_VERSION_TWEAK})
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "C Thing Software <meafeedback@cthing.com>")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS fontconfig)
+set(CPACK_DEBIAN_PACKAGE_SECTION graphics)
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS YES)
+include(CPack)
+
+add_custom_target(validate_package
+                  COMMAND lintian -c --suppress-tags embedded-library,debian-changelog-file-missing -i
+                        ${CMAKE_BINARY_DIR}/meazure_${meazure_linux_VERSION_MAJOR}.${meazure_linux_VERSION_MINOR}.${meazure_linux_VERSION_PATCH}-${meazure_linux_VERSION_TWEAK}_amd64.deb
+                  )

@@ -41,7 +41,7 @@ AboutDialog::AboutDialog(const ScreenInfoProvider* screenInfo, QWidget* parent) 
     auto* infoLabel = new QLabel(getInfo());
     auto* cthingLabel = new QLabel("<a href='https://www.cthing.com'>www.cthing.com</a>");
     cthingLabel->setOpenExternalLinks(true);
-    auto* copyrightLabel = new QLabel("Copyright 2001 C Thing Software");
+    auto* copyrightLabel = new QLabel("Copyright 2023 C Thing Software");
     auto* contributeMsg = new QLabel(tr("We hope Meazure is a valuable addition\n"
                                         "to your software toolbox. Please consider\n"
                                         "making a financial contribution.\n\nThank you!"));

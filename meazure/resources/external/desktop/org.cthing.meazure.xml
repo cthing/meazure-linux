@@ -7,7 +7,7 @@
     </mime-type>
     <mime-type type="application/x-meazure-positions">
         <comment>Meazure position log file</comment>
-        <glob pattern="*.mpl"/>
+        <glob pattern="*.mpl" weight="75"/>
         <icon name="org.cthing.meazure-positions"/>
     </mime-type>
 </mime-info>

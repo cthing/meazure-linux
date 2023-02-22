@@ -1,0 +1,6 @@
+Meazure is a tool for easily measuring and capturing portions of the screen.
+Tasks such as measuring the size of a window, capturing an image, determining
+the color of a pixel, and determining the screen size can all be easily
+accomplished. Meazure provides a number of different tools for measuring and
+capturing the screen. In addition, tool positions can be recorded to a file
+for future playback.
