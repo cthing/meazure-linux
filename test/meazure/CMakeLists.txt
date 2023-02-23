@@ -1,7 +1,6 @@
 set(MOCK_SOURCES
     mocks/MockScreenInfoProvider.h
-    mocks/MockUnitsProvider.h
-    )
+    mocks/MockUnitsProvider.h)
 
 # Builds and adds the specified test runner program to the list of unit tests to run.
 #
@@ -14,13 +13,11 @@ macro(ADD_MEAZURE_TEST runner srcdir)
     add_dependencies(${runner} libmeazure)
     target_include_directories(${runner} PRIVATE
                                $<TARGET_PROPERTY:meazure,INCLUDE_DIRECTORIES>
-                               ${PROJECT_SOURCE_DIR}
-                               )
+                               ${PROJECT_SOURCE_DIR})
     target_link_directories(${runner} PRIVATE $<TARGET_PROPERTY:meazure,LINK_DIRECTORIES>)
     target_link_libraries(${runner} PRIVATE
                           $<TARGET_PROPERTY:meazure,LINK_LIBRARIES>
-                          Qt6::Test
-                          )
+                          Qt6::Test)
     add_test(NAME ${runner} COMMAND ${runner})
 endmacro()
 

@@ -33,6 +33,7 @@ namespace X11GraphicTag {
 
     /// Checks for and processes window identifier change events.
     ///
+    /// @param[in] target Widget whose window events are to be processed
     /// @param[in] event Event to process
     ///
     void processEvents(const QWidget* target, const QEvent* event);

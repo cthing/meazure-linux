@@ -1,7 +1,6 @@
 set(TOP_SOURCES
     App.cpp
-    App.h
-    )
+    App.h)
 source_group(App FILES ${TOP_SOURCES})
 
 set(UI_SOURCES
@@ -40,8 +39,7 @@ set(UI_SOURCES
     ui/ToolDataWindow.cpp
     ui/ToolDataWindow.h
     ui/WaylandAlert.cpp
-    ui/WaylandAlert.h
-    )
+    ui/WaylandAlert.h)
 source_group(UI FILES ${UI_SOURCES})
 
 set(PREFS_SOURCES
@@ -72,8 +70,7 @@ set(PREFS_SOURCES
     prefs/models/ToolPrefsModel.cpp
     prefs/models/ToolPrefsModel.h
     prefs/models/UnitsPrefsModel.cpp
-    prefs/models/UnitsPrefsModel.h
-    )
+    prefs/models/UnitsPrefsModel.h)
 source_group(PREFS FILES ${PREFS_SOURCES})
 
 set(POSITION_LOG_SOURCES
@@ -92,8 +89,7 @@ set(POSITION_LOG_SOURCES
     position-log/PosLogManageDlg.cpp
     position-log/PosLogManageDlg.h
     position-log/PosLogMgr.cpp
-    position-log/PosLogMgr.h
-    )
+    position-log/PosLogMgr.h)
 source_group(POSITION_LOG FILES ${POSITION_LOG_SOURCES})
 
 set(GRAPHICS_SOURCES
@@ -119,14 +115,12 @@ set(GRAPHICS_SOURCES
     graphics/Rectangle.cpp
     graphics/Rectangle.h
     graphics/Ruler.cpp
-    graphics/Ruler.h
-    )
+    graphics/Ruler.h)
 source_group(GRAPHICS FILES ${GRAPHICS_SOURCES})
 
 set(X11_GRAPHICS_SOURCES
     graphics/x11/X11GraphicTag.cpp
-    graphics/x11/X11GraphicTag.h
-    )
+    graphics/x11/X11GraphicTag.h)
 source_group(X11_GRAPHICS FILES ${X11_GRAPHICS_SOURCES})
 
 set(TOOLS_SOURCES
@@ -156,8 +150,7 @@ set(TOOLS_SOURCES
     tools/ToolMgr.cpp
     tools/ToolMgr.h
     tools/WindowTool.cpp
-    tools/WindowTool.h
-    )
+    tools/WindowTool.h)
 source_group(TOOLS FILES ${TOOLS_SOURCES})
 
 set(CONFIG_SOURCES
@@ -167,16 +160,14 @@ set(CONFIG_SOURCES
     config/ExportedConfig.cpp
     config/ExportedConfig.h
     config/PersistentConfig.cpp
-    config/PersistentConfig.h
-    )
+    config/PersistentConfig.h)
 source_group(CONFIG FILES ${CONFIG_SOURCES})
 
 set(XML_SOURCES
     xml/XMLParser.cpp
     xml/XMLParser.h
     xml/XMLWriter.cpp
-    xml/XMLWriter.h
-    )
+    xml/XMLWriter.h)
 source_group(XML FILES ${XML_SOURCES})
 
 set(UTILS_SOURCES
@@ -190,15 +181,13 @@ set(UTILS_SOURCES
     utils/StringUtils.cpp
     utils/StringUtils.h
     utils/TimedEventLoop.cpp
-    utils/TimedEventLoop.h
-    )
+    utils/TimedEventLoop.h)
 source_group(UTILS FILES ${UTILS_SOURCES})
 
 set(X11_UTILS_SOURCES
     utils/x11/XcbUtils.h
     utils/x11/XlibUtils.h
-    utils/x11/XRecordUtils.h
-    )
+    utils/x11/XRecordUtils.h)
 source_group(X11_UTILS FILES ${X11_UTILS_SOURCES})
 
 set(ENVIRONMENT_SOURCES
@@ -212,16 +201,14 @@ set(ENVIRONMENT_SOURCES
     environment/noop/NoopWindowFinder.cpp
     environment/noop/NoopWindowFinder.h
     environment/noop/NoopWindowTracker.cpp
-    environment/noop/NoopWindowTracker.h
-    )
+    environment/noop/NoopWindowTracker.h)
 source_group(ENVIRONMENT FILES ${ENVIRONMENT_SOURCES})
 
 set(X11_ENVIRONMENT_SOURCES
     environment/x11/X11WindowFinder.cpp
     environment/x11/X11WindowFinder.h
     environment/x11/X11WindowTracker.cpp
-    environment/x11/X11WindowTracker.h
-    )
+    environment/x11/X11WindowTracker.h)
 source_group(X11_ENVIRONMENT FILES ${X11_ENVIRONMENT_SOURCES})
 
 set(UNITS_SOURCES
@@ -231,8 +218,7 @@ set(UNITS_SOURCES
     units/Units.h
     units/UnitsMgr.cpp
     units/UnitsMgr.h
-    units/UnitsProvider.h
-    )
+    units/UnitsProvider.h)
 source_group(UNITS FILES ${UNITS_SOURCES})
 
 set(MEAZURE_SOURCES
@@ -249,12 +235,10 @@ set(MEAZURE_SOURCES
     ${X11_UTILS_SOURCES}
     ${ENVIRONMENT_SOURCES}
     ${X11_ENVIRONMENT_SOURCES}
-    ${UNITS_SOURCES}
-    )
+    ${UNITS_SOURCES})
 
 list(APPEND MEAZURE_SOURCES
-     ${X11_UTILS_SOURCES}
-     )
+     ${X11_UTILS_SOURCES})
 
 set(INTERNAL_RESOURCES
     resources/internal/dtd/PositionLog1.dtd
@@ -280,8 +264,7 @@ set(INTERNAL_RESOURCES
     resources/internal/images/RectangleTool.svg
     resources/internal/images/RectangleToolDark.svg
     resources/internal/images/RulerTool.svg
-    resources/internal/images/WindowTool.svg
-    )
+    resources/internal/images/WindowTool.svg)
 
 set(EXTERNAL_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources/external)
 
@@ -297,8 +280,7 @@ target_include_directories(libmeazure PRIVATE
                            ${XercesC_INCLUDE_DIRS}
                            ${ICU_INCLUDE_DIRS}
                            ${CMAKE_SOURCE_DIR}
-                           ${CMAKE_CURRENT_BINARY_DIR}
-                           )
+                           ${CMAKE_CURRENT_BINARY_DIR})
 qt6_add_resources(libmeazure "resources" PREFIX "/" BASE "resources/internal" FILES ${INTERNAL_RESOURCES})
 
 set(QT_PLUGINS_DIR "${CONAN_QT_ROOT}/res/archdatadir/plugins")
@@ -321,8 +303,7 @@ set_property(TARGET pluginInits PROPERTY IMPORTED_OBJECTS
              ${QT_XCB_INIT_OBJ}
              ${QT_WAYLAND_INIT_OBJ}
              ${QT_XDGSHELL_INIT_OBJ}
-             ${QT_PLUGINS_SVGICON_INIT_OBJ}
-             )
+             ${QT_PLUGINS_SVGICON_INIT_OBJ})
 
 set(CMAKE_SKIP_RPATH TRUE)
 
@@ -333,15 +314,13 @@ target_include_directories(meazure PRIVATE
                            ${XercesC_INCLUDE_DIRS}
                            ${ICU_INCLUDE_DIRS}
                            ${CMAKE_SOURCE_DIR}
-                           ${CMAKE_CURRENT_BINARY_DIR}
-                           )
+                           ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_directories(meazure PRIVATE
                         ${QT_PLUGIN_PLATFORMS_DIR}
                         ${QT_PLUGIN_SHELLS_DIR}
                         ${QT_PLUGIN_ICONENGINES_DIR}
-                        ${Qt6_Core_LIB_DIRS}
-                        )
+                        ${Qt6_Core_LIB_DIRS})
 target_link_libraries(meazure PRIVATE
                       libmeazure
                       Qt6::Widgets
@@ -356,8 +335,7 @@ target_link_libraries(meazure PRIVATE
                       Qt6WaylandClient
                       Qt6::Core
                       ${ICU_uc_LIBS}
-                      XercesC::XercesC
-                      )
+                      XercesC::XercesC)
 
 # Replace the version variables with the actual values from the project version.
 configure_file(AppVersion.h.in AppVersion.h @ONLY)
@@ -367,8 +345,7 @@ configure_file(AppVersion.h.in AppVersion.h @ONLY)
 # package and ICU will be configured to use that directory.
 add_custom_target(copy_icu
                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu"
-                  COMMENT "Copying icu files"
-                  )
+                  COMMENT "Copying icu files")
 add_dependencies(libmeazure copy_icu)
 
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${CMAKE_CURRENT_BINARY_DIR}/icu")
@@ -381,8 +358,7 @@ add_custom_target(copy_help
                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${HELP_SOURCE_DIR}" "${HELP_BINARY_DIR}"
                   COMMAND ${CMAKE_COMMAND} -DINFILE=${HELP_SOURCE_DIR}/help.html -DOUTFILE=${HELP_BINARY_DIR}/help.html -DMAJOR_VERSION=${meazure_linux_VERSION_MAJOR} -DMINOR_VERSION=${meazure_linux_VERSION_MINOR} -P ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
                   DEPENDS ${HELP_SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
-                  COMMENT "Copying help files"
-                  )
+                  COMMENT "Copying help files")
 add_dependencies(libmeazure copy_help)
 
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${HELP_BINARY_DIR})
@@ -395,8 +371,7 @@ add_custom_target(manpage
                   COMMAND ${CMAKE_COMMAND} -DINFILE=${MANPAGE_SOURCE_FILE} -DOUTFILE=${MANPAGE_BINARY_FILE} -DMAJOR_VERSION=${meazure_linux_VERSION_MAJOR} -DMINOR_VERSION=${meazure_linux_VERSION_MINOR} -DBUILD_DATE=${BUILD_DATE} -P ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
                   COMMAND gzip -9 -n --force ${MANPAGE_BINARY_FILE}
                   DEPENDS ${MANPAGE_SOURCE_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/configureFile.cmake
-                  COMMENT "Copying manual page"
-                  )
+                  COMMENT "Copying manual page")
 add_dependencies(meazure manpage)
 
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${MANPAGE_BINARY_DIR})
@@ -409,8 +384,7 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${MANPAGE_BINARY_D
 add_custom_target(dev_mode
                   COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/meadevmode"
                   BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/meadevmode"
-                  COMMENT "Creating dev mode marker"
-                  )
+                  COMMENT "Creating dev mode marker")
 add_dependencies(libmeazure dev_mode)
 
 # Validate the desktop integration files
@@ -420,16 +394,14 @@ set(DESKTOP_FILE ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.desktop)
 add_custom_target(validate_desktop
                   COMMAND desktop-file-validate --warn-kde ${DESKTOP_FILE}
                   DEPENDS ${DESKTOP_FILE}
-                  COMMENT "Validating desktop integration file"
-                  )
+                  COMMENT "Validating desktop integration file")
 add_dependencies(meazure validate_desktop)
 
 set(METAINFO_FILE ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure.metainfo.xml)
 add_custom_target(validate_metainfo
                   COMMAND appstreamcli validate --pedantic ${METAINFO_FILE}
                   DEPENDS ${METAINFO_FILE}
-                  COMMENT "Validating metainfo file"
-                  )
+                  COMMENT "Validating metainfo file")
 add_dependencies(meazure validate_metainfo)
 
 # Install
@@ -446,6 +418,8 @@ install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure-positions.svg DESTINAT
 install(FILES ${EXTERNAL_RESOURCES_DIR}/packaging/copyright.txt DESTINATION "usr/share/doc/meazure" RENAME copyright)
 
 # Packaging
+set(DEB_PACKAGE_NAME meazure_${meazure_linux_VERSION_MAJOR}.${meazure_linux_VERSION_MINOR}.${meazure_linux_VERSION_PATCH}-${meazure_linux_VERSION_TWEAK}_amd64.deb)
+
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_NAME "meazure")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Tool for easily measuring and capturing portions of the screen")
@@ -462,7 +436,7 @@ set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS YES)
 include(CPack)
 
-add_custom_target(validate_package
+add_custom_target(lintian
                   COMMAND lintian -c --suppress-tags embedded-library,debian-changelog-file-missing -i
-                        ${CMAKE_BINARY_DIR}/meazure_${meazure_linux_VERSION_MAJOR}.${meazure_linux_VERSION_MINOR}.${meazure_linux_VERSION_PATCH}-${meazure_linux_VERSION_TWEAK}_amd64.deb
-                  )
+                        ${CMAKE_BINARY_DIR}/${DEB_PACKAGE_NAME}
+                  COMMENT "Validating package ${DEB_PACKAGE_NAME}")

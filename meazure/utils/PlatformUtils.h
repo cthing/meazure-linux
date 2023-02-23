@@ -44,7 +44,7 @@ namespace PlatformUtils {
 
     /// Finds the specified subdirectory of the application data directory. During development, the build target
     /// directory is treated as the application data directory. When the application is deployed, the application
-    /// data directory is the standard directory for the platform (e.g. /usr/share/<appname>).
+    /// data directory is the standard directory for the platform (e.g. /usr/share/&lt;appname&gt;).
     ///
     /// @param[in] subdir Subdirectory of the application data directory
     /// @return Subdirectory of the application data directory.

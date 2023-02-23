@@ -63,6 +63,21 @@ add_custom_target(apidocs
                   COMMAND ${CMAKE_COMMAND} -E env MEA_APIDOCS_DIR=${CMAKE_CURRENT_BINARY_DIR}/meazure/apidocs ${DOXYGEN_EXECUTABLE} "${DEV_DIR}/doxygen/meazure.cfg"
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_custom_target(project_package
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target package
+                  USES_TERMINAL)
+add_custom_target(project_test
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target all test
+                  USES_TERMINAL)
+add_custom_target(project_full_build
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target cmakelint
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target all
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target test
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target apidocs
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target project_package
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target lintian
+                  USES_TERMINAL)
+
 add_subdirectory(meazure)
 add_subdirectory(test)
 

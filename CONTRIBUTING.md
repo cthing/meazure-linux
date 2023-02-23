@@ -41,6 +41,20 @@ for Ubuntu 20.04 using CMake.
                         libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev \
                         libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev uuid-dev
    ```
+10. The following targets are of interest:
+    - **project_full_build** - Builds the Meazure executable, runs all tests, generates API documentation, lints the
+      CMakeLists.txt files and creates Debian package.
+    - **meazure** - Builds the Meazure executable.
+    - **project_test** - Runs all unit tests.
+    - **project_package** - Creates the Debian package.
+    - **clean** - Deletes all build artifacts.
+    - **cmakelint** - Lints the CMakeLists.txt files.
+    - **apidocs** - Generates the API documentation.
+
+    To run these targets, use the following command:
+    ```shell
+    ./build.sh -t [release|debug] <target>
+    ```
 
 ### CLion IDE Configuration
 
