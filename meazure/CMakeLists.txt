@@ -436,6 +436,8 @@ set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS YES)
 include(CPack)
 
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${CMAKE_BINARY_DIR}/${DEB_PACKAGE_NAME})
+
 add_custom_target(lintian
                   COMMAND lintian -c --suppress-tags embedded-library,debian-changelog-file-missing -i
                         ${CMAKE_BINARY_DIR}/${DEB_PACKAGE_NAME}
