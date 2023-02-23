@@ -75,6 +75,7 @@ add_custom_target(project_full_build
                   COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target test
                   COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target apidocs
                   COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target project_package
+                  COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target package_sha256
                   COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target lintian
                   USES_TERMINAL)
 
