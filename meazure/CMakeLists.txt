@@ -440,6 +440,8 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${CMAKE_BINARY_DIR
 
 add_custom_target(package_sha256
                   COMMAND sha256sum ${CMAKE_BINARY_DIR}/${DEB_PACKAGE_NAME} > ${CMAKE_BINARY_DIR}/${DEB_PACKAGE_NAME}.sha256)
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${CMAKE_BINARY_DIR}/${DEB_PACKAGE_NAME}.sha256)
+
 add_custom_target(lintian
                   COMMAND lintian -c --suppress-tags embedded-library,debian-changelog-file-missing -i
                         ${CMAKE_BINARY_DIR}/${DEB_PACKAGE_NAME}
