@@ -44,6 +44,8 @@ public:
         return tr("Precision");
     }
 
+    void selectLinearUnits(LinearUnitsId unitsId);
+
     void initialize() override;
     void apply() override;
 

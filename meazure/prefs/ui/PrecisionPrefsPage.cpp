@@ -200,6 +200,11 @@ void PrecisionPrefsPage::configure() {
     }
 }
 
+void PrecisionPrefsPage::selectLinearUnits(LinearUnitsId unitsId) {
+    m_unitsCombo->setCurrentIndex(unitsId);
+    unitsSelected(unitsId);
+}
+
 void PrecisionPrefsPage::unitsSelected(int index) {
     const int data = m_unitsCombo->itemData(index).toInt();
     const bool isLinear = (data & k_angularIdMask) == 0;

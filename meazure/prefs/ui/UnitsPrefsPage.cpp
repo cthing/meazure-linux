@@ -22,9 +22,10 @@
 #include <limits>
 
 
-UnitsPrefsPage::UnitsPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr) : // NOLINT(cppcoreguidelines-pro-type-member-init)
+UnitsPrefsPage::UnitsPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr, PrecisionPrefsPage* precisionPrefs) : // NOLINT(cppcoreguidelines-pro-type-member-init)
         PrefsPage(screenInfo, unitsMgr),
-        m_model(new UnitsPrefsModel(unitsMgr, this)) {
+        m_model(new UnitsPrefsModel(unitsMgr, this)),
+        m_precisionPrefs(precisionPrefs) {
     createUI();
     configure();
 
@@ -174,6 +175,7 @@ void UnitsPrefsPage::configure() {
 
     connect(m_precisionButton, &QPushButton::clicked, this, [this]() {
         emit pageRequested(PrefsPageId::PrecisionPage);
+        m_precisionPrefs->selectLinearUnits(CustomId);
     });
 }
 
@@ -197,6 +199,7 @@ void UnitsPrefsPage::nameAbbrevChanged() {
     setFactorEnabled(isDefined());
 
     m_clearButton->setEnabled(isDefined());
+    m_precisionButton->setEnabled(isDefined());
 }
 
 void UnitsPrefsPage::setFactorEnabled(bool enable) {

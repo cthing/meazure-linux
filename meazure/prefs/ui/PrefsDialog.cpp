@@ -70,8 +70,9 @@ PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ConfigMgr* 
     m_prefsPages.push_back(new CalibrationPrefsPage(screenInfo, unitsMgr));
     m_prefsPages.push_back(new ToolPrefsPage(screenInfo, unitsMgr));
     m_prefsPages.push_back(new RulerPrefsPage(screenInfo, unitsMgr));
-    m_prefsPages.push_back(new PrecisionPrefsPage(screenInfo, unitsMgr));
-    m_prefsPages.push_back(new UnitsPrefsPage(screenInfo, unitsMgr));
+    auto* precisionPrefsPage = new PrecisionPrefsPage(screenInfo, unitsMgr);
+    m_prefsPages.push_back(precisionPrefsPage);
+    m_prefsPages.push_back(new UnitsPrefsPage(screenInfo, unitsMgr, precisionPrefsPage));
 
     for (PrefsPage* page : m_prefsPages) {
         m_tabs->addTab(page, page->getName());
