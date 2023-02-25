@@ -27,6 +27,9 @@ The changes described below are relative to version
 - The hard reset button has been moved from a dedicated preference page to a button on the preference dialog.
 - The popup data window and origin marker visibility controls have been moved from the Tools preference page to
   the View menu.
+- The Hide Crosshairs item has been moved from the Tools menu to the View menu.
+- The Find Crosshairs item has been moved from the Tools menu to the Edit menu.
+- The Tool information section is no longer labeled with the selected tool.
 - "Profiles" are now called "Configurations".
 
 ### Removed
