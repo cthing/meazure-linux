@@ -131,18 +131,26 @@ private:
 
         for (int i = 0; i < numChildren; i++) {
             const xcb_window_t child = children[i];  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            Xcb::Attributes attrs(m_conn, child);
-            // Top level windows have WM_STATE set on them.
-            if (isViewable(child, attrs) && hasWMState(child)) {
-                // Exclude our own graphic element windows (e.g. crosshair, lines, rectangles)
-                if (!Graphic::isGraphicWindow(child)) {
-                    commands.emplace_back(new TranslatedGeometryCommand(m_conn, root, child, 0, 0));
-                }
-                return true;
-            }
+            try {
+                Xcb::Attributes attrs(m_conn, child);
 
-            if (processChildWindow(root, child, commands)) {
-                return true;
+                // Top level windows have WM_STATE set on them.
+                if (isViewable(child, attrs) && hasWMState(child)) {
+                    // Exclude our own graphic element windows (e.g. crosshair, lines, rectangles)
+                    if (!Graphic::isGraphicWindow(child)) {
+                        commands.emplace_back(new TranslatedGeometryCommand(m_conn, root, child, 0, 0));
+                    }
+                    return true;
+                }
+
+                if (processChildWindow(root, child, commands)) {
+                    return true;
+                }
+            } catch (const Xcb::XcbException& ex) {
+                // Ignore BadWindow exceptions
+                if (ex.getErrorCode() != XCB_WINDOW) {
+                    throw;
+                }
             }
         }
 
@@ -163,16 +171,23 @@ private:
 
         for (int i = 0; i < numChildren; i++) {
             const xcb_window_t child = children[i];  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            // Only report on visible windows.
-            if (isViewable(child, attrs.at(i))) {
-                // Top level windows have WM_STATE set on them.
-                if (hasWMState(child)) {
-                    // Exclude our own graphic element windows (e.g. crosshair, lines, rectangles)
-                    if (!Graphic::isGraphicWindow(child)) {
-                        commands.emplace_back(new GeometryCommand(m_conn, child));
+            try {
+                // Only report on visible windows.
+                if (isViewable(child, attrs.at(i))) {
+                    // Top level windows have WM_STATE set on them.
+                    if (hasWMState(child)) {
+                        // Exclude our own graphic element windows (e.g. crosshair, lines, rectangles)
+                        if (!Graphic::isGraphicWindow(child)) {
+                            commands.emplace_back(new GeometryCommand(m_conn, child));
+                        }
+                    } else {
+                        processChildWindow(root, child, commands);
                     }
-                } else {
-                    processChildWindow(root, child, commands);
+                }
+            } catch (const Xcb::XcbException& ex) {
+                // Ignore BadWindow exceptions
+                if (ex.getErrorCode() != XCB_WINDOW) {
+                    throw;
                 }
             }
         }

@@ -32,6 +32,30 @@
 ///
 namespace Xcb {
 
+    /// Exception thrown when an error occurs while calling an XCB reply function.
+    ///
+    class XcbException : std::exception {
+
+    public:
+        explicit XcbException(int errorCode) :
+            m_errorCode(errorCode),
+            m_errorMessage(QString("Could not get reply (xcb error %1)").arg(errorCode)) {
+        }
+
+        [[nodiscard]] int getErrorCode() const {
+            return m_errorCode;
+        }
+
+        [[nodiscard]] const char* what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
+            return m_errorMessage.toUtf8().constData();
+        }
+
+    private:
+        int m_errorCode;
+        QString m_errorMessage;
+    };
+
+
     /// Obtains the XCB connection used the by Qt application.
     ///
     /// @return Open XCB connection used by Qt
@@ -88,7 +112,7 @@ namespace Xcb {
                 if (error != nullptr) {
                     const int errorCode = error->error_code;
                     std::free(error);       // NOLINT(cppcoreguidelines-no-malloc,hicpp-no-malloc)
-                    qFatal("Could not get reply (xcb error %d)", errorCode);
+                    throw XcbException(errorCode);
                 }
             }
 
