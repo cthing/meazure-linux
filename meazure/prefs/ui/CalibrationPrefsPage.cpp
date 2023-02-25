@@ -129,7 +129,11 @@ void CalibrationPrefsPage::configure() {
     // Screen select
 
     for (int i = 0; i < m_screenInfo->getNumScreens(); i++) {
-        m_screenCombo->addItem(m_screenInfo->getScreenName(i), i);
+        QString screenName(m_screenInfo->getScreenName(i));
+        if (m_screenInfo->isPrimary(i)) {
+            screenName += tr(" (primary)");
+        }
+        m_screenCombo->addItem(screenName, i);
     }
 
     connect(m_screenCombo, &QComboBox::activated, this, [this](int itemIndex) {
