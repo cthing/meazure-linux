@@ -417,6 +417,8 @@ install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure-config.svg DESTINATION
 install(FILES ${DESKTOP_RESOURCES_DIR}/org.cthing.meazure-positions.svg DESTINATION "usr/share/icons/hicolor/scalable/apps")
 install(FILES ${EXTERNAL_RESOURCES_DIR}/packaging/copyright.txt DESTINATION "usr/share/doc/meazure" RENAME copyright)
 
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${CMAKE_BINARY_DIR}/install_manifest.txt)
+
 # Packaging
 set(DEB_PACKAGE_NAME meazure_${meazure_linux_VERSION_MAJOR}.${meazure_linux_VERSION_MINOR}.${meazure_linux_VERSION_PATCH}-${meazure_linux_VERSION_TWEAK}_amd64.deb)
 
