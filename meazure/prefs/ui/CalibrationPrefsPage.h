@@ -30,6 +30,8 @@
 
 class CalibrationPrefsPage : public PrefsPage {
 
+    Q_OBJECT
+
 public:
     CalibrationPrefsPage(ScreenInfo* screenInfo, const UnitsMgr* unitsMgr);
 

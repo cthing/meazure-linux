@@ -38,6 +38,8 @@
 ///
 class ToolPrefsPage : public PrefsPage {
 
+    Q_OBJECT
+
 public:
     ToolPrefsPage(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr);
 

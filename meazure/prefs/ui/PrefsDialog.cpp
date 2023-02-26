@@ -72,7 +72,11 @@ PrefsDialog::PrefsDialog(ScreenInfo* screenInfo, UnitsMgr* unitsMgr, ConfigMgr* 
     m_prefsPages.push_back(new RulerPrefsPage(screenInfo, unitsMgr));
     auto* precisionPrefsPage = new PrecisionPrefsPage(screenInfo, unitsMgr);
     m_prefsPages.push_back(precisionPrefsPage);
-    m_prefsPages.push_back(new UnitsPrefsPage(screenInfo, unitsMgr, precisionPrefsPage));
+    auto* unitsPrefsPage = new UnitsPrefsPage(screenInfo, unitsMgr);
+    m_prefsPages.push_back(unitsPrefsPage);
+
+    connect(unitsPrefsPage, &UnitsPrefsPage::linearPrecisionsRequested,
+            precisionPrefsPage, &PrecisionPrefsPage::selectLinearUnits);
 
     for (PrefsPage* page : m_prefsPages) {
         m_tabs->addTab(page, page->getName());

@@ -19,7 +19,6 @@
 
 #include "PrefsPage.h"
 #include "PrefsPageId.h"
-#include "PrecisionPrefsPage.h"
 #include <meazure/prefs/models/UnitsPrefsModel.h>
 #include <meazure/ui/fields/DoubleDataField.h>
 #include <meazure/ui/fields/LineEdit.h>
@@ -33,8 +32,10 @@
 ///
 class UnitsPrefsPage : public PrefsPage {
 
+    Q_OBJECT
+
 public:
-    explicit UnitsPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr, PrecisionPrefsPage* precisionPrefs);
+    explicit UnitsPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr);
 
     PrefsPageId getId() override {
         return PrefsPageId::UnitsPage;
@@ -48,6 +49,9 @@ public:
     void apply() override;
 
     [[nodiscard]] bool isDirty() const override;
+
+signals:
+    void linearPrecisionsRequested(LinearUnitsId);
 
 private slots:
     void nameAbbrevChanged();
@@ -68,7 +72,6 @@ private:
     void setFactorEnabled(bool enable);
 
     UnitsPrefsModel* m_model;
-    PrecisionPrefsPage* m_precisionPrefs;
     LineEdit* m_nameField;
     LineEdit* m_abbrevField;
     DoubleDataField* m_factorField;

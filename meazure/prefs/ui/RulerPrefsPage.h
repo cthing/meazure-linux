@@ -33,6 +33,8 @@
 ///
 class RulerPrefsPage : public PrefsPage {
 
+    Q_OBJECT
+
 public:
     RulerPrefsPage(const ScreenInfo* screenInfo, const UnitsMgr* unitsMgr);
 

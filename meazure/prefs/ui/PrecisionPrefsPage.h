@@ -33,6 +33,8 @@
 ///
 class PrecisionPrefsPage : public PrefsPage {
 
+    Q_OBJECT
+
 public:
     explicit PrecisionPrefsPage(const ScreenInfo* screenInfo, UnitsMgr* unitsMgr);
 
@@ -44,12 +46,13 @@ public:
         return tr("Precision");
     }
 
-    void selectLinearUnits(LinearUnitsId unitsId);
-
     void initialize() override;
     void apply() override;
 
     [[nodiscard]] bool isDirty() const override;
+
+public slots:
+    void selectLinearUnits(LinearUnitsId unitsId);
 
 private slots:
     void unitsSelected(int index);
