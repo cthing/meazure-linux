@@ -203,7 +203,7 @@ sudo dpkg -i <em>package</em>
   <ol>
     <li>Select the Cursor Tool using the toolbar</li>
     <li>Verify the Status bar says "Cursor hotspot is measurement point"</li>
-    <li>Verify the <strong>Tools &gt; Cursor</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Cursor</strong> menu item is checked</li>
     <li>Verify the <strong>X1</strong> and <strong>Y1</strong> text fields are enabled but not editable</li>
     <li>Verify the <strong>X1</strong> and <strong>Y1</strong> up/down buttons are enabled but do not do anything</li>
     <li>Verify a number cannot be pasted into the <strong>X1</strong> or <strong>Y1</strong> fields</li>
@@ -221,7 +221,7 @@ sudo dpkg -i <em>package</em>
     <li>Select the Point Tool using the toolbar</li>
     <li>Verify the Status bar says "Shift locks to H or V"</li>
     <li>Verify a crosshair is displayed, flashes yellow and then remains red</li>
-    <li>Verify the <strong>Tools &gt; Point</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Point</strong> menu item is checked</li>
     <li>Select the <strong>Tools &gt; Cursor</strong> menu item</li>
     <li>Verify the cursor position is tracked and a Data window is applied</li>
     <li>Select the <strong>Tools &gt; Point</strong> menu item</li>
@@ -262,7 +262,7 @@ sudo dpkg -i <em>package</em>
     <li>Select the Line Tool using the toolbar</li>
     <li>Verify the Status bar says "Shift locks to H or V, Ctrl moves line"</li>
     <li>Verify both crosshairs flash yellow and then remain red</li>
-    <li>Verify the <strong>Tools &gt; Line</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Line</strong> menu item is checked</li>
     <li>Verify the <strong>X1</strong>, <strong>Y1</strong>, <strong>X2</strong>, and <strong>Y2</strong> text fields
       are enabled and editable</li>
     <li>Verify the <strong>W</strong>, <strong>H</strong>, <strong>D</strong>, <strong>A</strong>, <strong>As</strong>
@@ -309,9 +309,16 @@ sudo dpkg -i <em>package</em>
     <li>Select <strong>Edit &gt; Find Crosshairs</strong> and verify that the crosshairs flashes between red and yellow a
       number of times and then stop flashing returning to red</li>
     <li>Repeat by pressing <strong>Ctrl+F</strong></li>
-    <li>Select <strong>View &gt; Hide Crosshairs</strong> and verify that the crosshairs are no longer displayed leaving
-      only the line</li>
-    <li>Select <strong>View &gt; Hide Crosshairs</strong> and verify that the crosshairs are now displayed</li>
+    <li>Select <strong>View &gt; Hide Crosshairs</strong></li>
+    <li>Verify that the crosshairs are no longer displayed leaving only the line</li>
+    <li>Select <strong>View &gt; Hide Crosshairs</strong></li>
+    <li>Verify that the crosshairs are now displayed</li>
+    <li>Select <strong>View &gt; Hide Popup Data Window</strong></li>
+    <li>Move the cursor over a crosshair</li>
+    <li>Verify the Data window is not displayed</li>
+    <li>Deselect <strong>View &gt; Hide Popup Data Window</strong></li>
+    <li>Move the cursor over a crosshair</li>
+    <li>Verify the Data window is displayed</li>
     <li>Repeat by pressing <strong>Ctrl+B</strong></li>
     <li>Drag the line endpoints to diagonally opposite corners of a window</li>
     <li>Press <strong>Ctrl+R</strong></li>
@@ -326,7 +333,7 @@ sudo dpkg -i <em>package</em>
     <li>Select the Rectangle Tool using toolbar</li>
     <li>Verify the Status bar says "Ctrl moves rect, Ctrl+R captures region"</li>
     <li>Verify both crosshairs flash yellow and then remain red</li>
-    <li>Verify the <strong>Tools &gt; Rectangle</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Rectangle</strong> menu item is checked</li>
     <li>Verify the <strong>X1</strong>, <strong>Y1</strong>, <strong>X2</strong>, and <strong>Y2</strong> text fields
       are enabled and are editable</li>
     <li>Verify the <strong>W</strong>, <strong>H</strong>, <strong>D</strong>, <strong>A</strong>, <strong>As</strong>
@@ -381,7 +388,7 @@ sudo dpkg -i <em>package</em>
     <li>Select the Circle Tool using the toolbar</li>
     <li>Verify the Status bar says "Ctrl moves circle, Ctrl+R captures region"</li>
     <li>Verify that both crosshairs flash yellow and then remain red</li>
-    <li>Verify the <strong>Tools &gt; Circle</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Circle</strong> menu item is checked</li>
     <li>Verify the <strong>X1</strong>, <strong>Y1</strong>, <strong>XV</strong>, and <strong>YV</strong> text fields
       are enabled and are editable</li>
     <li>Verify the <strong>W</strong>, <strong>H</strong>, <strong>D</strong>, <strong>A</strong> and
@@ -441,7 +448,7 @@ sudo dpkg -i <em>package</em>
     <li>Select the Angle Tool using toolbar</li>
     <li>Verify the Status bar says "Shift locks to H or V, Ctrl moves angle"</li>
     <li>Verify all three crosshairs flash yellow and then remain red</li>
-    <li>Verify the <strong>Tools &gt; Angle</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Angle</strong> menu item is checked</li>
     <li>Verify <strong>X1</strong>, <strong>Y1</strong>, <strong>X2</strong>, <strong>Y2</strong>, <strong>XV</strong>,
       and <strong>YV</strong> text fields are enabled and editable.</li>
     <li>Verify the <strong>A</strong> field is enabled but not editable</li>
@@ -504,7 +511,7 @@ sudo dpkg -i <em>package</em>
     <li>Select the Window Tool using toolbar</li>
     <li>Verify the Meazure window receives a red border</li>
     <li>Verfiy the Status bar says "Ctrl+R captures window"</li>
-    <li>Verify the <strong>Tools &gt; Window</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Window</strong> menu item is checked</li>
     <li>Verify <strong>X1</strong>, <strong>Y1</strong>, <strong>X2</strong>, <strong>Y2</strong>, <strong>W</strong>,
       <strong>H</strong>, <strong>D</strong>, <strong>A</strong>, <strong>As</strong> and <strong>Ar</strong> are
       enabled but not editable</li>
@@ -527,7 +534,7 @@ sudo dpkg -i <em>package</em>
   <ol>
     <li>Select the Ruler Tool using toolbar</li>
     <li>Verify an orthogonal pair of rulers appear on the screen</li>
-    <li>Verify the <strong>Tools &gt; Rulers</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Rulers</strong> menu item is checked</li>
     <li>Move the mouse cursor over the circular drag handle at the origin of the two rulers</li>
     <li>Verify the handle color changes to yellow when cursor enters and then changes to red when cursor leaves</li>
     <li>When the cursor moves over the handle, verify the Data window appears showing the <strong>XV</strong>,
@@ -578,7 +585,7 @@ sudo dpkg -i <em>package</em>
   <ol>
     <li>Select the Grid Tool using the toolbar</li>
     <li>Verify a grid appears covering the entire screen</li>
-    <li>Verify the <strong>Tools &gt; Screen Grid</strong> menu item indicates selected</li>
+    <li>Verify the <strong>Tools &gt; Screen Grid</strong> menu item is checked</li>
     <li>Deselect the screen grid</li>
     <li>Verify the screen grid is removed from the screen</li>
     <li>Select the <strong>Tools &gt; Screen Grid Settings...</strong> item</li>
@@ -781,6 +788,281 @@ sudo dpkg -i <em>package</em>
     <li>Select the <strong>Units &gt; Degrees</strong> menu item</li>
   </ol>
 
+  <h2>Custom Units</h2>
+  <ol>
+    <li>Verify the <strong>Units &gt; [custom]</strong> menu item is a disabled</li>
+    <li>Select the ***Units &gt; Define Custom...*** menu item</li>
+    <li>Verify that the Preferences dialog is displayed with the <strong>Custom Units</strong> tab selected</li>
+    <li>Verify that all items on the panel are disabled except the <strong>Display Name</strong> and
+      <strong>Abbreviation</strong> labels and text fields</li>
+    <li>Enter "Miles" in the <strong>Display Name</strong> field</li>
+    <li>Enter "mi" in the <strong>Abbreviation</strong> field</li>
+    <li>Verify that all items on the panel are now enabled</li>
+    <li>Enter a 0.5 scale factor and select <strong>px</strong> from the drop-down</li>
+    <li>Press the <strong>OK</strong> button</li>
+    <li>On the <strong>Units</strong> menu verify that the <strong>[custom]</strong> item has been replaced by an
+      enabled item named <strong>Miles</strong> and select that item</li>
+    <li>Verify that <strong>mi</strong> is displayed as appropriate on all sections</li>
+    <li>Verify that for every one pixel moved, the position value changes by 2 mi</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item</li>
+    <li>Select the <strong>Custom Units</strong> tab</li>
+    <li>Change the scale factor to 0.5 and <strong>in</strong> based</li>
+    <li>Press tje <strong>OK</strong> button</li>
+    <li>Using a ruler, verify that for a change in position of 1 inch, the position value changes by 2 mi</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item</li>
+    <li>Select the <strong>Custom Units</strong> tab</li>
+    <li>Change the scale factor to 0.5 and <strong>cm</strong> based</li>
+    <li>Press the <strong>OK</strong> button</li>
+    <li>Using a ruler, verify that for a change in position of 1 centimeter, the position value changes by 2 mi</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item</li>
+    <li>Select the <strong>Custom Units</strong> tab</li>
+    <li>Press the <strong>Set Display Precision</strong> button</li>
+    <li>Verify that the Precision panel is shown with the custom units radio button selected</li>
+    <li>Return to the <strong>Custom Units</strong> panel and press the ***Clear Units*** button</li>
+    <li>Verify that the <strong>Display Name</strong> and <strong>Abbreviation</strong> fields are cleared and all
+      other items on the panel are disabled</li>
+    <li>Press the <strong>OK</strong> button</li>
+  </ol>
+
+  <h2>Coordinate System</h2>
+  <ol>
+    <li>Select the Cursor Tool</li>
+    <li>Move the cursor to the upper left corner and verify that <strong>X1</strong> and <strong>Y1</strong> are
+      both 0</li>
+    <li>Verify the <strong>View &gt; Invert Y</strong> menu item is not checked</li>
+    <li>Verify that the origin marker is displayed at the (0, 0) point and that its y-axis points down from the
+      origin.</li>
+    <li>Select the <strong>View &gt; Invert Y</strong> menu item</li>
+    <li>Verify that the origin marker moves to the bottom left corner of the screen and the marker's Y axis points up
+      from the origin</li>
+    <li>Move the cursor to the upper left corner and verify <strong>X1</strong>*** is 0 and <strong>Y1</strong> is
+      <strong>H</strong> - 1</li>
+    <li>Move the cursor to the lower left corner and verify <strong>X1</strong> and <strong>Y1</strong> are both 0</li>
+    <li>Move the cursor to the lower right corner of the screen and press <strong>Ctrl+N</strong></li>
+    <li>Verify <strong>X1</strong> and <strong>Y1</strong> are both 0</li>
+    <li>Verify the origin marker moves to the new (0, 0) position</li>
+    <li>Move the cursor to the upper left corner and verify that <strong>X1</strong> is -(<strong>W</strong> - 1) and
+      <strong>Y1</strong> is (<strong>H</strong> - 1)</li>
+    <li>Deslect the <strong>View &gt; Invert Y</strong> menu item</li>
+    <li>Move the cursor to the upper left corner of the screen and verify that <strong>X1</strong> is
+      -(<strong>W</strong> - 1) and <strong>Y1</strong> is -(<strong>H</strong> - 1)</li>
+    <li>Select the <strong>View &gt; Reset Origin</strong> menu item</li>
+    <li>Move the cursor to the upper left corner of the screen and verify that <strong>X1</strong> and
+      <strong>Y1</strong> are both 0</li>
+    <li>Select the <strong>View &gt; Hide Origin Marker</strong></li>
+    <li>Verify the origin marker is no longer displayed</li>
+    <li>Deselect the <strong>View &gt; Hide Origin Marker</strong></li>
+    <li>Verify the origin marker is displayed</li>
+  </ol>
+
+  <h2>Angle Display</h2>
+  <ol>
+    <li>Verify that the <strong>View &gt; Supplemental Angle</strong> menu item is not checked</li>
+    <li>Select the Line Tool</li>
+    <li>Move the Point 2 crosshair and verify the included angle is displayed</li>
+    <li>Select the <strong>View &gt; Supplemental</strong> Angle menu item</li>
+    <li>Verify the angle display shows the supplement of the included angle</li>
+    <li>Move the Point 2 crosshair and verify the supplemental angle is displayed</li>
+    <li>Deselect the <strong>View &gt; Supplemental Angle</strong> menu item</li>
+    <li>Verify the angle display shows the included angle</li>
+  </ol>
+
+  <h2>Screen Info</h2>
+  <ol>
+    <li>Open the desktop Settings application</li>
+    <li>Select Displays</li>
+    <li>Record the screen resolution for each screen attached to the system</li>
+    <li>Close the Settings application</li>
+    <li>Select the Cursor tool</li>
+    <li>Move the cursor to each display and verify the Screnn Information section displays the correct sizes</li>
+    <li>Close the Meazure program</li>
+  </ol>
+
+  <h2>High DPI Screen Scaling</h2>
+  <ol>
+    <li>Open the desktop Settings application</li>
+    <li>Select Displays</li>
+    <li>Set the scale to 200%</li>
+    <li>Press <strong>Apply</strong></li>
+    <li>Keep the settings</li>
+    <li>Close the Settings application</li>
+    <li>Start the Meazure program</li>
+    <li>Verify that the user interface is properly arranged with correct margins, spacing and size of elements</li>
+    <li>Verify that the crosshairs are properly sized</li>
+    <li>Verify that the screen dimensions and resolution are correct</li>
+    <li>Select various measurement tools and verify that they are properly displayed and dragable</li>
+    <li>Close the Meazure program</li>
+    <li>Open the desktop Settings application</li>
+    <li>Select Displays</li>
+    <li>Set the scale to 100%</li>
+    <li>Press <strong>Apply</strong></li>
+    <li>Keep the settings</li>
+  </ol>
+
+  <h2>Tool Preferences</h2>
+  <ol>
+    <li>Start the Meazure program</li>
+    <li>On the toolbar select the Line Tool</li>
+    <li>Move the cursor over the crosshairs and verify that the crosshairs and Data windows are partially
+      transparent</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item</li>
+    <li>Select the <strong>Tools</strong> tab</li>
+    <li>Press the <strong>Background...</strong> button in the Crosshairs section</li>
+    <li>Select a new color for crosshair background</li>
+    <li>Press the <strong>OK</strong> button on the color dialog</li>
+    <li>Verify the crosshair samples change to the selected background color</li>
+    <li>Press the <strong>Apply</strong> button on the Preferences dialog</li>
+    <li>Verify the Line Tool crosshairs background color changes to the new color</li>
+    <li>Repeat for the <strong>Hightlight...</strong> and <strong>Border...</strong> colors</li>
+    <li>Press the <strong>Default</strong> button for each crosshair color</li>
+    <li>Verify the line samples return to their default colors</li>
+    <li>Press the <strong>Apply</strong> button on the Preferences dialog</li>
+    <li>Verify the Line Tool crosshairs return to the default colors</li>
+    <li>Adjust the crosshair opacity slider</li>
+    <li>Using the sample crosshairs, verify the opacity of the crosshairs change</li>
+    <li>Press the <strong>Apply</strong> button</li>
+    <li>Verify the Line Tool crosshair opacity changes</li>
+    <li>Restore the original crosshair opacity</li>
+    <li>Press the <strong>Color...</strong> button in the Lines section</li>
+    <li>Select a new color for lines</li>
+    <li>Press the <strong>OK</strong> button on the color dialog</li>
+    <li>Verify the line samples change to the selected color</li>
+    <li>Press the <strong>Apply</strong> button on the Preferences dialog</li>
+    <li>Verify the Line Tool line color changes to the new color</li>
+    <li>Change the line thickness</li>
+    <li>Verify the thickness of the line samples change to the new thickness</li>
+    <li>Press the <strong>Apply</strong> button on the Preferences dialog</li>
+    <li>Verify the Line Tool line thickness changes to the new thickness</li>
+    <li>Press the <strong>Default</strong> button in the Lines section</li>
+    <li>Verify the line samples return to their default color and thickness</li>
+    <li>Press the <strong>Apply</strong> button on the Preferences dialog</li>
+    <li>Verify the Line Tool returns to the default color and thickness</li>
+    <li>Press the <strong>OK</strong> button</li>
+  </ol>
+
+  <h2>Ruler Preferences</h2>
+  <ol>
+    <li>On the toolbar select the Ruler Tool</li>
+    <li>Verify that the rulers are partially transparent</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> to display the preferences dialog.</li>
+    <li>Select the <strong>Rulers</strong> tab</li>
+    <li>Change the opacity to 100%</li>
+    <li>Verify the sample rulers show the new opacity</li>
+    <li>Press the <strong>OK</strong> button</li>
+    <li>Verify that the rulers are no longer partially transparent</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> to display the preferences dialog.</li>
+    <li>Select the <strong>Rulers</strong> tab</li>
+    <li>Set the opacity to 80%</li>
+    <li>Press the <strong>Background...</strong> button</li>
+    <li>Select a new color for the ruler background</li>
+    <li>Press the <strong>OK</strong> button on the color dialog</li>
+    <li>Verify the ruler samples show the new background color</li>
+    <li>Press the <strong>Apply</strong> button</li>
+    <li>Verify that the background color on the rulers changes to the new color</li>
+    <li>Press the <strong>Marks/Text...</strong> button</li>
+    <li>Select a new color for the ruler border, marks and text</li>
+    <li>Press the <strong>OK</strong> button on the color dialog</li>
+    <li>Press the <strong>Apply</strong> button</li>
+    <li>Verify that the border color, marks and text on the rulers change to the new color</li>
+    <li>Press each <strong>Default</strong> button and verify the colors return to their default settings</li>
+    <li>Press the <strong>OK</strong> button</li>
+    <li>Verify that all ruler colors return to their defaults</li>
+    <li>On the toolbar deselect the Rulers</li>
+  </ol>
+
+  <h2>Precision Preferences</h2>
+  <ol>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item</li>
+    <li>Select the <strong>Precision</strong> tab</li>
+    <li>For each set of units and each measurement type, set a non-default number of decimal places in such a way that
+      each measurement type has a different number of decimal places. Do a few at a time</li>
+    <li>Verify that the up/down buttons function properly</li>
+    <li>Verify that only integers between 0 and 6 inclusive can be set</li>
+    <li>Press the <strong>OK</strong> button</li>
+    <li>Verify that for each set of units the number of decimal places corresponds to those set</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item</li>
+    <li>Select the <strong>Precision</strong> tab</li>
+    <li>Repeat for all units</li>
+    <li>Press the <strong>Default</strong> button</li>
+    <li>Verify that all values return to their defaults for the currently selected units</li>
+    <li>Press the <strong>Default All</strong> button</li>
+    <li>Verify that all values return to their defaults for all units</li>
+    <li>Press the <strong>OK</strong> button to dismiss the dialog</li>
+  </ol>
+
+  <h2>Magnifier</h2>
+  <ol>
+    <li>On the toolbar select the Point Tool</li>
+    <li>Verify that the crosshair is visible in the magnifier window</li>
+    <li>On the toolbar select the Cursor Tool</li>
+    <li>Verify that a red square is displayed at the center of the magnifier window</li>
+    <li>Move the Zoom slider to <strong>6X</strong></li>
+    <li>Verify that a grid is now displayed in the magnifier window</li>
+    <li>Select the <strong>View &gt; Zoom Out</strong> menu item</li>
+    <li>Verify that the magnification changes to <strong>4X</strong></li>
+    <li>Press <strong>Ctrl++</strong></li>
+    <li>Verify that the magnification goes to <strong>6X</strong></li>
+    <li>Deselect the <strong>View &gt; Magnifier Grid</strong> menu item</li>
+    <li>Verify that a grid is no longer displayed in the magnifier window</li>
+    <li>Press the <strong>Pause</strong> button</li>
+    <li>Move the cursor</li>
+    <li>Verify that the magnifier window image does not change</li>
+    <li>Press the <strong>Pause</strong> button again</li>
+    <li>Verify that the image in the magnifier window changes as the cursor is moved</li>
+  </ol>
+
+  <h2>Color Display</h2>
+  <ol>
+    <li>On the toolbar select the Point Tool</li>
+    <li>Select the <strong>View &gt; Color Format &gt; RGB</strong> menu item</li>
+    <li>Verify that three color values are displayed</li>
+    <li>Verify the color value and swatch reflects the color of the pixel in the red square at the center of the
+      magnifier window</li>
+    <li>Select all text in the color field</li>
+    <li>Copy the text using the <strong>Edit &gt; Copy</strong> menu item</li>
+    <li>Paste the contents of the clipboard into a text editor</li>
+    <li>Verify the pasted text is the same as what was copied</li>
+    <li>Select the <strong>View &gt Color Format &gt; #RRGGBB</strong> menu item</li>
+    <li>Verify that the color values are now reported in <strong>#RRGGBB</strong> format</li>
+    <li>Press the clipboard button next to the color swatch</li>
+    <li>Paste the contents of the clipboard into a text editor</li>
+    <li>Verify the pasted text is the same as that shown in the color field</li>
+    <li>Repeat for all other color space formats</li>
+    <li>Select the <strong>View &gt; Color Format &gt; Extended Name</strong> menu item</li>
+    <li>Verify that color names are now reported</li>
+    <li>Verify that the color swatch shows the matched color</li>
+    <li>Press the clipboard button next to the color swatch</li>
+    <li>Paste the contents of the clipboard into a text editor</li>
+    <li>Verify the pasted text is the same as that shown in the color field</li>
+    <li>Select the <strong>View &gt; Color Format &gt; Extended #RRGGBB</strong> menu item</li>
+    <li>Verify that hex colors representing the matched color are now reported</li>
+    <li>Verify that the color swatch shows the matched color</li>
+    <li>Press the clipboard button next to the color swatch</li>
+    <li>Paste the contents of the clipboard into a text editor</li>
+    <li>Verify the pasted text is the same as that shown in the color field</li>
+    <li>Repeat for the Basic web color matches</li>
+  </ol>
+
+  <h2>Hard Reset</h2>
+  <ol>
+    <li>Select the Rectangle Tool</li>
+    <li>Select the <strong>View &gt; Invert Y</strong> menu item</li>
+    <li>Select the <strong>View &gt; Supplemental Angle</strong> menu item</li>
+    <li>Select the Ruler Tool and Screen Grid</li>
+    <li>Select the <strong>View &gt; Color Format &gt; CMY</strong> menu item</li>
+    <li>Change the magnifier zoom factor to <strong>6X</strong></li>
+    <li>Change the screen grid spacing</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item</li>
+    <li>Change the line color, the crosshair colors, crosshair and ruler opacities, and the display precisions</li>
+    <li>Define a set of custom units</li>
+    <li>Press the <strong>Hard Reset</strong> button on the Preference dialog</li>
+    <li>Press the <strong>No</strong> button on the confirmation dialog</li>
+    <li>Verify that the configuration has not changed</li>
+    <li>Press the <strong>Hard Reset</strong> button on the Preference dialog</li>
+    <li>Press the <strong>Yes</strong> button on the confirmation dialog</li>
+    <li>Verify that the configuration is restored to the default</li>
+  </ol>
+
   <h2>Release</h2>
   <ol>
     <li>Go to the candidate release on the GitHub project</li>
@@ -794,271 +1076,14 @@ sudo dpkg -i <em>package</em>
 
   <!--
 
-  ## Custom Units
-
-  1. On the ***Units*** menu ensure that there is a disabled item labeled ***[custom]***
-  1. On the ***Units*** menu select the item labeled ***Define Custom***
-  1. Verify that the Preferences dialog is displayed with the ***Custom Units*** tab selected
-  1. Verify that all items on the panel are disabled except the ***Name*** and ***Abbreviation*** labels and text fields
-  1. In the ***Name*** field enter ***Miles***
-  1. In the ***Abbreviation*** field enter ***mi***
-  1. Verify that all items on the panel are now enabled
-  1. Ensure that the pixel based factor is selected and enter 0.5
-  1. Press ***OK***
-  1. On the ***Units*** menu verify that the ***[custom]*** item has been replaced by an enabled item
-  named ***Miles*** and select that item
-  1. Verify that ***mi*** is displayed as appropriate on all app sections
-  1. Verify that for every one pixel moved, the position value changes by 2 mi
-  1. On the ***Edit*** menu select ***Preferences***
-  1. Select the ***Custom Units*** tab
-  1. Change the factor to inch based and set 0.5
-  1. Press ***OK***
-  1. Using a ruler, verify that for a change in position of 1 inch, the position value changes by 2 mi
-  1. On the ***Edit*** menu select ***Preferences***
-  1. Select the ***Custom Units*** tab
-  1. Change the factor to centimeter based and set 0.5
-  1. Press ***OK***
-  1. Using a ruler, verify that for a change in position of 1 centimeter, the position value changes by 2 mi
-  1. On the ***Edit*** menu select ***Preferences***
-  1. Select the ***Custom Units*** tab
-  1. Press the ***Set Display Precision*** button
-  1. Verify that the Precision panel is shown with the custom units radio button selected
-  1. Return to the Custom Units panel and press the ***Clear Units*** button
-  1. Verify that the ***Name*** and ***Abbreviation*** fields are cleared and all other items on the panel are disabled
-  1. Press ***OK***
-
-  ## Coordinate System
-
-  1. Select the Cursor Tool
-  1. Move the cursor to the upper left corner and verify X1/Y1 are both 0
-  1. Verify that the origin marker is displayed at the 0, 0 point and that its Y axis points down
-  from the origin.
-  1. Verify the ***View*** menu ***Invert Y*** item is not checked
-  1. On the ***View*** menu select ***Invert Y***
-  1. Verify that the origin marker moves to the bottom left corner of the screen and the marker's
-  Y axis points up from the origin.
-  1. Move the cursor to the upper left corner and verify ***X1*** is 0 and ***Y1*** is H - 1
-  1. Move the cursor to the lower left corner and verify ***X1*** and ***Y1*** are both 0
-  1. Move the cursor to the lower right corner of the screen and press ***Ctrl+A***.
-  1. Verify ***X1*** and ***Y1*** are both 0
-  1. Verify the origin marker moves to the new 0, 0 position.
-  1. Move the cursor to the upper left corner and verify that ***X1*** is -(W - 1) and ***Y1*** is (H - 1)
-  1. On the ***View*** menu deselect ***Invert Y***,
-  1. Move the cursor to the upper left corner of the screen and verify that ***X1*** is -(W - 1) and ***Y1*** is -(H - 1)
-  1. On the ***View*** menu select ***Reset Origin***
-  1. Move the cursor to the upper left corner of the screen and verify that ***X1*** and ***Y1*** are both 0
-
-  ## Angle Display
-
-  1. Verify that the ***View*** menu ***Supplemental Angle*** item is not checked
-  1. Select the Line Tool
-  1. Move the point 2 crosshair and verify the included angle is displayed
-  1. On the ***View*** menu select ***Supplemental Angle***
-  1. Verify the angle display shows the supplement of the included angle
-  1. Move the point 2 crosshair and verify the supplemental angle is displayed
-  1. Verify that the ***View*** menu ***Supplemental Angle*** item is checked
-  1. On the ***View*** menu select ***Supplemental Angle***
-  1. Verify the angle display shows the included angle
-
-  ## Screen Info
-
-  1. Using the Display Control Panel record the screen sizes for each screen attached to the system.
-  1. Select the Cursor tool
-  1. Drag Meazure to the primary display screen and verify that the Screen Information section
-  frame displays ***Screen 1 (primary)***
-  1. Verify that the screen size for the primary display matches that reported in the Screen
-  Information section
-  1. Drag Meazure to the second display screen and verify that the Screen Information section
-  frame displays ***Screen 2***
-  1. Verify that the screen size for the secondary display matches that reported in the Screen
-  Information section.
-  1. Close the Meazure program
-
-  ## High DPI Screen Scaling
-
-  1. On a 4K display (i.e. 3840 x 2160 pixels) set the screen scaling to 150%
-  1. Bring up the ***Settings &gt; System &gt; Display*** dialog
-  1. Set the display resolution to 3840 x 2160
-  1. Set the ***Change the size of text, apps, and other items*** to 150%
-  1. Close the dialog
-  1. Start the Meazure program
-  1. Verify that the user interface is properly arranged with correct margins, spacing and size of elements
-  1. Verify that the crosshairs are properly sized
-  1. Verify that the screen dimensions and resolution are correct
-  1. Select various measurement tools and verify that they are properly displayed and dragable
-  1. Close the Meazure program
-  1. Bring up the ***Settings &gt; System &gt; Display*** dialog
-  1. Set the ***Change the size of text, apps, and other items*** to 100%
-
-  ## Tool Preferences
-
-  1. Start the Meazure program
-  1. On the toolbar select the Line Tool
-  1. Move the cursor over the crosshairs and verify that the crosshairs and Data windows are
-  partially transparent.
-  1. On the ***Edit*** menu select ***Preferences*** to display the preferences dialog.
-  1. Select the ***Tools*** tab
-  1. Press the ***Color*** button in the Line Color area and select a new color for lines.
-  1. Press ***OK***
-  1. Press ***Apply***
-  1. Verify the Line Tool line color changes to the new color
-  1. Press the ***Background*** button in the Crosshair Colors area and select a new color for the
-  crosshair background.
-  1. Press ***OK***
-  1. Press ***Apply***
-  1. Verify the background color changes to the new color on both crosshairs
-  1. Press the ***Border*** button in the Crosshair Colors area and select a new color for the
-  crosshair border.
-  1. Press ***OK***
-  1. Press ***Apply***
-  1. Verify the border color changes to the new color on both crosshairs
-  1. Press the ***Highlight*** button in the Crosshair Colors area and select a new color for the
-  crosshair highlight.
-  1. Press ***OK***
-  1. Uncheck ***Show origin marker***
-  1. Press ***Apply***
-  1. Verify the origin marker is no longer displayed
-  1. Verify that the opacity slider is enabled and change the opacity to 100%
-  1. Press ***OK***
-  1. Move the cursor over a crosshair and verify that the crosshair and Data window are no
-  longer transparent.
-  1. On the ***Edi***t menu select ***Preferences*** to display the preferences dialog.
-  1. Select the ***Tools*** tab
-  1. Change the opacity to 80%
-  1. Uncheck ***Show popup data windows***
-  1. Press ***OK***
-  1. Move the cursor over the crosshairs and verify the highlight color is the new color. Also
-  verify that the Data windows no longer appear
-  1. On the ***Edit*** menu select ***Preferences*** to display the preferences dialog.
-  1. Select the ***Tools*** tab
-  1. Press all ***Default*** buttons
-  1. Check the ***Show popup data windows*** and ***show origin marker*** boxes
-  1. Press ***OK***
-  1. Verify all Line Tool colors have returned to the default colors
-  1. Verify the Data window once again appears when the cursor is placed over the crosshairs
-  1. Verify the origin marker is shown
-
-  ## Ruler Preferences
-
-  1. On the toolbar select the Rulers
-  1. Verify that the rulers are partially transparent
-  1. On the ***Edit*** menu select ***Preferences*** to display the preferences dialog.
-  1. Select the ***Rulers*** tab
-  1. Verify that the opacity slider is enabled
-  1. Change the opacity to 100%.
-  1. Press ***OK***
-  1. Verify that the rulers are no longer partially transparent
-  1. On the ***Edit*** menu select ***Preferences***
-  1. Select the ***Rulers*** tab
-  1. Set the opacity to 80%
-  1. In the Colors area press the ***Background*** button and select a new color for the ruler background
-  1. Press ***OK***
-  1. Press ***Apply***
-  1. Verify that the background color on the rulers change to the new color
-  1. In the Colors area press the ***Border*** button and select a new color for the ruler border
-  1. Press ***OK***
-  1. Press ***Apply***
-  1. Verify that the border color on the rulers change to the new color
-  1. Press all ***Default*** buttons
-  1. Press ***OK***
-  1. Verify that all ruler colors return to their defaults
-  1. On the toolbar deselect the Rulers
-
-  ## Precision Preferences
-
-  1. On the ***Edit*** menu select the ***Preferences*** item
-  1. Select the ***Precision*** tab
-  1. For each set of units and each measurement type, set a non-default number of decimal
-  places in such a way that each measurement type has a different number of decimal
-  places. Do a few at a time
-  1. Verify that the up/down buttons function properly
-  1. Verify that only integers between 0 and 6 inclusive can be set
-  1. Press ***OK***
-  1. Verify that for each set of units the number of decimal places corresponds to those set
-  1. Repeat the last two steps as needed to cover all units and measurement types
-  1. Change all units and measurement types from their default values
-  1. Press the ***Default*** button
-  1. Verify that all values return to their defaults for all units and measurement types
-  1. Press ***OK*** to dismiss the dialog
-
-  ## Magnifier
-
-  1. On the toolbar select the Point Tool
-  1. Verify that the crosshair should be visible in the magnifier window.
-  1. On the toolbar select the Cursor Tool
-  1. Verify that a red square is displayed at the center of the magnifier window
-  1. Move the Zoom slider to ***6X***
-  1. Verify that a grid is now displayed in the magnifier window
-  1. On the ***View*** menu select ***Zoom Out***
-  1. Verify that the magnification goes to ***4X***
-  1. Press ***Ctrl++***
-  1. Verify that the magnification goes to ***6X***
-  1. On the ***View*** menu deselect the ***Magnifier Grid*** menu item
-  1. Verify that a grid is no longer displayed in the magnifier window
-  1. Press the ***Pause*** button and move the cursor.
-  1. Verify that the magnifier window image does not change
-  1. Press the ***Pause*** button again
-  1. Verify that the image in the magnifier window changes as the cursor is moved
-  1. On the toolbar select the Point Tool
-  1. On the ***View*** menu select ***Color Format*** and ensure that ***RGB*** is selected
-  1. Verify that the color values and swatch reflect the color of the pixel in the red square at the
-  center of the magnifier window
-  1. Select all text in the color field
-  1. Copy the text using the ***Edit*** menu ***Copy*** item
-  1. Paste the contents of the clipboard into a text editor
-  1. Verify the pasted text is the same as what was copied
-  1. On the ***View*** menu select ***Color Format*** and ***#RRGGBB***
-  1. Verify that the color values are now reported in ***#RRGGBB*** format
-  1. Press the clipboard button next to the color swatch
-  1. Paste the contents of the clipboard into a text editor
-  1. Verify the pasted text is the same as that shown in the color field
-  1. Repeat for all other color space formats
-  1. On the ***View*** menu select ***Color Format*** and ***Extended Name***
-  1. Verify that the color names are now reported
-  1. Verify that the color swatch shows the matched color
-  1. Press the clipboard button next to the color swatch
-  1. Paste the contents of the clipboard into a text editor
-  1. Verify the pasted text is the same as that shown in the color field
-  1. On the ***View*** menu select ***Color Format*** and ***Extended #RRGGBB***
-  1. Verify that hex colors representing the matched color are now reported
-  1. Verify that the color swatch shows the matched color
-  1. Press the clipboard button next to the color swatch
-  1. Paste the contents of the clipboard into a text editor
-  1. Verify the pasted text is the same as that shown in the color field
-  1. Repeat for the Basic web color matches
-
-  ## Master Reset
-
-  1. Select the Rectangle Tool
-  1. on the ***View*** menu select ***Invert Y***
-  1. on the ***View*** menu select ***Supplemental Angle***
-  1. Select the rulers and screen grid
-  1. Change the screen grid spacing
-  1. Using the preferences dialog panels change the line color, the crosshair colors, the
-  opacities, and the display precisions
-  1. Define a set of custom units
-  1. Change the pixel color format to ***CMY***
-  1. Change the magnifier zoom factor to ***6X***
-  1. On the Preferences dialog select the ***Advanced*** tab
-  1. Press the ***Reset*** button
-  1. Press ***No*** on the confirmation dialog
-  1. Verify that the configuration has not changed
-  1. On the Preferences dialog select the ***Advanced*** tab
-  1. Press the ***Reset*** button
-  1. Press ***Yes*** on the confirmation dialog
-  1. Verify that the configuration is restored to the default
-
   ## Visibility
 
   1. Verify that the program window cannot be obscured by any other window on the screen
   1. On the ***View*** menu deselect the ***Always Visible*** item
   1. Verify that the program window can be obscured
   1. On the ***View*** menu select the ***Always Visible*** item
-  1. On the ***View*** menu individually deselect the ***Toolbar***, ***Tool Information***, ***Screen Information***,
-  ***Magnifier***, and the ***Status Bar*** items. Verify that the sections of the program are hidden as their respective
-  menu items are deselected
-  1. On the ***View*** menu individually select the ***Toolbar***, ***Tool Information***, and ***Screen Information*** items. Verify
-  that these sections appear
+  1. On the ***View*** menu individually deselect the ***Toolbar***, ***Tool Information***, ***Screen Information***, ***Magnifier***, and the ***Status Bar*** items. Verify that the sections of the program are hidden as their respective menu items are deselected
+  1. On the ***View*** menu individually select the ***Toolbar***, ***Tool Information***, and ***Screen Information*** items. Verify that these sections appear
   1. On the ***View*** menu select ***Collapse***
   1. Verify that all sections except the menu bar are hidden
   1. On the ***View*** menu select ***Expand***
@@ -1079,14 +1104,12 @@ sudo dpkg -i <em>package</em>
   1. Press ***OK***.
   1. On the ***View*** menu select the ***Invert Y*** item
   1. On the ***View*** menu deselect the ***Magnifier*** item
-  1. Move the program window and use the Window Tool to measure the position of the
-  program window.
+  1. Move the program window and use the Window Tool to measure the position of the program window.
   1. Record the ***X1*** and ***Y1*** values
   1. Exit the program
   1. Restart the program
   1. Verify that all previous settings have been restored
-  1. Using the Window Tool verify that the program window ***X1*** and ***Y1*** position matches the values
-  previously recorded
+  1. Using the Window Tool verify that the program window ***X1*** and ***Y1*** position matches the values previously recorded
   1. Exit the program
   1. Using the Registry Editor program delete the ***HKCU/Software/C Thing Software*** key
 
@@ -1127,8 +1150,7 @@ sudo dpkg -i <em>package</em>
   1. Select the Cursor Tool
   1. On the ***Units*** menu, select ***Pixels***
   1. Make sure that the Meazure program has the focus
-  1. Move to a number of positions and at each one write down or remember the position and
-  at each position press Ctrl+P to record the position
+  1. Move to a number of positions and at each one write down or remember the position and at each position press Ctrl+P to record the position
   1. Verify that each time ***Ctrl+P*** is pressed the Data window should flash
   1. Select the Line tool
   1. Set the line in a number of positions each time pressing ***Ctrl+P*** to record the position
@@ -1154,16 +1176,14 @@ sudo dpkg -i <em>package</em>
   1. On the ***File*** menu select the ***Load Positions*** item
   1. Verify that the title is the one specified when the log file was saved
   1. Verify that the description is the one specified when the log file was saved
-  1. Verify that the Position Management dialog is displayed and that the positions correspond
-  to those originally saved
+  1. Verify that the Position Management dialog is displayed and that the positions correspond to those originally saved
   1. Verify that the positions recorded using the Cursor Tool are now displayed using the Point Tool
   1. Move the slider to a given position and press the Delete button
   1. Verify that the position is deleted
   1. Select the Rectangle Tool
   1. Move the position slider to a position somewhere in the middle of the recorded set
   1. Press the ***Replace*** button
-  1. Move the position slider and verify that the original position and tool have been replaced by
-  the Rectangle Tool and its position
+  1. Move the position slider and verify that the original position and tool have been replaced by the Rectangle Tool and its position
   1. Move the Rectangle Tool
   1. Press the ***Add*** button
   1. Verify that the new position has been recorded
@@ -1183,8 +1203,7 @@ sudo dpkg -i <em>package</em>
   1. On the ***Help*** menu select the ***What's This*** item.
   1. Click on the Tool Information section
   1. Verify that the help for the Tool Information section is displayed
-  1. Display the ***Tools*** menu. Position the cursor over the ***Point*** item and press ***F1***. Verify that
-  the help for the Point Tool is displayed
+  1. Display the ***Tools*** menu. Position the cursor over the ***Point*** item and press ***F1***. Verify that the help for the Point Tool is displayed
   1. Close the help window
   1. On the ***Help*** menu select ***Meazure Releases***
   1. Verify that the Meazure releases page on GitHub is displayed in a web browser
