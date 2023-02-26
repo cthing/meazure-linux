@@ -31,6 +31,7 @@ The changes described below are relative to version
 - The Hide Crosshairs item has been moved from the Tools menu to the View menu.
 - The Find Crosshairs item has been moved from the Tools menu to the Edit menu.
 - The Tool information section is no longer labeled with the selected tool.
+- The Replace button on the position management dialog has been removed and an Insert button has been added
 - "Profiles" are now called "Configurations".
 
 ### Removed
