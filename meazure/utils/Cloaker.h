@@ -61,7 +61,7 @@ public:
 private:
     using State = std::pair<QWidget*, bool>;
 
-    static constexpr int k_processingTime = 20;   // Time to spend processing events, milliseconds
+    static constexpr int k_processingTime = 100;   // Time to spend processing events, milliseconds
 
     std::vector<State> m_widgetStates;
 };

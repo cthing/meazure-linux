@@ -95,7 +95,7 @@ void RectangleTool::setDataWinEnabled(bool enable) {
 QImage RectangleTool::grabRegion() const {
     const Cloaker cloak(m_point1CH, m_point2CH, m_rectangle, m_dataWin1, m_dataWin2);
 
-    const QRect regionRect = m_rectangle->geometry();
+    const QRect regionRect = m_rectangle->geometry().normalized();
     return m_screenInfo->grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 

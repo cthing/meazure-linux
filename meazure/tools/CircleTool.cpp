@@ -99,7 +99,7 @@ void CircleTool::setDataWinEnabled(bool enable) {
 QImage CircleTool::grabRegion() const {
     const Cloaker cloak(m_centerCH, m_perimeterCH, m_circle, m_line, m_dataWinCenter, m_dataWinPerimeter);
 
-    const QRect regionRect = m_circle->geometry();
+    const QRect regionRect = m_circle->geometry().normalized();
     return m_screenInfo->grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 

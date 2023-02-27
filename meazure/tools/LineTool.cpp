@@ -93,7 +93,7 @@ void LineTool::setDataWinEnabled(bool enable) {
 QImage LineTool::grabRegion() const {
     const Cloaker cloak(m_point1CH, m_point2CH, m_line, m_dataWin1, m_dataWin2);
 
-    const QRect regionRect(m_point1, m_point2);
+    const QRect regionRect = QRect(m_point1, m_point2).normalized();
     return m_screenInfo->grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 

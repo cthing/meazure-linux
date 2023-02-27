@@ -78,7 +78,7 @@ void WindowTool::setDataWinEnabled(bool enable) {
 QImage WindowTool::grabRegion() const {
     const Cloaker cloak(m_rectangle, m_dataWindow);
 
-    const QRect regionRect = m_rectangle->geometry();
+    const QRect regionRect = m_rectangle->geometry().normalized();
     return m_screenInfo->grabScreen(regionRect.x(), regionRect.y(), regionRect.width(), regionRect.height());
 }
 
