@@ -31,8 +31,8 @@ RectangleTool::RectangleTool(const ScreenInfo* screenInfo, const UnitsProvider* 
         m_point1CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 1"), k_point1Id)),
         m_point2CH(new Crosshair(screenInfo, unitsProvider, nullptr, tr("Point 2"), k_point2Id)),
         m_rectangle(new Rectangle(screenInfo, unitsProvider, k_enabledCrosshairOffset)),
-        m_dataWin1(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | DistReadOnly)),
-        m_dataWin2(new ToolDataWindow(screenInfo, unitsProvider, XY2ReadOnly | DistReadOnly)) {
+        m_dataWin1(new ToolDataWindow(screenInfo, unitsProvider, XY1ReadOnly | WHReadOnly)),
+        m_dataWin2(new ToolDataWindow(screenInfo, unitsProvider, XY2ReadOnly | WHReadOnly)) {
     connect(m_point1CH, &Crosshair::entered, this, &RectangleTool::entered);
     connect(m_point2CH, &Crosshair::entered, this, &RectangleTool::entered);
 
@@ -294,8 +294,8 @@ void RectangleTool::moved(Crosshair&, int id, QPoint) {
     const double area = Geometry::area(wh);
     const double angle = m_unitsProvider->convertAngle(Geometry::angle(coord1, coord2));
 
-    m_dataWin1->distanceChanged(distance);
-    m_dataWin2->distanceChanged(distance);
+    m_dataWin1->widthHeightChanged(wh);
+    m_dataWin2->widthHeightChanged(wh);
     if (id == k_point1Id) {
         m_dataWin1->xy1PositionChanged(coord1, m_point1);
         m_dataWin1->moveNear(m_point1CH->geometry());

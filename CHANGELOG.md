@@ -16,6 +16,7 @@ The changes described below are relative to version
 - The thickness of the measurement tool lines can be adjusted.
 - The screen grid spacing can now be set in any units supported by Meazure.
 - The screen grid size, origin offset, and angular orientation can now be set in addition to the grid spacing.
+- The Line Tool now offers screen capture. Line forms diagonal of the capture bounding box.
 - The Tool and Ruler preference pages show sample lines, crosshairs and rulers on light and dark backgrounds
   to help when changing colors and opacities.
 
