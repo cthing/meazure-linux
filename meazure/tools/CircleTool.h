@@ -111,7 +111,7 @@ private:
     static constexpr double k_enabledCrosshairRadialOffset { Crosshair::getDefaultSize() / 2.0 + 0.08 };
     static constexpr double k_disabledCrosshairRadialOffset { 0.08 };
     static constexpr RadioToolTraits k_traits { XY1ReadWrite | XYVReadWrite | WHReadOnly | DistReadOnly |
-                                                AngleReadOnly | AspectReadOnly | AreaReadOnly };
+                                                AngleReadOnly | AreaReadOnly };
     static constexpr int k_perimeterId { 1 };   ///< ID for the perimeter crosshair
     static constexpr int k_centerId { 2 };      ///< ID for the center crosshair
 
