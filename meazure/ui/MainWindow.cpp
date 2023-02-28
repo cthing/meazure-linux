@@ -416,6 +416,12 @@ void MainWindow::createActions() {
     m_customUnitsAction->setStatusTip(tr("Selects custom units"));
     m_customUnitsAction->setWhatsThis(tr("Show measurements using custom units."));
     connect(m_unitsMgr, &UnitsMgr::customUnitsChanged, this, &MainWindow::customUnitsChanged);
+    connect(m_customUnitsAction, &QAction::triggered, this, [this] {
+        m_unitsMgr->setLinearUnits(CustomId);
+    });
+    connect(m_unitsMgr, &UnitsMgr::linearUnitsChanged, this, [this](LinearUnitsId id) {
+        m_customUnitsAction->setChecked(id == CustomId);
+    });
 
     m_defineCustomUnitsAction = new QAction(tr("Define C&ustom..."), this);
     m_defineCustomUnitsAction->setStatusTip(tr("Defines custom units"));
