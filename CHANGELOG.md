@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2023-02-28
+
 The changes described below are relative to version
 [4.0.0 of Meazure for Windows](https://github.com/cthing/meazure/tree/4.0.0).
 
@@ -17,6 +19,7 @@ The changes described below are relative to version
 - The screen grid spacing can now be set in any units supported by Meazure.
 - The screen grid size, origin offset, and angular orientation can now be set in addition to the grid spacing.
 - The Line Tool now offers screen capture. Line forms diagonal of the capture bounding box.
+- The magnifier grid can now be set to a light or dark color
 - The Tool and Ruler preference pages show sample lines, crosshairs and rulers on light and dark backgrounds
   to help when changing colors and opacities.
 
@@ -40,4 +43,5 @@ The changes described below are relative to version
 - Sample profiles (configurations) are no longer included with Meazure.
 - The ability to specify a startup profile has been removed.
 
-[unreleased]: https://github.com/cthing/meazure-linux/compare/bb3d96a0518989782d680451fff8cc69d1005d3f...HEAD
+[unreleased]: https://github.com/cthing/meazure-linux/compare/5.0.0...HEAD
+[5.0.0]: https://github.com/cthing/meazure-linux/releases/tag/5.0.0
