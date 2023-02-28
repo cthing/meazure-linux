@@ -46,7 +46,7 @@ void UnitsPrefsPage::createUI() {
 
     auto* abbrevInstr = new QLabel(tr("(%1 character limit)").arg(k_maxAbbrevLength));
 
-    auto* settingInstr = new QLabel(tr("Set a resolution dependent or independent scale factor:"));
+    m_settingInstr = new QLabel(tr("Set a resolution dependent or independent scale factor:"));
 
     m_factorField = new DoubleDataField(k_factorWidth, false);
     m_factorField->setWhatsThis(tr("Sets the scale factor for the custom units."));
@@ -91,7 +91,7 @@ void UnitsPrefsPage::createUI() {
 
     layout->addSpacing(k_verticalSpace);
 
-    layout->addWidget(settingInstr);
+    layout->addWidget(m_settingInstr);
 
     auto* factorLayout = new QHBoxLayout();
     factorLayout->addWidget(m_factorField);
@@ -202,6 +202,7 @@ void UnitsPrefsPage::nameAbbrevChanged() {
 }
 
 void UnitsPrefsPage::setFactorEnabled(bool enable) {
+    m_settingInstr->setEnabled(enable);
     m_factorField->setEnabled(enable);
     m_basisCombo->setEnabled(enable);
     m_factorLabel->setEnabled(enable);

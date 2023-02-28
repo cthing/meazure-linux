@@ -74,6 +74,7 @@ private:
     UnitsPrefsModel* m_model;
     LineEdit* m_nameField;
     LineEdit* m_abbrevField;
+    QLabel* m_settingInstr;
     DoubleDataField* m_factorField;
     QComboBox* m_basisCombo;
     QLabel* m_factorLabel;
