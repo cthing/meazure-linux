@@ -165,6 +165,7 @@ meazure
     <li>In the file browser, go to the directory containing the saved position log file</li>
     <li>Verify the file is displayed with the Meazure position log file icon</li>
     <li>Double-click the icon</li>
+    <li>Close the position management dialog</li>
     <li>Verify that Meazure is launched</li>
     <li>Exit Meazure</li>
     <li>
@@ -199,6 +200,7 @@ sudo dpkg -i <em>package</em>
 
   <h2>Cursor Tool</h2>
   <ol>
+    <li>Start the Meazure program</li>
     <li>Select the Cursor Tool using the toolbar</li>
     <li>Verify the Status bar says "Cursor hotspot is measurement point"</li>
     <li>Verify the <strong>Tools &gt; Cursor</strong> menu item is checked</li>
@@ -218,12 +220,12 @@ sudo dpkg -i <em>package</em>
   <ol>
     <li>Select the Point Tool using the toolbar</li>
     <li>Verify the Status bar says "Shift locks to H or V"</li>
-    <li>Verify a crosshair is displayed, flashes yellow and then remains red</li>
+    <li>Verify a crosshair is displayed, flashes a yellow border and then remains red</li>
     <li>Verify the <strong>Tools &gt; Point</strong> menu item is checked</li>
     <li>Select the <strong>Tools &gt; Cursor</strong> menu item</li>
     <li>Verify the cursor position is tracked and a Data window is applied</li>
     <li>Select the <strong>Tools &gt; Point</strong> menu item</li>
-    <li>Verify a crosshair is displayed, flashes yellow and then remains red</li>
+    <li>Verify a crosshair is displayed, flashes a yellow border and then remains red</li>
     <li>Verify the <strong>X1</strong> and <strong>Y1</strong> text fields are enabled and editable</li>
     <li>Verify the <strong>X1</strong> and <strong>Y1</strong> up/down buttons are enabled</li>
     <li>Verify all other fields in the Tool Information section are disabled</li>
@@ -267,8 +269,8 @@ sudo dpkg -i <em>package</em>
       and <strong>Ar</strong> fields are enabled but not editable</li>
     <li>Move the mouse over each crosshair and verify the crosshair color changes to yellow when cursor enters the
       crosshair and to red when cursor leaves the crosshair</li>
-    <li>When the cursor moves over the crosshair, verify that the Data window appears showing <strong>X1</strong> and
-      <strong>Y1</strong> coordinates and the <strong>D</strong> value</li>
+    <li>When the cursor moves over the crosshair, verify that the Data window appears showing <strong>X1</strong>,
+      <strong>Y1</strong> or <strong>X2</strong>, <strong>Y2</strong> coordinates and the <strong>D</strong> value</li>
     <li>Verify that the Data window disappears when cursor leaves crosshair</li>
     <li>Verify that hovering over the Point 1 crosshair shows the tool tip "Point 1"</li>
     <li>Verify that hovering over the Point 2 crosshair shows the tool tip "Point 2"</li>
@@ -304,20 +306,19 @@ sudo dpkg -i <em>package</em>
     <li>Press <strong>Ctrl+2</strong> and an arrow key</li>
     <li>Verify that the Point 2 crosshair moves in the direction corresponding to the arrow key being pressed</li>
     <li>Repeat for each arrow key</li>
-    <li>Select <strong>Edit &gt; Find Crosshairs</strong> and verify that the crosshairs flashes between red and yellow a
-      number of times and then stop flashing returning to red</li>
+    <li>Select <strong>Edit &gt; Find Crosshairs</strong> and verify that the crosshairs flashes a yellow border a
+      number of times and then stop flashing</li>
     <li>Repeat by pressing <strong>Ctrl+F</strong></li>
-    <li>Select <strong>View &gt; Hide Crosshairs</strong></li>
     <li>Verify that the crosshairs are no longer displayed leaving only the line</li>
     <li>Select <strong>View &gt; Hide Crosshairs</strong></li>
     <li>Verify that the crosshairs are now displayed</li>
+    <li>Repeat by pressing <strong>Ctrl+B</strong></li>
     <li>Select <strong>View &gt; Hide Popup Data Window</strong></li>
     <li>Move the cursor over a crosshair</li>
     <li>Verify the Data window is not displayed</li>
     <li>Deselect <strong>View &gt; Hide Popup Data Window</strong></li>
     <li>Move the cursor over a crosshair</li>
     <li>Verify the Data window is displayed</li>
-    <li>Repeat by pressing <strong>Ctrl+B</strong></li>
     <li>Drag the line endpoints to diagonally opposite corners of a window</li>
     <li>Press <strong>Ctrl+R</strong></li>
     <li>Verify the crosshairs flash</li>
@@ -530,6 +531,7 @@ sudo dpkg -i <em>package</em>
 
   <h2>Ruler Tool</h2>
   <ol>
+    <li>Select the Point Tool using the toolbar</li>
     <li>Select the Ruler Tool using toolbar</li>
     <li>Verify an orthogonal pair of rulers appear on the screen</li>
     <li>Verify the <strong>Tools &gt; Rulers</strong> menu item is checked</li>
@@ -634,7 +636,7 @@ sudo dpkg -i <em>package</em>
     <li>Verify that the calibration preference panel is displayed</li>
     <li>Verify that the <strong>Screen</strong> drop-down indicates the current screen</li>
     <li>Verify that the <strong>Screen</strong> drop-down menu lists all screens</li>
-    <li>Press the <strong>Cancel</strong>button</li>
+    <li>Press the <strong>Cancel</strong> button</li>
     <li>Move Meazure to a different screen</li>
     <li>Press the calibration warning button</li>
     <li>Verify that the calibration preference panel is displayed</li>
@@ -681,9 +683,13 @@ sudo dpkg -i <em>package</em>
     <li>Using a handheld ruler, set the vertical and horizontal resolutions using the calipers so that
       they point to the 1-inch mark. The values displayed in the <strong>W</strong> and <strong>H</strong> text fields
       should be close to the screen dimensions. Verify this by measuring the screen dimensions with the ruler</li>
-    <li>Enter into the <strong>W</strong> and <strong>H</strong> text fields the screen dimensions measured using the
-      ruler</li>
-    <li>Drag the dialog to a different screen</li>
+    <li>Verify the <strong>W</strong> and <strong>H</strong> text fields show the screen dimensions measured using a
+      ruler or tape measure</li>
+    <li>Press the <strong>OK</strong> button</li>
+    <li>Drag Meazure to a different screen</li>
+    <li>Select the <strong>Edit &gt; Preferences</strong> menu item to display the preferences dialog</li>
+    <li>Select the <strong>Calibration</strong> tab</li>
+    <li>Verify that the <strong>Screen</strong> drop-down indicates the current screen</li>
     <li>Select the name of the screen from the <strong>Screen</strong> drop-down menu</li>
     <li>Repeat manual calibration</li>
     <li>Select different screens from the <strong>Screen</strong> drop-down menu and verify that the correct
@@ -823,6 +829,8 @@ sudo dpkg -i <em>package</em>
     <li>Verify that the <strong>Display Name</strong> and <strong>Abbreviation</strong> fields are cleared and all
       other items on the panel are disabled</li>
     <li>Press the <strong>OK</strong> button</li>
+    <li>Verify the <strong>Units &gt; Pixels</strong> menu item is now selected</li>
+    <li>Deselect the Ruler Tool</li>
   </ol>
 
   <h2>Coordinate System</h2>
@@ -874,6 +882,7 @@ sudo dpkg -i <em>package</em>
     <li>Select Displays</li>
     <li>Record the screen resolution for each screen attached to the system</li>
     <li>Close the Settings application</li>
+    <li>Select the <strong>Units &gt; Pixels</strong> menu item</li>
     <li>Select the Cursor tool</li>
     <li>Move the cursor to each display and verify the Screen Information section displays the correct sizes</li>
     <li>Close the Meazure program</li>
@@ -938,7 +947,9 @@ sudo dpkg -i <em>package</em>
     <li>Verify the line samples return to their default color and thickness</li>
     <li>Press the <strong>Apply</strong> button on the Preferences dialog</li>
     <li>Verify the Line Tool returns to the default color and thickness</li>
+    <li>Set line thickness to <strong>1</strong></li>
     <li>Press the <strong>OK</strong> button</li>
+    <li>Verify the displayed line thickness returns to 1</li>
   </ol>
 
   <h2>Ruler Preferences</h2>
@@ -1001,14 +1012,18 @@ sudo dpkg -i <em>package</em>
     <li>Verify that a grid is now displayed in the magnifier window</li>
     <li>Select the <strong>View &gt; Zoom Out</strong> menu item</li>
     <li>Verify that the magnification changes to <strong>4X</strong></li>
-    <li>Press <strong>Ctrl++</strong></li>
+    <li>Press <strong>Ctrl++</strong> (i.e. Ctrl+Shift++)</li>
     <li>Verify that the magnification goes to <strong>6X</strong></li>
-    <li>Deselect the <strong>View &gt; Magnifier Grid</strong> menu item</li>
+    <li>Select the <strong>View &gt; Magnifier Grid &gt; None</strong> menu item</li>
     <li>Verify that a grid is no longer displayed in the magnifier window</li>
+    <li>Select the <strong>View &gt; Magnifier Grid &gt; Light</strong> menu item</li>
+    <li>Verify that a white grid is displayed in the magnifier window</li>
+    <li>Select the <strong>View &gt; Magnifier Grid &gt; Dark</strong> menu item</li>
+    <li>Verify that a black grid is displayed in the magnifier window</li>
     <li>Press the <strong>Pause</strong> button</li>
     <li>Move the cursor</li>
     <li>Verify that the magnifier window image does not change</li>
-    <li>Press the <strong>Pause</strong> button again</li>
+    <li>Press the <strong>Ctrl+M</strong> button again</li>
     <li>Verify that the image in the magnifier window changes as the cursor is moved</li>
   </ol>
 
@@ -1042,6 +1057,7 @@ sudo dpkg -i <em>package</em>
     <li>Paste the contents of the clipboard into a text editor</li>
     <li>Verify the pasted text is the same as that shown in the color field</li>
     <li>Repeat for the Basic web color matches</li>
+    <li>Select the <strong>View &gt; Color Format &gt; RGB</strong> menu item</li>
   </ol>
 
   <h2>Hard Reset</h2>
@@ -1062,6 +1078,14 @@ sudo dpkg -i <em>package</em>
     <li>Press the <strong>Hard Reset</strong> button on the Preference dialog</li>
     <li>Press the <strong>Yes</strong> button on the confirmation dialog</li>
     <li>Verify that the configuration is restored to the default</li>
+    <li>Repeat the configuration changes above</li>
+    <li>Exit the Meazure program</li>
+    <li>In a cosole run:
+      <pre>
+        meazure --reset
+      </pre>
+    </li>
+    <li>Verify that the program is in its default state</li>
   </ol>
 
   <h2>Visibility</h2>
@@ -1134,8 +1158,10 @@ sudo dpkg -i <em>package</em>
     <li>Turn off the Rulers</li>
     <li>Select the Cursor Tool</li>
     <li>Exit the program</li>
-    <li>Start the program</li>
+    <li>Start the program from the conole by specifying the saved configuration file on the command-line</li>
     <li>Verify that the Point Tool and Ruler Tool are selected</li>
+    <li>Turn off the rulers</li>
+    <li>Select the Cursor Tool</li>
     <li>Exit the program</li>
     <li>Delete the directory <code>~/.config/CThingSoftware</code></li>
   </ol>
@@ -1187,17 +1213,23 @@ sudo dpkg -i <em>package</em>
     <li>Verify that the new position has been recorded at the end of the log</li>
     <li>Close the position management dialog</li>
     <li>Select the <strong>Edit &gt; Delete Positions</strong> menu item</li>
-    <li>Verify that the <strong>File & gt; Save Positions</strong> and <strong>File &gt; Save Positions As...</strong>
+    <li>Verify that the <strong>File &gt; Save Positions</strong> and <strong>File &gt; Save Positions As...</strong>
       menu items are disabled</li>
     <li>Using the position management dialog verify that there are no recorded positions</li>
     <li>Record a position using any tool</li>
     <li>Attempt to exit Meazure and verify that a dialog is displayed warning that there are unsaved positions</li>
     <li>Press the <strong>No</strong> button</li>
+    <li>Run the Meazure program from the command line and specify the position log file on the command-line</li>
+    <li>Verify that the Position Management dialog is displayed with the positions originally saved</li>
+    <li>Verify that the log title is the one specified when the log file was saved</li>
+    <li>Verify that the log description is the one specified when the log file was saved</li>
+    <li>Verify that the positions recorded using the Cursor Tool are now displayed using the Point Tool</li>
+    <li>Close the position management dialog</li>
+    <li>Select the <strong>Edit &gt; Delete Positions</strong> menu item</li>
   </ol>
 
   <h2>Help</h2>
   <ol>
-    <li>Start the Meazure program</li>
     <li>Select the <strong>Help &gt; Help</strong> menu item</li>
     <li>Verify that a web browser is displayed showing the "Meazure User Manual"</li>
     <li>Close the browser page</li>
