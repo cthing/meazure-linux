@@ -109,7 +109,8 @@ void PrefsDialog::selectPage(PrefsPageId pageId) {
     }
 }
 
-void PrefsDialog::showEvent(QShowEvent*) {
+void PrefsDialog::showEvent(QShowEvent* ev) {
+    QDialog::showEvent(ev);
     for (PrefsPage* page : m_prefsPages) {
         page->initialize();
     }

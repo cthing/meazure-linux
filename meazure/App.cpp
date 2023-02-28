@@ -74,6 +74,11 @@ App::App(int &argc, char **argv): QApplication(argc, argv) {     // NOLINT(cppco
         m_mainWindow->setAttribute(Qt::WA_QuitOnClose, true);
         m_mainWindow->show();
 
+        // Hard reset
+        if (parser.isSet(k_resetOpt)) {
+            m_configMgr->hardReset();
+        }
+
         // Load a position log file, if one was specified on the command-line
         const QStringList positionLogs = parser.positionalArguments().filter(QRegularExpression(".*\\.mpl$"));
         if (!positionLogs.empty()) {
@@ -103,10 +108,13 @@ void App::parseCommandLine(QCommandLineParser& parser) {
                                      tr("bool"), "false");
     devModeOption.setFlags(QCommandLineOption::HiddenFromHelp);
 
+    const QCommandLineOption resetOption(k_resetOpt, tr("Performs a hard reset."));
+
     parser.setApplicationDescription("A tool for easily measuring and capturing portions of the screen.");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption(devModeOption);
+    parser.addOption(resetOption);
     parser.addPositionalArgument("*.mea", tr("Configuration file"), "[*.mea]");
     parser.addPositionalArgument("*.mpl", tr("Position log file"), "[*.mpl]");
     parser.process(*this);

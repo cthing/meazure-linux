@@ -50,6 +50,7 @@ public:
 private:
     // Command-line options
     static constexpr const char* k_devmodeOpt { "devmode" };
+    static constexpr const char* k_resetOpt { "reset" };
 
     static constexpr const char* k_devmodeMarkerFilename { "meadevmode" };
     static constexpr const char* k_icuDir { "icu" };
