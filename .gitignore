@@ -3,6 +3,7 @@
 *.iml
 *.iws
 .DS_Store
+CMakeUserPresets.json
 out
 build
 /cmake-build-debug/

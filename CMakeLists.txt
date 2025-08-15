@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
 set(CMAKE_FIND_NO_INSTALL_PREFIX TRUE)
 
 project(meazure_linux
-        VERSION 5.0.0.10
+        VERSION 5.0.1.1
         DESCRIPTION "A tool for easily measuring and capturing portions of the screen."
         HOMEPAGE_URL "https://github.com/cthing/meazure-linux")
 
@@ -24,19 +24,8 @@ set(APP_DIR "${PROJECT_SOURCE_DIR}/meazure")
 set(TEST_DIR "${PROJECT_SOURCE_DIR}/test")
 set(DEV_DIR "${PROJECT_SOURCE_DIR}/dev")
 
-include(${DEV_DIR}/conan/cthing-conan.cmake)
-
-conan_cmake_configure(REQUIRES
-                      qt/6.4.2
-                      libffi/3.4.3   # Resolve Qt conflict between wayland and glib
-                      expat/2.5.0    # Resolve Qt conflict between wayland and frontconfig
-                      xerces-c/3.2.4
-                      OPTIONS qt:shared=False qt:qtsvg=True qt:qttools=True qt:qtwayland=True harfbuzz:with_glib=False xerces-c:char_type=char16_t
-                      GENERATORS ${CTHING_CONAN_GENERATOR})
-
-CTHING_CONAN_INSTALL()
-
 find_package(Qt6 COMPONENTS Core Gui Widgets Svg Network Test REQUIRED)
+find_package(Wayland REQUIRED)
 find_package(ICU COMPONENTS uc REQUIRED)
 find_package(XercesC REQUIRED)
 find_package(Doxygen REQUIRED)

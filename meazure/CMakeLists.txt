@@ -269,8 +269,11 @@ set(INTERNAL_RESOURCES
 set(EXTERNAL_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources/external)
 
 # To provide access to the QPlatform* classes
-set(Qt6_Gui_Platform_INCLUDE_DIRS ${Qt6_Gui_INCLUDE_DIRS})
-list(TRANSFORM Qt6_Gui_Platform_INCLUDE_DIRS APPEND "/${Qt6_VERSION}/QtGui")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(Qt6_Gui_Platform_INCLUDE_DIRS "${qt_PACKAGE_FOLDER_RELEASE}/include/QtGui/${Qt6_VERSION_STRING}/QtGui")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(Qt6_Gui_Platform_INCLUDE_DIRS "${qt_PACKAGE_FOLDER_DEBUG}/include/QtGui/${Qt6_VERSION_STRING}/QtGui")
+endif()
 
 qt6_add_library(libmeazure STATIC ${MEAZURE_SOURCES})
 target_compile_options(libmeazure PRIVATE -fPIC)
@@ -283,7 +286,11 @@ target_include_directories(libmeazure PRIVATE
                            ${CMAKE_CURRENT_BINARY_DIR})
 qt6_add_resources(libmeazure "resources" PREFIX "/" BASE "resources/internal" FILES ${INTERNAL_RESOURCES})
 
-set(QT_PLUGINS_DIR "${CONAN_QT_ROOT}/res/archdatadir/plugins")
+get_target_property(_qt_core_includes Qt6::Core INTERFACE_INCLUDE_DIRECTORIES)
+list(GET _qt_core_includes 1 _qt_core_incdir)
+get_filename_component(QT_INSTALL_PREFIX "${_qt_core_incdir}" DIRECTORY)
+get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+set(QT_PLUGINS_DIR "${QT_INSTALL_PREFIX}/plugins")
 
 set(QT_PLUGIN_PLATFORMS_DIR ${QT_PLUGINS_DIR}/platforms)
 set(QT_PLUGIN_PLATFORMS_OBJECTS_DIR ${QT_PLUGIN_PLATFORMS_DIR}/objects-${CMAKE_BUILD_TYPE})
@@ -308,6 +315,7 @@ set_property(TARGET pluginInits PROPERTY IMPORTED_OBJECTS
 set(CMAKE_SKIP_RPATH TRUE)
 
 qt6_add_executable(meazure main.cpp $<TARGET_OBJECTS:pluginInits>)
+
 target_include_directories(meazure PRIVATE
                            ${Qt6_INCLUDE_DIRS}
                            ${Qt6_Gui_Platform_INCLUDE_DIRS}
@@ -332,7 +340,8 @@ target_link_libraries(meazure PRIVATE
                       qsvgicon
                       xdg-shell
                       Qt6XcbQpa
-                      Qt6WaylandClient
+                      Qt6::WaylandClient
+                      ${wayland_LIBRARIES}
                       Qt6::Core
                       ${ICU_uc_LIBS}
                       XercesC::XercesC)
@@ -343,8 +352,13 @@ configure_file(AppVersion.h.in AppVersion.h @ONLY)
 # Because the ICU library is statically compiled, its data file is not available at runtime.
 # Copy the data file to the output directory. The directory will be included in the distribution
 # package and ICU will be configured to use that directory.
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(ICU_RES_DIR "${icu_ICU_data_RES_DIRS_RELEASE}")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(ICU_RES_DIR "${icu_ICU_data_RES_DIRS_DEBUG}")
+endif()
 add_custom_target(copy_icu
-                  COMMAND ${CMAKE_COMMAND} -E copy_directory "${ICU_RES_DIRS}" "${CMAKE_CURRENT_BINARY_DIR}/icu"
+                  COMMAND ${CMAKE_COMMAND} -E copy_directory "${ICU_RES_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/icu"
                   COMMENT "Copying icu files")
 add_dependencies(libmeazure copy_icu)
 

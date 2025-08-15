@@ -11,7 +11,7 @@ for Ubuntu 20.04 using CMake.
    sudo apt-get install python3
    sudo apt-get install python3-pip
    ```
-5. Install the [Conan C/C++ Package Manager](https://conan.io/)
+5. Install the [Conan C/C++ Package Manager](https://conan.io/) version 2.*
    ```shell
    pip install conan
    ```
@@ -33,13 +33,16 @@ for Ubuntu 20.04 using CMake.
    or have Conan do it automatically. The following are the packages that need to be installed on the system
    (note that the actual packages may vary).
    ```shell
-   sudo apt-get install libfontenc-dev libice-dev libgl-dev libsm-dev libx11-xcb-dev libxaw7-dev libxcb-dri3-dev \
-                        libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev \
-                        libxcb-render-util0-dev libxcb-render0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-util-dev \
-                        libxcb-util0-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev libxcomposite-dev \
-                        libxcursor-dev libxdamage-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev \
-                        libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev \
-                        libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev uuid-dev
+   sudo apt-get install libfontenc-dev libice-dev libgl-dev libsm-dev libx11-xcb-dev \
+                        libxaw7-dev libxcb-cursor-dev libxcb-dri2-0-dev libxcb-dri3-dev \
+                        libxcb-glx0-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev \
+                        libxcb-present-dev libxcb-randr0-dev libxcb-render-util0-dev \
+                        libxcb-render0-dev libxcb-res0-dev libxcb-shape0-dev libxcb-sync-dev \
+                        libxcb-util-dev libxcb-util0-dev libxcb-xfixes0-dev libxcb-xinerama0-dev \
+                        libxcb-xkb-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxext-dev \
+                        libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev \
+                        libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev \
+                        libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev uuid-dev
    ```
 10. The following targets are of interest:
     - **project_full_build** - Builds the Meazure executable, runs all tests, generates API documentation, lints the
