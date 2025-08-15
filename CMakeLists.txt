@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.31 FATAL_ERROR)
 
 set(CMAKE_FIND_NO_INSTALL_PREFIX TRUE)
 

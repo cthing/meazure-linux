@@ -1,8 +1,8 @@
 [requires]
 icu/74.2
-qt/6.4.2
+qt/6.8.3
 wayland/1.22.0
-xerces-c/3.2.4
+xerces-c/3.3.0
 
 [options]
 qt/*:shared=False

@@ -3,15 +3,15 @@
 Meazure is a Qt program and must be built on Linux. These instructions describe how to build Meazure
 for Ubuntu 20.04 using CMake.
 
-1. Download and install CMake 3.24 or newer for Linux x86_64 from <https://cmake.org/download/>
-2. Download and install Ninja 1.11.0 or newer for Linux <https://github.com/ninja-build/ninja/releases>
+1. Download and install CMake 3.31 or newer for Linux x86_64 from <https://cmake.org/download/>
+2. Download and install Ninja 1.13 or newer for Linux <https://github.com/ninja-build/ninja/releases>
 3. Ensure that `cmake` and `ninja` are in the PATH
 4. Install Python
    ```shell
    sudo apt-get install python3
    sudo apt-get install python3-pip
    ```
-5. Install the [Conan C/C++ Package Manager](https://conan.io/) version 2.*
+5. Install the [Conan C/C++ Package Manager](https://conan.io/) version 2
    ```shell
    pip install conan
    ```
